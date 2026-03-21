@@ -21,7 +21,6 @@ export async function POST(req: NextRequest) {
 
   const sb = getAdmin()
 
-  // Create event
   const { data: ev, error: evErr } = await sb.from('events').insert({
     title: body.title,
     slug: body.slug,
@@ -47,7 +46,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: evErr.message }, { status: 500 })
   }
 
-  // Create ticket
   const { error: tkErr } = await sb.from('event_tickets').insert({
     event_id: ev.id,
     name: 'Workshop Seat',
@@ -75,7 +73,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ success: true, event: ev })
 }
 
-// UPDATE event or ticket
+// UPDATE event or ticket — supports full event editing
 export async function PATCH(req: NextRequest) {
   const body = await req.json()
   if (!checkAuth(body.password)) {
@@ -91,15 +89,47 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ success: true })
   }
 
-  // Update event fields
+  // Full event edit
   if (body.id) {
-    const updates: Record<string, unknown> = {}
-    if (body.status !== undefined) updates.status = body.status
-    if (body.is_featured !== undefined) updates.is_featured = body.is_featured
-    if (body.title !== undefined) updates.title = body.title
+    const eventUpdates: Record<string, unknown> = {}
+    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'stripe_payment_link']
 
-    const { error } = await sb.from('events').update(updates).eq('id', body.id)
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    for (const field of editableEventFields) {
+      if (body[field] !== undefined) {
+        if (field === 'start_date' || field === 'end_date') {
+          eventUpdates[field] = new Date(body[field]).toISOString()
+        } else {
+          eventUpdates[field] = body[field]
+        }
+      }
+    }
+
+    // Update landing_page_data fields
+    if (body.special_offer !== undefined || body.instructor_name !== undefined || body.company_name !== undefined) {
+      const { data: existing } = await sb.from('events').select('landing_page_data').eq('id', body.id).single()
+      const lpd = (existing?.landing_page_data as Record<string, unknown>) || {}
+      if (body.special_offer !== undefined) lpd.special_offer = body.special_offer
+      if (body.instructor_name !== undefined) lpd.instructor_name = body.instructor_name
+      if (body.company_name !== undefined) lpd.company_name = body.company_name
+      if (body.title !== undefined) lpd.hero_headlines = [body.title]
+      eventUpdates.landing_page_data = lpd
+    }
+
+    if (Object.keys(eventUpdates).length > 0) {
+      const { error } = await sb.from('events').update(eventUpdates).eq('id', body.id)
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    // Also update the associated ticket if price/capacity/payment link changed
+    if (body.price !== undefined || body.capacity !== undefined || body.stripe_payment_link !== undefined) {
+      const ticketUpdates: Record<string, unknown> = {}
+      if (body.price !== undefined) ticketUpdates.price = body.price
+      if (body.capacity !== undefined) ticketUpdates.capacity = body.capacity
+      if (body.stripe_payment_link !== undefined) ticketUpdates.stripe_payment_link = body.stripe_payment_link
+
+      await sb.from('event_tickets').update(ticketUpdates).eq('event_id', body.id)
+    }
+
     return NextResponse.json({ success: true })
   }
 
