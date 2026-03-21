@@ -15,8 +15,9 @@ interface EventRow {
   status: string
   is_featured: boolean
   stripe_payment_link: string
+  stripe_product_id: string
   landing_page_data: Record<string, unknown>
-  event_tickets: { id: string; sold_count: number; capacity: number; price: number; status: string; stripe_payment_link: string }[]
+  event_tickets: { id: string; sold_count: number; capacity: number; price: number; status: string; stripe_payment_link: string; stripe_product_id: string; stripe_price_id: string }[]
   created_at: string
 }
 
@@ -65,6 +66,8 @@ export default function AdminPage() {
     timezone: 'America/Los_Angeles',
     capacity: 20,
     stripe_payment_link: '',
+    stripe_product_id: '',
+    stripe_price_id: '',
     price: 997,
     is_featured: false,
     special_offer: '',
@@ -82,6 +85,8 @@ export default function AdminPage() {
     timezone: 'America/Los_Angeles',
     capacity: 20,
     stripe_payment_link: '',
+    stripe_product_id: '',
+    stripe_price_id: '',
     price: 997,
     is_featured: false,
     special_offer: '',
@@ -132,7 +137,7 @@ export default function AdminPage() {
       })
       if (res.ok) {
         setMsg('Event created successfully')
-        setForm({ ...form, title: '', slug: '', subtitle: '', start_date: '', end_date: '', stripe_payment_link: '', is_featured: false, special_offer: '' })
+        setForm({ ...form, title: '', slug: '', subtitle: '', start_date: '', end_date: '', stripe_payment_link: '', stripe_product_id: '', stripe_price_id: '', is_featured: false, special_offer: '' })
         fetchData()
         setTab('events')
       } else {
@@ -182,6 +187,8 @@ export default function AdminPage() {
       timezone: ev.timezone || 'America/Los_Angeles',
       capacity: ticket?.capacity || ev.capacity || 20,
       stripe_payment_link: ticket?.stripe_payment_link || ev.stripe_payment_link || '',
+      stripe_product_id: ticket?.stripe_product_id || ev.stripe_product_id || '',
+      stripe_price_id: ticket?.stripe_price_id || '',
       price: ticket?.price || 997,
       is_featured: ev.is_featured || false,
       special_offer: (lpd as Record<string, string>).special_offer || '',
@@ -331,6 +338,9 @@ export default function AdminPage() {
                           {new Date(ev.start_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} — {ev.timezone}
                         </p>
                         <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Slug: /{ev.slug} &nbsp;|&nbsp; Price: ${ticket?.price || '—'}</p>
+                        {(ticket?.stripe_product_id || ev.stripe_product_id) && (
+                          <p style={{ fontSize: 11, color: 'var(--accent-light)', marginTop: 2 }}>Stripe: {ticket?.stripe_product_id || ev.stripe_product_id}</p>
+                        )}
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--accent-light)' }}>{sold}/{cap}</div>
@@ -455,6 +465,17 @@ export default function AdminPage() {
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Payment Link</label>
                   <input className="admin-input" value={editForm.stripe_payment_link} onChange={(e) => setEditForm({ ...editForm, stripe_payment_link: e.target.value })} placeholder="https://buy.stripe.com/..." />
                 </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <div>
+                    <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Product ID</label>
+                    <input className="admin-input" value={editForm.stripe_product_id} onChange={(e) => setEditForm({ ...editForm, stripe_product_id: e.target.value })} placeholder="prod_..." />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Price ID</label>
+                    <input className="admin-input" value={editForm.stripe_price_id} onChange={(e) => setEditForm({ ...editForm, stripe_price_id: e.target.value })} placeholder="price_..." />
+                  </div>
+                </div>
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: -8 }}>Find these in Stripe Dashboard &gt; Products. Links sales to this event automatically.</p>
                 <div>
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Special Offer</label>
                   <input className="admin-input" value={editForm.special_offer} onChange={(e) => setEditForm({ ...editForm, special_offer: e.target.value })} />
@@ -616,6 +637,17 @@ export default function AdminPage() {
                 <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Payment Link</label>
                 <input className="admin-input" value={form.stripe_payment_link} onChange={(e) => setForm({ ...form, stripe_payment_link: e.target.value })} placeholder="https://buy.stripe.com/..." />
               </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Product ID</label>
+                  <input className="admin-input" value={form.stripe_product_id} onChange={(e) => setForm({ ...form, stripe_product_id: e.target.value })} placeholder="prod_..." />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Price ID</label>
+                  <input className="admin-input" value={form.stripe_price_id} onChange={(e) => setForm({ ...form, stripe_price_id: e.target.value })} placeholder="price_..." />
+                </div>
+              </div>
+              <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: -8 }}>Stripe Dashboard &gt; Products &gt; Copy product ID (prod_...) and price ID (price_...). This links sales to this event.</p>
               <div>
                 <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Special Offer</label>
                 <input className="admin-input" value={form.special_offer} onChange={(e) => setForm({ ...form, special_offer: e.target.value })} placeholder="Bring 3 friends and your session is free" />

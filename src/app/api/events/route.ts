@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
     status: 'draft',
     is_featured: body.is_featured || false,
     stripe_payment_link: body.stripe_payment_link || null,
+    stripe_product_id: body.stripe_product_id || null,
     landing_page_data: {
       hero_headlines: [body.title],
       special_offer: body.special_offer || '',
@@ -54,6 +55,8 @@ export async function POST(req: NextRequest) {
     capacity: body.capacity || 20,
     sold_count: 0,
     stripe_payment_link: body.stripe_payment_link || null,
+    stripe_product_id: body.stripe_product_id || null,
+    stripe_price_id: body.stripe_price_id || null,
     status: 'active',
     includes: JSON.stringify([
       'Live 2-day build sprint',
@@ -92,7 +95,7 @@ export async function PATCH(req: NextRequest) {
   // Full event edit
   if (body.id) {
     const eventUpdates: Record<string, unknown> = {}
-    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'stripe_payment_link']
+    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'stripe_payment_link', 'stripe_product_id']
 
     for (const field of editableEventFields) {
       if (body[field] !== undefined) {
@@ -121,11 +124,13 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Also update the associated ticket if price/capacity/payment link changed
-    if (body.price !== undefined || body.capacity !== undefined || body.stripe_payment_link !== undefined) {
+    if (body.price !== undefined || body.capacity !== undefined || body.stripe_payment_link !== undefined || body.stripe_product_id !== undefined || body.stripe_price_id !== undefined) {
       const ticketUpdates: Record<string, unknown> = {}
       if (body.price !== undefined) ticketUpdates.price = body.price
       if (body.capacity !== undefined) ticketUpdates.capacity = body.capacity
       if (body.stripe_payment_link !== undefined) ticketUpdates.stripe_payment_link = body.stripe_payment_link
+      if (body.stripe_product_id !== undefined) ticketUpdates.stripe_product_id = body.stripe_product_id
+      if (body.stripe_price_id !== undefined) ticketUpdates.stripe_price_id = body.stripe_price_id
 
       await sb.from('event_tickets').update(ticketUpdates).eq('event_id', body.id)
     }
