@@ -86,9 +86,56 @@ export default function ParticleBackground() {
       }
     }, 2000)
 
+    // Draw cosmic gradient blobs (static, drawn once per resize)
+    let cosmicCanvas: HTMLCanvasElement | null = null
+    const drawCosmicBg = () => {
+      cosmicCanvas = document.createElement('canvas')
+      cosmicCanvas.width = canvas.width
+      cosmicCanvas.height = canvas.height
+      const cctx = cosmicCanvas.getContext('2d')
+      if (!cctx) return
+
+      // Floating cosmic gradients
+      const blobs = [
+        { x: 0.15, y: 0.1, r: 0.35, color: 'rgba(80, 40, 160, 0.12)' },
+        { x: 0.85, y: 0.05, r: 0.3, color: 'rgba(30, 100, 160, 0.10)' },
+        { x: 0.5, y: 0.3, r: 0.4, color: 'rgba(60, 30, 120, 0.08)' },
+        { x: 0.1, y: 0.55, r: 0.35, color: 'rgba(45, 100, 180, 0.07)' },
+        { x: 0.9, y: 0.45, r: 0.3, color: 'rgba(100, 40, 180, 0.09)' },
+        { x: 0.4, y: 0.7, r: 0.35, color: 'rgba(40, 150, 160, 0.07)' },
+        { x: 0.7, y: 0.85, r: 0.3, color: 'rgba(80, 50, 140, 0.08)' },
+        { x: 0.2, y: 0.9, r: 0.25, color: 'rgba(50, 120, 160, 0.06)' },
+      ]
+
+      blobs.forEach(b => {
+        const grad = cctx.createRadialGradient(
+          b.x * canvas.width, b.y * canvas.height, 0,
+          b.x * canvas.width, b.y * canvas.height, b.r * Math.max(canvas.width, canvas.height)
+        )
+        grad.addColorStop(0, b.color)
+        grad.addColorStop(1, 'transparent')
+        cctx.fillStyle = grad
+        cctx.fillRect(0, 0, canvas.width, canvas.height)
+      })
+    }
+    drawCosmicBg()
+
+    const origResize = resize
+    const cosmicResize = () => {
+      origResize()
+      drawCosmicBg()
+    }
+    window.removeEventListener('resize', resize)
+    window.addEventListener('resize', cosmicResize)
+
     const animate = () => {
       if (!ctx || !canvas) return
       ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      // Draw cosmic background
+      if (cosmicCanvas) {
+        ctx.drawImage(cosmicCanvas, 0, 0)
+      }
 
       const particles = particlesRef.current
       const mouse = mouseRef.current
@@ -141,12 +188,12 @@ export default function ParticleBackground() {
           const cdist = Math.sqrt(cdx * cdx + cdy * cdy)
 
           if (cdist < connectionDist) {
-            const alpha = (1 - cdist / connectionDist) * 0.25
+            const alpha = (1 - cdist / connectionDist) * 0.35
             ctx.beginPath()
             ctx.moveTo(p.x, p.y)
             ctx.lineTo(p2.x, p2.y)
             ctx.strokeStyle = p.color + alpha + ')'
-            ctx.lineWidth = 0.8
+            ctx.lineWidth = 1.2
             ctx.stroke()
           }
         }
@@ -158,7 +205,7 @@ export default function ParticleBackground() {
     animate()
 
     return () => {
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', cosmicResize)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('touchmove', handleTouchMove)
       window.removeEventListener('touchend', handleTouchEnd)

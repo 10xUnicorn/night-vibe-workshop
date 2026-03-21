@@ -265,16 +265,16 @@ export default function LandingPage() {
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Real apps. Real revenue. Real time savings.</h2>
         <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>You do not need the perfect idea before joining. The workshop helps you identify the right use case.</p>
 
-        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'nowrap', overflowX: 'auto', paddingBottom: 8 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16 }}>
           {[
-            { icon: '&#128736;', title: 'Internal Tools', glow: 'purple' },
-            { icon: '&#128101;', title: 'Customer Portals', glow: 'teal' },
-            { icon: '&#127919;', title: 'Lead Gen Tools', glow: 'purple' },
-            { icon: '&#9889;', title: 'Automation', glow: 'teal' },
-            { icon: '&#128176;', title: 'Micro-SaaS', glow: 'purple' },
+            { icon: '\u{1F6E0}', title: 'Internal Tools', glow: 'purple' },
+            { icon: '\u{1F465}', title: 'Customer Portals', glow: 'teal' },
+            { icon: '\u{1F3AF}', title: 'Lead Gen Tools', glow: 'purple' },
+            { icon: '\u{26A1}', title: 'Automation', glow: 'teal' },
+            { icon: '\u{1F4B0}', title: 'Micro-SaaS', glow: 'purple' },
           ].map((item, i) => (
-            <div key={i} className={`card card-glow-${item.glow}`} style={{ textAlign: 'center', minWidth: 170, flex: '1 0 170px', padding: 24 }}>
-              <div style={{ fontSize: 36, marginBottom: 12 }} dangerouslySetInnerHTML={{ __html: item.icon }} />
+            <div key={i} className={`card card-glow-${item.glow}`} style={{ textAlign: 'center', padding: 24 }}>
+              <div style={{ fontSize: 36, marginBottom: 12 }}>{item.icon}</div>
               <h3 style={{ fontSize: 15, fontWeight: 700 }}>{item.title}</h3>
             </div>
           ))}
@@ -362,17 +362,18 @@ export default function LandingPage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
           {[
-            { icon: '&#127916;', title: 'Live 2-Day Build Sprint', desc: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple' },
-            { icon: '&#128187;', title: 'Your Functional App', desc: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal' },
-            { icon: '&#127909;', title: 'Full Recording Access', desc: 'Every session recorded. Revisit any step anytime you build your next app.', glow: 'purple' },
-            { icon: '&#128221;', title: 'Complete SOPs & Procedures', desc: 'Step-by-step documentation for every technique. Your permanent reference.', glow: 'teal' },
-            { icon: '&#128218;', title: 'The 3-Step AI App Blueprint', desc: 'Our proprietary framework from business problem to working app.', glow: 'purple' },
-            { icon: '&#128101;', title: 'Community Access', desc: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal' },
-            { icon: '&#128260;', title: 'Future Session Access', desc: 'Every future workshop session included. Build more apps, keep growing.', glow: 'purple' },
-            { icon: '&#127775;', title: '20-Person Q&A', desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
+            { icon: '\u{1F3AC}', title: 'Live 2-Day Build Sprint', desc: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple' },
+            { icon: '\u{1F4BB}', title: 'Your Functional App', desc: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal' },
+            { icon: '\u{1F3A5}', title: 'Full Recording Access', desc: 'Every session recorded. Revisit any step anytime you build your next app.', glow: 'purple' },
+            { icon: '\u{1F4DD}', title: 'Complete SOPs & Procedures', desc: 'Step-by-step documentation for every technique. Your permanent reference.', glow: 'teal' },
+            { icon: '\u{1F4DA}', title: 'The 3-Step AI App Blueprint', desc: 'Our proprietary framework from business problem to working app.', glow: 'purple' },
+            { icon: '\u{1F465}', title: 'Community Access', desc: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal' },
+            { icon: '\u{1F504}', title: '3 Bonus Future Sessions', desc: 'Access to 3 additional workshop sessions. Build more apps, keep growing.', glow: 'purple' },
+            { icon: '\u{2B50}', title: '20-Person Q&A', desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
+            { icon: '\u{1F680}', title: 'Launch Accelerator Tool', desc: 'Custom AI app to guide your build and launch — FREE early access for attendees.', glow: 'teal' },
           ].map((item, i) => (
             <div key={i} className={`card card-glow-${item.glow}`} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', textAlign: 'left' }}>
-              <div style={{ fontSize: 28, flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: item.icon }} />
+              <div style={{ fontSize: 28, flexShrink: 0 }}>{item.icon}</div>
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>{item.title}</h3>
                 <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</p>
@@ -390,10 +391,11 @@ export default function LandingPage() {
             <div style={{ textAlign: 'left' }}>
               <h3 style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 800, marginBottom: 12, lineHeight: 1.2 }}>Launch Accelerator Tool</h3>
               <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>A custom-built AI app exclusively for workshop attendees. It walks you through every step of designing, building, and launching your app in the most structured and effective way possible.</p>
-              <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 20 }}>Think of it as your personal launch checklist on steroids — powered by AI, tailored to your project, and designed to make sure nothing falls through the cracks.</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                {['Structured App Design', 'Step-by-Step Launch Plan', 'AI-Powered Guidance', 'Attendees Only'].map((tag, i) => (
-                  <span key={i} style={{ fontSize: 12, fontWeight: 700, color: i === 3 ? 'var(--gold)' : 'var(--accent-light)', background: i === 3 ? 'rgba(245,197,66,0.08)' : 'rgba(108,58,237,0.08)', padding: '6px 14px', borderRadius: 100, border: `1px solid ${i === 3 ? 'rgba(245,197,66,0.25)' : 'rgba(108,58,237,0.2)'}` }}>{tag}</span>
+              <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 12 }}>Think of it as your personal launch checklist on steroids — powered by AI, tailored to your project, and designed to make sure nothing falls through the cracks.</p>
+              <p style={{ fontSize: 14, color: 'var(--gold)', fontWeight: 600, marginBottom: 20 }}>Workshop attendees get FREE early access — this will be a paid standalone app.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+                {['Structured App Design', 'Step-by-Step Launch Plan', 'AI-Powered Guidance', 'FREE Early Access'].map((tag, i) => (
+                  <span key={i} style={{ fontSize: 12, fontWeight: 700, textAlign: 'center', color: i === 3 ? 'var(--gold)' : 'var(--accent-light)', background: i === 3 ? 'rgba(245,197,66,0.08)' : 'rgba(108,58,237,0.08)', padding: '8px 14px', borderRadius: 100, border: `1px solid ${i === 3 ? 'rgba(245,197,66,0.25)' : 'rgba(108,58,237,0.2)'}` }}>{tag}</span>
                 ))}
               </div>
             </div>
@@ -490,10 +492,20 @@ export default function LandingPage() {
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 32 }}>One-time investment. Lifetime access to recordings and community.</p>
 
           <div className="card glow-ring" style={{ textAlign: 'left', borderColor: 'var(--accent)', padding: 36, marginBottom: 24 }}>
-            {['Live 2-day build sprint (April 7-8)', '9 AM – 1 PM Pacific each day', 'Functional app built and deployed', 'Full recording access', 'SOPs, blueprints, and training docs', 'Community access', 'All future workshop sessions', '20-person intimate cohort with live Q&A', 'BONUS: Launch Accelerator Tool'].map((item, i) => (
+            {[
+              { text: 'Live 2-day build sprint (April 7-8)', icon: '\u{1F3AC}' },
+              { text: '9 AM \u2013 1 PM Pacific each day', icon: '\u{1F552}' },
+              { text: 'Functional app built and deployed', icon: '\u{1F4BB}' },
+              { text: 'Full recording access', icon: '\u{1F3A5}' },
+              { text: 'SOPs, blueprints, and training docs', icon: '\u{1F4DD}' },
+              { text: 'Community access', icon: '\u{1F465}' },
+              { text: '3 bonus future workshop sessions', icon: '\u{1F504}' },
+              { text: '20-person intimate cohort with live Q&A', icon: '\u{2B50}' },
+              { text: 'BONUS: Launch Accelerator Tool (FREE early access)', icon: '\u{1F680}', highlight: true },
+            ].map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}>
-                <span style={{ color: i === 8 ? 'var(--warning)' : 'var(--success)', flexShrink: 0 }}>{i === 8 ? '&#127873;' : '&#10004;'}</span>
-                <span style={{ fontWeight: i === 8 ? 700 : 400, color: i === 8 ? 'var(--warning)' : 'inherit' }}>{item}</span>
+                <span style={{ flexShrink: 0 }}>{item.icon}</span>
+                <span style={{ fontWeight: item.highlight ? 700 : 400, color: item.highlight ? 'var(--gold)' : 'inherit' }}>{item.text}</span>
               </div>
             ))}
             <div style={{ borderTop: '1px solid var(--border)', margin: '20px 0', paddingTop: 16 }}>
