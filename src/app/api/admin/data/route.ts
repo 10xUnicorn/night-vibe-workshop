@@ -47,11 +47,25 @@ export async function POST(req: NextRequest) {
     .select('*')
     .order('display_order')
 
+  // Fetch offer items
+  const { data: offerItems } = await sb
+    .from('offer_items')
+    .select('*')
+    .order('display_order')
+
+  // Fetch event-offer links
+  const { data: eventOfferItems } = await sb
+    .from('event_offer_items')
+    .select('*')
+    .order('display_order')
+
   return NextResponse.json({
     events: events || [],
     waitlist: waitlist || [],
     registrations: registrations || [],
     hosts: hosts || [],
     eventHosts: eventHosts || [],
+    offerItems: offerItems || [],
+    eventOfferItems: eventOfferItems || [],
   })
 }

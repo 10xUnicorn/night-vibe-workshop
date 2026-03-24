@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import ParticleBackground from '@/components/ParticleBackground'
 import RevenueCalculator from '@/components/RevenueCalculator'
+import { renderRichText } from '@/lib/richText'
 
 interface HostData {
   id: string
@@ -32,6 +33,7 @@ interface EventHostData {
 interface EventData {
   id: string
   title: string
+  slug: string
   subtitle: string
   start_date: string
   end_date: string
@@ -55,6 +57,7 @@ interface EventData {
     status: string
   }[]
   event_hosts: EventHostData[]
+  event_offer_items: { offer_item_id: string; display_order: number; offer_items: { id: string; icon: string; title: string; description: string; glow: string; is_bonus: boolean; display_order: number } }[]
 }
 
 export default function LandingPage() {
@@ -70,11 +73,12 @@ export default function LandingPage() {
   const [upcomingEvents, setUpcomingEvents] = useState<EventData[]>([])
 
   const [eventHosts, setEventHosts] = useState<EventHostData[]>([])
+  const [offerItems, setOfferItems] = useState<{ icon: string; title: string; description: string; glow: string; is_bonus: boolean }[]>([])
 
   const fetchEvent = useCallback(async () => {
     const { data } = await supabase
       .from('events')
-      .select('*, event_tickets(*), event_hosts(*, hosts(*))')
+      .select('*, event_tickets(*), event_hosts(*, hosts(*)), event_offer_items(*, offer_items(*))')
       .eq('is_featured', true)
       .in('status', ['published', 'sold_out'])
       .order('start_date', { ascending: true })
@@ -92,6 +96,13 @@ export default function LandingPage() {
       if ((data as EventData).event_hosts) {
         const sorted = [...(data as EventData).event_hosts].sort((a, b) => a.display_order - b.display_order)
         setEventHosts(sorted)
+      }
+      if ((data as EventData).event_offer_items) {
+        const sortedOffers = [...(data as EventData).event_offer_items]
+          .sort((a, b) => a.display_order - b.display_order)
+          .map(eoi => eoi.offer_items)
+          .filter(Boolean)
+        setOfferItems(sortedOffers)
       }
     }
 
@@ -392,17 +403,16 @@ export default function LandingPage() {
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>This is not just a workshop. It is a full implementation package.</h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-          {[
-            { icon: '\u{1F3AC}', title: 'Live 2-Day Build Sprint', desc: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple' },
-            { icon: '\u{1F4BB}', title: 'Your Functional App', desc: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal' },
-            { icon: '\u{1F3A5}', title: 'Full Recording Access', desc: 'Every session recorded. Revisit any step anytime you build your next app.', glow: 'purple' },
-            { icon: '\u{1F4DD}', title: 'Complete SOPs & Procedures', desc: 'Step-by-step documentation for every technique. Your permanent reference.', glow: 'teal' },
-            { icon: '\u{1F4DA}', title: 'The 3-Step AI App Blueprint', desc: 'Our proprietary framework from business problem to working app.', glow: 'purple' },
-            { icon: '\u{1F465}', title: 'Community Access', desc: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal' },
-            { icon: '\u{1F504}', title: '3 Bonus Future Sessions', desc: 'Access to 3 additional workshop sessions. Build more apps, keep growing.', glow: 'purple' },
-            { icon: '\u{2B50}', title: '20-Person Q&A', desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
-            { icon: '\u{1F680}', title: 'Launch Accelerator Tool', desc: 'Custom AI app to guide your build and launch — FREE early access for attendees.', glow: 'teal' },
-          ].map((item, i) => (
+          {(offerItems.length > 0 ? offerItems.filter(oi => !oi.is_bonus).map(oi => ({ icon: oi.icon, title: oi.title, desc: oi.description, glow: oi.glow })) : [
+            { icon: '🎬', title: 'Live 2-Day Build Sprint', desc: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple' },
+            { icon: '💻', title: 'Your Functional App', desc: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal' },
+            { icon: '🎥', title: 'Full Recording Access', desc: 'Every session recorded. Revisit any step anytime you build your next app.', glow: 'purple' },
+            { icon: '📝', title: 'Complete SOPs & Procedures', desc: 'Step-by-step documentation for every technique. Your permanent reference.', glow: 'teal' },
+            { icon: '📚', title: 'The 3-Step AI App Blueprint', desc: 'Our proprietary framework from business problem to working app.', glow: 'purple' },
+            { icon: '👥', title: 'Community Access', desc: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal' },
+            { icon: '🔄', title: '3 Bonus Future Sessions', desc: 'Access to 3 additional workshop sessions. Build more apps, keep growing.', glow: 'purple' },
+            { icon: '⭐', title: '20-Person Q&A', desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
+          ]).map((item, i) => (
             <div key={i} className={`card card-glow-${item.glow}`} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', textAlign: 'left' }}>
               <div style={{ fontSize: 28, flexShrink: 0 }}>{item.icon}</div>
               <div>
@@ -492,7 +502,7 @@ export default function LandingPage() {
                   </div>
                   <h2 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>{host.name}</h2>
                   <p style={{ fontSize: 16, color: 'var(--accent-light)', fontWeight: 600, marginBottom: 20 }}>{host.title}{host.company ? ` — ${host.company}` : ''}</p>
-                  <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>{host.bio || host.short_description}</p>
+                  {renderRichText(host.bio || host.short_description || '', { fontSize: 16, color: 'var(--text-secondary)', marginBottom: 16 })}
                   {(host.stat1_value || host.stat2_value || host.stat3_value) && (
                     <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 24 }}>
                       {[
@@ -550,7 +560,10 @@ export default function LandingPage() {
                       <p style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{new Date(ue.start_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
                       <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>${ueTicket?.price || 997} · {ueSoldOut ? 'SOLD OUT' : `${ueSeats} seats left`}</p>
                     </div>
-                    {ueSoldOut ? (<button className="btn-secondary" style={{ padding: '10px 24px', fontSize: 14 }} onClick={() => setShowWaitlist(true)}>Waitlist</button>) : (<a href={ueLink} className="btn-accent" style={{ padding: '10px 24px', fontSize: 14 }} target="_blank" rel="noopener noreferrer">Register</a>)}
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <a href={`/events/${ue.slug}`} style={{ padding: '10px 20px', fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', border: '2px solid rgba(108,58,237,0.4)', borderRadius: 12, textDecoration: 'none', transition: 'all 0.3s ease' }}>View</a>
+                      {ueSoldOut ? (<button className="btn-secondary" style={{ padding: '10px 24px', fontSize: 14 }} onClick={() => setShowWaitlist(true)}>Waitlist</button>) : (<a href={ueLink} className="btn-accent" style={{ padding: '10px 24px', fontSize: 14 }} target="_blank" rel="noopener noreferrer">Register</a>)}
+                    </div>
                   </div>
                 )
               })}

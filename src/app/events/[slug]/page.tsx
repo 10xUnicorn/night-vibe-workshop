@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 import ParticleBackground from '@/components/ParticleBackground';
 import RevenueCalculator from '@/components/RevenueCalculator';
 import Link from 'next/link';
+import { renderRichText } from '@/lib/richText';
 
 interface Host {
   id: string;
@@ -38,6 +39,22 @@ interface EventTicket {
   stripe_payment_link: string;
 }
 
+interface OfferItem {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  glow: string;
+  is_bonus: boolean;
+  display_order: number;
+}
+
+interface EventOfferItem {
+  offer_item_id: string;
+  display_order: number;
+  offer_items: OfferItem;
+}
+
 interface EventData {
   id: string;
   title: string;
@@ -52,6 +69,7 @@ interface EventData {
   stripe_payment_link: string;
   event_tickets: EventTicket[];
   event_hosts: EventHost[];
+  event_offer_items: EventOfferItem[];
 }
 
 const supabase = createClient(
@@ -65,6 +83,7 @@ export default function EventPage() {
 
   const [event, setEvent] = useState<EventData | null>(null);
   const [hosts, setHosts] = useState<EventHost[]>([]);
+  const [offerItems, setOfferItems] = useState<OfferItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showWaitlist, setShowWaitlist] = useState(false);
@@ -78,7 +97,7 @@ export default function EventPage() {
     try {
       const { data: eventData, error: eventError } = await supabase
         .from('events')
-        .select(`*, event_tickets(*), event_hosts(*, hosts(*))`)
+        .select(`*, event_tickets(*), event_hosts(*, hosts(*)), event_offer_items(*, offer_items(*))`)
         .eq('slug', slug)
         .in('status', ['published', 'sold_out'])
         .single();
@@ -93,6 +112,14 @@ export default function EventPage() {
           (a, b) => a.display_order - b.display_order
         );
         setHosts(sortedHosts);
+      }
+
+      if (eventData.event_offer_items) {
+        const sortedOffers = [...(eventData.event_offer_items as EventOfferItem[])]
+          .sort((a, b) => a.display_order - b.display_order)
+          .map(eoi => eoi.offer_items)
+          .filter(Boolean);
+        setOfferItems(sortedOffers);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load event');
@@ -435,22 +462,22 @@ export default function EventPage() {
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>This is not just a workshop. It is a full implementation package.</h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
-          {[
-            { icon: '\u{1F3AC}', title: 'Live 2-Day Build Sprint', desc: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple' },
-            { icon: '\u{1F4BB}', title: 'Your Functional App', desc: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal' },
-            { icon: '\u{1F3A5}', title: 'Full Recording Access', desc: 'Every session recorded. Revisit any step anytime you build your next app.', glow: 'purple' },
-            { icon: '\u{1F4DD}', title: 'Complete SOPs & Procedures', desc: 'Step-by-step documentation for every technique. Your permanent reference.', glow: 'teal' },
-            { icon: '\u{1F4DA}', title: 'The 3-Step AI App Blueprint', desc: 'Our proprietary framework from business problem to working app.', glow: 'purple' },
-            { icon: '\u{1F465}', title: 'Community Access', desc: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal' },
-            { icon: '\u{1F504}', title: '3 Bonus Future Sessions', desc: 'Access to 3 additional workshop sessions. Build more apps, keep growing.', glow: 'purple' },
-            { icon: '\u{2B50}', title: `${event.capacity}-Person Q&A`, desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
-            { icon: '\u{1F680}', title: 'Launch Accelerator Tool', desc: 'Custom AI app to guide your build and launch — FREE early access for attendees.', glow: 'teal' },
-          ].map((item, i) => (
+          {(offerItems.length > 0 ? offerItems : [
+            { icon: '🎬', title: 'Live 2-Day Build Sprint', description: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple', is_bonus: false },
+            { icon: '💻', title: 'Your Functional App', description: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal', is_bonus: false },
+            { icon: '🎥', title: 'Full Recording Access', description: 'Every session recorded. Revisit any step anytime you build your next app.', glow: 'purple', is_bonus: false },
+            { icon: '📝', title: 'Complete SOPs & Procedures', description: 'Step-by-step documentation for every technique. Your permanent reference.', glow: 'teal', is_bonus: false },
+            { icon: '📚', title: 'The 3-Step AI App Blueprint', description: 'Our proprietary framework from business problem to working app.', glow: 'purple', is_bonus: false },
+            { icon: '👥', title: 'Community Access', description: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal', is_bonus: false },
+            { icon: '🔄', title: '3 Bonus Future Sessions', description: 'Access to 3 additional workshop sessions. Build more apps, keep growing.', glow: 'purple', is_bonus: false },
+            { icon: '⭐', title: `${event.capacity}-Person Q&A`, description: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal', is_bonus: false },
+            { icon: '🚀', title: 'Launch Accelerator Tool', description: 'Custom AI app to guide your build and launch — FREE early access for attendees.', glow: 'teal', is_bonus: true },
+          ] as { icon: string; title: string; description: string; glow: string; is_bonus: boolean }[]).filter(item => !item.is_bonus).map((item, i) => (
             <div key={i} className={`card card-glow-${item.glow}`} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', textAlign: 'left' }}>
               <div style={{ fontSize: 28, flexShrink: 0 }}>{item.icon}</div>
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>{item.title}</h3>
-                <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.desc}</p>
+                <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.description}</p>
               </div>
             </div>
           ))}
@@ -535,7 +562,7 @@ export default function EventPage() {
                     </div>
                     <h2 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>{host.name}</h2>
                     <p style={{ fontSize: 16, color: 'var(--accent-light)', fontWeight: 600, marginBottom: 20 }}>{host.title}{host.company ? ` — ${host.company}` : ''}</p>
-                    <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>{host.bio || host.short_description}</p>
+                    {renderRichText(host.bio || host.short_description || '', { fontSize: 16, color: 'var(--text-secondary)', marginBottom: 16 })}
                     {(host.stat1_value || host.stat2_value || host.stat3_value) && (
                       <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 24 }}>
                         {[

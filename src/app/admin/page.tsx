@@ -74,6 +74,24 @@ interface EventHostRow {
   display_order: number
 }
 
+interface OfferItemRow {
+  id: string
+  icon: string
+  title: string
+  description: string
+  glow: string
+  is_bonus: boolean
+  display_order: number
+  created_at: string
+}
+
+interface EventOfferItemRow {
+  id: string
+  event_id: string
+  offer_item_id: string
+  display_order: number
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState('')
@@ -82,12 +100,25 @@ export default function AdminPage() {
   const [registrations, setRegistrations] = useState<RegistrationRow[]>([])
   const [hosts, setHosts] = useState<HostRow[]>([])
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host'>('events')
+  const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
+  const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
   const [editingHost, setEditingHost] = useState<HostRow | null>(null)
+  const [editingOffer, setEditingOffer] = useState<OfferItemRow | null>(null)
   const [expandedRegistrants, setExpandedRegistrants] = useState<string | null>(null)
+
+  // Offer item form
+  const [offerForm, setOfferForm] = useState({
+    icon: '⭐',
+    title: '',
+    description: '',
+    glow: 'purple',
+    is_bonus: false,
+    display_order: 0,
+  })
 
   // New event form
   const [form, setForm] = useState({
@@ -159,6 +190,8 @@ export default function AdminPage() {
       setRegistrations(data.registrations || [])
       setHosts(data.hosts || [])
       setEventHosts(data.eventHosts || [])
+      setOfferItems(data.offerItems || [])
+      setEventOfferItems(data.eventOfferItems || [])
     }
   }, [password])
 
@@ -511,13 +544,13 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap' }}>
-          {(['events', 'waitlist', 'registrants', 'create', 'hosts', 'create-host'] as const).map((t) => (
-            <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null) }} style={{
+          {(['events', 'waitlist', 'registrants', 'create', 'hosts', 'create-host', 'offers', 'create-offer'] as const).map((t) => (
+            <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null) }} style={{
               padding: '10px 20px', fontSize: 14, fontWeight: 600, background: tab === t ? 'var(--accent)' : 'transparent',
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
-              {t === 'create' ? 'Create Event' : t === 'create-host' ? 'Create Host' : t}
-              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : ''}
+              {t === 'create' ? 'Create Event' : t === 'create-host' ? 'Create Host' : t === 'create-offer' ? 'Create Offer' : t}
+              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : ''}
             </button>
           ))}
         </div>
@@ -999,7 +1032,8 @@ export default function AdminPage() {
                 </div>
                 <div>
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Bio</label>
-                  <textarea className="admin-input" value={hostForm.bio} onChange={(e) => setHostForm({ ...hostForm, bio: e.target.value })} style={{ minHeight: 80 }} />
+                  <textarea className="admin-input" value={hostForm.bio} onChange={(e) => setHostForm({ ...hostForm, bio: e.target.value })} style={{ minHeight: 120 }} placeholder="Supports formatting: **bold**, *italic*, - bullet lists, blank lines for paragraphs" />
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>Formatting: **bold**, *italic*, &quot;- &quot; for bullet lists, blank line for new paragraph</p>
                 </div>
                 <div>
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Headshot URL</label>
@@ -1108,6 +1142,216 @@ export default function AdminPage() {
 
               <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
                 {saving ? 'Creating...' : 'Create Host'}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* =================== OFFERS TAB =================== */}
+        {tab === 'offers' && !editingOffer && (
+          <div>
+            {offerItems.length === 0 ? (
+              <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No offer items yet. Create your first one.</p>
+            ) : (
+              <div style={{ display: 'grid', gap: 12 }}>
+                {offerItems.map((oi) => {
+                  const linkedEvents = eventOfferItems.filter(eoi => eoi.offer_item_id === oi.id)
+                  return (
+                    <div key={oi.id} className="card" style={{ padding: 20, textAlign: 'left' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                            <span style={{ fontSize: 24 }}>{oi.icon}</span>
+                            <h3 style={{ fontSize: 16, fontWeight: 700 }}>{oi.title}</h3>
+                            {oi.is_bonus && <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--gold)', background: 'rgba(245,197,66,0.1)', padding: '2px 8px', borderRadius: 100, border: '1px solid rgba(245,197,66,0.3)' }}>BONUS</span>}
+                            <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>#{oi.display_order}</span>
+                          </div>
+                          <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8 }}>{oi.description}</p>
+                          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                            Linked to: {linkedEvents.length === 0 ? 'No events' : linkedEvents.map(le => {
+                              const ev = events.find(e => e.id === le.event_id)
+                              return ev?.title || le.event_id
+                            }).join(', ')}
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                          <button className="admin-btn" style={{ padding: '6px 14px', fontSize: 12 }} onClick={() => {
+                            setEditingOffer(oi)
+                            setOfferForm({ icon: oi.icon, title: oi.title, description: oi.description, glow: oi.glow, is_bonus: oi.is_bonus, display_order: oi.display_order })
+                          }}>Edit</button>
+                          <button style={{ padding: '6px 14px', fontSize: 12, background: 'rgba(239,68,68,0.1)', color: 'var(--danger)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, cursor: 'pointer' }} onClick={async () => {
+                            if (!confirm('Delete this offer item?')) return
+                            await fetch('/api/offer-items', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: oi.id, password }) })
+                            fetchData()
+                          }}>Delete</button>
+                        </div>
+                      </div>
+
+                      {/* Link/Unlink to events */}
+                      <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent-light)', marginBottom: 8 }}>Assign to Events:</p>
+                        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                          {events.map((ev) => {
+                            const isLinked = eventOfferItems.some(eoi => eoi.event_id === ev.id && eoi.offer_item_id === oi.id)
+                            return (
+                              <button key={ev.id} style={{
+                                padding: '4px 12px', fontSize: 11, fontWeight: 600, borderRadius: 100, cursor: 'pointer', transition: 'all 0.2s',
+                                background: isLinked ? 'rgba(108,58,237,0.15)' : 'transparent',
+                                color: isLinked ? 'var(--accent-light)' : 'var(--text-muted)',
+                                border: `1px solid ${isLinked ? 'rgba(108,58,237,0.4)' : 'var(--border)'}`,
+                              }} onClick={async () => {
+                                await fetch('/api/offer-items', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({
+                                    action: isLinked ? 'unlink_event' : 'link_event',
+                                    event_id: ev.id,
+                                    offer_item_id: oi.id,
+                                    display_order: oi.display_order,
+                                    password,
+                                  }),
+                                })
+                                fetchData()
+                              }}>
+                                {isLinked ? '✓ ' : ''}{ev.title?.substring(0, 30)}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Edit Offer Item */}
+        {tab === 'offers' && editingOffer && (
+          <form onSubmit={async (e) => {
+            e.preventDefault()
+            setSaving(true)
+            setMsg('')
+            try {
+              const res = await fetch('/api/offer-items', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: editingOffer.id, ...offerForm, password }),
+              })
+              if (res.ok) {
+                setMsg('Offer item updated successfully')
+                setEditingOffer(null)
+                fetchData()
+              } else {
+                const err = await res.json()
+                setMsg(err.error || 'Failed to update')
+              }
+            } catch { setMsg('Network error') }
+            setSaving(false)
+          }}>
+            <div style={{ display: 'grid', gap: 16, maxWidth: 600 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h2 style={{ fontSize: 20, fontWeight: 700 }}>Edit Offer Item</h2>
+                <button type="button" onClick={() => setEditingOffer(null)} style={{ fontSize: 13, color: 'var(--accent-light)', background: 'none', border: 'none', cursor: 'pointer' }}>← Back</button>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 8 }}>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Icon</label>
+                  <input className="admin-input" value={offerForm.icon} onChange={(e) => setOfferForm({ ...offerForm, icon: e.target.value })} style={{ textAlign: 'center', fontSize: 20 }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Title *</label>
+                  <input className="admin-input" value={offerForm.title} onChange={(e) => setOfferForm({ ...offerForm, title: e.target.value })} required />
+                </div>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
+                <textarea className="admin-input" value={offerForm.description} onChange={(e) => setOfferForm({ ...offerForm, description: e.target.value })} style={{ minHeight: 60 }} />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Glow Color</label>
+                  <select className="admin-input" value={offerForm.glow} onChange={(e) => setOfferForm({ ...offerForm, glow: e.target.value })}>
+                    <option value="purple">Purple</option>
+                    <option value="teal">Teal</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Order</label>
+                  <input className="admin-input" type="number" value={offerForm.display_order} onChange={(e) => setOfferForm({ ...offerForm, display_order: parseInt(e.target.value) || 0 })} />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'end', gap: 8, paddingBottom: 4 }}>
+                  <input type="checkbox" id="edit-offer-bonus" checked={offerForm.is_bonus} onChange={(e) => setOfferForm({ ...offerForm, is_bonus: e.target.checked })} />
+                  <label htmlFor="edit-offer-bonus" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Bonus item</label>
+                </div>
+              </div>
+              <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
+                {saving ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* =================== CREATE OFFER TAB =================== */}
+        {tab === 'create-offer' && (
+          <form onSubmit={async (e) => {
+            e.preventDefault()
+            setSaving(true)
+            setMsg('')
+            try {
+              const res = await fetch('/api/offer-items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...offerForm, password }),
+              })
+              if (res.ok) {
+                setMsg('Offer item created successfully')
+                setOfferForm({ icon: '⭐', title: '', description: '', glow: 'purple', is_bonus: false, display_order: 0 })
+                fetchData()
+                setTab('offers')
+              } else {
+                const err = await res.json()
+                setMsg(err.error || 'Failed to create')
+              }
+            } catch { setMsg('Network error') }
+            setSaving(false)
+          }}>
+            <div style={{ display: 'grid', gap: 16, maxWidth: 600 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 700 }}>Create Offer Item</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 8 }}>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Icon</label>
+                  <input className="admin-input" value={offerForm.icon} onChange={(e) => setOfferForm({ ...offerForm, icon: e.target.value })} style={{ textAlign: 'center', fontSize: 20 }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Title *</label>
+                  <input className="admin-input" value={offerForm.title} onChange={(e) => setOfferForm({ ...offerForm, title: e.target.value })} required placeholder="e.g. Full Recording Access" />
+                </div>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
+                <textarea className="admin-input" value={offerForm.description} onChange={(e) => setOfferForm({ ...offerForm, description: e.target.value })} placeholder="Short description of this offer item" style={{ minHeight: 60 }} />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Glow Color</label>
+                  <select className="admin-input" value={offerForm.glow} onChange={(e) => setOfferForm({ ...offerForm, glow: e.target.value })}>
+                    <option value="purple">Purple</option>
+                    <option value="teal">Teal</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Order</label>
+                  <input className="admin-input" type="number" value={offerForm.display_order} onChange={(e) => setOfferForm({ ...offerForm, display_order: parseInt(e.target.value) || 0 })} />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'end', gap: 8, paddingBottom: 4 }}>
+                  <input type="checkbox" id="create-offer-bonus" checked={offerForm.is_bonus} onChange={(e) => setOfferForm({ ...offerForm, is_bonus: e.target.checked })} />
+                  <label htmlFor="create-offer-bonus" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Bonus item</label>
+                </div>
+              </div>
+              <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
+                {saving ? 'Creating...' : 'Create Offer Item'}
               </button>
             </div>
           </form>
