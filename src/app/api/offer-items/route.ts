@@ -55,6 +55,9 @@ export async function POST(req: NextRequest) {
     glow: body.glow || 'purple',
     is_bonus: body.is_bonus || false,
     display_order: body.display_order || 0,
+    featured_image_url: body.featured_image_url || '',
+    bonus_description: body.bonus_description || '',
+    bonus_tags: body.bonus_tags || [],
   }).select().single()
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -68,7 +71,7 @@ export async function PATCH(req: NextRequest) {
 
   const sb = getAdmin()
   const updates: Record<string, unknown> = {}
-  const fields = ['icon', 'title', 'description', 'glow', 'is_bonus', 'display_order']
+  const fields = ['icon', 'title', 'description', 'glow', 'is_bonus', 'display_order', 'featured_image_url', 'bonus_description', 'bonus_tags']
   for (const f of fields) {
     if (body[f] !== undefined) updates[f] = body[f]
   }

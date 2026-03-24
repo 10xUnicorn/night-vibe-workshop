@@ -47,6 +47,9 @@ interface OfferItem {
   glow: string;
   is_bonus: boolean;
   display_order: number;
+  featured_image_url?: string;
+  bonus_description?: string;
+  bonus_tags?: string[];
 }
 
 interface EventOfferItem {
@@ -483,29 +486,37 @@ export default function EventPage() {
           ))}
         </div>
 
-        {/* BONUS: Launch Accelerator Tool */}
-        <div className="bonus-card" style={{ marginTop: 40, maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: 2, background: 'rgba(245,197,66,0.1)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(245,197,66,0.3)' }}>{'\u{1F381}'} Exclusive Bonus</span>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 32, alignItems: 'center' }}>
-            <div style={{ textAlign: 'left' }}>
-              <h3 style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 800, marginBottom: 12, lineHeight: 1.2 }}>Launch Accelerator Tool</h3>
-              <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>A custom-built AI app exclusively for workshop attendees. It walks you through every step of designing, building, and launching your app in the most structured and effective way possible.</p>
-              <p style={{ fontSize: 14, color: 'var(--gold)', fontWeight: 600, marginBottom: 20 }}>Workshop attendees get FREE early access — this will be a paid standalone app.</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
-                {['Structured App Design', 'Step-by-Step Launch Plan', 'AI-Powered Guidance', 'FREE Early Access'].map((tag, i) => (
-                  <span key={i} style={{ fontSize: 12, fontWeight: 700, textAlign: 'center', color: i === 3 ? 'var(--gold)' : 'var(--accent-light)', background: i === 3 ? 'rgba(245,197,66,0.08)' : 'rgba(108,58,237,0.08)', padding: '8px 14px', borderRadius: 100, border: `1px solid ${i === 3 ? 'rgba(245,197,66,0.25)' : 'rgba(108,58,237,0.2)'}` }}>{tag}</span>
+        {/* BONUS ITEMS — rendered dynamically from DB */}
+        {(offerItems.length > 0 ? offerItems : []).filter(item => item.is_bonus).map((bonusItem, bi) => (
+          <div key={bi} className="bonus-card" style={{ marginTop: 40, maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+              <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: 2, background: 'rgba(245,197,66,0.1)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(245,197,66,0.3)' }}>{'\u{1F381}'} Exclusive Bonus</span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: bonusItem.featured_image_url ? 'repeat(auto-fit, minmax(280px, 1fr))' : '1fr', gap: 32, alignItems: 'center' }}>
+              <div style={{ textAlign: 'left' }}>
+                <h3 style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 800, marginBottom: 12, lineHeight: 1.2 }}>{bonusItem.title}</h3>
+                {(bonusItem.bonus_description || bonusItem.description).split('\n\n').map((para, pi) => (
+                  <p key={pi} style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>{para}</p>
                 ))}
+                <p style={{ fontSize: 14, color: 'var(--gold)', fontWeight: 600, marginBottom: 20 }}>Workshop attendees get FREE early access — this will be a paid standalone app.</p>
+                {bonusItem.bonus_tags && bonusItem.bonus_tags.length > 0 && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
+                    {bonusItem.bonus_tags.map((tag, ti) => (
+                      <span key={ti} style={{ fontSize: 12, fontWeight: 700, textAlign: 'center', color: ti === bonusItem.bonus_tags!.length - 1 ? 'var(--gold)' : 'var(--accent-light)', background: ti === bonusItem.bonus_tags!.length - 1 ? 'rgba(245,197,66,0.08)' : 'rgba(108,58,237,0.08)', padding: '8px 14px', borderRadius: 100, border: `1px solid ${ti === bonusItem.bonus_tags!.length - 1 ? 'rgba(245,197,66,0.25)' : 'rgba(108,58,237,0.2)'}` }}>{tag}</span>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(245,197,66,0.2)', boxShadow: '0 0 40px rgba(245,197,66,0.08)' }}>
-                <img src="https://assets.cdn.filesafe.space/XTeGzlDIejNlj5OyxvqU/media/69becbb49bd13964b7d49430.jpg" alt="Launch Accelerator Tool" style={{ width: '100%', maxWidth: 400, display: 'block' }} />
-              </div>
+              {bonusItem.featured_image_url && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ borderRadius: 16, overflow: 'hidden', border: '1px solid rgba(245,197,66,0.2)', boxShadow: '0 0 40px rgba(245,197,66,0.08)' }}>
+                    <img src={bonusItem.featured_image_url} alt={bonusItem.title} style={{ width: '100%', maxWidth: 400, display: 'block' }} />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        ))}
 
         <div style={{ marginTop: 40 }}><CtaButton /></div>
       </section>
@@ -593,20 +604,20 @@ export default function EventPage() {
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 32 }}>One-time investment. Lifetime access to recordings and community.</p>
 
           <div className="card glow-ring" style={{ textAlign: 'left', borderColor: 'var(--accent)', padding: 36, marginBottom: 24 }}>
-            {[
-              { text: `Live 2-day build sprint (${dateRange})`, icon: '\u{1F3AC}' },
-              { text: `${formattedTime} ${displayTimezone} each day`, icon: '\u{1F552}' },
-              { text: 'Functional app built and deployed', icon: '\u{1F4BB}' },
-              { text: 'Full recording access', icon: '\u{1F3A5}' },
-              { text: 'SOPs, blueprints, and training docs', icon: '\u{1F4DD}' },
-              { text: 'Community access', icon: '\u{1F465}' },
-              { text: '3 bonus future workshop sessions', icon: '\u{1F504}' },
-              { text: `${event.capacity}-person intimate cohort with live Q&A`, icon: '\u{2B50}' },
-              { text: 'BONUS: Launch Accelerator Tool (FREE early access)', icon: '\u{1F680}', highlight: true },
-            ].map((item, i) => (
+            {(offerItems.length > 0 ? offerItems : [
+              { icon: '🎬', title: `Live 2-day build sprint (${dateRange})`, is_bonus: false },
+              { icon: '🕒', title: `${formattedTime} ${displayTimezone} each day`, is_bonus: false },
+              { icon: '💻', title: 'Functional app built and deployed', is_bonus: false },
+              { icon: '🎥', title: 'Full recording access', is_bonus: false },
+              { icon: '📝', title: 'SOPs, blueprints, and training docs', is_bonus: false },
+              { icon: '👥', title: 'Community access', is_bonus: false },
+              { icon: '🔄', title: '3 bonus future workshop sessions', is_bonus: false },
+              { icon: '⭐', title: `${event.capacity}-person intimate cohort with live Q&A`, is_bonus: false },
+              { icon: '🚀', title: 'BONUS: Launch Accelerator Tool (FREE early access)', is_bonus: true },
+            ] as { icon: string; title: string; is_bonus: boolean }[]).map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}>
                 <span style={{ flexShrink: 0 }}>{item.icon}</span>
-                <span style={{ fontWeight: item.highlight ? 700 : 400, color: item.highlight ? 'var(--gold)' : 'inherit' }}>{item.text}</span>
+                <span style={{ fontWeight: item.is_bonus ? 700 : 400, color: item.is_bonus ? 'var(--gold)' : 'inherit' }}>{item.is_bonus ? `BONUS: ${item.title}` : item.title}</span>
               </div>
             ))}
             <div style={{ borderTop: '1px solid var(--border)', margin: '20px 0', paddingTop: 16 }}>

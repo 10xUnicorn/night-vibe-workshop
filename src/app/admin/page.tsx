@@ -82,6 +82,9 @@ interface OfferItemRow {
   glow: string
   is_bonus: boolean
   display_order: number
+  featured_image_url: string
+  bonus_description: string
+  bonus_tags: string[]
   created_at: string
 }
 
@@ -118,6 +121,9 @@ export default function AdminPage() {
     glow: 'purple',
     is_bonus: false,
     display_order: 0,
+    featured_image_url: '',
+    bonus_description: '',
+    bonus_tags: '' as string,
   })
 
   // New event form
@@ -1177,7 +1183,7 @@ export default function AdminPage() {
                         <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
                           <button className="admin-btn" style={{ padding: '6px 14px', fontSize: 12 }} onClick={() => {
                             setEditingOffer(oi)
-                            setOfferForm({ icon: oi.icon, title: oi.title, description: oi.description, glow: oi.glow, is_bonus: oi.is_bonus, display_order: oi.display_order })
+                            setOfferForm({ icon: oi.icon, title: oi.title, description: oi.description, glow: oi.glow, is_bonus: oi.is_bonus, display_order: oi.display_order, featured_image_url: oi.featured_image_url || '', bonus_description: oi.bonus_description || '', bonus_tags: (oi.bonus_tags || []).join(', ') })
                           }}>Edit</button>
                           <button style={{ padding: '6px 14px', fontSize: 12, background: 'rgba(239,68,68,0.1)', color: 'var(--danger)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, cursor: 'pointer' }} onClick={async () => {
                             if (!confirm('Delete this offer item?')) return
@@ -1237,7 +1243,7 @@ export default function AdminPage() {
               const res = await fetch('/api/offer-items', {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: editingOffer.id, ...offerForm, password }),
+                body: JSON.stringify({ id: editingOffer.id, ...offerForm, bonus_tags: offerForm.bonus_tags ? offerForm.bonus_tags.split(',').map((t: string) => t.trim()).filter(Boolean) : [], password }),
               })
               if (res.ok) {
                 setMsg('Offer item updated successfully')
@@ -1286,6 +1292,23 @@ export default function AdminPage() {
                   <label htmlFor="edit-offer-bonus" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Bonus item</label>
                 </div>
               </div>
+              {offerForm.is_bonus && (
+                <div style={{ display: 'grid', gap: 12, padding: 16, background: 'rgba(245,197,66,0.05)', border: '1px solid rgba(245,197,66,0.2)', borderRadius: 12 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--gold)' }}>Bonus Section Details</p>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Featured Image URL</label>
+                    <input className="admin-input" value={offerForm.featured_image_url} onChange={(e) => setOfferForm({ ...offerForm, featured_image_url: e.target.value })} placeholder="https://..." />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Bonus Description (shown in featured section)</label>
+                    <textarea className="admin-input" value={offerForm.bonus_description} onChange={(e) => setOfferForm({ ...offerForm, bonus_description: e.target.value })} placeholder="Extended description for the featured bonus section..." style={{ minHeight: 80 }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Tags (comma-separated)</label>
+                    <input className="admin-input" value={offerForm.bonus_tags} onChange={(e) => setOfferForm({ ...offerForm, bonus_tags: e.target.value })} placeholder="e.g. Structured App Design, Step-by-Step Launch Plan" />
+                  </div>
+                </div>
+              )}
               <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
@@ -1303,11 +1326,11 @@ export default function AdminPage() {
               const res = await fetch('/api/offer-items', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ...offerForm, password }),
+                body: JSON.stringify({ ...offerForm, bonus_tags: offerForm.bonus_tags ? offerForm.bonus_tags.split(',').map((t: string) => t.trim()).filter(Boolean) : [], password }),
               })
               if (res.ok) {
                 setMsg('Offer item created successfully')
-                setOfferForm({ icon: '⭐', title: '', description: '', glow: 'purple', is_bonus: false, display_order: 0 })
+                setOfferForm({ icon: '⭐', title: '', description: '', glow: 'purple', is_bonus: false, display_order: 0, featured_image_url: '', bonus_description: '', bonus_tags: '' })
                 fetchData()
                 setTab('offers')
               } else {
@@ -1350,6 +1373,23 @@ export default function AdminPage() {
                   <label htmlFor="create-offer-bonus" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Bonus item</label>
                 </div>
               </div>
+              {offerForm.is_bonus && (
+                <div style={{ display: 'grid', gap: 12, padding: 16, background: 'rgba(245,197,66,0.05)', border: '1px solid rgba(245,197,66,0.2)', borderRadius: 12 }}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--gold)' }}>Bonus Section Details</p>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Featured Image URL</label>
+                    <input className="admin-input" value={offerForm.featured_image_url} onChange={(e) => setOfferForm({ ...offerForm, featured_image_url: e.target.value })} placeholder="https://..." />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Bonus Description (shown in featured section)</label>
+                    <textarea className="admin-input" value={offerForm.bonus_description} onChange={(e) => setOfferForm({ ...offerForm, bonus_description: e.target.value })} placeholder="Extended description for the featured bonus section..." style={{ minHeight: 80 }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Tags (comma-separated)</label>
+                    <input className="admin-input" value={offerForm.bonus_tags} onChange={(e) => setOfferForm({ ...offerForm, bonus_tags: e.target.value })} placeholder="e.g. Structured App Design, Step-by-Step Launch Plan" />
+                  </div>
+                </div>
+              )}
               <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
                 {saving ? 'Creating...' : 'Create Offer Item'}
               </button>
