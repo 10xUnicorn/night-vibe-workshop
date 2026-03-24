@@ -1,142 +1,139 @@
-'use client'
+'use client';
 
-import { useEffect, useState, useCallback } from 'react'
-import { supabase } from '@/lib/supabase'
-import ParticleBackground from '@/components/ParticleBackground'
-import RevenueCalculator from '@/components/RevenueCalculator'
+import { useParams } from 'next/navigation';
+import { useEffect, useState, useCallback } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import ParticleBackground from '@/components/ParticleBackground';
+import RevenueCalculator from '@/components/RevenueCalculator';
+import Link from 'next/link';
 
-interface HostData {
-  id: string
-  name: string
-  title: string
-  company: string
-  short_description: string
-  bio: string
-  headshot_url: string
-  category: string
-  stat1_value?: string
-  stat1_label?: string
-  stat2_value?: string
-  stat2_label?: string
-  stat3_value?: string
-  stat3_label?: string
+interface Host {
+  id: string;
+  name: string;
+  title: string;
+  company: string;
+  short_description: string;
+  bio: string;
+  headshot_url: string;
+  category: string;
+  stat1_value?: string;
+  stat1_label?: string;
+  stat2_value?: string;
+  stat2_label?: string;
+  stat3_value?: string;
+  stat3_label?: string;
 }
 
-interface EventHostData {
-  host_id: string
-  role: string
-  display_order: number
-  hosts: HostData
+interface EventHost {
+  host_id: string;
+  role: string;
+  display_order: number;
+  hosts: Host;
+}
+
+interface EventTicket {
+  price: number;
+  sold_count: number;
+  capacity: number;
+  stripe_payment_link: string;
 }
 
 interface EventData {
-  id: string
-  title: string
-  subtitle: string
-  start_date: string
-  end_date: string
-  timezone: string
-  capacity: number
-  status: string
-  stripe_payment_link: string
-  landing_page_data: {
-    hero_headlines: string[]
-    special_offer: string
-    software_budget: string
-    instructor_name: string
-    company_name: string
-    company_tagline: string
-  }
-  event_tickets: {
-    id: string
-    sold_count: number
-    capacity: number
-    price: number
-    status: string
-  }[]
-  event_hosts: EventHostData[]
+  id: string;
+  title: string;
+  slug: string;
+  subtitle: string;
+  start_date: string;
+  end_date: string;
+  timezone: string;
+  capacity: number;
+  status: string;
+  theme: string;
+  stripe_payment_link: string;
+  event_tickets: EventTicket[];
+  event_hosts: EventHost[];
 }
 
-export default function LandingPage() {
-  const [event, setEvent] = useState<EventData | null>(null)
-  const [seatsLeft, setSeatsLeft] = useState<number>(20)
-  const [isSoldOut, setIsSoldOut] = useState(false)
-  const [showSticky, setShowSticky] = useState(false)
-  const [showWaitlist, setShowWaitlist] = useState(false)
-  const [waitlistForm, setWaitlistForm] = useState({ name: '', email: '', phone: '', company: '' })
-  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false)
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [upcomingEvents, setUpcomingEvents] = useState<EventData[]>([])
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+);
 
-  const [eventHosts, setEventHosts] = useState<EventHostData[]>([])
+export default function EventPage() {
+  const params = useParams();
+  const slug = params.slug as string;
 
-  const fetchEvent = useCallback(async () => {
-    const { data } = await supabase
-      .from('events')
-      .select('*, event_tickets(*), event_hosts(*, hosts(*))')
-      .eq('is_featured', true)
-      .in('status', ['published', 'sold_out'])
-      .order('start_date', { ascending: true })
-      .limit(1)
-      .single()
+  const [event, setEvent] = useState<EventData | null>(null);
+  const [hosts, setHosts] = useState<EventHost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showWaitlist, setShowWaitlist] = useState(false);
+  const [waitlistForm, setWaitlistForm] = useState({ name: '', email: '', phone: '', company: '' });
+  const [waitlistSubmitted, setWaitlistSubmitted] = useState(false);
+  const [submittingWaitlist, setSubmittingWaitlist] = useState(false);
+  const [showSticky, setShowSticky] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-    if (data) {
-      setEvent(data as EventData)
-      const ticket = (data as EventData).event_tickets?.[0]
-      if (ticket) {
-        const remaining = ticket.capacity - ticket.sold_count
-        setSeatsLeft(Math.max(0, remaining))
-        setIsSoldOut(remaining <= 0 || data.status === 'sold_out')
+  const fetchEventData = useCallback(async () => {
+    try {
+      const { data: eventData, error: eventError } = await supabase
+        .from('events')
+        .select(`*, event_tickets(*), event_hosts(*, hosts(*))`)
+        .eq('slug', slug)
+        .in('status', ['published', 'sold_out'])
+        .single();
+
+      if (eventError) throw eventError;
+      if (!eventData) throw new Error('Event not found');
+
+      setEvent(eventData as EventData);
+
+      if (eventData.event_hosts) {
+        const sortedHosts = [...(eventData.event_hosts as EventHost[])].sort(
+          (a, b) => a.display_order - b.display_order
+        );
+        setHosts(sortedHosts);
       }
-      if ((data as EventData).event_hosts) {
-        const sorted = [...(data as EventData).event_hosts].sort((a, b) => a.display_order - b.display_order)
-        setEventHosts(sorted)
-      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load event');
+    } finally {
+      setLoading(false);
     }
-
-    const { data: upcoming } = await supabase
-      .from('events')
-      .select('*, event_tickets(*)')
-      .eq('status', 'published')
-      .gte('start_date', new Date().toISOString())
-      .order('start_date', { ascending: true })
-
-    if (upcoming) setUpcomingEvents(upcoming as EventData[])
-    setLoading(false)
-  }, [])
+  }, [slug]);
 
   useEffect(() => {
-    fetchEvent()
-    const interval = setInterval(fetchEvent, 30000)
-    return () => clearInterval(interval)
-  }, [fetchEvent])
+    if (slug) fetchEventData();
+  }, [slug, fetchEventData]);
 
   useEffect(() => {
-    const handleScroll = () => setShowSticky(window.scrollY > 600)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const interval = setInterval(fetchEventData, 30000);
+    return () => clearInterval(interval);
+  }, [fetchEventData]);
+
+  useEffect(() => {
+    const handleScroll = () => setShowSticky(window.scrollY > 600);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!event) return
-    await fetch('/api/waitlist', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        event_id: event.id,
-        name: waitlistForm.name,
-        email: waitlistForm.email,
-        phone: waitlistForm.phone || null,
-        company: waitlistForm.company || null,
-      }),
-    })
-    setWaitlistSubmitted(true)
-  }
-
-  const ctaUrl = event?.stripe_payment_link || '#'
-  const price = event?.event_tickets?.[0]?.price || 997
+    e.preventDefault();
+    if (!event) return;
+    setSubmittingWaitlist(true);
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_id: event.id, ...waitlistForm })
+      });
+      if (!response.ok) throw new Error('Failed to join waitlist');
+      setWaitlistSubmitted(true);
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Failed to join waitlist');
+    } finally {
+      setSubmittingWaitlist(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -144,8 +141,54 @@ export default function LandingPage() {
         <div style={{ width: 40, height: 40, border: '3px solid var(--border)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       </div>
-    )
+    );
   }
+
+  if (error || !event) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-dark)', flexDirection: 'column', gap: 16 }}>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: 'white' }}>Event Not Found</h1>
+        <p style={{ color: 'var(--text-secondary)' }}>{error || 'This event could not be loaded.'}</p>
+        <Link href="/events" className="btn-accent">Back to Events</Link>
+      </div>
+    );
+  }
+
+  const seatsLeft = Math.max(0, event.capacity - (event.event_tickets[0]?.sold_count || 0));
+  const isSoldOut = event.status === 'sold_out' || seatsLeft <= 0;
+  const ctaUrl = event.stripe_payment_link || event.event_tickets[0]?.stripe_payment_link || '#';
+  const price = event.event_tickets[0]?.price || 997;
+
+  const eventDate = new Date(event.start_date);
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const monthName = months[eventDate.getUTCMonth()];
+  const day = eventDate.getUTCDate();
+  const year = eventDate.getUTCFullYear();
+  const hours = eventDate.getUTCHours();
+  const minutes = eventDate.getUTCMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const hour12 = hours % 12 || 12;
+  const formattedTime = `${hour12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  const shortDate = `${monthName} ${day}, ${year}`;
+
+  const tzMap: Record<string, string> = {
+    'America/Los_Angeles': 'Pacific',
+    'America/Denver': 'Mountain',
+    'America/Chicago': 'Central',
+    'America/New_York': 'Eastern',
+    'US/Pacific': 'Pacific',
+    'US/Mountain': 'Mountain',
+    'US/Central': 'Central',
+    'US/Eastern': 'Eastern',
+    'UTC': 'UTC',
+  };
+  const tz = event.timezone || '';
+  const displayTimezone = tzMap[tz] || tz.replace(/_/g, ' ').replace(/^.*\//, '') || '';
+
+  const endDate = event.end_date ? new Date(event.end_date) : null;
+  const dateRange = endDate
+    ? `${monthName} ${day}-${endDate.getUTCDate()}, ${year}`
+    : shortDate;
 
   const CtaButton = ({ label, style: s }: { label?: string; style?: React.CSSProperties }) => (
     isSoldOut ? (
@@ -153,7 +196,7 @@ export default function LandingPage() {
     ) : (
       <a href={ctaUrl} className="btn-accent" style={s} target="_blank" rel="noopener noreferrer">{label || `Reserve Your Seat — $${price}`}</a>
     )
-  )
+  );
 
   return (
     <div style={{ position: 'relative' }}>
@@ -161,8 +204,8 @@ export default function LandingPage() {
 
       {/* URGENCY BANNER */}
       <div className="urgency-banner">
-        <span style={{ marginRight: 8 }}>&#9679;</span>
-        LIVE Workshop — April 7-8, 2026 — Only {seatsLeft} of 20 seats remain
+        <span style={{ marginRight: 8 }}>{'\u{25CF}'}</span>
+        LIVE Workshop — {dateRange} — Only {seatsLeft} of {event.capacity} seats remain
       </div>
 
       {/* ===== HERO ===== */}
@@ -172,24 +215,24 @@ export default function LandingPage() {
         </div>
 
         <h1 style={{ fontSize: 'clamp(34px, 5vw, 60px)', fontWeight: 800, lineHeight: 1.08, marginBottom: 24, letterSpacing: '-0.03em' }} className="gradient-text">
-          {event?.title || 'Build & Launch Your Profitable App Using Claude & Top AI Tools'}
+          {event.title}
         </h1>
 
         <p style={{ fontSize: 'clamp(17px, 2.2vw, 21px)', color: 'var(--text-secondary)', maxWidth: 700, margin: '0 auto 32px', lineHeight: 1.65 }}>
-          {event?.subtitle || 'In this live 2-day workshop, you will turn a real business problem into a working AI app that saves time or generates revenue — even if you are not a developer.'}
+          {event.subtitle}
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24, marginBottom: 28, fontSize: 15, color: 'var(--text-secondary)' }}>
-          <span>&#128197; April 7-8, 2026</span>
-          <span>&#128336; 9 AM – 1 PM Pacific</span>
-          <span>&#128187; Live Virtual</span>
-          <span style={{ fontWeight: 700, color: 'white' }}>&#36;{price}</span>
+          <span>{'\u{1F4C5}'} {dateRange}</span>
+          <span>{'\u{1F550}'} {formattedTime} {displayTimezone}</span>
+          <span>{'\u{1F4BB}'} Live Virtual</span>
+          <span style={{ fontWeight: 700, color: 'white' }}>${price}</span>
         </div>
 
         <div style={{ marginBottom: 32 }}>
           <div className="seat-counter">
             <span className="seat-dot" />
-            {isSoldOut ? 'SOLD OUT — Join Waitlist' : `Only ${seatsLeft} of 20 seats left`}
+            {isSoldOut ? 'SOLD OUT — Join Waitlist' : `Only ${seatsLeft} of ${event.capacity} seats left`}
           </div>
         </div>
 
@@ -201,7 +244,7 @@ export default function LandingPage() {
         </div>
 
         <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-          Live 2-day workshop. 20 seats only. Recording included. Designed for business owners, not developers.
+          Live workshop. {event.capacity} seats only. Recording included. Designed for business owners, not developers.
         </p>
       </section>
 
@@ -216,15 +259,15 @@ export default function LandingPage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
             {[
-              { icon: '&#128260;', title: 'Drowning in manual work', desc: 'You are doing the same tasks by hand every week. Things that should be automated are eating your hours and killing your margins.', glow: 'purple' },
-              { icon: '&#128184;', title: 'Paying for too many tools', desc: 'Your tech stack costs hundreds per month. Half the features go unused. You know you could build something better and cheaper.', glow: 'teal' },
-              { icon: '&#128566;', title: 'AI feels overwhelming', desc: 'You see the potential but every course is theory-heavy, developer-focused, or too broad to be useful for your specific business.', glow: 'purple' },
-              { icon: '&#128161;', title: 'Ideas that never launch', desc: 'You have had the app idea for months. Maybe years. But hiring a developer costs $10K-$50K and you are not sure it will even work.', glow: 'teal' },
-              { icon: '&#9203;', title: 'Falling behind competitors', desc: 'Every month you wait, someone else in your industry is automating, building, and pulling ahead. The gap is growing.', glow: 'purple' },
-              { icon: '&#128683;', title: 'Do not want to learn code', desc: 'You are a business builder, not a programmer. You need a practical path that works with your skills, not against them.', glow: 'teal' },
+              { icon: '\u{1F504}', title: 'Drowning in manual work', desc: 'You are doing the same tasks by hand every week. Things that should be automated are eating your hours and killing your margins.', glow: 'purple' },
+              { icon: '\u{1F4B8}', title: 'Paying for too many tools', desc: 'Your tech stack costs hundreds per month. Half the features go unused. You know you could build something better and cheaper.', glow: 'teal' },
+              { icon: '\u{1F636}', title: 'AI feels overwhelming', desc: 'You see the potential but every course is theory-heavy, developer-focused, or too broad to be useful for your specific business.', glow: 'purple' },
+              { icon: '\u{1F4A1}', title: 'Ideas that never launch', desc: 'You have had the app idea for months. Maybe years. But hiring a developer costs $10K-$50K and you are not sure it will even work.', glow: 'teal' },
+              { icon: '\u{23F3}', title: 'Falling behind competitors', desc: 'Every month you wait, someone else in your industry is automating, building, and pulling ahead. The gap is growing.', glow: 'purple' },
+              { icon: '\u{1F6AB}', title: 'Do not want to learn code', desc: 'You are a business builder, not a programmer. You need a practical path that works with your skills, not against them.', glow: 'teal' },
             ].map((item, i) => (
               <div key={i} className={`card card-glow-${item.glow}`} style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: 28, marginBottom: 12 }} dangerouslySetInnerHTML={{ __html: item.icon }} />
+                <div style={{ fontSize: 28, marginBottom: 12 }}>{item.icon}</div>
                 <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{item.title}</h3>
                 <p style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{item.desc}</p>
               </div>
@@ -249,7 +292,7 @@ export default function LandingPage() {
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#EF4444', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 20, textAlign: 'left' }}>Before the workshop</h3>
             {['Stuck with ideas that never move forward', 'Paying for fragmented SaaS tools', 'Manual processes eating your time', 'Confused about where to start with AI', 'Dependent on expensive developers', 'No clear path from idea to revenue'].map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 12, fontSize: 15, color: 'var(--text-secondary)', textAlign: 'left' }}>
-                <span style={{ color: '#EF4444', flexShrink: 0 }}>&#10006;</span>{item}
+                <span style={{ color: '#EF4444', flexShrink: 0 }}>{'\u{2716}'}</span>{item}
               </div>
             ))}
           </div>
@@ -257,7 +300,7 @@ export default function LandingPage() {
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#10B981', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 20, textAlign: 'left' }}>After the workshop</h3>
             {['A working app deployed and live on the web', 'A clearer offer tied to real business outcomes', 'Skills to build more apps on your own', 'A system that saves time or generates revenue', 'Full ownership of your code and product', 'Confidence to execute with modern AI tools'].map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 12, fontSize: 15, color: 'var(--text-secondary)', textAlign: 'left' }}>
-                <span style={{ color: '#10B981', flexShrink: 0 }}>&#10004;</span>{item}
+                <span style={{ color: '#10B981', flexShrink: 0 }}>{'\u{2714}'}</span>{item}
               </div>
             ))}
           </div>
@@ -281,7 +324,7 @@ export default function LandingPage() {
                 </tr>
               </thead>
               <tbody>
-                {[['Format', 'Pre-recorded videos', 'Live, guided build sessions'], ['Outcome', 'Knowledge (maybe)', 'A deployed, working app'], ['Support', 'Community forum', '20-person live Q&A'], ['Duration', 'Weeks or months', '2 days, 8 hours total'], ['Focus', 'Broad AI theory', 'Your specific business problem'], ['Tools', 'Outdated or generic', 'Claude + Supabase + Vercel (2026 stack)'], ['After the event', 'You are on your own', 'Community + future sessions included']].map(([f, t, o], i) => (
+                {[['Format', 'Pre-recorded videos', 'Live, guided build sessions'], ['Outcome', 'Knowledge (maybe)', 'A deployed, working app'], ['Support', 'Community forum', `${event.capacity}-person live Q&A`], ['Duration', 'Weeks or months', '2 days, 8 hours total'], ['Focus', 'Broad AI theory', 'Your specific business problem'], ['Tools', 'Outdated or generic', 'Claude + Supabase + Vercel (2026 stack)'], ['After the event', 'You are on your own', 'Community + future sessions included']].map(([f, t, o], i) => (
                   <tr key={i}><td style={{ fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left' }}>{f}</td><td style={{ color: 'var(--text-muted)', textAlign: 'left' }}>{t}</td><td style={{ color: 'var(--success)', fontWeight: 500, textAlign: 'left' }}>{o}</td></tr>
                 ))}
               </tbody>
@@ -290,7 +333,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ===== WHAT YOU WILL BUILD — single row ===== */}
+      {/* ===== WHAT YOU WILL BUILD ===== */}
       <section className="section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>What you will build</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Real apps. Real revenue. Real time savings.</h2>
@@ -324,15 +367,15 @@ export default function LandingPage() {
 
           <div className="roadmap">
             {[
-              { num: '01', icon: '&#128221;', title: 'Register & Prep', desc: 'Secure your seat, set up your free accounts, and arrive with your business problem ready to solve.', color: '#8B5CF6' },
-              { num: '02', icon: '&#128161;', title: 'Define Your App', desc: 'Use our 3-Step AI Blueprint to turn your idea into a clear architecture. No code needed.', color: '#6366F1' },
-              { num: '03', icon: '&#128736;', title: 'Build It Live', desc: 'Follow along step-by-step as you use Claude, Supabase, and Vercel to build your real app.', color: '#2DD4BF' },
-              { num: '04', icon: '&#127881;', title: 'Deploy & Launch', desc: 'Push your app live. It works. People can use it. You own the code forever.', color: '#22D3EE' },
+              { num: '01', icon: '\u{1F4DD}', title: 'Register & Prep', desc: 'Secure your seat, set up your free accounts, and arrive with your business problem ready to solve.', color: '#8B5CF6' },
+              { num: '02', icon: '\u{1F4A1}', title: 'Define Your App', desc: 'Use our 3-Step AI Blueprint to turn your idea into a clear architecture. No code needed.', color: '#6366F1' },
+              { num: '03', icon: '\u{1F528}', title: 'Build It Live', desc: 'Follow along step-by-step as you use Claude, Supabase, and Vercel to build your real app.', color: '#2DD4BF' },
+              { num: '04', icon: '\u{1F389}', title: 'Deploy & Launch', desc: 'Push your app live. It works. People can use it. You own the code forever.', color: '#22D3EE' },
             ].map((step, i) => (
               <div key={i} className="roadmap-step">
                 {i < 3 && <div className="roadmap-line" />}
                 <div className={`roadmap-dot ${i === 2 ? 'active' : ''}`} style={{ background: `${step.color}20`, border: `2px solid ${step.color}`, color: step.color }}>
-                  <span dangerouslySetInnerHTML={{ __html: step.icon }} />
+                  <span>{step.icon}</span>
                 </div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: step.color, textTransform: 'uppercase', letterSpacing: 2, marginBottom: 6 }}>Step {step.num}</div>
                 <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{step.title}</h3>
@@ -360,9 +403,9 @@ export default function LandingPage() {
 
           <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: 'var(--success)', marginBottom: 20 }}>Required</p>
           <div className="tool-row" style={{ marginBottom: 40 }}>
-            {[{ name: 'Claude', cost: '$20/mo', emoji: '&#129302;', desc: 'Your AI building partner' }, { name: 'Supabase', cost: 'Free', emoji: '&#9889;', desc: 'Database & auth' }, { name: 'Vercel', cost: 'Free', emoji: '&#9650;', desc: 'Hosting & deploy' }].map((tool, i) => (
+            {[{ name: 'Claude', cost: '$20/mo', emoji: '\u{1F916}', desc: 'Your AI building partner' }, { name: 'Supabase', cost: 'Free', emoji: '\u{26A1}', desc: 'Database & auth' }, { name: 'Vercel', cost: 'Free', emoji: '\u{25B2}', desc: 'Hosting & deploy' }].map((tool, i) => (
               <div key={i} className="tool-item">
-                <div className="tool-icon" dangerouslySetInnerHTML={{ __html: tool.emoji }} />
+                <div className="tool-icon">{tool.emoji}</div>
                 <span style={{ fontSize: 14, fontWeight: 700 }}>{tool.name}</span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: tool.cost === 'Free' ? 'var(--success)' : 'var(--accent-light)' }}>{tool.cost}</span>
                 <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{tool.desc}</span>
@@ -372,9 +415,9 @@ export default function LandingPage() {
 
           <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: 'var(--text-muted)', marginBottom: 20 }}>Optional (recommended)</p>
           <div className="tool-row" style={{ marginBottom: 32 }}>
-            {[{ name: 'Emergent Labs', cost: '$20/mo', emoji: '&#128300;', desc: 'AI dev tools' }, { name: 'Gemini', cost: 'Free', emoji: '&#9733;', desc: 'Supporting AI' }, { name: 'Gamma', cost: 'Free', emoji: '&#127912;', desc: 'Presentations' }].map((tool, i) => (
+            {[{ name: 'Emergent Labs', cost: '$20/mo', emoji: '\u{1F52C}', desc: 'AI dev tools' }, { name: 'Gemini', cost: 'Free', emoji: '\u{2B50}', desc: 'Supporting AI' }, { name: 'Gamma', cost: 'Free', emoji: '\u{1F3A8}', desc: 'Presentations' }].map((tool, i) => (
               <div key={i} className="tool-item" style={{ opacity: 0.75 }}>
-                <div className="tool-icon" dangerouslySetInnerHTML={{ __html: tool.emoji }} />
+                <div className="tool-icon">{tool.emoji}</div>
                 <span style={{ fontSize: 14, fontWeight: 700 }}>{tool.name}</span>
                 <span style={{ fontSize: 13, fontWeight: 700, color: tool.cost === 'Free' ? 'var(--success)' : 'var(--accent-light)' }}>{tool.cost}</span>
                 <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{tool.desc}</span>
@@ -400,7 +443,7 @@ export default function LandingPage() {
             { icon: '\u{1F4DA}', title: 'The 3-Step AI App Blueprint', desc: 'Our proprietary framework from business problem to working app.', glow: 'purple' },
             { icon: '\u{1F465}', title: 'Community Access', desc: 'Join builders who share resources, ask questions, and grow together.', glow: 'teal' },
             { icon: '\u{1F504}', title: '3 Bonus Future Sessions', desc: 'Access to 3 additional workshop sessions. Build more apps, keep growing.', glow: 'purple' },
-            { icon: '\u{2B50}', title: '20-Person Q&A', desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
+            { icon: '\u{2B50}', title: `${event.capacity}-Person Q&A`, desc: 'Small cohort = personal attention. Your questions answered in real time.', glow: 'teal' },
             { icon: '\u{1F680}', title: 'Launch Accelerator Tool', desc: 'Custom AI app to guide your build and launch — FREE early access for attendees.', glow: 'teal' },
           ].map((item, i) => (
             <div key={i} className={`card card-glow-${item.glow}`} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', textAlign: 'left' }}>
@@ -413,16 +456,15 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* BONUS: Launch Accelerator Tool — Emphasized */}
+        {/* BONUS: Launch Accelerator Tool */}
         <div className="bonus-card" style={{ marginTop: 40, maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-            <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: 2, background: 'rgba(245,197,66,0.1)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(245,197,66,0.3)' }}>&#127873; Exclusive Bonus</span>
+            <span style={{ fontSize: 14, fontWeight: 800, color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: 2, background: 'rgba(245,197,66,0.1)', padding: '6px 16px', borderRadius: 100, border: '1px solid rgba(245,197,66,0.3)' }}>{'\u{1F381}'} Exclusive Bonus</span>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 32, alignItems: 'center' }}>
             <div style={{ textAlign: 'left' }}>
               <h3 style={{ fontSize: 'clamp(22px, 3vw, 28px)', fontWeight: 800, marginBottom: 12, lineHeight: 1.2 }}>Launch Accelerator Tool</h3>
               <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>A custom-built AI app exclusively for workshop attendees. It walks you through every step of designing, building, and launching your app in the most structured and effective way possible.</p>
-              <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 12 }}>Think of it as your personal launch checklist on steroids — powered by AI, tailored to your project, and designed to make sure nothing falls through the cracks.</p>
               <p style={{ fontSize: 14, color: 'var(--gold)', fontWeight: 600, marginBottom: 20 }}>Workshop attendees get FREE early access — this will be a paid standalone app.</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 }}>
                 {['Structured App Design', 'Step-by-Step Launch Plan', 'AI-Powered Guidance', 'FREE Early Access'].map((tag, i) => (
@@ -451,13 +493,13 @@ export default function LandingPage() {
             <div className="card card-glow-teal" style={{ borderColor: 'rgba(16,185,129,0.25)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--success)', marginBottom: 20 }}>This is for you if...</h3>
               {['You already run a business or have a clear offer', 'You want to replace software tools or build a new revenue stream', 'You are ready to execute live, not just watch', 'You want a working app, not more theory', 'You are comfortable using AI tools and following guidance', 'You want to move fast and build something real this month'].map((item, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--success)', flexShrink: 0, fontWeight: 700 }}>&#10004;</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
+                <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--success)', flexShrink: 0, fontWeight: 700 }}>{'\u{2714}'}</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
               ))}
             </div>
             <div className="card card-glow-purple" style={{ borderColor: 'rgba(239,68,68,0.2)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--danger)', marginBottom: 20 }}>This is not for you if...</h3>
               {['You just want to learn about AI without building anything', 'You are looking for a passive video course', 'You are not willing to show up live for both days', 'You do not have a business problem or idea to work on', 'You expect someone else to build your app for you', 'You are looking for the cheapest option, not the best outcome'].map((item, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--danger)', flexShrink: 0, fontWeight: 700 }}>&#10006;</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
+                <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--danger)', flexShrink: 0, fontWeight: 700 }}>{'\u{2716}'}</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
               ))}
             </div>
           </div>
@@ -465,117 +507,74 @@ export default function LandingPage() {
       </section>
 
       {/* ===== HOSTS / SPEAKERS ===== */}
-      <section className="section">
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
-          {eventHosts.length > 1 ? 'Your hosts' : 'Your instructor'}
-        </p>
-        <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>
-          {eventHosts.length > 1 ? 'Learn from industry leaders' : 'Meet your instructor'}
-        </h2>
+      {hosts.length > 0 && (
+        <section className="section">
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
+            {hosts.length > 1 ? 'Your hosts' : 'Your instructor'}
+          </p>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>
+            {hosts.length > 1 ? 'Learn from industry leaders' : 'Meet your instructor'}
+          </h2>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 48, maxWidth: 960, margin: '0 auto' }}>
-          {eventHosts.map((eh, idx) => {
-            const host = eh.hosts
-            const isFirst = idx === 0
-            return (
-              <div key={eh.host_id} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 40, alignItems: 'center', textAlign: 'left' }}>
-                <div style={{ display: 'flex', justifyContent: 'center', order: isFirst ? 0 : 1 }}>
-                  <div className="headshot-container">
-                    <img src={host.headshot_url || '/headshot.jpg'} alt={`${host.name} — ${host.title}`} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 48, maxWidth: 960, margin: '0 auto' }}>
+            {hosts.map((eh, idx) => {
+              const host = eh.hosts;
+              const isFirst = idx === 0;
+              return (
+                <div key={eh.host_id} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 40, alignItems: 'center', textAlign: 'left' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', order: isFirst ? 0 : 1 }}>
+                    <div className="headshot-container">
+                      <img src={host.headshot_url || '/headshot.jpg'} alt={`${host.name} — ${host.title}`} />
+                    </div>
+                  </div>
+                  <div style={{ order: isFirst ? 1 : 0 }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: isFirst ? 'var(--accent-light)' : 'var(--teal)', background: isFirst ? 'rgba(108,58,237,0.1)' : 'rgba(45,212,191,0.1)', padding: '4px 12px', borderRadius: 100, border: `1px solid ${isFirst ? 'rgba(108,58,237,0.3)' : 'rgba(45,212,191,0.3)'}` }}>
+                        {eh.role || (isFirst ? 'Lead Instructor' : 'Co-Host')}
+                      </span>
+                    </div>
+                    <h2 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>{host.name}</h2>
+                    <p style={{ fontSize: 16, color: 'var(--accent-light)', fontWeight: 600, marginBottom: 20 }}>{host.title}{host.company ? ` — ${host.company}` : ''}</p>
+                    <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>{host.bio || host.short_description}</p>
+                    {(host.stat1_value || host.stat2_value || host.stat3_value) && (
+                      <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 24 }}>
+                        {[
+                          { value: host.stat1_value, label: host.stat1_label },
+                          { value: host.stat2_value, label: host.stat2_label },
+                          { value: host.stat3_value, label: host.stat3_label },
+                        ].filter(s => s.value).map((stat, si) => (
+                          <div key={si} style={{ padding: '12px 0' }}>
+                            <div style={{ fontSize: 22, fontWeight: 800 }} className="gradient-text">{stat.value}</div>
+                            <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{stat.label}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
-                <div style={{ order: isFirst ? 1 : 0 }}>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: isFirst ? 'var(--accent-light)' : 'var(--teal)', background: isFirst ? 'rgba(108,58,237,0.1)' : 'rgba(45,212,191,0.1)', padding: '4px 12px', borderRadius: 100, border: `1px solid ${isFirst ? 'rgba(108,58,237,0.3)' : 'rgba(45,212,191,0.3)'}` }}>
-                      {eh.role || (isFirst ? 'Lead Instructor' : 'Co-Host')}
-                    </span>
-                  </div>
-                  <h2 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>{host.name}</h2>
-                  <p style={{ fontSize: 16, color: 'var(--accent-light)', fontWeight: 600, marginBottom: 20 }}>{host.title}{host.company ? ` — ${host.company}` : ''}</p>
-                  <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>{host.bio || host.short_description}</p>
-                  {(host.stat1_value || host.stat2_value || host.stat3_value) && (
-                    <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 24 }}>
-                      {[
-                        { value: host.stat1_value, label: host.stat1_label },
-                        { value: host.stat2_value, label: host.stat2_label },
-                        { value: host.stat3_value, label: host.stat3_label },
-                      ].filter(s => s.value).map((stat, si) => (
-                        <div key={si} style={{ padding: '12px 0' }}>
-                          <div style={{ fontSize: 22, fontWeight: 800 }} className="gradient-text">{stat.value}</div>
-                          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>{stat.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
-        {eventHosts.length === 0 && (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 40, alignItems: 'center', textAlign: 'left', maxWidth: 960, margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <div className="headshot-container">
-                <img src="/headshot.jpg" alt="Daniel Knight — Founder, Night Vibe" />
-              </div>
-            </div>
-            <div>
-              <h2 style={{ fontSize: 32, fontWeight: 700, marginBottom: 8 }}>Daniel Knight</h2>
-              <p style={{ fontSize: 16, color: 'var(--accent-light)', fontWeight: 600, marginBottom: 20 }}>Founder, Night Vibe — AI App Development Company</p>
-              <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 16 }}>Daniel builds AI-powered business systems that create real, measurable impact. His systems have generated nearly $100M in revenue for the organizations and clients he have built for.</p>
-              <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 24 }}>He has personally earned approximately $400K in commissions from the systems he has built — and now teaches business owners how to do the same using the latest AI tools.</p>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* ===== UPCOMING EVENTS ===== */}
-      {upcomingEvents.length > 1 && (
-        <section className="section-dark">
-          <div className="section" id="upcoming-events">
-            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Upcoming sessions</p>
-            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 36px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Pick the date that works for you</h2>
-            <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 600, margin: '0 auto 40px' }}>Multiple sessions available. Same workshop, same results — choose when you want to build.</p>
-            <div style={{ display: 'grid', gap: 16, maxWidth: 700, margin: '0 auto' }}>
-              {upcomingEvents.map((ue) => {
-                const ueTicket = ue.event_tickets?.[0]
-                const ueSeats = ueTicket ? ueTicket.capacity - ueTicket.sold_count : 0
-                const ueSoldOut = ueSeats <= 0 || ue.status === 'sold_out'
-                const ueLink = ue.stripe_payment_link || '#'
-                return (
-                  <div key={ue.id} className="card card-glow-purple" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16, textAlign: 'left' }}>
-                    <div>
-                      <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 4 }}>{ue.title}</h3>
-                      <p style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{new Date(ue.start_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                      <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>${ueTicket?.price || 997} · {ueSoldOut ? 'SOLD OUT' : `${ueSeats} seats left`}</p>
-                    </div>
-                    {ueSoldOut ? (<button className="btn-secondary" style={{ padding: '10px 24px', fontSize: 14 }} onClick={() => setShowWaitlist(true)}>Waitlist</button>) : (<a href={ueLink} className="btn-accent" style={{ padding: '10px 24px', fontSize: 14 }} target="_blank" rel="noopener noreferrer">Register</a>)}
-                  </div>
-                )
-              })}
-            </div>
+              );
+            })}
           </div>
         </section>
       )}
 
       {/* ===== PRICING ===== */}
-      <section className="section" id="pricing">
-        <div style={{ maxWidth: 560, margin: '0 auto' }}>
+      <section className={hosts.length > 0 ? 'section-dark' : 'section'} id="pricing">
+        <div className="section" style={{ maxWidth: 560, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Reserve your seat</p>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 8 }}>${price}</h2>
           <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 32 }}>One-time investment. Lifetime access to recordings and community.</p>
 
           <div className="card glow-ring" style={{ textAlign: 'left', borderColor: 'var(--accent)', padding: 36, marginBottom: 24 }}>
             {[
-              { text: 'Live 2-day build sprint (April 7-8)', icon: '\u{1F3AC}' },
-              { text: '9 AM \u2013 1 PM Pacific each day', icon: '\u{1F552}' },
+              { text: `Live 2-day build sprint (${dateRange})`, icon: '\u{1F3AC}' },
+              { text: `${formattedTime} ${displayTimezone} each day`, icon: '\u{1F552}' },
               { text: 'Functional app built and deployed', icon: '\u{1F4BB}' },
               { text: 'Full recording access', icon: '\u{1F3A5}' },
               { text: 'SOPs, blueprints, and training docs', icon: '\u{1F4DD}' },
               { text: 'Community access', icon: '\u{1F465}' },
               { text: '3 bonus future workshop sessions', icon: '\u{1F504}' },
-              { text: '20-person intimate cohort with live Q&A', icon: '\u{2B50}' },
+              { text: `${event.capacity}-person intimate cohort with live Q&A`, icon: '\u{2B50}' },
               { text: 'BONUS: Launch Accelerator Tool (FREE early access)', icon: '\u{1F680}', highlight: true },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}>
@@ -588,7 +587,7 @@ export default function LandingPage() {
               <p style={{ fontSize: 15, color: 'var(--text-secondary)' }}>Bring 3 employees or 3 friends and your session is free.</p>
             </div>
             <div style={{ marginTop: 24, textAlign: 'center' }}>
-              <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of 20 seats remaining`}</div>
+              <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of ${event.capacity} seats remaining`}</div>
               {isSoldOut ? (<button className="btn-accent" style={{ width: '100%' }} onClick={() => setShowWaitlist(true)}>Join the Waitlist</button>) : (<a href={ctaUrl} className="btn-accent" style={{ width: '100%', display: 'block' }} target="_blank" rel="noopener noreferrer">Reserve Your Seat — ${price}</a>)}
             </div>
           </div>
@@ -597,8 +596,8 @@ export default function LandingPage() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="section-dark">
-        <div className="section" style={{ maxWidth: 720 }}>
+      <section className={hosts.length > 0 ? 'section' : 'section-dark'}>
+        <div className="section" style={{ maxWidth: 720, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Questions</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 36px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>Frequently asked questions</h2>
           {[
@@ -610,7 +609,6 @@ export default function LandingPage() {
             { q: 'Is the recording included?', a: 'Yes. Full recordings of both days are included. Rewatch any section anytime.' },
             { q: 'What if the workshop sells out?', a: 'Join the waitlist. All future sessions are included with your purchase when you do register.' },
             { q: 'Can I bring my team?', a: 'Yes. Bring 3 employees or 3 friends and your seat is free. Each person needs their own device.' },
-            { q: 'What timezone is this in?', a: '9:00 AM to 1:00 PM Pacific (12:00 PM to 4:00 PM Eastern).' },
             { q: 'What is the Launch Accelerator Tool?', a: 'A bonus AI-powered tool exclusively for attendees. It guides you through the most thorough and effective app launch process — your personal launch checklist on steroids.' },
           ].map((item, i) => (
             <div key={i} className={`faq-item ${openFaq === i ? 'open' : ''}`} onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ textAlign: 'left' }}>
@@ -627,7 +625,7 @@ export default function LandingPage() {
       {/* ===== FINAL CTA ===== */}
       <section className="section" style={{ paddingBottom: 120 }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">Two days from now, you could have a working app.</h2>
-        <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>April 7-8, 2026. 9 AM – 1 PM Pacific. 20 seats only.</p>
+        <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{dateRange}. {formattedTime} {displayTimezone}. {event.capacity} seats only.</p>
         <p style={{ fontSize: 28, fontWeight: 800, marginBottom: 28 }}>${price}</p>
         <div className="seat-counter" style={{ marginBottom: 28 }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT — Join Waitlist Below' : `${seatsLeft} seats remaining — these will go fast`}</div>
         <div style={{ marginBottom: 16 }}><CtaButton /></div>
@@ -647,7 +645,7 @@ export default function LandingPage() {
           <div className="modal-content">
             {waitlistSubmitted ? (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 48, marginBottom: 16 }}>&#10004;&#65039;</div>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>{'\u{2705}'}</div>
                 <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>You are on the list</h3>
                 <p style={{ fontSize: 15, color: 'var(--text-secondary)', marginBottom: 24 }}>We will notify you as soon as seats open up or when the next session is announced.</p>
                 <button className="btn-secondary" onClick={() => { setShowWaitlist(false); setWaitlistSubmitted(false) }}>Close</button>
@@ -661,7 +659,7 @@ export default function LandingPage() {
                   <div style={{ marginBottom: 14 }}><input className="admin-input" type="email" placeholder="Your email" required value={waitlistForm.email} onChange={(e) => setWaitlistForm({ ...waitlistForm, email: e.target.value })} /></div>
                   <div style={{ marginBottom: 14 }}><input className="admin-input" type="tel" placeholder="Phone number (optional)" value={waitlistForm.phone} onChange={(e) => setWaitlistForm({ ...waitlistForm, phone: e.target.value })} /></div>
                   <div style={{ marginBottom: 20 }}><input className="admin-input" type="text" placeholder="Company (optional)" value={waitlistForm.company} onChange={(e) => setWaitlistForm({ ...waitlistForm, company: e.target.value })} /></div>
-                  <button type="submit" className="btn-accent" style={{ width: '100%' }}>Get Notified</button>
+                  <button type="submit" className="btn-accent" style={{ width: '100%' }} disabled={submittingWaitlist}>{submittingWaitlist ? 'Joining...' : 'Get Notified'}</button>
                 </form>
               </>
             )}
@@ -669,5 +667,5 @@ export default function LandingPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

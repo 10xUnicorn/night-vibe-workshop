@@ -584,6 +584,11 @@ body {
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
+  color-scheme: dark;
+}
+.admin-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
 }
 
 .admin-input:focus { border-color: var(--accent); }

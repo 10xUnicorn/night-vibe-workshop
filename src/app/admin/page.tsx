@@ -14,6 +14,7 @@ interface EventRow {
   capacity: number
   status: string
   is_featured: boolean
+  theme?: string
   stripe_payment_link: string
   stripe_product_id: string
   landing_page_data: Record<string, unknown>
@@ -44,16 +45,48 @@ interface RegistrationRow {
   created_at: string
 }
 
+interface HostRow {
+  id: string
+  name: string
+  title: string
+  company: string
+  short_description: string
+  bio: string
+  headshot_url: string
+  promo_graphic_url: string
+  category: string
+  is_featured: boolean
+  social_links: Record<string, string>
+  stat1_value: string
+  stat1_label: string
+  stat2_value: string
+  stat2_label: string
+  stat3_value: string
+  stat3_label: string
+  created_at: string
+}
+
+interface EventHostRow {
+  id: string
+  event_id: string
+  host_id: string
+  role: string
+  display_order: number
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState('')
   const [events, setEvents] = useState<EventRow[]>([])
   const [waitlist, setWaitlist] = useState<WaitlistRow[]>([])
   const [registrations, setRegistrations] = useState<RegistrationRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create'>('events')
+  const [hosts, setHosts] = useState<HostRow[]>([])
+  const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
+  const [editingHost, setEditingHost] = useState<HostRow | null>(null)
   const [expandedRegistrants, setExpandedRegistrants] = useState<string | null>(null)
 
   // New event form
@@ -73,6 +106,7 @@ export default function AdminPage() {
     special_offer: '',
     instructor_name: 'Daniel Knight',
     company_name: 'Night Vibe',
+    theme: 'default',
   })
 
   // Edit form
@@ -90,10 +124,29 @@ export default function AdminPage() {
     price: 997,
     is_featured: false,
     special_offer: '',
+    theme: 'default',
+  })
+
+  // Host form
+  const [hostForm, setHostForm] = useState({
+    name: '',
+    title: '',
+    company: '',
+    short_description: '',
+    bio: '',
+    headshot_url: '',
+    promo_graphic_url: '',
+    category: '',
+    is_featured: false,
+    stat1_value: '',
+    stat1_label: '',
+    stat2_value: '',
+    stat2_label: '',
+    stat3_value: '',
+    stat3_label: '',
   })
 
   const fetchData = useCallback(async () => {
-    // Use server-side API route with service_role key to bypass RLS
     const res = await fetch('/api/admin/data', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -104,6 +157,8 @@ export default function AdminPage() {
       setEvents(data.events || [])
       setWaitlist(data.waitlist || [])
       setRegistrations(data.registrations || [])
+      setHosts(data.hosts || [])
+      setEventHosts(data.eventHosts || [])
     }
   }, [password])
 
@@ -137,7 +192,7 @@ export default function AdminPage() {
       })
       if (res.ok) {
         setMsg('Event created successfully')
-        setForm({ ...form, title: '', slug: '', subtitle: '', start_date: '', end_date: '', stripe_payment_link: '', stripe_product_id: '', stripe_price_id: '', is_featured: false, special_offer: '' })
+        setForm({ ...form, title: '', slug: '', subtitle: '', start_date: '', end_date: '', stripe_payment_link: '', stripe_product_id: '', stripe_price_id: '', is_featured: false, special_offer: '', theme: 'default' })
         fetchData()
         setTab('events')
       } else {
@@ -175,6 +230,128 @@ export default function AdminPage() {
     setSaving(false)
   }
 
+  const handleCreateHost = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSaving(true)
+    setMsg('')
+    try {
+      const res = await fetch('/api/hosts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...hostForm, password }),
+      })
+      if (res.ok) {
+        setMsg('Host created successfully')
+        setHostForm({
+          name: '',
+          title: '',
+          company: '',
+          short_description: '',
+          bio: '',
+          headshot_url: '',
+          promo_graphic_url: '',
+          category: '',
+          is_featured: false,
+          stat1_value: '',
+          stat1_label: '',
+          stat2_value: '',
+          stat2_label: '',
+          stat3_value: '',
+          stat3_label: '',
+        })
+        fetchData()
+        setTab('hosts')
+      } else {
+        const err = await res.json()
+        setMsg(err.error || 'Failed to create host')
+      }
+    } catch {
+      setMsg('Network error')
+    }
+    setSaving(false)
+  }
+
+  const handleEditHost = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingHost) return
+    setSaving(true)
+    setMsg('')
+    try {
+      const res = await fetch('/api/hosts', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ host_id: editingHost.id, ...hostForm, password }),
+      })
+      if (res.ok) {
+        setMsg('Host updated successfully')
+        setEditingHost(null)
+        fetchData()
+      } else {
+        const err = await res.json()
+        setMsg(err.error || 'Failed to update host')
+      }
+    } catch {
+      setMsg('Network error')
+    }
+    setSaving(false)
+  }
+
+  const deleteHost = async (hostId: string) => {
+    if (!confirm('Are you sure you want to delete this host?')) return
+    try {
+      const res = await fetch('/api/hosts', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ host_id: hostId, password }),
+      })
+      if (res.ok) {
+        setMsg('Host deleted successfully')
+        fetchData()
+      } else {
+        const err = await res.json()
+        setMsg(err.error || 'Failed to delete host')
+      }
+    } catch {
+      setMsg('Network error')
+    }
+  }
+
+  const linkHostToEvent = async (eventId: string, hostId: string, role: string, displayOrder: number = 0) => {
+    try {
+      const res = await fetch('/api/hosts', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, action: 'link_event', event_id: eventId, host_id_link: hostId, role, display_order: displayOrder }),
+      })
+      if (res.ok) {
+        fetchData()
+      } else {
+        const err = await res.json()
+        setMsg(err.error || 'Failed to link host')
+      }
+    } catch {
+      setMsg('Network error')
+    }
+  }
+
+  const unlinkHostFromEvent = async (eventId: string, hostId: string) => {
+    try {
+      const res = await fetch('/api/hosts', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, action: 'unlink_event', event_id: eventId, host_id_unlink: hostId }),
+      })
+      if (res.ok) {
+        fetchData()
+      } else {
+        const err = await res.json()
+        setMsg(err.error || 'Failed to unlink host')
+      }
+    } catch {
+      setMsg('Network error')
+    }
+  }
+
   const openEdit = (ev: EventRow) => {
     const ticket = ev.event_tickets?.[0]
     const lpd = ev.landing_page_data || {}
@@ -192,8 +369,30 @@ export default function AdminPage() {
       price: ticket?.price || 997,
       is_featured: ev.is_featured || false,
       special_offer: (lpd as Record<string, string>).special_offer || '',
+      theme: ev.theme || 'default',
     })
     setEditingEvent(ev)
+  }
+
+  const openEditHost = (host: HostRow) => {
+    setHostForm({
+      name: host.name || '',
+      title: host.title || '',
+      company: host.company || '',
+      short_description: host.short_description || '',
+      bio: host.bio || '',
+      headshot_url: host.headshot_url || '',
+      promo_graphic_url: host.promo_graphic_url || '',
+      category: host.category || '',
+      is_featured: host.is_featured || false,
+      stat1_value: host.stat1_value || '',
+      stat1_label: host.stat1_label || '',
+      stat2_value: host.stat2_value || '',
+      stat2_label: host.stat2_label || '',
+      stat3_value: host.stat3_value || '',
+      stat3_label: host.stat3_label || '',
+    })
+    setEditingHost(host)
   }
 
   const updateEventStatus = async (eventId: string, status: string) => {
@@ -263,6 +462,15 @@ export default function AdminPage() {
   // Get registrations for a specific event
   const getEventRegistrations = (eventId: string) => registrations.filter(r => r.event_id === eventId)
 
+  // Get hosts linked to event
+  const getLinkedHosts = (eventId: string) => {
+    const linkedIds = eventHosts.filter(eh => eh.event_id === eventId)
+    return linkedIds.map(eh => {
+      const host = hosts.find(h => h.id === eh.host_id)
+      return host ? { ...host, role: eh.role, display_order: eh.display_order, event_host_id: eh.id } : null
+    }).filter(Boolean)
+  }
+
   if (!authed) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg-dark)', padding: 20 }}>
@@ -295,18 +503,21 @@ export default function AdminPage() {
             <h1 style={{ fontSize: 24, fontWeight: 700 }}>Night Vibe Admin</h1>
             <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Manage workshops, events, registrants & waitlist</p>
           </div>
-          <a href="/" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>&#8592; View landing page</a>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <a href="/events" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>View calendar →</a>
+            <a href="/" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>View landing page →</a>
+          </div>
         </div>
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap' }}>
-          {(['events', 'waitlist', 'registrants', 'create'] as const).map((t) => (
-            <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null) }} style={{
+          {(['events', 'waitlist', 'registrants', 'create', 'hosts', 'create-host'] as const).map((t) => (
+            <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null) }} style={{
               padding: '10px 20px', fontSize: 14, fontWeight: 600, background: tab === t ? 'var(--accent)' : 'transparent',
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
-              {t === 'create' ? 'Create Event' : t}
-              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : ''}
+              {t === 'create' ? 'Create Event' : t === 'create-host' ? 'Create Host' : t}
+              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : ''}
             </button>
           ))}
         </div>
@@ -324,6 +535,7 @@ export default function AdminPage() {
                 const sold = ticket?.sold_count || 0
                 const cap = ticket?.capacity || ev.capacity
                 const evRegs = getEventRegistrations(ev.id)
+                const linkedHosts = getLinkedHosts(ev.id)
                 const isExpanded = expandedRegistrants === ev.id
                 return (
                   <div key={ev.id} className="card" style={{ marginBottom: 16 }}>
@@ -337,10 +549,14 @@ export default function AdminPage() {
                         <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 4 }}>
                           {new Date(ev.start_date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} — {ev.timezone}
                         </p>
-                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Slug: /{ev.slug} &nbsp;|&nbsp; Price: ${ticket?.price || '—'}</p>
+                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Slug: /{ev.slug} &nbsp;|&nbsp; Price: ${ticket?.price || '—'} &nbsp;|&nbsp; Theme: {ev.theme || 'default'}</p>
                         {(ticket?.stripe_product_id || ev.stripe_product_id) && (
                           <p style={{ fontSize: 11, color: 'var(--accent-light)', marginTop: 2 }}>Stripe: {ticket?.stripe_product_id || ev.stripe_product_id}</p>
                         )}
+                        {linkedHosts.length > 0 && (
+                          <p style={{ fontSize: 12, color: 'var(--accent-light)', marginTop: 6 }}>Hosts: {linkedHosts.map((h: any) => `${h.name} (${h.role})`).join(', ')}</p>
+                        )}
+                        <a href={`/events/${ev.slug}`} style={{ fontSize: 12, color: 'var(--accent-light)', display: 'inline-block', marginTop: 6 }}>View landing page →</a>
                       </div>
                       <div style={{ textAlign: 'right' }}>
                         <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--accent-light)' }}>{sold}/{cap}</div>
@@ -462,6 +678,17 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Theme</label>
+                  <select className="admin-input" value={editForm.theme} onChange={(e) => setEditForm({ ...editForm, theme: e.target.value })}>
+                    <option value="default">Default</option>
+                    <option value="purple">Purple</option>
+                    <option value="teal">Teal</option>
+                    <option value="cosmic">Cosmic</option>
+                    <option value="fire">Fire</option>
+                    <option value="ocean">Ocean</option>
+                  </select>
+                </div>
+                <div>
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Payment Link</label>
                   <input className="admin-input" value={editForm.stripe_payment_link} onChange={(e) => setEditForm({ ...editForm, stripe_payment_link: e.target.value })} placeholder="https://buy.stripe.com/..." />
                 </div>
@@ -484,6 +711,46 @@ export default function AdminPage() {
                   <input type="checkbox" id="edit-featured" checked={editForm.is_featured} onChange={(e) => setEditForm({ ...editForm, is_featured: e.target.checked })} />
                   <label htmlFor="edit-featured" style={{ fontSize: 14, color: 'var(--text-secondary)' }}>Set as featured event</label>
                 </div>
+
+                {/* Linked Hosts Section */}
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 16 }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Linked Hosts</h3>
+                  {getLinkedHosts(editingEvent.id).length === 0 ? (
+                    <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>No hosts linked yet</p>
+                  ) : (
+                    <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
+                      {getLinkedHosts(editingEvent.id).map((h: any) => (
+                        <div key={h.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px', background: 'var(--bg-card)', borderRadius: 4, border: '1px solid var(--border)' }}>
+                          <span style={{ fontSize: 13 }}>{h.name} <span style={{ color: 'var(--text-muted)' }}>({h.role})</span></span>
+                          <button type="button" onClick={() => unlinkHostFromEvent(editingEvent.id, h.id)} className="admin-btn" style={{ padding: '2px 8px', fontSize: 11, background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)' }}>Unlink</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                    <select className="admin-input" id="host-select" style={{ fontSize: 13 }}>
+                      <option value="">Select a host to add</option>
+                      {hosts.filter(h => !getLinkedHosts(editingEvent.id).some((lh: any) => lh.id === h.id)).map(h => (
+                        <option key={h.id} value={h.id}>{h.name}</option>
+                      ))}
+                    </select>
+                    <select className="admin-input" id="host-role" style={{ fontSize: 13 }}>
+                      <option value="host">Host</option>
+                      <option value="co-host">Co-Host</option>
+                      <option value="speaker">Speaker</option>
+                      <option value="panelist">Panelist</option>
+                    </select>
+                  </div>
+                  <button type="button" onClick={() => {
+                    const hostId = (document.getElementById('host-select') as HTMLSelectElement)?.value
+                    const role = (document.getElementById('host-role') as HTMLSelectElement)?.value
+                    if (hostId) {
+                      linkHostToEvent(editingEvent.id, hostId, role || 'host', 0)
+                      if (document.getElementById('host-select') as HTMLSelectElement) (document.getElementById('host-select') as HTMLSelectElement).value = ''
+                    }
+                  }} className="admin-btn" style={{ padding: '6px 14px', fontSize: 12, marginTop: 8, width: '100%', background: 'var(--accent)' }}>Add Host</button>
+                </div>
+
                 <div style={{ display: 'flex', gap: 12 }}>
                   <button type="submit" className="admin-btn" style={{ padding: '14px 28px', fontSize: 16 }} disabled={saving}>
                     {saving ? 'Saving...' : 'Save Changes'}
@@ -634,6 +901,17 @@ export default function AdminPage() {
                 </div>
               </div>
               <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Theme</label>
+                <select className="admin-input" value={form.theme} onChange={(e) => setForm({ ...form, theme: e.target.value })}>
+                  <option value="default">Default</option>
+                  <option value="purple">Purple</option>
+                  <option value="teal">Teal</option>
+                  <option value="cosmic">Cosmic</option>
+                  <option value="fire">Fire</option>
+                  <option value="ocean">Ocean</option>
+                </select>
+              </div>
+              <div>
                 <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Payment Link</label>
                 <input className="admin-input" value={form.stripe_payment_link} onChange={(e) => setForm({ ...form, stripe_payment_link: e.target.value })} placeholder="https://buy.stripe.com/..." />
               </div>
@@ -658,6 +936,178 @@ export default function AdminPage() {
               </div>
               <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
                 {saving ? 'Creating...' : 'Create Event & Ticket'}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* =================== HOSTS TAB =================== */}
+        {tab === 'hosts' && !editingHost && (
+          <div>
+            {hosts.length === 0 ? (
+              <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No hosts yet. Create your first one.</p>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 16 }}>
+                {hosts.map((host) => (
+                  <div key={host.id} className="card" style={{ padding: 16 }}>
+                    {host.headshot_url && (
+                      <img src={host.headshot_url} alt={host.name} style={{ width: '100%', height: 180, objectFit: 'cover', borderRadius: 6, marginBottom: 12 }} />
+                    )}
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 8, flexWrap: 'wrap' }}>
+                      <h3 style={{ fontSize: 15, fontWeight: 700 }}>{host.name}</h3>
+                      {host.is_featured && <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 3, background: 'var(--accent)', color: 'white', fontWeight: 600 }}>FEATURED</span>}
+                    </div>
+                    <p style={{ fontSize: 13, color: 'var(--accent-light)', marginBottom: 4, fontWeight: 500 }}>{host.title}</p>
+                    <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>{host.company}</p>
+                    {host.category && (
+                      <p style={{ fontSize: 11, padding: '2px 6px', display: 'inline-block', borderRadius: 3, background: 'rgba(139,92,246,0.2)', color: 'var(--accent-light)', marginBottom: 8 }}>{host.category}</p>
+                    )}
+                    <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 12 }}>{host.short_description}</p>
+                    <button onClick={() => openEditHost(host)} className="admin-btn" style={{ width: '100%', padding: '8px 12px', fontSize: 12, background: 'var(--accent)' }}>Edit</button>
+                    <button onClick={() => deleteHost(host.id)} className="admin-btn" style={{ width: '100%', padding: '8px 12px', fontSize: 12, marginTop: 6, background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)' }}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* =================== EDIT HOST FORM =================== */}
+        {tab === 'hosts' && editingHost && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700 }}>Edit: {editingHost.name}</h2>
+              <button onClick={() => setEditingHost(null)} className="admin-btn" style={{ padding: '6px 14px', fontSize: 13, background: 'var(--border)' }}>Cancel</button>
+            </div>
+            <form onSubmit={handleEditHost} style={{ maxWidth: 600 }}>
+              <div style={{ display: 'grid', gap: 16 }}>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Name</label>
+                  <input className="admin-input" value={hostForm.name} onChange={(e) => setHostForm({ ...hostForm, name: e.target.value })} required />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Title</label>
+                  <input className="admin-input" value={hostForm.title} onChange={(e) => setHostForm({ ...hostForm, title: e.target.value })} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Company</label>
+                  <input className="admin-input" value={hostForm.company} onChange={(e) => setHostForm({ ...hostForm, company: e.target.value })} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Short Description</label>
+                  <input className="admin-input" value={hostForm.short_description} onChange={(e) => setHostForm({ ...hostForm, short_description: e.target.value })} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Bio</label>
+                  <textarea className="admin-input" value={hostForm.bio} onChange={(e) => setHostForm({ ...hostForm, bio: e.target.value })} style={{ minHeight: 80 }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Headshot URL</label>
+                  <input className="admin-input" value={hostForm.headshot_url} onChange={(e) => setHostForm({ ...hostForm, headshot_url: e.target.value })} placeholder="https://..." />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Promo Graphic URL</label>
+                  <input className="admin-input" value={hostForm.promo_graphic_url} onChange={(e) => setHostForm({ ...hostForm, promo_graphic_url: e.target.value })} placeholder="https://..." />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Category</label>
+                  <input className="admin-input" value={hostForm.category} onChange={(e) => setHostForm({ ...hostForm, category: e.target.value })} placeholder="e.g. Speaker, Mentor, Instructor" />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <input type="checkbox" id="host-featured" checked={hostForm.is_featured} onChange={(e) => setHostForm({ ...hostForm, is_featured: e.target.checked })} />
+                  <label htmlFor="host-featured" style={{ fontSize: 14, color: 'var(--text-secondary)' }}>Featured host</label>
+                </div>
+
+                {/* Highlight Stats */}
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 8 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', marginBottom: 12 }}>Highlight Stats (up to 3)</p>
+                  {[1, 2, 3].map((n) => (
+                    <div key={n} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+                      <div>
+                        <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Stat {n} — Bold Value</label>
+                        <input className="admin-input" value={(hostForm as unknown as Record<string, string>)[`stat${n}_value`] || ''} onChange={(e) => setHostForm({ ...hostForm, [`stat${n}_value`]: e.target.value })} placeholder="e.g. $100M+" />
+                      </div>
+                      <div>
+                        <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Stat {n} — Subtext</label>
+                        <input className="admin-input" value={(hostForm as unknown as Record<string, string>)[`stat${n}_label`] || ''} onChange={(e) => setHostForm({ ...hostForm, [`stat${n}_label`]: e.target.value })} placeholder="e.g. Revenue for Partners" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <button type="submit" className="admin-btn" style={{ padding: '14px 28px', fontSize: 16 }} disabled={saving}>
+                    {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                  <button type="button" onClick={() => setEditingHost(null)} className="admin-btn" style={{ padding: '14px 28px', fontSize: 16, background: 'var(--border)', color: 'var(--text-secondary)' }}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* =================== CREATE HOST TAB =================== */}
+        {tab === 'create-host' && (
+          <form onSubmit={handleCreateHost} style={{ maxWidth: 600 }}>
+            <div style={{ display: 'grid', gap: 16 }}>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Name</label>
+                <input className="admin-input" value={hostForm.name} onChange={(e) => setHostForm({ ...hostForm, name: e.target.value })} required placeholder="Jane Smith" />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Title</label>
+                <input className="admin-input" value={hostForm.title} onChange={(e) => setHostForm({ ...hostForm, title: e.target.value })} placeholder="CEO & Founder" />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Company</label>
+                <input className="admin-input" value={hostForm.company} onChange={(e) => setHostForm({ ...hostForm, company: e.target.value })} placeholder="Acme Inc" />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Short Description</label>
+                <input className="admin-input" value={hostForm.short_description} onChange={(e) => setHostForm({ ...hostForm, short_description: e.target.value })} placeholder="One-liner bio" />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Bio</label>
+                <textarea className="admin-input" value={hostForm.bio} onChange={(e) => setHostForm({ ...hostForm, bio: e.target.value })} placeholder="Full bio and background..." style={{ minHeight: 80 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Headshot URL</label>
+                <input className="admin-input" value={hostForm.headshot_url} onChange={(e) => setHostForm({ ...hostForm, headshot_url: e.target.value })} placeholder="https://..." />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Promo Graphic URL</label>
+                <input className="admin-input" value={hostForm.promo_graphic_url} onChange={(e) => setHostForm({ ...hostForm, promo_graphic_url: e.target.value })} placeholder="https://..." />
+              </div>
+              <div>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Category</label>
+                <input className="admin-input" value={hostForm.category} onChange={(e) => setHostForm({ ...hostForm, category: e.target.value })} placeholder="e.g. Speaker, Mentor, Instructor" />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input type="checkbox" id="create-host-featured" checked={hostForm.is_featured} onChange={(e) => setHostForm({ ...hostForm, is_featured: e.target.checked })} />
+                <label htmlFor="create-host-featured" style={{ fontSize: 14, color: 'var(--text-secondary)' }}>Featured host</label>
+              </div>
+
+              {/* Highlight Stats */}
+              <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 8 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', marginBottom: 12 }}>Highlight Stats (up to 3)</p>
+                {[1, 2, 3].map((n) => (
+                  <div key={n} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
+                    <div>
+                      <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Stat {n} — Bold Value</label>
+                      <input className="admin-input" value={(hostForm as unknown as Record<string, string>)[`stat${n}_value`] || ''} onChange={(e) => setHostForm({ ...hostForm, [`stat${n}_value`]: e.target.value })} placeholder="e.g. $100M+" />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Stat {n} — Subtext</label>
+                      <input className="admin-input" value={(hostForm as unknown as Record<string, string>)[`stat${n}_label`] || ''} onChange={(e) => setHostForm({ ...hostForm, [`stat${n}_label`]: e.target.value })} placeholder="e.g. Revenue for Partners" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
+                {saving ? 'Creating...' : 'Create Host'}
               </button>
             </div>
           </form>

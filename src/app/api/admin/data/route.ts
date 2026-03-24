@@ -8,7 +8,7 @@ function checkAuth(password: string) {
   return password === (process.env.ADMIN_PASSWORD || 'nightvibe2026')
 }
 
-// GET admin data — events, waitlist, registrations — using service_role to bypass RLS
+// GET admin data — events, waitlist, registrations, hosts — using service_role to bypass RLS
 export async function POST(req: NextRequest) {
   const body = await req.json()
   if (!checkAuth(body.password)) {
@@ -35,9 +35,23 @@ export async function POST(req: NextRequest) {
     .select('*')
     .order('created_at', { ascending: false })
 
+  // Fetch all hosts
+  const { data: hosts } = await sb
+    .from('hosts')
+    .select('*')
+    .order('name')
+
+  // Fetch event-host links
+  const { data: eventHosts } = await sb
+    .from('event_hosts')
+    .select('*')
+    .order('display_order')
+
   return NextResponse.json({
     events: events || [],
     waitlist: waitlist || [],
     registrations: registrations || [],
+    hosts: hosts || [],
+    eventHosts: eventHosts || [],
   })
 }
