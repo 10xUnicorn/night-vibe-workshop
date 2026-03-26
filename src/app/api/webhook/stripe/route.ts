@@ -48,7 +48,7 @@ async function sendRegistrationEmail(sb: ReturnType<typeof createClient>, eventI
       currency: currency || 'usd',
       product_name: event.title,
       status: 'confirmed',
-    })
+    } as any)
 
     // Send confirmation email
     const html = getRegistrationConfirmationEmail({
@@ -77,7 +77,7 @@ async function sendRegistrationEmail(sb: ReturnType<typeof createClient>, eventI
         subject: `You're In! ${event.title} — Registration Confirmed`,
         metadata: { customerName, eventTitle: event.title, hostNames },
         status: result.success ? 'sent' : 'failed',
-      })
+      } as any)
     } catch (e) { console.error('Email log error:', e) }
 
     console.log(`Registration email ${result.success ? 'sent' : 'failed'} to ${customerEmail}`)

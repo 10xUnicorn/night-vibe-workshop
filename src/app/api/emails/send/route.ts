@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         subject,
         metadata: data,
         status: result.success ? 'sent' : 'failed',
-      })
+      } as any)
     } catch (logErr) {
       console.error('Failed to log email:', logErr)
     }

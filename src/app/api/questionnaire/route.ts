@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         existing_business: existing_business || null,
         biggest_challenge: biggest_challenge || null,
         technical_level: technical_level || null,
-      })
+      } as any)
       .select()
       .single()
 

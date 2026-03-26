@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
         subject: `You're on the Waitlist${eventTitle ? ` for ${eventTitle}` : ''}`,
         metadata: { name: body.name, eventTitle },
         status: result.success ? 'sent' : 'failed',
-      })
+      } as any)
     } catch (e) { console.error('Email log error:', e) }
   } catch (emailErr) {
     console.error('Waitlist email error (non-fatal):', emailErr)

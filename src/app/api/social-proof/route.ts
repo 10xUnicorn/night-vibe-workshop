@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         workshop_name: body.workshop_name,
         is_active: body.is_active !== false,
         display_order: body.display_order || 0,
-      })
+      } as any)
       .select()
       .single()
     if (error) throw error
