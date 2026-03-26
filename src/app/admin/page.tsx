@@ -14,6 +14,7 @@ interface EventRow {
   capacity: number
   status: string
   is_featured: boolean
+  is_public?: boolean
   theme?: string
   stripe_payment_link: string
   stripe_product_id: string
@@ -95,6 +96,33 @@ interface EventOfferItemRow {
   display_order: number
 }
 
+interface GuaranteeRow {
+  id: string
+  title: string
+  description: string
+  icon: string
+  badge_text: string
+  fine_print: string
+  is_active: boolean
+  created_at: string
+}
+
+interface EventGuaranteeRow {
+  id: string
+  event_id: string
+  guarantee_id: string
+  display_order: number
+}
+
+interface ContactSubmissionRow {
+  id: string
+  name: string
+  email: string
+  message: string
+  event_id: string | null
+  created_at: string
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState('')
@@ -105,12 +133,15 @@ export default function AdminPage() {
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
   const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
   const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer'>('events')
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'contacts'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
   const [editingHost, setEditingHost] = useState<HostRow | null>(null)
   const [editingOffer, setEditingOffer] = useState<OfferItemRow | null>(null)
+  const [guarantees, setGuarantees] = useState<GuaranteeRow[]>([])
+  const [eventGuarantees, setEventGuarantees] = useState<EventGuaranteeRow[]>([])
+  const [contactSubmissions, setContactSubmissions] = useState<ContactSubmissionRow[]>([])
   const [expandedRegistrants, setExpandedRegistrants] = useState<string | null>(null)
 
   // Offer item form
@@ -160,6 +191,7 @@ export default function AdminPage() {
     stripe_price_id: '',
     price: 997,
     is_featured: false,
+    is_public: true,
     special_offer: '',
     theme: 'default',
   })
@@ -198,6 +230,9 @@ export default function AdminPage() {
       setEventHosts(data.eventHosts || [])
       setOfferItems(data.offerItems || [])
       setEventOfferItems(data.eventOfferItems || [])
+      setGuarantees(data.guarantees || [])
+      setEventGuarantees(data.eventGuarantees || [])
+      setContactSubmissions(data.contactSubmissions || [])
     }
   }, [password])
 
@@ -407,6 +442,7 @@ export default function AdminPage() {
       stripe_price_id: ticket?.stripe_price_id || '',
       price: ticket?.price || 997,
       is_featured: ev.is_featured || false,
+      is_public: ev.is_public !== false,
       special_offer: (lpd as Record<string, string>).special_offer || '',
       theme: ev.theme || 'default',
     })
@@ -550,13 +586,13 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap' }}>
-          {(['events', 'waitlist', 'registrants', 'create', 'hosts', 'create-host', 'offers', 'create-offer'] as const).map((t) => (
+          {(['events', 'waitlist', 'registrants', 'create', 'hosts', 'create-host', 'offers', 'create-offer', 'guarantees', 'contacts'] as const).map((t) => (
             <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null) }} style={{
               padding: '10px 20px', fontSize: 14, fontWeight: 600, background: tab === t ? 'var(--accent)' : 'transparent',
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
               {t === 'create' ? 'Create Event' : t === 'create-host' ? 'Create Host' : t === 'create-offer' ? 'Create Offer' : t}
-              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : ''}
+              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : ''}
             </button>
           ))}
         </div>
@@ -1395,6 +1431,232 @@ export default function AdminPage() {
               </button>
             </div>
           </form>
+        )}
+
+        {/* =================== GUARANTEES TAB =================== */}
+        {tab === 'guarantees' && (
+          <div style={{ display: 'grid', gap: 20 }}>
+            <div>
+              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>Create Guarantee</h2>
+              <form onSubmit={async (e) => {
+                e.preventDefault()
+                setSaving(true)
+                setMsg('')
+                try {
+                  const res = await fetch('/api/guarantees', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ...guaranteeForm, password }),
+                  })
+                  if (res.ok) {
+                    setMsg('Guarantee created successfully')
+                    setGuaranteeForm({ title: '', description: '', icon: '✓' })
+                    fetchData()
+                  } else {
+                    const err = await res.json()
+                    setMsg(err.error || 'Failed to create')
+                  }
+                } catch { setMsg('Network error') }
+                setSaving(false)
+              }}>
+                <div style={{ display: 'grid', gap: 12, maxWidth: 500 }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 8 }}>
+                    <div>
+                      <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Icon</label>
+                      <input className="admin-input" value={guaranteeForm.icon} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, icon: e.target.value })} style={{ textAlign: 'center', fontSize: 20 }} />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Title *</label>
+                      <input className="admin-input" value={guaranteeForm.title} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, title: e.target.value })} required placeholder="e.g. 30-Day Money Back" />
+                    </div>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
+                    <textarea className="admin-input" value={guaranteeForm.description} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, description: e.target.value })} placeholder="Detailed description of the guarantee" style={{ minHeight: 60 }} />
+                  </div>
+                  <button type="submit" className="admin-btn" disabled={saving}>
+                    {saving ? 'Creating...' : 'Create Guarantee'}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div>
+              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>All Guarantees ({guarantees.length})</h2>
+              <div style={{ display: 'grid', gap: 8 }}>
+                {guarantees.map((g: GuaranteeRow) => (
+                  <div key={g.id} style={{ display: 'grid', gridTemplateColumns: '40px 1fr auto', gap: 12, padding: 12, background: 'var(--bg-secondary)', borderRadius: 8, alignItems: 'center' }}>
+                    <div style={{ fontSize: 24 }}>{g.icon}</div>
+                    <div>
+                      <p style={{ fontSize: 14, fontWeight: 700 }}>{g.title}</p>
+                      {g.description && <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>{g.description}</p>}
+                    </div>
+                    <button onClick={async () => {
+                      if (!confirm('Delete this guarantee?')) return
+                      setSaving(true)
+                      try {
+                        const res = await fetch(`/api/guarantees/${g.id}`, {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ password }),
+                        })
+                        if (res.ok) {
+                          fetchData()
+                          setMsg('Guarantee deleted')
+                        } else {
+                          setMsg('Failed to delete')
+                        }
+                      } catch { setMsg('Network error') }
+                      setSaving(false)
+                    }} style={{ padding: '6px 12px', fontSize: 12, background: 'rgba(255,0,0,0.1)', color: 'var(--text-error)', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                      Delete
+                    </button>
+                  </div>
+                ))}
+                {guarantees.length === 0 && <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>No guarantees created yet</p>}
+              </div>
+            </div>
+
+            <div>
+              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>Assign Guarantees to Events</h2>
+              <div style={{ display: 'grid', gap: 12, maxWidth: 600 }}>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Select Event *</label>
+                  <select className="admin-input" onChange={(e) => {
+                    const eventId = e.target.value
+                    const event = events.find((ev: any) => ev.id === eventId)
+                    if (event) {
+                      setEventGuaranteeForm({ event_id: eventId, guarantee_id: '' })
+                    }
+                  }}>
+                    <option value="">Choose an event...</option>
+                    {events.map((e: any) => (
+                      <option key={e.id} value={e.id}>{e.title}</option>
+                    ))}
+                  </select>
+                </div>
+                {eventGuaranteeForm.event_id && (
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Select Guarantee *</label>
+                    <select className="admin-input" value={eventGuaranteeForm.guarantee_id} onChange={(e) => setEventGuaranteeForm({ ...eventGuaranteeForm, guarantee_id: e.target.value })}>
+                      <option value="">Choose a guarantee...</option>
+                      {guarantees.map((g: GuaranteeRow) => (
+                        <option key={g.id} value={g.id}>{g.icon} {g.title}</option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+                {eventGuaranteeForm.event_id && eventGuaranteeForm.guarantee_id && (
+                  <button onClick={async () => {
+                    setSaving(true)
+                    try {
+                      const res = await fetch('/api/event-guarantees', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ ...eventGuaranteeForm, password }),
+                      })
+                      if (res.ok) {
+                        setMsg('Guarantee assigned to event')
+                        setEventGuaranteeForm({ event_id: '', guarantee_id: '' })
+                        fetchData()
+                      } else {
+                        setMsg('Failed to assign')
+                      }
+                    } catch { setMsg('Network error') }
+                    setSaving(false)
+                  }} className="admin-btn" disabled={saving}>
+                    {saving ? 'Assigning...' : 'Assign Guarantee'}
+                  </button>
+                )}
+              </div>
+
+              <div style={{ marginTop: 20 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Event Guarantees ({eventGuarantees.length})</h3>
+                <div style={{ display: 'grid', gap: 6 }}>
+                  {eventGuarantees.map((eg: EventGuaranteeRow) => {
+                    const event = events.find((e: any) => e.id === eg.event_id)
+                    const guarantee = guarantees.find((g: GuaranteeRow) => g.id === eg.guarantee_id)
+                    return (
+                      <div key={eg.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, padding: 10, background: 'var(--bg-tertiary)', borderRadius: 6, alignItems: 'center' }}>
+                        <p style={{ fontSize: 12 }}><strong>{event?.title}</strong> → {guarantee?.icon} {guarantee?.title}</p>
+                        <button onClick={async () => {
+                          if (!confirm('Remove this assignment?')) return
+                          setSaving(true)
+                          try {
+                            const res = await fetch(`/api/event-guarantees/${eg.id}`, {
+                              method: 'DELETE',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ password }),
+                            })
+                            if (res.ok) {
+                              fetchData()
+                            } else {
+                              setMsg('Failed to remove')
+                            }
+                          } catch { setMsg('Network error') }
+                          setSaving(false)
+                        }} style={{ padding: '4px 8px', fontSize: 11, background: 'rgba(255,0,0,0.1)', color: 'var(--text-error)', border: 'none', borderRadius: 3, cursor: 'pointer' }}>
+                          Remove
+                        </button>
+                      </div>
+                    )
+                  })}
+                  {eventGuarantees.length === 0 && <p style={{ color: 'var(--text-muted)', fontSize: 12 }}>No assignments yet</p>}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* =================== CONTACTS TAB =================== */}
+        {tab === 'contacts' && (
+          <div style={{ display: 'grid', gap: 20 }}>
+            <h2 style={{ fontSize: 20, fontWeight: 700 }}>Contact Submissions ({contactSubmissions.length})</h2>
+            {contactSubmissions.length > 0 ? (
+              <div style={{ display: 'grid', gap: 12 }}>
+                {contactSubmissions.map((cs: ContactSubmissionRow) => (
+                  <div key={cs.id} style={{ padding: 16, background: 'var(--bg-secondary)', borderRadius: 8, borderLeft: '3px solid var(--accent)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, marginBottom: 12 }}>
+                      <div>
+                        <p style={{ fontSize: 14, fontWeight: 700 }}>{cs.name}</p>
+                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{cs.email}</p>
+                        {cs.phone && <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{cs.phone}</p>}
+                      </div>
+                      <div style={{ textAlign: 'right', fontSize: 12, color: 'var(--text-muted)' }}>
+                        {new Date(cs.created_at).toLocaleDateString()}
+                      </div>
+                    </div>
+                    {cs.message && (
+                      <div style={{ padding: 12, background: 'rgba(255,255,255,0.05)', borderRadius: 4, marginBottom: 12 }}>
+                        <p style={{ fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>{cs.message}</p>
+                      </div>
+                    )}
+                    <button onClick={async () => {
+                      if (!confirm('Delete this submission?')) return
+                      setSaving(true)
+                      try {
+                        const res = await fetch(`/api/contact-submissions/${cs.id}`, {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ password }),
+                        })
+                        if (res.ok) {
+                          fetchData()
+                        } else {
+                          setMsg('Failed to delete')
+                        }
+                      } catch { setMsg('Network error') }
+                      setSaving(false)
+                    }} style={{ padding: '6px 12px', fontSize: 12, background: 'rgba(255,0,0,0.1)', color: 'var(--text-error)', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>No contact submissions yet</p>
+            )}
+          </div>
         )}
       </div>
     </div>

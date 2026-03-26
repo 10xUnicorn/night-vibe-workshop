@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     capacity: body.capacity || 20,
     status: 'draft',
     is_featured: body.is_featured || false,
+    is_public: body.is_public !== false,
     theme: body.theme || 'default',
     stripe_payment_link: body.stripe_payment_link || null,
     stripe_product_id: body.stripe_product_id || null,
@@ -96,7 +97,7 @@ export async function PATCH(req: NextRequest) {
   // Full event edit
   if (body.id) {
     const eventUpdates: Record<string, unknown> = {}
-    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'theme', 'stripe_payment_link', 'stripe_product_id']
+    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'is_public', 'theme', 'stripe_payment_link', 'stripe_product_id']
 
     for (const field of editableEventFields) {
       if (body[field] !== undefined) {

@@ -95,6 +95,10 @@ export default function EventPage() {
   const [submittingWaitlist, setSubmittingWaitlist] = useState(false);
   const [showSticky, setShowSticky] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [guarantees, setGuarantees] = useState<{ id: string; title: string; description: string; icon: string; badge_text: string; fine_print: string }[]>([]);
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactSubmitting, setContactSubmitting] = useState(false);
 
   const fetchEventData = useCallback(async () => {
     try {
@@ -123,6 +127,16 @@ export default function EventPage() {
           .map(eoi => eoi.offer_items)
           .filter(Boolean);
         setOfferItems(sortedOffers);
+      }
+
+      // Fetch guarantees linked to this event
+      const { data: egData } = await supabase
+        .from('event_guarantees')
+        .select('guarantee_id, guarantees(*)')
+        .eq('event_id', (eventData as EventData).id)
+        .order('display_order');
+      if (egData) {
+        setGuarantees(egData.map((eg: any) => eg.guarantees).filter(Boolean));
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load event');
@@ -163,6 +177,19 @@ export default function EventPage() {
     } finally {
       setSubmittingWaitlist(false);
     }
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!event) return;
+    setContactSubmitting(true);
+    await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...contactForm, event_id: event.id }),
+    });
+    setContactSubmitted(true);
+    setContactSubmitting(false);
   };
 
   if (loading) {
@@ -633,6 +660,23 @@ export default function EventPage() {
         </div>
       </section>
 
+      {/* ===== GUARANTEE ===== */}
+      {guarantees.length > 0 && (
+        <section className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+          <div style={{ maxWidth: 700, margin: '0 auto' }}>
+            {guarantees.map((g) => (
+              <div key={g.id} style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02))', border: '2px solid rgba(16,185,129,0.25)', borderRadius: 20, padding: 'clamp(28px, 4vw, 48px)', textAlign: 'center' }}>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>{g.icon}</div>
+                <div style={{ display: 'inline-block', background: 'rgba(16,185,129,0.15)', padding: '6px 20px', borderRadius: 100, fontSize: 13, fontWeight: 700, color: '#10b981', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 20 }}>{g.badge_text}</div>
+                <h3 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.2 }}>{g.title}</h3>
+                <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto' }}>{g.description}</p>
+                {g.fine_print && <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 16, fontStyle: 'italic' }}>{g.fine_print}</p>}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ===== FAQ ===== */}
       <section className={hosts.length > 0 ? 'section' : 'section-dark'}>
         <div className="section" style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -669,6 +713,40 @@ export default function EventPage() {
         <div style={{ marginBottom: 16 }}><CtaButton /></div>
         <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 12 }}>Secure checkout. Instant access. Recording included.</p>
         <div style={{ marginTop: 48, paddingTop: 48, borderTop: '1px solid var(--border)' }}><p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Night Vibe — AI App Development Company</p></div>
+      </section>
+
+      {/* ===== CONTACT / QUESTIONS ===== */}
+      <section className="section" style={{ paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ maxWidth: 560, margin: '0 auto' }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Have questions?</p>
+          <h2 style={{ fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, marginBottom: 8 }}>Get in touch</h2>
+          <p style={{ fontSize: 15, color: 'var(--text-secondary)', marginBottom: 32 }}>Not sure if this workshop is right for you? Ask us anything.</p>
+          {contactSubmitted ? (
+            <div className="card" style={{ textAlign: 'center', padding: 40 }}>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>&#9989;</div>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Message sent</h3>
+              <p style={{ fontSize: 15, color: 'var(--text-secondary)' }}>We will get back to you shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleContactSubmit} className="card" style={{ textAlign: 'left', padding: 32 }}>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Name</label>
+                <input className="admin-input" type="text" required value={contactForm.name} onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })} placeholder="Your name" />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Email</label>
+                <input className="admin-input" type="email" required value={contactForm.email} onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })} placeholder="you@email.com" />
+              </div>
+              <div style={{ marginBottom: 24 }}>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Message</label>
+                <textarea className="admin-input" required value={contactForm.message} onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })} placeholder="What would you like to know?" style={{ minHeight: 100 }} />
+              </div>
+              <button type="submit" className="btn-accent" style={{ width: '100%' }} disabled={contactSubmitting}>
+                {contactSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
+          )}
+        </div>
       </section>
 
       {/* STICKY CTA */}

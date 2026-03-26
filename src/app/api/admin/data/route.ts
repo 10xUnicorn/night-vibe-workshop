@@ -59,6 +59,24 @@ export async function POST(req: NextRequest) {
     .select('*')
     .order('display_order')
 
+  // Fetch guarantees
+  const { data: guarantees } = await sb
+    .from('guarantees')
+    .select('*')
+    .order('created_at')
+
+  // Fetch event-guarantee links
+  const { data: eventGuarantees } = await sb
+    .from('event_guarantees')
+    .select('*')
+    .order('display_order')
+
+  // Fetch contact submissions
+  const { data: contactSubmissions } = await sb
+    .from('contact_submissions')
+    .select('*')
+    .order('created_at', { ascending: false })
+
   return NextResponse.json({
     events: events || [],
     waitlist: waitlist || [],
@@ -67,5 +85,8 @@ export async function POST(req: NextRequest) {
     eventHosts: eventHosts || [],
     offerItems: offerItems || [],
     eventOfferItems: eventOfferItems || [],
+    guarantees: guarantees || [],
+    eventGuarantees: eventGuarantees || [],
+    contactSubmissions: contactSubmissions || [],
   })
 }

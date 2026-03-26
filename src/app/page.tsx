@@ -74,6 +74,10 @@ export default function LandingPage() {
 
   const [eventHosts, setEventHosts] = useState<EventHostData[]>([])
   const [offerItems, setOfferItems] = useState<{ icon: string; title: string; description: string; glow: string; is_bonus: boolean; featured_image_url?: string; bonus_description?: string; bonus_tags?: string[] }[]>([])
+  const [guarantees, setGuarantees] = useState<{ id: string; title: string; description: string; icon: string; badge_text: string; fine_print: string }[]>([])
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' })
+  const [contactSubmitted, setContactSubmitted] = useState(false)
+  const [contactSubmitting, setContactSubmitting] = useState(false)
 
   const fetchEvent = useCallback(async () => {
     const { data } = await supabase
@@ -103,6 +107,16 @@ export default function LandingPage() {
           .map(eoi => eoi.offer_items)
           .filter(Boolean)
         setOfferItems(sortedOffers)
+      }
+
+      // Fetch guarantees linked to this event
+      const { data: egData } = await supabase
+        .from('event_guarantees')
+        .select('guarantee_id, guarantees(*)')
+        .eq('event_id', (data as EventData).id)
+        .order('display_order')
+      if (egData) {
+        setGuarantees(egData.map((eg: any) => eg.guarantees).filter(Boolean))
       }
     }
 
@@ -146,6 +160,19 @@ export default function LandingPage() {
     setWaitlistSubmitted(true)
   }
 
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!event) return
+    setContactSubmitting(true)
+    await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...contactForm, event_id: event.id }),
+    })
+    setContactSubmitted(true)
+    setContactSubmitting(false)
+  }
+
   const ctaUrl = event?.stripe_payment_link || '#'
   const price = event?.event_tickets?.[0]?.price || 997
 
@@ -173,7 +200,7 @@ export default function LandingPage() {
       {/* URGENCY BANNER */}
       <div className="urgency-banner">
         <span style={{ marginRight: 8 }}>&#9679;</span>
-        LIVE Workshop — April 7-8, 2026 — Only {seatsLeft} of 20 seats remain
+        LIVE Workshop — {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'} — Only {seatsLeft} of {event?.capacity || 20} seats remain
       </div>
 
       {/* ===== HERO ===== */}
@@ -191,8 +218,8 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24, marginBottom: 28, fontSize: 15, color: 'var(--text-secondary)' }}>
-          <span>&#128197; April 7-8, 2026</span>
-          <span>&#128336; 9 AM – 1 PM Pacific</span>
+          <span>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}</span>
+          <span>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} – ${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'Pacific' : event.timezone === 'America/New_York' ? 'Eastern' : event.timezone === 'America/Chicago' ? 'Central' : 'Mountain'}` : '9 AM – 1 PM Pacific'}</span>
           <span>&#128187; Live Virtual</span>
           <span style={{ fontWeight: 700, color: 'white' }}>&#36;{price}</span>
         </div>
@@ -200,7 +227,7 @@ export default function LandingPage() {
         <div style={{ marginBottom: 32 }}>
           <div className="seat-counter">
             <span className="seat-dot" />
-            {isSoldOut ? 'SOLD OUT — Join Waitlist' : `Only ${seatsLeft} of 20 seats left`}
+            {isSoldOut ? 'SOLD OUT — Join Waitlist' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left`}
           </div>
         </div>
 
@@ -608,13 +635,30 @@ export default function LandingPage() {
               <p style={{ fontSize: 15, color: 'var(--text-secondary)' }}>Bring 3 employees or 3 friends and your session is free.</p>
             </div>
             <div style={{ marginTop: 24, textAlign: 'center' }}>
-              <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of 20 seats remaining`}</div>
+              <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of ${event?.capacity || 20} seats remaining`}</div>
               {isSoldOut ? (<button className="btn-accent" style={{ width: '100%' }} onClick={() => setShowWaitlist(true)}>Join the Waitlist</button>) : (<a href={ctaUrl} className="btn-accent" style={{ width: '100%', display: 'block' }} target="_blank" rel="noopener noreferrer">Reserve Your Seat — ${price}</a>)}
             </div>
           </div>
           <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Secure checkout via Stripe. Instant confirmation. Calendar invite sent within minutes.</p>
         </div>
       </section>
+
+      {/* ===== GUARANTEE ===== */}
+      {guarantees.length > 0 && (
+        <section className="section" style={{ paddingTop: 40, paddingBottom: 40 }}>
+          <div style={{ maxWidth: 700, margin: '0 auto' }}>
+            {guarantees.map((g) => (
+              <div key={g.id} style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.02))', border: '2px solid rgba(16,185,129,0.25)', borderRadius: 20, padding: 'clamp(28px, 4vw, 48px)', textAlign: 'center' }}>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>{g.icon}</div>
+                <div style={{ display: 'inline-block', background: 'rgba(16,185,129,0.15)', padding: '6px 20px', borderRadius: 100, fontSize: 13, fontWeight: 700, color: '#10b981', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 20 }}>{g.badge_text}</div>
+                <h3 style={{ fontSize: 'clamp(22px, 3vw, 30px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.2 }}>{g.title}</h3>
+                <p style={{ fontSize: 16, color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto' }}>{g.description}</p>
+                {g.fine_print && <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 16, fontStyle: 'italic' }}>{g.fine_print}</p>}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ===== FAQ ===== */}
       <section className="section-dark">
@@ -644,10 +688,44 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ===== CONTACT / QUESTIONS ===== */}
+      <section className="section" style={{ paddingTop: 40, paddingBottom: 60 }}>
+        <div style={{ maxWidth: 560, margin: '0 auto' }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Have questions?</p>
+          <h2 style={{ fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, marginBottom: 8 }}>Get in touch</h2>
+          <p style={{ fontSize: 15, color: 'var(--text-secondary)', marginBottom: 32 }}>Not sure if this workshop is right for you? Ask us anything.</p>
+          {contactSubmitted ? (
+            <div className="card" style={{ textAlign: 'center', padding: 40 }}>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>&#9989;</div>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>Message sent</h3>
+              <p style={{ fontSize: 15, color: 'var(--text-secondary)' }}>We will get back to you shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleContactSubmit} className="card" style={{ textAlign: 'left', padding: 32 }}>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Name</label>
+                <input className="admin-input" type="text" required value={contactForm.name} onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })} placeholder="Your name" />
+              </div>
+              <div style={{ marginBottom: 16 }}>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Email</label>
+                <input className="admin-input" type="email" required value={contactForm.email} onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })} placeholder="you@email.com" />
+              </div>
+              <div style={{ marginBottom: 24 }}>
+                <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Message</label>
+                <textarea className="admin-input" required value={contactForm.message} onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })} placeholder="What would you like to know?" style={{ minHeight: 100 }} />
+              </div>
+              <button type="submit" className="btn-accent" style={{ width: '100%' }} disabled={contactSubmitting}>
+                {contactSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
+          )}
+        </div>
+      </section>
+
       {/* ===== FINAL CTA ===== */}
       <section className="section" style={{ paddingBottom: 120 }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">Two days from now, you could have a working app.</h2>
-        <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>April 7-8, 2026. 9 AM – 1 PM Pacific. 20 seats only.</p>
+        <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}. {event?.capacity || 20} seats only.</p>
         <p style={{ fontSize: 28, fontWeight: 800, marginBottom: 28 }}>${price}</p>
         <div className="seat-counter" style={{ marginBottom: 28 }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT — Join Waitlist Below' : `${seatsLeft} seats remaining — these will go fast`}</div>
         <div style={{ marginBottom: 16 }}><CtaButton /></div>
