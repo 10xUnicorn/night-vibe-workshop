@@ -92,7 +92,7 @@ export function getRegistrationConfirmationEmail({
   const calUrl = generateGoogleCalendarUrl(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`)
   const icsData = generateIcsContent(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`)
   const icsBase64 = Buffer.from(icsData).toString('base64')
-  const questionnaireUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nightvibe.ai'}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
+  const questionnaireUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nightvibe.me'}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
 
   return emailWrapper(`
     <h1 style="color:#ffffff;font-size:28px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">You're In! 🎉</h1>
@@ -125,6 +125,36 @@ export function getRegistrationConfirmationEmail({
       <a href="${questionnaireUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:12px;font-weight:700;font-size:15px;">Answer a Few Questions &rarr;</a>
     </div>
 
+    <!-- Pre-Workshop Setup Checklist -->
+    <h2 style="color:#ffffff;font-size:18px;font-weight:700;margin:24px 0 8px;">Your Pre-Workshop Checklist</h2>
+    <p style="color:#9ca3af;font-size:13px;margin:0 0 16px;">Complete these before the workshop so you can hit the ground running on Day 1.</p>
+
+    <div style="background:rgba(108,58,237,0.06);border:1px solid rgba(108,58,237,0.15);border-radius:12px;padding:20px;margin:16px 0;">
+      <div style="color:#d1d5db;font-size:14px;line-height:2.2;">
+        <div><span style="color:#a78bfa;margin-right:8px;">1.</span> <strong style="color:#fff;">Sign up for Claude</strong> — your AI copilot for the workshop<br/><span style="margin-left:22px;"><a href="https://claude.ai" style="color:#2dd4bf;text-decoration:none;">claude.ai</a> — Create a free account</span></div>
+        <div style="margin-top:8px;"><span style="color:#a78bfa;margin-right:8px;">2.</span> <strong style="color:#fff;">Activate your Supabase account</strong> — your app's backend &amp; database<br/><span style="margin-left:22px;"><a href="https://supabase.com" style="color:#2dd4bf;text-decoration:none;">supabase.com</a> — Sign up free with GitHub</span></div>
+        <div style="margin-top:8px;"><span style="color:#a78bfa;margin-right:8px;">3.</span> <strong style="color:#fff;">Create a Vercel account</strong> — where your app goes live<br/><span style="margin-left:22px;"><a href="https://vercel.com" style="color:#2dd4bf;text-decoration:none;">vercel.com</a> — Sign up free with GitHub</span></div>
+        <div style="margin-top:8px;"><span style="color:#a78bfa;margin-right:8px;">4.</span> <strong style="color:#fff;">Set up a GitHub account</strong> — your code lives here<br/><span style="margin-left:22px;"><a href="https://github.com" style="color:#2dd4bf;text-decoration:none;">github.com</a> — Sign up free</span></div>
+        <div style="margin-top:8px;"><span style="color:#a78bfa;margin-right:8px;">5.</span> <strong style="color:#fff;">Save all your login info</strong> — you'll need quick access during the workshop</div>
+      </div>
+    </div>
+
+    <!-- Conditional Tools -->
+    <div style="background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.15);border-radius:12px;padding:20px;margin:20px 0;">
+      <p style="color:#ffffff;font-size:15px;font-weight:700;margin:0 0 12px;">Bonus Tools (Optional)</p>
+      <div style="color:#d1d5db;font-size:14px;line-height:2;">
+        <div><span style="color:#2dd4bf;margin-right:8px;">→</span> <strong style="color:#fff;">Building a presentation?</strong> Sign up for <a href="https://try.gamma.app/kf94epax467a" style="color:#2dd4bf;text-decoration:none;">Gamma</a> — AI-powered slides in minutes</div>
+        <div><span style="color:#2dd4bf;margin-right:8px;">→</span> <strong style="color:#fff;">Building a mobile app?</strong> Sign up for <a href="https://get.emergent.sh/7bujgqedgvgm" style="color:#2dd4bf;text-decoration:none;">Emergent Labs</a> — deploy to iOS &amp; Android fast</div>
+      </div>
+    </div>
+
+    <!-- AppDash Access -->
+    <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);border-radius:10px;padding:16px;margin:24px 0;text-align:center;">
+      <p style="color:#2dd4bf;font-size:14px;font-weight:600;margin:0 0 4px;">Your Free AppDash Access</p>
+      <p style="color:#9ca3af;font-size:13px;margin:0 0 8px;">Track your app's progress, manage deployments, and stay organized — included with your registration.</p>
+      <p style="color:#6b7280;font-size:13px;margin:0;"><a href="https://appdash.me" style="color:#2dd4bf;text-decoration:none;font-weight:600;">appdash.me</a> &middot; Use code <strong style="color:#ffffff;">WKSHOP47</strong></p>
+    </div>
+
     <!-- What to Expect -->
     <h2 style="color:#ffffff;font-size:18px;font-weight:700;margin:24px 0 12px;">What to Expect</h2>
     <div style="color:#d1d5db;font-size:14px;line-height:1.8;">
@@ -134,13 +164,7 @@ export function getRegistrationConfirmationEmail({
       <div style="padding:6px 0;"><span style="color:#10b981;margin-right:8px;">✓</span> Recording access &amp; free future workshop sessions included</div>
     </div>
 
-    <!-- AppDash Promo -->
-    <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);border-radius:10px;padding:16px;margin:24px 0;text-align:center;">
-      <p style="color:#2dd4bf;font-size:14px;font-weight:600;margin:0 0 4px;">Powered by AppDash.me</p>
-      <p style="color:#6b7280;font-size:13px;margin:0;">Use code <strong style="color:#ffffff;">WKSHOP47</strong> for a special discount on your app deployment</p>
-    </div>
-
-    <p style="color:#9ca3af;font-size:14px;text-align:center;">See you at the workshop! 🚀</p>
+    <p style="color:#9ca3af;font-size:14px;text-align:center;margin-top:24px;">See you at the workshop! 🚀</p>
   `)
 }
 
@@ -169,8 +193,8 @@ export function getWaitlistConfirmationEmail({
 
     <div style="text-align:center;margin:28px 0;">
       <p style="color:#ffffff;font-size:16px;font-weight:600;margin:0 0 12px;">In the Meantime...</p>
-      <p style="color:#9ca3af;font-size:14px;margin:0 0 16px;">Join our community and get a head start on your app journey.</p>
-      <a href="https://nightvibe.ai" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">Visit Night Vibe &rarr;</a>
+      <p style="color:#9ca3af;font-size:14px;margin:0 0 16px;">Check out what we're building and connect with other entrepreneurs who are turning their ideas into real apps.</p>
+      <a href="https://nightvibe.me" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">Explore Night Vibe &rarr;</a>
     </div>
   `)
 }
@@ -183,7 +207,7 @@ export function getPreEventReminderEmail({
 }): string {
   const dateStr = formatEventDate(startDate, endDate, timezone)
   const calUrl = generateGoogleCalendarUrl(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`)
-  const questionnaireUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nightvibe.ai'}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
+  const questionnaireUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nightvibe.me'}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
 
   return emailWrapper(`
     <h1 style="color:#ffffff;font-size:28px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">Your Workshop is in 3 Days! 📅</h1>
