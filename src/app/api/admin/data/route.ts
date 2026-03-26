@@ -77,6 +77,25 @@ export async function POST(req: NextRequest) {
     .select('*')
     .order('created_at', { ascending: false })
 
+  // Fetch social proof entries
+  const { data: socialProofEntries } = await sb
+    .from('social_proof_entries')
+    .select('*')
+    .order('display_order')
+
+  // Fetch sent emails
+  const { data: sentEmails } = await sb
+    .from('sent_emails')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(100)
+
+  // Fetch app questionnaires
+  const { data: appQuestionnaires } = await sb
+    .from('app_questionnaires')
+    .select('*')
+    .order('created_at', { ascending: false })
+
   return NextResponse.json({
     events: events || [],
     waitlist: waitlist || [],
@@ -88,5 +107,8 @@ export async function POST(req: NextRequest) {
     guarantees: guarantees || [],
     eventGuarantees: eventGuarantees || [],
     contactSubmissions: contactSubmissions || [],
+    socialProofEntries: socialProofEntries || [],
+    sentEmails: sentEmails || [],
+    appQuestionnaires: appQuestionnaires || [],
   })
 }

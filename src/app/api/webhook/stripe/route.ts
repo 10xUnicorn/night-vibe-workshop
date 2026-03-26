@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { sendEmail } from '@/lib/email'
+import { getRegistrationConfirmationEmail } from '@/lib/emailTemplates'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -15,6 +17,73 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 //
 // For production, add signature verification using STRIPE_WEBHOOK_SECRET
 
+async function sendRegistrationEmail(sb: ReturnType<typeof createClient>, eventId: string, customerEmail: string, customerName: string, amountPaid: number, currency: string) {
+  try {
+    // Fetch event details with hosts
+    const { data: event } = await sb
+      .from('events')
+      .select('id, title, start_date, end_date, timezone')
+      .eq('id', eventId)
+      .single()
+
+    if (!event) return
+
+    // Fetch host names
+    const { data: eventHosts } = await sb
+      .from('event_hosts')
+      .select('hosts(name)')
+      .eq('event_id', eventId)
+      .order('display_order')
+
+    const hostNames = (eventHosts || [])
+      .map((eh: { hosts: { name: string } | null }) => eh.hosts?.name)
+      .filter(Boolean) as string[]
+
+    // Insert registration record
+    await sb.from('event_registrations').insert({
+      event_id: eventId,
+      customer_name: customerName || 'Attendee',
+      customer_email: customerEmail,
+      amount_paid: amountPaid,
+      currency: currency || 'usd',
+      product_name: event.title,
+      status: 'confirmed',
+    })
+
+    // Send confirmation email
+    const html = getRegistrationConfirmationEmail({
+      customerName: customerName || 'there',
+      eventTitle: event.title,
+      startDate: event.start_date,
+      endDate: event.end_date,
+      timezone: event.timezone,
+      hostNames,
+      eventId: event.id,
+      customerEmail,
+    })
+
+    const result = await sendEmail({
+      to: customerEmail,
+      subject: `You're In! ${event.title} — Registration Confirmed`,
+      html,
+    })
+
+    // Log to sent_emails
+    await sb.from('sent_emails').insert({
+      email_type: 'registration_confirmation',
+      recipient_email: customerEmail,
+      event_id: eventId,
+      subject: `You're In! ${event.title} — Registration Confirmed`,
+      metadata: { customerName, eventTitle: event.title, hostNames },
+      status: result.success ? 'sent' : 'failed',
+    }).then(() => {}).catch(e => console.error('Email log error:', e))
+
+    console.log(`Registration email ${result.success ? 'sent' : 'failed'} to ${customerEmail}`)
+  } catch (err) {
+    console.error('Registration email error (non-fatal):', err)
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -23,6 +92,10 @@ export async function POST(req: NextRequest) {
     if (body.type === 'checkout.session.completed') {
       const session = body.data?.object
       const paymentLink = session?.payment_link
+      const customerEmail = session?.customer_details?.email || session?.customer_email
+      const customerName = session?.customer_details?.name || ''
+      const amountPaid = (session?.amount_total || 0) / 100
+      const currency = session?.currency || 'usd'
 
       if (!paymentLink) {
         return NextResponse.json({ received: true, action: 'no_payment_link' })
@@ -50,6 +123,11 @@ export async function POST(req: NextRequest) {
           await sb.from('event_tickets').update({ status: 'sold_out' }).eq('id', ticket.id)
         }
 
+        // Send registration confirmation email
+        if (customerEmail) {
+          await sendRegistrationEmail(sb, ticket.event_id, customerEmail, customerName, amountPaid, currency)
+        }
+
         return NextResponse.json({ received: true, action: 'incremented', sold_count: newCount })
       }
 
@@ -73,6 +151,11 @@ export async function POST(req: NextRequest) {
 
           if (newCount >= ticket.capacity) {
             await sb.from('events').update({ status: 'sold_out' }).eq('id', eventId)
+          }
+
+          // Send registration confirmation email
+          if (customerEmail) {
+            await sendRegistrationEmail(sb, eventId, customerEmail, customerName, amountPaid, currency)
           }
 
           return NextResponse.json({ received: true, action: 'incremented_via_event', sold_count: newCount })

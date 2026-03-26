@@ -54,7 +54,8 @@ export default function EventsPage() {
         const { data: eventsData, error: eventsError } = await supabase
           .from('events')
           .select('*, event_tickets(*)')
-          .eq('status', 'published')
+          .in('status', ['published', 'sold_out'])
+          .eq('is_public', true)
           .gte('start_date', new Date().toISOString())
           .order('start_date', { ascending: true })
 
@@ -381,6 +382,25 @@ export default function EventsPage() {
                 {/* SPACER */}
                 <div style={{ flex: 1 }} />
 
+                {/* SOLD OUT BADGE */}
+                {event.seats_remaining === 0 && (
+                  <div
+                    style={{
+                      display: 'inline-block',
+                      background: 'rgba(239, 68, 68, 0.1)',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      padding: '4px 12px',
+                      borderRadius: 6,
+                      fontSize: 12,
+                      fontWeight: 700,
+                      color: 'var(--danger)',
+                      marginBottom: 16,
+                    }}
+                  >
+                    SOLD OUT
+                  </div>
+                )}
+
                 {/* PRICE & SEATS */}
                 <div
                   style={{
@@ -491,19 +511,30 @@ export default function EventsPage() {
                       Register
                     </a>
                   ) : (
-                    <span style={{
-                      flex: 1,
-                      background: 'rgba(108, 58, 237, 0.15)',
-                      color: 'var(--text-muted)',
-                      fontWeight: 700,
-                      padding: '12px 16px',
-                      borderRadius: 12,
-                      fontSize: 14,
-                      textAlign: 'center',
-                      display: 'block',
-                    }}>
-                      Sold Out
-                    </span>
+                    <Link
+                      href={`/events/${event.slug}?waitlist=true`}
+                      style={{
+                        flex: 1,
+                        background: 'rgba(108, 58, 237, 0.15)',
+                        color: 'var(--accent-light)',
+                        fontWeight: 700,
+                        padding: '12px 16px',
+                        borderRadius: 12,
+                        fontSize: 14,
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        display: 'block',
+                        transition: 'all 0.3s ease',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(108, 58, 237, 0.25)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(108, 58, 237, 0.15)'
+                      }}
+                    >
+                      Join Waitlist
+                    </Link>
                   )}
                 </div>
               </div>

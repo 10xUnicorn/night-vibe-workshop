@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import ParticleBackground from '@/components/ParticleBackground'
 import RevenueCalculator from '@/components/RevenueCalculator'
+import SocialProofPopup from '@/components/SocialProofPopup'
 import { renderRichText } from '@/lib/richText'
 
 interface HostData {
@@ -123,7 +124,8 @@ export default function LandingPage() {
     const { data: upcoming } = await supabase
       .from('events')
       .select('*, event_tickets(*)')
-      .eq('status', 'published')
+      .in('status', ['published', 'sold_out'])
+      .eq('is_public', true)
       .gte('start_date', new Date().toISOString())
       .order('start_date', { ascending: true })
 
@@ -196,6 +198,7 @@ export default function LandingPage() {
   return (
     <div style={{ position: 'relative' }}>
       <ParticleBackground />
+      <SocialProofPopup />
 
       {/* URGENCY BANNER */}
       <div className="urgency-banner">
@@ -595,8 +598,7 @@ export default function LandingPage() {
                       <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 4 }}>${ueTicket?.price || 997} · {ueSoldOut ? 'SOLD OUT' : `${ueSeats} seats left`}</p>
                     </div>
                     <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                      <a href={`/events/${ue.slug}`} style={{ padding: '10px 20px', fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', border: '2px solid rgba(108,58,237,0.4)', borderRadius: 12, textDecoration: 'none', transition: 'all 0.3s ease' }}>View</a>
-                      {ueSoldOut ? (<button className="btn-secondary" style={{ padding: '10px 24px', fontSize: 14 }} onClick={() => setShowWaitlist(true)}>Waitlist</button>) : (<a href={ueLink} className="btn-accent" style={{ padding: '10px 24px', fontSize: 14 }} target="_blank" rel="noopener noreferrer">Register</a>)}
+                      {ueSoldOut ? (<a href={`/events/${ue.slug}`} style={{ padding: '10px 24px', fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', border: '2px solid rgba(108,58,237,0.4)', borderRadius: 12, textDecoration: 'none', transition: 'all 0.3s ease' }}>Sold Out — View Details</a>) : (<><a href={`/events/${ue.slug}`} style={{ padding: '10px 20px', fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', border: '2px solid rgba(108,58,237,0.4)', borderRadius: 12, textDecoration: 'none', transition: 'all 0.3s ease' }}>View</a><a href={ueLink} className="btn-accent" style={{ padding: '10px 24px', fontSize: 14 }} target="_blank" rel="noopener noreferrer">Register</a></>)}
                     </div>
                   </div>
                 )

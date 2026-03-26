@@ -123,6 +123,41 @@ interface ContactSubmissionRow {
   created_at: string
 }
 
+interface SocialProofRow {
+  id: string
+  name: string
+  location: string
+  event_id: string | null
+  workshop_name: string
+  is_active: boolean
+  display_order: number
+  created_at: string
+}
+
+interface SentEmailRow {
+  id: string
+  email_type: string
+  recipient_email: string
+  event_id: string | null
+  subject: string
+  metadata: Record<string, unknown>
+  status: string
+  created_at: string
+}
+
+interface AppQuestionnaireRow {
+  id: string
+  event_id: string | null
+  email: string
+  app_idea: string
+  problem: string
+  target_customer: string | null
+  existing_business: string | null
+  biggest_challenge: string | null
+  technical_level: string | null
+  created_at: string
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState('')
@@ -133,7 +168,7 @@ export default function AdminPage() {
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
   const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
   const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts'>('events')
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
@@ -145,6 +180,10 @@ export default function AdminPage() {
   const [guaranteeForm, setGuaranteeForm] = useState({ title: '', description: '', icon: '🛡️', badge_text: '100% Money-Back Guarantee', fine_print: '' })
   const [expandedRegistrants, setExpandedRegistrants] = useState<string | null>(null)
   const [showCreateMenu, setShowCreateMenu] = useState(false)
+  const [socialProofEntries, setSocialProofEntries] = useState<SocialProofRow[]>([])
+  const [sentEmails, setSentEmails] = useState<SentEmailRow[]>([])
+  const [appQuestionnaires, setAppQuestionnaires] = useState<AppQuestionnaireRow[]>([])
+  const [socialProofForm, setSocialProofForm] = useState({ name: '', location: '', workshop_name: 'Build & Launch Your App', is_active: true })
 
   // Offer item form
   const [offerForm, setOfferForm] = useState({
@@ -235,6 +274,9 @@ export default function AdminPage() {
       setGuarantees(data.guarantees || [])
       setEventGuarantees(data.eventGuarantees || [])
       setContactSubmissions(data.contactSubmissions || [])
+      if (data.socialProofEntries) setSocialProofEntries(data.socialProofEntries)
+      if (data.sentEmails) setSentEmails(data.sentEmails)
+      if (data.appQuestionnaires) setAppQuestionnaires(data.appQuestionnaires)
     }
   }, [password])
 
@@ -588,15 +630,29 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts'] as const).map((t) => (
+          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires'] as const).map((t) => {
+            const labels: Record<string, string> = {
+              'events': 'Events',
+              'hosts': 'Hosts',
+              'offers': 'Offers',
+              'guarantees': 'Guarantees',
+              'waitlist': 'Waitlist',
+              'registrants': 'Registrants',
+              'contacts': 'Contacts',
+              'social-proof': 'Social Proof',
+              'sent-emails': 'Emails',
+              'questionnaires': 'Questionnaires',
+            }
+            return (
             <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null); setShowCreateMenu(false) }} style={{
               padding: '10px 20px', fontSize: 14, fontWeight: 600, background: tab === t ? 'var(--accent)' : 'transparent',
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
-              {t}
-              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : ''}
+              {labels[t]}
+              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : t === 'social-proof' ? ` (${socialProofEntries.length})` : t === 'sent-emails' ? ` (${sentEmails.length})` : t === 'questionnaires' ? ` (${appQuestionnaires.length})` : ''}
             </button>
-          ))}
+            )
+          })}
           <div style={{ position: 'relative', marginLeft: 'auto' }}>
             <button onClick={() => setShowCreateMenu(!showCreateMenu)} style={{
               padding: '8px 16px', fontSize: 18, fontWeight: 700, background: 'var(--accent)', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', lineHeight: 1
@@ -608,6 +664,7 @@ export default function AdminPage() {
                   { key: 'create-host' as const, label: 'New Host' },
                   { key: 'create-offer' as const, label: 'New Offer Item' },
                   { key: 'create-guarantee' as const, label: 'New Guarantee' },
+                  { key: 'create-social-proof' as const, label: 'New Social Proof' },
                 ].map((item) => (
                   <button key={item.key} onClick={() => { setTab(item.key); setShowCreateMenu(false); setMsg('') }} style={{
                     display: 'block', width: '100%', padding: '12px 20px', fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)',
@@ -1650,6 +1707,129 @@ export default function AdminPage() {
               )
             })}
             {guarantees.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No guarantees yet. Use the + button to create one.</p>}
+          </div>
+        )}
+
+        {/* =================== CREATE SOCIAL PROOF TAB =================== */}
+        {tab === 'create-social-proof' && (
+          <form onSubmit={async (e) => {
+            e.preventDefault()
+            setSaving(true)
+            setMsg('')
+            try {
+              const res = await fetch('/api/social-proof', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...socialProofForm, password }),
+              })
+              if (res.ok) {
+                setMsg('Social proof entry created')
+                setSocialProofForm({ name: '', location: '', workshop_name: 'Build & Launch Your App', is_active: true })
+                fetchData()
+                setTab('social-proof')
+              } else {
+                const err = await res.json()
+                setMsg(err.error || 'Failed to create')
+              }
+            } catch { setMsg('Network error') }
+            setSaving(false)
+          }}>
+            <div style={{ display: 'grid', gap: 16, maxWidth: 600 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 700 }}>Create Social Proof Entry</h2>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Name *</label>
+                <input className="admin-input" value={socialProofForm.name} onChange={(e) => setSocialProofForm({ ...socialProofForm, name: e.target.value })} required placeholder="e.g. Sarah M." />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Location *</label>
+                <input className="admin-input" value={socialProofForm.location} onChange={(e) => setSocialProofForm({ ...socialProofForm, location: e.target.value })} required placeholder="e.g. Austin, TX" />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Workshop Name</label>
+                <input className="admin-input" value={socialProofForm.workshop_name} onChange={(e) => setSocialProofForm({ ...socialProofForm, workshop_name: e.target.value })} placeholder="Build & Launch Your App" />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <input type="checkbox" id="sp-active" checked={socialProofForm.is_active} onChange={(e) => setSocialProofForm({ ...socialProofForm, is_active: e.target.checked })} />
+                <label htmlFor="sp-active" style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Active</label>
+              </div>
+              <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
+                {saving ? 'Creating...' : 'Create Entry'}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* =================== SOCIAL PROOF TAB =================== */}
+        {tab === 'social-proof' && (
+          <div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20 }}>Social Proof Entries ({socialProofEntries.length})</h2>
+            {socialProofEntries.map((sp) => (
+              <div key={sp.id} className="card" style={{ marginBottom: 12, padding: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: 'white' }}>{sp.name}</span>
+                  <span style={{ fontSize: 13, color: 'var(--text-muted)', marginLeft: 8 }}>from {sp.location}</span>
+                  <span style={{ fontSize: 13, color: 'var(--accent-light)', marginLeft: 12 }}>{sp.workshop_name}</span>
+                  <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 100, marginLeft: 8, background: sp.is_active ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', color: sp.is_active ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>{sp.is_active ? 'ACTIVE' : 'INACTIVE'}</span>
+                </div>
+                <button style={{ padding: '6px 14px', fontSize: 12, background: 'rgba(239,68,68,0.1)', color: 'var(--danger)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, cursor: 'pointer' }} onClick={async () => {
+                  if (!confirm('Delete this entry?')) return
+                  await fetch('/api/social-proof', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: sp.id, password }) })
+                  fetchData()
+                }}>Delete</button>
+              </div>
+            ))}
+            {socialProofEntries.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No social proof entries yet. Use the + button to create one.</p>}
+          </div>
+        )}
+
+        {/* =================== SENT EMAILS TAB =================== */}
+        {tab === 'sent-emails' && (
+          <div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20 }}>Sent Emails ({sentEmails.length})</h2>
+            {sentEmails.map((em) => (
+              <div key={em.id} className="card" style={{ marginBottom: 12, padding: 16 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                  <div>
+                    <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 100, background: em.status === 'sent' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', color: em.status === 'sent' ? 'var(--success)' : 'var(--danger)', fontWeight: 600, marginRight: 8 }}>{em.status.toUpperCase()}</span>
+                    <span style={{ fontSize: 12, color: 'var(--accent-light)', fontWeight: 600 }}>{em.email_type.replace(/_/g, ' ')}</span>
+                  </div>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(em.created_at).toLocaleDateString()}</span>
+                </div>
+                <p style={{ fontSize: 13, color: 'white', fontWeight: 600, margin: '4px 0' }}>{em.subject}</p>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>To: {em.recipient_email}</p>
+                {em.event_id && <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>Event: {events.find(e => e.id === em.event_id)?.title || em.event_id}</p>}
+              </div>
+            ))}
+            {sentEmails.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No emails sent yet.</p>}
+          </div>
+        )}
+
+        {/* =================== QUESTIONNAIRES TAB =================== */}
+        {tab === 'questionnaires' && (
+          <div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20 }}>App Questionnaires ({appQuestionnaires.length})</h2>
+            {appQuestionnaires.map((q) => (
+              <div key={q.id} className="card" style={{ marginBottom: 16, padding: 20 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                  <div>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: 'white' }}>{q.email}</span>
+                    {q.event_id && <span style={{ fontSize: 12, color: 'var(--accent-light)', marginLeft: 12 }}>{events.find(e => e.id === q.event_id)?.title || 'Unknown event'}</span>}
+                  </div>
+                  <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(q.created_at).toLocaleDateString()}</span>
+                </div>
+                <div style={{ display: 'grid', gap: 12 }}>
+                  <div><p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>APP IDEA</p><p style={{ fontSize: 13, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{q.app_idea}</p></div>
+                  <div><p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>PROBLEM</p><p style={{ fontSize: 13, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{q.problem}</p></div>
+                  {q.target_customer && <div><p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>TARGET CUSTOMER</p><p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{q.target_customer}</p></div>}
+                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+                    {q.existing_business && <div><p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>EXISTING BIZ</p><p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{q.existing_business}</p></div>}
+                    {q.technical_level && <div><p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>TECH LEVEL</p><p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{q.technical_level}</p></div>}
+                  </div>
+                  {q.biggest_challenge && <div><p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>BIGGEST CHALLENGE</p><p style={{ fontSize: 13, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{q.biggest_challenge}</p></div>}
+                </div>
+              </div>
+            ))}
+            {appQuestionnaires.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No questionnaire responses yet.</p>}
           </div>
         )}
 

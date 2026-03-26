@@ -1,10 +1,11 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import ParticleBackground from '@/components/ParticleBackground';
 import RevenueCalculator from '@/components/RevenueCalculator';
+import SocialProofPopup from '@/components/SocialProofPopup';
 import Link from 'next/link';
 import { renderRichText } from '@/lib/richText';
 
@@ -82,6 +83,7 @@ const supabase = createClient(
 
 export default function EventPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const slug = params.slug as string;
 
   const [event, setEvent] = useState<EventData | null>(null);
@@ -159,6 +161,12 @@ export default function EventPage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get('waitlist') === 'true' && !loading) {
+      setShowWaitlist(true);
+    }
+  }, [searchParams, loading]);
 
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -258,6 +266,7 @@ export default function EventPage() {
   return (
     <div style={{ position: 'relative' }}>
       <ParticleBackground />
+      <SocialProofPopup />
 
       {/* URGENCY BANNER */}
       <div className="urgency-banner">
