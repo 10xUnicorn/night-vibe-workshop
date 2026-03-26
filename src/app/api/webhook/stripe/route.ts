@@ -20,12 +20,13 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 async function sendRegistrationEmail(sb: ReturnType<typeof createClient>, eventId: string, customerEmail: string, customerName: string, amountPaid: number, currency: string) {
   try {
     // Fetch event details with hosts
-    const { data: event } = await sb
+    const { data: eventData } = await sb
       .from('events')
       .select('id, title, start_date, end_date, timezone')
       .eq('id', eventId)
       .single()
 
+    const event = eventData as { id: string; title: string; start_date: string; end_date: string; timezone: string } | null
     if (!event) return
 
     // Fetch host names
