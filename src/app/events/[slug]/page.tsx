@@ -557,7 +557,7 @@ export default function EventPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, textAlign: 'left' }}>
             <div className="card card-glow-teal" style={{ borderColor: 'rgba(16,185,129,0.25)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--success)', marginBottom: 20 }}>This is for you if...</h3>
-              {['You already run a business or have a clear offer', 'You want to replace software tools or build a new revenue stream', 'You are ready to execute live, not just watch', 'You want a working app, not more theory', 'You are comfortable using AI tools and following guidance', 'You want to move fast and build something real this month'].map((item, i) => (
+              {['You already have a business, have a business idea, or want to see how you can turn your app idea into a business', 'You want to replace software tools or build a new revenue stream', 'You are ready to execute live, not just watch', 'You want a working app, not more theory', 'You are comfortable using AI tools and following guidance', 'You want to move fast and build something real this month'].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--success)', flexShrink: 0, fontWeight: 700 }}>{'\u{2714}'}</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
               ))}
             </div>
@@ -638,7 +638,7 @@ export default function EventPage() {
               { icon: '🎥', title: 'Full recording access', is_bonus: false },
               { icon: '📝', title: 'SOPs, blueprints, and training docs', is_bonus: false },
               { icon: '👥', title: 'Community access', is_bonus: false },
-              { icon: '🔄', title: '3 bonus future workshop sessions', is_bonus: false },
+              { icon: '🔄', title: 'Free access to future sessions', is_bonus: false },
               { icon: '⭐', title: `${event.capacity}-person intimate cohort with live Q&A`, is_bonus: false },
               { icon: '🚀', title: 'BONUS: Launch Accelerator Tool (FREE early access)', is_bonus: true },
             ] as { icon: string; title: string; is_bonus: boolean }[]).map((item, i) => (

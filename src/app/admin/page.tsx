@@ -133,7 +133,7 @@ export default function AdminPage() {
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
   const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
   const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'contacts'>('events')
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
@@ -144,6 +144,7 @@ export default function AdminPage() {
   const [contactSubmissions, setContactSubmissions] = useState<ContactSubmissionRow[]>([])
   const [guaranteeForm, setGuaranteeForm] = useState({ title: '', description: '', icon: '🛡️', badge_text: '100% Money-Back Guarantee', fine_print: '' })
   const [expandedRegistrants, setExpandedRegistrants] = useState<string | null>(null)
+  const [showCreateMenu, setShowCreateMenu] = useState(false)
 
   // Offer item form
   const [offerForm, setOfferForm] = useState({
@@ -586,16 +587,36 @@ export default function AdminPage() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap' }}>
-          {(['events', 'waitlist', 'registrants', 'create', 'hosts', 'create-host', 'offers', 'create-offer', 'guarantees', 'contacts'] as const).map((t) => (
-            <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null) }} style={{
+        <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap', alignItems: 'center' }}>
+          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts'] as const).map((t) => (
+            <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null); setShowCreateMenu(false) }} style={{
               padding: '10px 20px', fontSize: 14, fontWeight: 600, background: tab === t ? 'var(--accent)' : 'transparent',
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
-              {t === 'create' ? 'Create Event' : t === 'create-host' ? 'Create Host' : t === 'create-offer' ? 'Create Offer' : t}
+              {t}
               {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : ''}
             </button>
           ))}
+          <div style={{ position: 'relative', marginLeft: 'auto' }}>
+            <button onClick={() => setShowCreateMenu(!showCreateMenu)} style={{
+              padding: '8px 16px', fontSize: 18, fontWeight: 700, background: 'var(--accent)', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer', lineHeight: 1
+            }}>+</button>
+            {showCreateMenu && (
+              <div style={{ position: 'absolute', right: 0, top: '100%', marginTop: 4, background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', zIndex: 50, minWidth: 180, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' }}>
+                {[
+                  { key: 'create' as const, label: 'New Event' },
+                  { key: 'create-host' as const, label: 'New Host' },
+                  { key: 'create-offer' as const, label: 'New Offer Item' },
+                  { key: 'create-guarantee' as const, label: 'New Guarantee' },
+                ].map((item) => (
+                  <button key={item.key} onClick={() => { setTab(item.key); setShowCreateMenu(false); setMsg('') }} style={{
+                    display: 'block', width: '100%', padding: '12px 20px', fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)',
+                    background: 'transparent', border: 'none', borderBottom: '1px solid var(--border)', cursor: 'pointer', textAlign: 'left'
+                  }}>{item.label}</button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {msg && <div style={{ padding: '12px 16px', borderRadius: 8, marginBottom: 20, background: msg.includes('success') ? 'rgba(16,185,129,0.1)' : 'rgba(239,68,68,0.1)', color: msg.includes('success') ? 'var(--success)' : 'var(--danger)', fontSize: 14, fontWeight: 500 }}>{msg}</div>}
@@ -787,6 +808,10 @@ export default function AdminPage() {
                   <input type="checkbox" id="edit-featured" checked={editForm.is_featured} onChange={(e) => setEditForm({ ...editForm, is_featured: e.target.checked })} />
                   <label htmlFor="edit-featured" style={{ fontSize: 14, color: 'var(--text-secondary)' }}>Set as featured event</label>
                 </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <input type="checkbox" id="edit-public" checked={editForm.is_public} onChange={(e) => setEditForm({ ...editForm, is_public: e.target.checked })} />
+                  <label htmlFor="edit-public" style={{ fontSize: 14, color: 'var(--text-secondary)' }}>Public event (visible on landing page)</label>
+                </div>
 
                 {/* Linked Hosts Section */}
                 <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 16 }}>
@@ -825,6 +850,74 @@ export default function AdminPage() {
                       if (document.getElementById('host-select') as HTMLSelectElement) (document.getElementById('host-select') as HTMLSelectElement).value = ''
                     }
                   }} className="admin-btn" style={{ padding: '6px 14px', fontSize: 12, marginTop: 8, width: '100%', background: 'var(--accent)' }}>Add Host</button>
+                </div>
+
+                {/* Linked Offer Items Section */}
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 16 }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Linked Offer Items</h3>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+                    {offerItems.map((oi) => {
+                      const isLinked = eventOfferItems.some(eoi => eoi.event_id === editingEvent.id && eoi.offer_item_id === oi.id)
+                      return (
+                        <button key={oi.id} type="button" style={{
+                          padding: '6px 14px', fontSize: 12, fontWeight: 600, borderRadius: 100, cursor: 'pointer', transition: 'all 0.2s',
+                          background: isLinked ? 'rgba(108,58,237,0.15)' : 'transparent',
+                          color: isLinked ? 'var(--accent-light)' : 'var(--text-muted)',
+                          border: `1px solid ${isLinked ? 'rgba(108,58,237,0.4)' : 'var(--border)'}`,
+                        }} onClick={async () => {
+                          await fetch('/api/offer-items', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              action: isLinked ? 'unlink_event' : 'link_event',
+                              event_id: editingEvent.id,
+                              offer_item_id: oi.id,
+                              display_order: oi.display_order,
+                              password,
+                            }),
+                          })
+                          fetchData()
+                        }}>
+                          {isLinked ? '✓ ' : ''}{oi.icon} {oi.title}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {offerItems.length === 0 && <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>No offer items created yet. Go to Offers tab to create some.</p>}
+                </div>
+
+                {/* Linked Guarantees Section */}
+                <div style={{ borderTop: '1px solid var(--border)', paddingTop: 16, marginTop: 16 }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Linked Guarantees</h3>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+                    {guarantees.map((g) => {
+                      const isLinked = eventGuarantees.some(eg => eg.event_id === editingEvent.id && eg.guarantee_id === g.id)
+                      return (
+                        <button key={g.id} type="button" style={{
+                          padding: '6px 14px', fontSize: 12, fontWeight: 600, borderRadius: 100, cursor: 'pointer', transition: 'all 0.2s',
+                          background: isLinked ? 'rgba(16,185,129,0.15)' : 'transparent',
+                          color: isLinked ? 'var(--success)' : 'var(--text-muted)',
+                          border: `1px solid ${isLinked ? 'rgba(16,185,129,0.4)' : 'var(--border)'}`,
+                        }} onClick={async () => {
+                          await fetch('/api/guarantees', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              action: isLinked ? 'unlink_event' : 'link_event',
+                              event_id: editingEvent.id,
+                              guarantee_id: g.id,
+                              display_order: 0,
+                              password,
+                            }),
+                          })
+                          fetchData()
+                        }}>
+                          {isLinked ? '✓ ' : ''}{g.icon} {g.title}
+                        </button>
+                      )
+                    })}
+                  </div>
+                  {guarantees.length === 0 && <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>No guarantees created yet. Go to Guarantees tab to create one.</p>}
                 </div>
 
                 <div style={{ display: 'flex', gap: 12 }}>
@@ -1434,68 +1527,65 @@ export default function AdminPage() {
           </form>
         )}
 
+        {/* =================== CREATE GUARANTEE TAB =================== */}
+        {tab === 'create-guarantee' && (
+          <form onSubmit={async (e) => {
+            e.preventDefault()
+            setSaving(true)
+            setMsg('')
+            try {
+              const res = await fetch('/api/guarantees', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...guaranteeForm, password }),
+              })
+              if (res.ok) {
+                setMsg('Guarantee created successfully')
+                setGuaranteeForm({ title: '', description: '', icon: '🛡️', badge_text: '100% Money-Back Guarantee', fine_print: '' })
+                fetchData()
+                setTab('guarantees')
+              } else {
+                const err = await res.json()
+                setMsg(err.error || 'Failed to create')
+              }
+            } catch { setMsg('Network error') }
+            setSaving(false)
+          }}>
+            <div style={{ display: 'grid', gap: 16, maxWidth: 600 }}>
+              <h2 style={{ fontSize: 20, fontWeight: 700 }}>Create Guarantee</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 8 }}>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Icon</label>
+                  <input className="admin-input" value={guaranteeForm.icon} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, icon: e.target.value })} style={{ textAlign: 'center', fontSize: 20 }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Title *</label>
+                  <input className="admin-input" value={guaranteeForm.title} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, title: e.target.value })} required placeholder="e.g. Build It or It's Free" />
+                </div>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Badge Text</label>
+                <input className="admin-input" value={guaranteeForm.badge_text} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, badge_text: e.target.value })} placeholder="Shown on landing page badge" />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
+                <textarea className="admin-input" value={guaranteeForm.description} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, description: e.target.value })} placeholder="Full guarantee statement..." style={{ minHeight: 80 }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Fine Print</label>
+                <input className="admin-input" value={guaranteeForm.fine_print} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, fine_print: e.target.value })} placeholder="Terms and conditions..." />
+              </div>
+              <button type="submit" className="admin-btn" style={{ padding: '14px', fontSize: 16 }} disabled={saving}>
+                {saving ? 'Creating...' : 'Create Guarantee'}
+              </button>
+            </div>
+          </form>
+        )}
+
         {/* =================== GUARANTEES TAB =================== */}
         {tab === 'guarantees' && (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-              <h2 style={{ fontSize: 18, fontWeight: 700 }}>Guarantees ({guarantees.length})</h2>
-            </div>
-
-            {/* Create New Guarantee */}
-            <div className="card" style={{ marginBottom: 24, padding: 20 }}>
-              <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16, color: 'var(--accent-light)' }}>Create New Guarantee</h3>
-              <form onSubmit={async (e) => {
-                e.preventDefault()
-                setSaving(true)
-                setMsg('')
-                try {
-                  const res = await fetch('/api/guarantees', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ ...guaranteeForm, password }),
-                  })
-                  if (res.ok) {
-                    setMsg('Guarantee created successfully')
-                    setGuaranteeForm({ title: '', description: '', icon: '🛡️', badge_text: '100% Money-Back Guarantee', fine_print: '' })
-                    fetchData()
-                  } else {
-                    const err = await res.json()
-                    setMsg(err.error || 'Failed to create')
-                  }
-                } catch { setMsg('Network error') }
-                setSaving(false)
-              }}>
-                <div style={{ display: 'grid', gap: 12, maxWidth: 600 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 8 }}>
-                    <div>
-                      <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Icon</label>
-                      <input className="admin-input" value={guaranteeForm.icon} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, icon: e.target.value })} style={{ textAlign: 'center', fontSize: 20 }} />
-                    </div>
-                    <div>
-                      <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Title *</label>
-                      <input className="admin-input" value={guaranteeForm.title} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, title: e.target.value })} required placeholder="e.g. Build It or It's Free" />
-                    </div>
-                  </div>
-                  <div>
-                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Badge Text</label>
-                    <input className="admin-input" value={guaranteeForm.badge_text} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, badge_text: e.target.value })} placeholder="Badge shown on frontend" />
-                  </div>
-                  <div>
-                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
-                    <textarea className="admin-input" value={guaranteeForm.description} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, description: e.target.value })} placeholder="Full guarantee statement..." style={{ minHeight: 60 }} />
-                  </div>
-                  <div>
-                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Fine Print</label>
-                    <input className="admin-input" value={guaranteeForm.fine_print} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, fine_print: e.target.value })} placeholder="Terms and conditions..." />
-                  </div>
-                  <button type="submit" className="admin-btn" style={{ padding: '10px 20px', fontSize: 14 }} disabled={saving}>
-                    {saving ? 'Creating...' : 'Create Guarantee'}
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* List Existing Guarantees */}
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20 }}>Guarantees ({guarantees.length})</h2>
             {guarantees.map((g) => {
               const linkedEvents = eventGuarantees.filter(eg => eg.guarantee_id === g.id)
               return (
@@ -1559,7 +1649,7 @@ export default function AdminPage() {
                 </div>
               )
             })}
-            {guarantees.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No guarantees yet. Create your first one above.</p>}
+            {guarantees.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No guarantees yet. Use the + button to create one.</p>}
           </div>
         )}
 

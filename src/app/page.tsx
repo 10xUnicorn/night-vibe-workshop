@@ -200,7 +200,7 @@ export default function LandingPage() {
       {/* URGENCY BANNER */}
       <div className="urgency-banner">
         <span style={{ marginRight: 8 }}>&#9679;</span>
-        LIVE Workshop — {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'} — Only {seatsLeft} of {event?.capacity || 20} seats remain
+        LIVE Workshop — {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'} — Only {seatsLeft} of {event?.capacity || 20} seats remain
       </div>
 
       {/* ===== HERO ===== */}
@@ -218,7 +218,7 @@ export default function LandingPage() {
         </p>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24, marginBottom: 28, fontSize: 15, color: 'var(--text-secondary)' }}>
-          <span>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}</span>
+          <span>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}</span>
           <span>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} – ${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'Pacific' : event.timezone === 'America/New_York' ? 'Eastern' : event.timezone === 'America/Chicago' ? 'Central' : 'Mountain'}` : '9 AM – 1 PM Pacific'}</span>
           <span>&#128187; Live Virtual</span>
           <span style={{ fontWeight: 700, color: 'white' }}>&#36;{price}</span>
@@ -494,7 +494,7 @@ export default function LandingPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, textAlign: 'left' }}>
             <div className="card card-glow-teal" style={{ borderColor: 'rgba(16,185,129,0.25)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--success)', marginBottom: 20 }}>This is for you if...</h3>
-              {['You already run a business or have a clear offer', 'You want to replace software tools or build a new revenue stream', 'You are ready to execute live, not just watch', 'You want a working app, not more theory', 'You are comfortable using AI tools and following guidance', 'You want to move fast and build something real this month'].map((item, i) => (
+              {['You already have a business, have a business idea, or want to see how you can turn your app idea into a business', 'You want to replace software tools or build a new revenue stream', 'You are ready to execute live, not just watch', 'You want a working app, not more theory', 'You are comfortable using AI tools and following guidance', 'You want to move fast and build something real this month'].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--success)', flexShrink: 0, fontWeight: 700 }}>&#10004;</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
               ))}
             </div>
@@ -621,7 +621,7 @@ export default function LandingPage() {
               { icon: '🎥', title: 'Full recording access', is_bonus: false },
               { icon: '📝', title: 'SOPs, blueprints, and training docs', is_bonus: false },
               { icon: '👥', title: 'Community access', is_bonus: false },
-              { icon: '🔄', title: '3 bonus future workshop sessions', is_bonus: false },
+              { icon: '🔄', title: 'Free access to future sessions', is_bonus: false },
               { icon: '⭐', title: '20-person intimate cohort with live Q&A', is_bonus: false },
               { icon: '🚀', title: 'Launch Accelerator Tool (FREE early access)', is_bonus: true },
             ] as { icon: string; title: string; is_bonus: boolean }[]).map((item, i) => (
@@ -725,7 +725,7 @@ export default function LandingPage() {
       {/* ===== FINAL CTA ===== */}
       <section className="section" style={{ paddingBottom: 120 }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">Two days from now, you could have a working app.</h2>
-        <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}. {event?.capacity || 20} seats only.</p>
+        <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}. {event?.capacity || 20} seats only.</p>
         <p style={{ fontSize: 28, fontWeight: 800, marginBottom: 28 }}>${price}</p>
         <div className="seat-counter" style={{ marginBottom: 28 }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT — Join Waitlist Below' : `${seatsLeft} seats remaining — these will go fast`}</div>
         <div style={{ marginBottom: 16 }}><CtaButton /></div>
