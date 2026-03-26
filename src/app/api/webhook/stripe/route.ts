@@ -17,7 +17,8 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 //
 // For production, add signature verification using STRIPE_WEBHOOK_SECRET
 
-async function sendRegistrationEmail(sb: ReturnType<typeof createClient>, eventId: string, customerEmail: string, customerName: string, amountPaid: number, currency: string) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: string, customerName: string, amountPaid: number, currency: string) {
   try {
     // Fetch event details with hosts
     const { data: eventData } = await sb
