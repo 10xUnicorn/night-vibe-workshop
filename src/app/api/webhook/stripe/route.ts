@@ -69,14 +69,16 @@ async function sendRegistrationEmail(sb: ReturnType<typeof createClient>, eventI
     })
 
     // Log to sent_emails
-    await sb.from('sent_emails').insert({
-      email_type: 'registration_confirmation',
-      recipient_email: customerEmail,
-      event_id: eventId,
-      subject: `You're In! ${event.title} — Registration Confirmed`,
-      metadata: { customerName, eventTitle: event.title, hostNames },
-      status: result.success ? 'sent' : 'failed',
-    }).then(() => {}).catch(e => console.error('Email log error:', e))
+    try {
+      await sb.from('sent_emails').insert({
+        email_type: 'registration_confirmation',
+        recipient_email: customerEmail,
+        event_id: eventId,
+        subject: `You're In! ${event.title} — Registration Confirmed`,
+        metadata: { customerName, eventTitle: event.title, hostNames },
+        status: result.success ? 'sent' : 'failed',
+      })
+    } catch (e) { console.error('Email log error:', e) }
 
     console.log(`Registration email ${result.success ? 'sent' : 'failed'} to ${customerEmail}`)
   } catch (err) {

@@ -59,14 +59,16 @@ export async function POST(req: NextRequest) {
     })
 
     // Log email
-    await sb.from('sent_emails').insert({
-      email_type: 'waitlist_confirmation',
-      recipient_email: body.email,
-      event_id: body.event_id || null,
-      subject: `You're on the Waitlist${eventTitle ? ` for ${eventTitle}` : ''}`,
-      metadata: { name: body.name, eventTitle },
-      status: result.success ? 'sent' : 'failed',
-    }).catch(e => console.error('Email log error:', e))
+    try {
+      await sb.from('sent_emails').insert({
+        email_type: 'waitlist_confirmation',
+        recipient_email: body.email,
+        event_id: body.event_id || null,
+        subject: `You're on the Waitlist${eventTitle ? ` for ${eventTitle}` : ''}`,
+        metadata: { name: body.name, eventTitle },
+        status: result.success ? 'sent' : 'failed',
+      })
+    } catch (e) { console.error('Email log error:', e) }
   } catch (emailErr) {
     console.error('Waitlist email error (non-fatal):', emailErr)
   }
