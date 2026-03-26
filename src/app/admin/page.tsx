@@ -142,6 +142,7 @@ export default function AdminPage() {
   const [guarantees, setGuarantees] = useState<GuaranteeRow[]>([])
   const [eventGuarantees, setEventGuarantees] = useState<EventGuaranteeRow[]>([])
   const [contactSubmissions, setContactSubmissions] = useState<ContactSubmissionRow[]>([])
+  const [guaranteeForm, setGuaranteeForm] = useState({ title: '', description: '', icon: '🛡️', badge_text: '100% Money-Back Guarantee', fine_print: '' })
   const [expandedRegistrants, setExpandedRegistrants] = useState<string | null>(null)
 
   // Offer item form
@@ -1435,9 +1436,14 @@ export default function AdminPage() {
 
         {/* =================== GUARANTEES TAB =================== */}
         {tab === 'guarantees' && (
-          <div style={{ display: 'grid', gap: 20 }}>
-            <div>
-              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>Create Guarantee</h2>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700 }}>Guarantees ({guarantees.length})</h2>
+            </div>
+
+            {/* Create New Guarantee */}
+            <div className="card" style={{ marginBottom: 24, padding: 20 }}>
+              <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16, color: 'var(--accent-light)' }}>Create New Guarantee</h3>
               <form onSubmit={async (e) => {
                 e.preventDefault()
                 setSaving(true)
@@ -1450,7 +1456,7 @@ export default function AdminPage() {
                   })
                   if (res.ok) {
                     setMsg('Guarantee created successfully')
-                    setGuaranteeForm({ title: '', description: '', icon: '✓' })
+                    setGuaranteeForm({ title: '', description: '', icon: '🛡️', badge_text: '100% Money-Back Guarantee', fine_print: '' })
                     fetchData()
                   } else {
                     const err = await res.json()
@@ -1459,7 +1465,7 @@ export default function AdminPage() {
                 } catch { setMsg('Network error') }
                 setSaving(false)
               }}>
-                <div style={{ display: 'grid', gap: 12, maxWidth: 500 }}>
+                <div style={{ display: 'grid', gap: 12, maxWidth: 600 }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: 8 }}>
                     <div>
                       <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Icon</label>
@@ -1467,194 +1473,122 @@ export default function AdminPage() {
                     </div>
                     <div>
                       <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Title *</label>
-                      <input className="admin-input" value={guaranteeForm.title} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, title: e.target.value })} required placeholder="e.g. 30-Day Money Back" />
+                      <input className="admin-input" value={guaranteeForm.title} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, title: e.target.value })} required placeholder="e.g. Build It or It's Free" />
                     </div>
                   </div>
                   <div>
-                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
-                    <textarea className="admin-input" value={guaranteeForm.description} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, description: e.target.value })} placeholder="Detailed description of the guarantee" style={{ minHeight: 60 }} />
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Badge Text</label>
+                    <input className="admin-input" value={guaranteeForm.badge_text} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, badge_text: e.target.value })} placeholder="Badge shown on frontend" />
                   </div>
-                  <button type="submit" className="admin-btn" disabled={saving}>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Description</label>
+                    <textarea className="admin-input" value={guaranteeForm.description} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, description: e.target.value })} placeholder="Full guarantee statement..." style={{ minHeight: 60 }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Fine Print</label>
+                    <input className="admin-input" value={guaranteeForm.fine_print} onChange={(e) => setGuaranteeForm({ ...guaranteeForm, fine_print: e.target.value })} placeholder="Terms and conditions..." />
+                  </div>
+                  <button type="submit" className="admin-btn" style={{ padding: '10px 20px', fontSize: 14 }} disabled={saving}>
                     {saving ? 'Creating...' : 'Create Guarantee'}
                   </button>
                 </div>
               </form>
             </div>
 
-            <div>
-              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>All Guarantees ({guarantees.length})</h2>
-              <div style={{ display: 'grid', gap: 8 }}>
-                {guarantees.map((g: GuaranteeRow) => (
-                  <div key={g.id} style={{ display: 'grid', gridTemplateColumns: '40px 1fr auto', gap: 12, padding: 12, background: 'var(--bg-secondary)', borderRadius: 8, alignItems: 'center' }}>
-                    <div style={{ fontSize: 24 }}>{g.icon}</div>
-                    <div>
-                      <p style={{ fontSize: 14, fontWeight: 700 }}>{g.title}</p>
-                      {g.description && <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>{g.description}</p>}
-                    </div>
-                    <button onClick={async () => {
-                      if (!confirm('Delete this guarantee?')) return
-                      setSaving(true)
-                      try {
-                        const res = await fetch(`/api/guarantees/${g.id}`, {
-                          method: 'DELETE',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ password }),
-                        })
-                        if (res.ok) {
-                          fetchData()
-                          setMsg('Guarantee deleted')
-                        } else {
-                          setMsg('Failed to delete')
-                        }
-                      } catch { setMsg('Network error') }
-                      setSaving(false)
-                    }} style={{ padding: '6px 12px', fontSize: 12, background: 'rgba(255,0,0,0.1)', color: 'var(--text-error)', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
-                      Delete
-                    </button>
-                  </div>
-                ))}
-                {guarantees.length === 0 && <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>No guarantees created yet</p>}
-              </div>
-            </div>
-
-            <div>
-              <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 12 }}>Assign Guarantees to Events</h2>
-              <div style={{ display: 'grid', gap: 12, maxWidth: 600 }}>
-                <div>
-                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Select Event *</label>
-                  <select className="admin-input" onChange={(e) => {
-                    const eventId = e.target.value
-                    const event = events.find((ev: any) => ev.id === eventId)
-                    if (event) {
-                      setEventGuaranteeForm({ event_id: eventId, guarantee_id: '' })
-                    }
-                  }}>
-                    <option value="">Choose an event...</option>
-                    {events.map((e: any) => (
-                      <option key={e.id} value={e.id}>{e.title}</option>
-                    ))}
-                  </select>
-                </div>
-                {eventGuaranteeForm.event_id && (
-                  <div>
-                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Select Guarantee *</label>
-                    <select className="admin-input" value={eventGuaranteeForm.guarantee_id} onChange={(e) => setEventGuaranteeForm({ ...eventGuaranteeForm, guarantee_id: e.target.value })}>
-                      <option value="">Choose a guarantee...</option>
-                      {guarantees.map((g: GuaranteeRow) => (
-                        <option key={g.id} value={g.id}>{g.icon} {g.title}</option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-                {eventGuaranteeForm.event_id && eventGuaranteeForm.guarantee_id && (
-                  <button onClick={async () => {
-                    setSaving(true)
-                    try {
-                      const res = await fetch('/api/event-guarantees', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ ...eventGuaranteeForm, password }),
-                      })
-                      if (res.ok) {
-                        setMsg('Guarantee assigned to event')
-                        setEventGuaranteeForm({ event_id: '', guarantee_id: '' })
-                        fetchData()
-                      } else {
-                        setMsg('Failed to assign')
-                      }
-                    } catch { setMsg('Network error') }
-                    setSaving(false)
-                  }} className="admin-btn" disabled={saving}>
-                    {saving ? 'Assigning...' : 'Assign Guarantee'}
-                  </button>
-                )}
-              </div>
-
-              <div style={{ marginTop: 20 }}>
-                <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Event Guarantees ({eventGuarantees.length})</h3>
-                <div style={{ display: 'grid', gap: 6 }}>
-                  {eventGuarantees.map((eg: EventGuaranteeRow) => {
-                    const event = events.find((e: any) => e.id === eg.event_id)
-                    const guarantee = guarantees.find((g: GuaranteeRow) => g.id === eg.guarantee_id)
-                    return (
-                      <div key={eg.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, padding: 10, background: 'var(--bg-tertiary)', borderRadius: 6, alignItems: 'center' }}>
-                        <p style={{ fontSize: 12 }}><strong>{event?.title}</strong> → {guarantee?.icon} {guarantee?.title}</p>
-                        <button onClick={async () => {
-                          if (!confirm('Remove this assignment?')) return
-                          setSaving(true)
-                          try {
-                            const res = await fetch(`/api/event-guarantees/${eg.id}`, {
-                              method: 'DELETE',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ password }),
-                            })
-                            if (res.ok) {
-                              fetchData()
-                            } else {
-                              setMsg('Failed to remove')
-                            }
-                          } catch { setMsg('Network error') }
-                          setSaving(false)
-                        }} style={{ padding: '4px 8px', fontSize: 11, background: 'rgba(255,0,0,0.1)', color: 'var(--text-error)', border: 'none', borderRadius: 3, cursor: 'pointer' }}>
-                          Remove
-                        </button>
+            {/* List Existing Guarantees */}
+            {guarantees.map((g) => {
+              const linkedEvents = eventGuarantees.filter(eg => eg.guarantee_id === g.id)
+              return (
+                <div key={g.id} className="card" style={{ marginBottom: 12, padding: 20 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                        <span style={{ fontSize: 24 }}>{g.icon}</span>
+                        <h3 style={{ fontSize: 16, fontWeight: 700 }}>{g.title}</h3>
+                        <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 100, background: g.is_active ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', color: g.is_active ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>{g.is_active ? 'ACTIVE' : 'INACTIVE'}</span>
                       </div>
-                    )
-                  })}
-                  {eventGuarantees.length === 0 && <p style={{ color: 'var(--text-muted)', fontSize: 12 }}>No assignments yet</p>}
+                      <p style={{ fontSize: 12, color: 'var(--accent-light)', fontWeight: 600, marginBottom: 4 }}>{g.badge_text}</p>
+                      <p style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>{g.description}</p>
+                      {g.fine_print && <p style={{ fontSize: 11, color: 'var(--text-muted)', fontStyle: 'italic' }}>{g.fine_print}</p>}
+                      <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
+                        Linked to: {linkedEvents.length === 0 ? 'No events' : linkedEvents.map(le => {
+                          const ev = events.find(e => e.id === le.event_id)
+                          return ev?.title || le.event_id
+                        }).join(', ')}
+                      </div>
+                    </div>
+                    <button style={{ padding: '6px 14px', fontSize: 12, background: 'rgba(239,68,68,0.1)', color: 'var(--danger)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 8, cursor: 'pointer' }} onClick={async () => {
+                      if (!confirm('Delete this guarantee?')) return
+                      await fetch('/api/guarantees', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: g.id, password }) })
+                      fetchData()
+                    }}>Delete</button>
+                  </div>
+
+                  {/* Assign to events */}
+                  <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                    <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent-light)', marginBottom: 8 }}>Assign to Events:</p>
+                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                      {events.map((ev) => {
+                        const isLinked = eventGuarantees.some(eg => eg.event_id === ev.id && eg.guarantee_id === g.id)
+                        return (
+                          <button key={ev.id} style={{
+                            padding: '4px 12px', fontSize: 11, fontWeight: 600, borderRadius: 100, cursor: 'pointer', transition: 'all 0.2s',
+                            background: isLinked ? 'rgba(16,185,129,0.15)' : 'transparent',
+                            color: isLinked ? 'var(--success)' : 'var(--text-muted)',
+                            border: `1px solid ${isLinked ? 'rgba(16,185,129,0.4)' : 'var(--border)'}`,
+                          }} onClick={async () => {
+                            await fetch('/api/guarantees', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                action: isLinked ? 'unlink_event' : 'link_event',
+                                event_id: ev.id,
+                                guarantee_id: g.id,
+                                display_order: 0,
+                                password,
+                              }),
+                            })
+                            fetchData()
+                          }}>
+                            {isLinked ? '✓ ' : ''}{ev.title?.substring(0, 30)}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              )
+            })}
+            {guarantees.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No guarantees yet. Create your first one above.</p>}
           </div>
         )}
 
         {/* =================== CONTACTS TAB =================== */}
         {tab === 'contacts' && (
-          <div style={{ display: 'grid', gap: 20 }}>
-            <h2 style={{ fontSize: 20, fontWeight: 700 }}>Contact Submissions ({contactSubmissions.length})</h2>
-            {contactSubmissions.length > 0 ? (
+          <div>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Contact Submissions ({contactSubmissions.length})</h2>
+            {contactSubmissions.length === 0 ? (
+              <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No contact submissions yet.</p>
+            ) : (
               <div style={{ display: 'grid', gap: 12 }}>
-                {contactSubmissions.map((cs: ContactSubmissionRow) => (
-                  <div key={cs.id} style={{ padding: 16, background: 'var(--bg-secondary)', borderRadius: 8, borderLeft: '3px solid var(--accent)' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, marginBottom: 12 }}>
+                {contactSubmissions.map((c) => (
+                  <div key={c.id} className="card" style={{ padding: 16 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                       <div>
-                        <p style={{ fontSize: 14, fontWeight: 700 }}>{cs.name}</p>
-                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{cs.email}</p>
-                        {cs.phone && <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{cs.phone}</p>}
+                        <span style={{ fontSize: 14, fontWeight: 600 }}>{c.name}</span>
+                        <span style={{ fontSize: 13, color: 'var(--accent-light)', marginLeft: 12 }}>{c.email}</span>
                       </div>
-                      <div style={{ textAlign: 'right', fontSize: 12, color: 'var(--text-muted)' }}>
-                        {new Date(cs.created_at).toLocaleDateString()}
-                      </div>
+                      <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(c.created_at).toLocaleDateString()}</span>
                     </div>
-                    {cs.message && (
-                      <div style={{ padding: 12, background: 'rgba(255,255,255,0.05)', borderRadius: 4, marginBottom: 12 }}>
-                        <p style={{ fontSize: 12, lineHeight: 1.5, whiteSpace: 'pre-wrap' }}>{cs.message}</p>
-                      </div>
+                    <p style={{ fontSize: 13, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{c.message}</p>
+                    {c.event_id && (
+                      <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8 }}>
+                        Event: {events.find(e => e.id === c.event_id)?.title || c.event_id}
+                      </p>
                     )}
-                    <button onClick={async () => {
-                      if (!confirm('Delete this submission?')) return
-                      setSaving(true)
-                      try {
-                        const res = await fetch(`/api/contact-submissions/${cs.id}`, {
-                          method: 'DELETE',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ password }),
-                        })
-                        if (res.ok) {
-                          fetchData()
-                        } else {
-                          setMsg('Failed to delete')
-                        }
-                      } catch { setMsg('Network error') }
-                      setSaving(false)
-                    }} style={{ padding: '6px 12px', fontSize: 12, background: 'rgba(255,0,0,0.1)', color: 'var(--text-error)', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
-                      Delete
-                    </button>
                   </div>
                 ))}
               </div>
-            ) : (
-              <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>No contact submissions yet</p>
             )}
           </div>
         )}
