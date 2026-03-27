@@ -7,6 +7,7 @@ import {
   getPreEventReminderEmail,
   getPreEventReminderOneDayEmail,
   getPreEventReminderOneHourEmail,
+  getPreEventReminderFiveMinEmail,
   getNewEventNotificationEmail,
 } from '@/lib/emailTemplates'
 
@@ -53,6 +54,10 @@ export async function POST(req: NextRequest) {
       case 'pre_event_1hour':
         subject = `Starting in 1 hour: ${data.eventTitle}`
         html = getPreEventReminderOneHourEmail(data)
+        break
+      case 'pre_event_5min':
+        subject = `We're starting NOW: ${data.eventTitle}`
+        html = getPreEventReminderFiveMinEmail(data)
         break
       case 'new_event_notification':
         subject = `New Workshop: ${data.eventTitle} — You Get Early Access`

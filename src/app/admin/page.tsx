@@ -235,6 +235,7 @@ export default function AdminPage() {
     is_public: true,
     special_offer: '',
     theme: 'default',
+    meeting_link: '',
   })
 
   // Host form
@@ -489,6 +490,7 @@ export default function AdminPage() {
       is_public: ev.is_public !== false,
       special_offer: (lpd as Record<string, string>).special_offer || '',
       theme: ev.theme || 'default',
+      meeting_link: ev.meeting_link || '',
     })
     setEditingEvent(ev)
   }
@@ -841,6 +843,11 @@ export default function AdminPage() {
                     <option value="fire">Fire</option>
                     <option value="ocean">Ocean</option>
                   </select>
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Zoom / Meeting Link</label>
+                  <input className="admin-input" value={editForm.meeting_link} onChange={(e) => setEditForm({ ...editForm, meeting_link: e.target.value })} placeholder="https://zoom.us/j/..." />
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>Added to calendar invites, reminder emails, and join buttons.</p>
                 </div>
                 <div>
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Payment Link</label>

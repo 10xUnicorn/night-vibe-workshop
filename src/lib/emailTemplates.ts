@@ -1,6 +1,8 @@
 // Night Vibe branded email templates
 // All emails use dark theme matching the website
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://night-vibe-workshop.vercel.app'
+
 const baseStyles = `
   body { margin: 0; padding: 0; background-color: #0a0a0f; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   .email-wrapper { max-width: 600px; margin: 0 auto; padding: 20px; }
@@ -30,7 +32,11 @@ const baseStyles = `
   .promo-bar { background: rgba(45,212,191,0.08); border: 1px solid rgba(45,212,191,0.2); border-radius: 10px; padding: 16px; margin: 24px 0; text-align: center; }
 `
 
-function emailWrapper(content: string): string {
+function emailWrapper(content: string, options?: { hasAffiliateLinks?: boolean }): string {
+  const affiliateDisclosure = options?.hasAffiliateLinks
+    ? `<p style="color:#374151;font-size:10px;margin:8px 0 0;line-height:1.4;">Disclosure: Some links in this email are affiliate links. If you sign up through them, we may earn a commission at no additional cost to you. We only recommend tools we use and believe in.</p>`
+    : ''
+
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${baseStyles}</style></head>
@@ -52,6 +58,7 @@ function emailWrapper(content: string): string {
     <div style="padding:24px 32px;border-top:1px solid rgba(108,58,237,0.1);text-align:center;">
       <p style="color:#4b5563;font-size:12px;margin:0 0 8px;">Night Vibe AI &middot; Build apps that generate revenue</p>
       <p style="color:#374151;font-size:11px;margin:0;">You received this email because you interacted with Night Vibe. <a href="#" style="color:#6b7280;">Unsubscribe</a></p>
+      ${affiliateDisclosure}
     </div>
   </div>
 </div>
@@ -69,30 +76,64 @@ function formatEventDate(startDate: string, endDate: string, timezone: string): 
     'America/Chicago': 'Central', 'America/Denver': 'Mountain',
   }
   const tzLabel = tzNames[timezone] || timezone
-  return `${start.toLocaleDateString('en-US', opts)}<br/>${start.toLocaleTimeString('en-US', timeOpts)} &ndash; ${end.toLocaleTimeString('en-US', timeOpts)} ${tzLabel}`
+
+  // Build all 4 US timezone display
+  const allZones = [
+    { tz: 'America/Los_Angeles', label: 'PT' },
+    { tz: 'America/Denver', label: 'MT' },
+    { tz: 'America/Chicago', label: 'CT' },
+    { tz: 'America/New_York', label: 'ET' },
+  ]
+  const timeLines = allZones.map(z => {
+    const s = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: z.tz })
+    const e = end.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: z.tz })
+    const isPrimary = z.tz === timezone
+    return isPrimary
+      ? `<strong style="color:#ffffff;">${s} – ${e} ${z.label}</strong>`
+      : `<span style="color:#9ca3af;">${s} – ${e} ${z.label}</span>`
+  }).join(' &middot; ')
+
+  return `${start.toLocaleDateString('en-US', opts)}<br/>${timeLines}`
 }
 
-function generateGoogleCalendarUrl(title: string, startDate: string, endDate: string, description: string): string {
-  const fmt = (d: string) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${fmt(startDate)}/${fmt(endDate)}&details=${encodeURIComponent(description)}&location=Live+Virtual`
+function formatTimeAllZones(startDate: string): string {
+  const start = new Date(startDate)
+  const zones = [
+    { tz: 'America/Los_Angeles', label: 'PT' },
+    { tz: 'America/Denver', label: 'MT' },
+    { tz: 'America/Chicago', label: 'CT' },
+    { tz: 'America/New_York', label: 'ET' },
+  ]
+  return zones.map(z => {
+    const t = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: z.tz })
+    return `${t} ${z.label}`
+  }).join(' / ')
 }
 
-function generateIcsContent(title: string, startDate: string, endDate: string, description: string): string {
+function generateGoogleCalendarUrl(title: string, startDate: string, endDate: string, description: string, location?: string): string {
   const fmt = (d: string) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
-  return `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${fmt(startDate)}\nDTEND:${fmt(endDate)}\nSUMMARY:${title}\nDESCRIPTION:${description}\nLOCATION:Live Virtual\nEND:VEVENT\nEND:VCALENDAR`
+  const loc = location || 'Live Virtual'
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${fmt(startDate)}/${fmt(endDate)}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(loc)}`
+}
+
+function generateIcsContent(title: string, startDate: string, endDate: string, description: string, location?: string): string {
+  const fmt = (d: string) => new Date(d).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
+  const loc = location || 'Live Virtual'
+  return `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:${fmt(startDate)}\nDTEND:${fmt(endDate)}\nSUMMARY:${title}\nDESCRIPTION:${description}\nLOCATION:${loc}\nEND:VEVENT\nEND:VCALENDAR`
 }
 
 // ========== TEMPLATE 1: Registration Confirmation ==========
 export function getRegistrationConfirmationEmail({
-  customerName, eventTitle, startDate, endDate, timezone, hostNames, eventId, customerEmail,
+  customerName, eventTitle, startDate, endDate, timezone, hostNames, eventId, customerEmail, meetingLink,
 }: {
-  customerName: string; eventTitle: string; startDate: string; endDate: string; timezone: string; hostNames: string[]; eventId: string; customerEmail: string;
+  customerName: string; eventTitle: string; startDate: string; endDate: string; timezone: string; hostNames: string[]; eventId: string; customerEmail: string; meetingLink?: string;
 }): string {
   const dateStr = formatEventDate(startDate, endDate, timezone)
-  const calUrl = generateGoogleCalendarUrl(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`)
-  const icsData = generateIcsContent(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`)
+  const location = meetingLink || 'Live Virtual (link sent before event)'
+  const calUrl = generateGoogleCalendarUrl(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`, meetingLink || undefined)
+  const icsData = generateIcsContent(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`, meetingLink || undefined)
   const icsBase64 = Buffer.from(icsData).toString('base64')
-  const questionnaireUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nightvibe.me'}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
+  const questionnaireUrl = `${SITE_URL}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
 
   return emailWrapper(`
     <h1 style="color:#ffffff;font-size:28px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">You're In! 🎉</h1>
@@ -106,7 +147,7 @@ export function getRegistrationConfirmationEmail({
       <table style="width:100%;border-collapse:collapse;">
         <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;width:100px;">Event</td><td style="padding:8px 0;color:#ffffff;font-size:14px;font-weight:600;">${eventTitle}</td></tr>
         <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;border-top:1px solid rgba(108,58,237,0.08);">When</td><td style="padding:8px 0;color:#ffffff;font-size:14px;font-weight:600;border-top:1px solid rgba(108,58,237,0.08);">${dateStr}</td></tr>
-        <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;border-top:1px solid rgba(108,58,237,0.08);">Where</td><td style="padding:8px 0;color:#ffffff;font-size:14px;font-weight:600;border-top:1px solid rgba(108,58,237,0.08);">Live Virtual (link sent before event)</td></tr>
+        <tr><td style="padding:8px 0;color:#6b7280;font-size:13px;border-top:1px solid rgba(108,58,237,0.08);">Where</td><td style="padding:8px 0;color:#ffffff;font-size:14px;font-weight:600;border-top:1px solid rgba(108,58,237,0.08);">${meetingLink ? `<a href="${meetingLink}" style="color:#2dd4bf;text-decoration:none;">Join Zoom Meeting</a>` : 'Live Virtual (link sent before event)'}</td></tr>
         ${hostNames.length > 0 ? `<tr><td style="padding:8px 0;color:#6b7280;font-size:13px;border-top:1px solid rgba(108,58,237,0.08);">Hosts</td><td style="padding:8px 0;color:#2dd4bf;font-size:14px;font-weight:600;border-top:1px solid rgba(108,58,237,0.08);">${hostNames.join(', ')}</td></tr>` : ''}
       </table>
     </div>
@@ -139,7 +180,7 @@ export function getRegistrationConfirmationEmail({
       </div>
     </div>
 
-    <!-- Conditional Tools -->
+    <!-- Bonus Tools -->
     <div style="background:rgba(45,212,191,0.06);border:1px solid rgba(45,212,191,0.15);border-radius:12px;padding:20px;margin:20px 0;">
       <p style="color:#ffffff;font-size:15px;font-weight:700;margin:0 0 12px;">Bonus Tools (Optional)</p>
       <div style="color:#d1d5db;font-size:14px;line-height:2;">
@@ -148,11 +189,13 @@ export function getRegistrationConfirmationEmail({
       </div>
     </div>
 
-    <!-- AppDash Access -->
-    <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);border-radius:10px;padding:16px;margin:24px 0;text-align:center;">
-      <p style="color:#2dd4bf;font-size:14px;font-weight:600;margin:0 0 4px;">Your Free AppDash Access</p>
-      <p style="color:#9ca3af;font-size:13px;margin:0 0 8px;">Track your app's progress, manage deployments, and stay organized — included with your registration.</p>
-      <p style="color:#6b7280;font-size:13px;margin:0;"><a href="https://appdash.me" style="color:#2dd4bf;text-decoration:none;font-weight:600;">appdash.me</a> &middot; Use code <strong style="color:#ffffff;">WKSHOP47</strong></p>
+    <!-- AppDash Access — PROMINENT -->
+    <div style="background:linear-gradient(135deg,rgba(45,212,191,0.12),rgba(108,58,237,0.08));border:2px solid rgba(45,212,191,0.35);border-radius:14px;padding:28px;margin:28px 0;text-align:center;">
+      <p style="color:#ffffff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px;">🎁 Included With Your Registration</p>
+      <p style="color:#2dd4bf;font-size:22px;font-weight:800;margin:0 0 8px;">Free AppDash Access</p>
+      <p style="color:#d1d5db;font-size:14px;margin:0 0 16px;line-height:1.6;">Your personal app management dashboard — track progress, manage deployments, organize your builds, and stay on top of everything in one place.</p>
+      <a href="https://appdash.me" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#2dd4bf,#14b8a6);color:#0a0a0f!important;text-decoration:none;border-radius:12px;font-weight:700;font-size:15px;">Get Started at AppDash.me</a>
+      <p style="color:#ffffff;font-size:15px;font-weight:700;margin:12px 0 0;">Use code <span style="color:#2dd4bf;font-size:18px;">WKSHOP47</span></p>
     </div>
 
     <!-- What to Expect -->
@@ -165,7 +208,7 @@ export function getRegistrationConfirmationEmail({
     </div>
 
     <p style="color:#9ca3af;font-size:14px;text-align:center;margin-top:24px;">See you at the workshop! 🚀</p>
-  `)
+  `, { hasAffiliateLinks: true })
 }
 
 // ========== TEMPLATE 2: Waitlist Confirmation ==========
@@ -192,22 +235,22 @@ export function getWaitlistConfirmationEmail({
     ${startDate ? `<p style="color:#6b7280;font-size:13px;">Workshop date: <strong style="color:#9ca3af;">${new Date(startDate).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</strong></p>` : ''}
 
     <div style="text-align:center;margin:28px 0;">
-      <p style="color:#ffffff;font-size:16px;font-weight:600;margin:0 0 12px;">In the Meantime...</p>
-      <p style="color:#9ca3af;font-size:14px;margin:0 0 16px;">Check out what we're building and connect with other entrepreneurs who are turning their ideas into real apps.</p>
-      <a href="https://nightvibe.me" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">Explore Night Vibe &rarr;</a>
+      <p style="color:#ffffff;font-size:16px;font-weight:600;margin:0 0 12px;">Don't Want to Wait?</p>
+      <p style="color:#9ca3af;font-size:14px;margin:0 0 16px;">If you'd rather skip the DIY route and get your app launched faster, our team can build it for you — idea to revenue-ready in as little as 48 hours.</p>
+      <a href="https://nightvibe.me" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:10px;font-weight:600;font-size:14px;">See Our Done-For-You Services &rarr;</a>
     </div>
   `)
 }
 
 // ========== TEMPLATE 3: Pre-Event Reminder (3 days) ==========
 export function getPreEventReminderEmail({
-  customerName, eventTitle, startDate, endDate, timezone, hostNames, eventId, customerEmail,
+  customerName, eventTitle, startDate, endDate, timezone, hostNames, eventId, customerEmail, meetingLink,
 }: {
-  customerName: string; eventTitle: string; startDate: string; endDate: string; timezone: string; hostNames: string[]; eventId: string; customerEmail: string;
+  customerName: string; eventTitle: string; startDate: string; endDate: string; timezone: string; hostNames: string[]; eventId: string; customerEmail: string; meetingLink?: string;
 }): string {
   const dateStr = formatEventDate(startDate, endDate, timezone)
-  const calUrl = generateGoogleCalendarUrl(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`)
-  const questionnaireUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'https://nightvibe.me'}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
+  const calUrl = generateGoogleCalendarUrl(eventTitle, startDate, endDate, `Night Vibe Workshop: ${eventTitle}`, meetingLink || undefined)
+  const questionnaireUrl = `${SITE_URL}/app-questionnaire?event_id=${eventId}&email=${encodeURIComponent(customerEmail)}`
 
   return emailWrapper(`
     <h1 style="color:#ffffff;font-size:28px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">Your Workshop is in 3 Days! 📅</h1>
@@ -244,28 +287,23 @@ export function getPreEventReminderEmail({
 
 // ========== TEMPLATE 4: Pre-Event Reminder (1 day) ==========
 export function getPreEventReminderOneDayEmail({
-  customerName, eventTitle, startDate, timezone, hostNames,
+  customerName, eventTitle, startDate, timezone, hostNames, meetingLink,
 }: {
-  customerName: string; eventTitle: string; startDate: string; timezone: string; hostNames: string[];
+  customerName: string; eventTitle: string; startDate: string; timezone: string; hostNames: string[]; meetingLink?: string;
 }): string {
-  const tzNames: Record<string, string> = {
-    'America/Los_Angeles': 'Pacific', 'America/New_York': 'Eastern',
-    'America/Chicago': 'Central', 'America/Denver': 'Mountain',
-  }
-  const timeStr = new Date(startDate).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: timezone })
-  const tzLabel = tzNames[timezone] || timezone
+  const allTimesStr = formatTimeAllZones(startDate)
 
   return emailWrapper(`
     <h1 style="color:#ffffff;font-size:28px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">Tomorrow's the Day! 🚀</h1>
-    <p style="color:#2dd4bf;font-size:16px;font-weight:600;text-align:center;margin:0 0 24px;">${timeStr} ${tzLabel}</p>
+    <p style="color:#2dd4bf;font-size:15px;font-weight:600;text-align:center;margin:0 0 24px;">${allTimesStr}</p>
 
     <p style="color:#d1d5db;font-size:15px;line-height:1.65;">Hey ${customerName},</p>
     <p style="color:#9ca3af;font-size:15px;line-height:1.65;"><strong style="color:#a78bfa;">${eventTitle}</strong> starts tomorrow. Quick logistics:</p>
 
     <div style="background:rgba(108,58,237,0.06);border:1px solid rgba(108,58,237,0.15);border-radius:12px;padding:20px;margin:20px 0;">
       <div style="color:#d1d5db;font-size:14px;line-height:2;">
-        <div><span style="color:#a78bfa;margin-right:8px;">⏰</span> Start time: <strong style="color:#fff;">${timeStr} ${tzLabel}</strong></div>
-        <div><span style="color:#a78bfa;margin-right:8px;">💻</span> Platform: Live virtual (Zoom link coming 1hr before)</div>
+        <div><span style="color:#a78bfa;margin-right:8px;">⏰</span> Start time: <strong style="color:#fff;">${allTimesStr}</strong></div>
+        <div><span style="color:#a78bfa;margin-right:8px;">💻</span> Platform: ${meetingLink ? `<a href="${meetingLink}" style="color:#2dd4bf;text-decoration:none;">Join Zoom Meeting</a>` : 'Live virtual (Zoom link coming 1hr before)'}</div>
         <div><span style="color:#a78bfa;margin-right:8px;">🧠</span> Have your app idea ready to go</div>
         <div><span style="color:#a78bfa;margin-right:8px;">🔋</span> Charge your laptop, grab coffee, bring energy</div>
       </div>
@@ -296,7 +334,7 @@ export function getPreEventReminderOneHourEmail({
 
     ${meetingLink ? `
     <div style="text-align:center;margin:28px 0;">
-      <a href="${meetingLink}" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:12px;font-weight:700;font-size:16px;">🎯 Join the Workshop Now</a>
+      <a href="${meetingLink}" style="display:inline-block;padding:16px 40px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:12px;font-weight:700;font-size:16px;">🎯 Join the Workshop</a>
     </div>` : `
     <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);border-radius:10px;padding:16px;margin:24px 0;text-align:center;">
       <p style="color:#2dd4bf;font-size:14px;font-weight:600;margin:0;">Meeting link will be sent separately via email</p>
@@ -314,7 +352,40 @@ export function getPreEventReminderOneHourEmail({
   `)
 }
 
-// ========== TEMPLATE 6: New Event Notification (for waitlist) ==========
+// ========== TEMPLATE 6: Pre-Event Reminder (5 minutes) ==========
+export function getPreEventReminderFiveMinEmail({
+  customerName, eventTitle, meetingLink,
+}: {
+  customerName: string; eventTitle: string; meetingLink?: string;
+}): string {
+  return emailWrapper(`
+    <h1 style="color:#ffffff;font-size:28px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">We're Starting! 🔥</h1>
+    <p style="color:#2dd4bf;font-size:16px;font-weight:600;text-align:center;margin:0 0 24px;">Sign in now so we can make the most of our time</p>
+
+    <p style="color:#d1d5db;font-size:15px;line-height:1.65;">Hey ${customerName},</p>
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;"><strong style="color:#a78bfa;">${eventTitle}</strong> is about to begin. Jump in now — we're starting in 5 minutes and we want you there from the first minute.</p>
+
+    ${meetingLink ? `
+    <div style="text-align:center;margin:28px 0;">
+      <a href="${meetingLink}" style="display:inline-block;padding:18px 48px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:14px;font-weight:800;font-size:18px;box-shadow:0 4px 20px rgba(108,58,237,0.4);">🚀 Join Now</a>
+    </div>` : `
+    <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);border-radius:10px;padding:16px;margin:24px 0;text-align:center;">
+      <p style="color:#2dd4bf;font-size:14px;font-weight:600;margin:0;">Check your inbox for the Zoom link</p>
+    </div>`}
+
+    <div style="background:rgba(108,58,237,0.06);border:1px solid rgba(108,58,237,0.15);border-radius:12px;padding:16px;margin:20px 0;">
+      <div style="color:#d1d5db;font-size:14px;line-height:1.8;">
+        <div><span style="color:#10b981;margin-right:8px;">✓</span> Have <a href="https://claude.ai" style="color:#2dd4bf;text-decoration:none;">claude.ai</a> open in a tab</div>
+        <div><span style="color:#10b981;margin-right:8px;">✓</span> Close distractions, turn on Do Not Disturb</div>
+        <div><span style="color:#10b981;margin-right:8px;">✓</span> Grab your notebook — ideas are about to flow</div>
+      </div>
+    </div>
+
+    <p style="color:#ffffff;font-size:15px;font-weight:600;text-align:center;margin:24px 0 0;">Let's build something incredible together. See you inside! 🎯</p>
+  `)
+}
+
+// ========== TEMPLATE 7: New Event Notification (for waitlist) ==========
 export function getNewEventNotificationEmail({
   name, eventTitle, startDate, endDate, price, seatsAvailable, registrationUrl,
 }: {

@@ -23,11 +23,11 @@ async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: st
     // Fetch event details with hosts
     const { data: eventData } = await sb
       .from('events')
-      .select('id, title, start_date, end_date, timezone')
+      .select('id, title, start_date, end_date, timezone, meeting_link')
       .eq('id', eventId)
       .single()
 
-    const event = eventData as { id: string; title: string; start_date: string; end_date: string; timezone: string } | null
+    const event = eventData as { id: string; title: string; start_date: string; end_date: string; timezone: string; meeting_link: string | null } | null
     if (!event) return
 
     // Fetch host names
@@ -62,6 +62,7 @@ async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: st
       hostNames,
       eventId: event.id,
       customerEmail,
+      meetingLink: event.meeting_link || undefined,
     })
 
     const result = await sendEmail({
