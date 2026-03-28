@@ -144,6 +144,10 @@ interface SentEmailRow {
   metadata: Record<string, unknown>
   status: string
   created_at: string
+  resend_message_id?: string
+  reply_notes?: string
+  replied_at?: string
+  html_body?: string
 }
 
 interface AppQuestionnaireRow {
@@ -185,6 +189,17 @@ export default function AdminPage() {
   const [sentEmails, setSentEmails] = useState<SentEmailRow[]>([])
   const [appQuestionnaires, setAppQuestionnaires] = useState<AppQuestionnaireRow[]>([])
   const [socialProofForm, setSocialProofForm] = useState({ name: '', location: '', workshop_name: 'Build & Launch Your App', is_active: true })
+
+  // Waitlist email state
+  const [selectedWaitlist, setSelectedWaitlist] = useState<Set<string>>(new Set())
+  const [waitlistEmailTemplate, setWaitlistEmailTemplate] = useState<'upcoming_events' | 'custom'>('upcoming_events')
+  const [waitlistEmailEvents, setWaitlistEmailEvents] = useState<string[]>([])
+  const [waitlistCustomSubject, setWaitlistCustomSubject] = useState('')
+  const [waitlistCustomBody, setWaitlistCustomBody] = useState('')
+  const [sendingWaitlistEmail, setSendingWaitlistEmail] = useState(false)
+  const [waitlistEmailResult, setWaitlistEmailResult] = useState('')
+  const [editingReplyId, setEditingReplyId] = useState<string | null>(null)
+  const [replyNotesText, setReplyNotesText] = useState('')
 
   // Offer item form
   const [offerForm, setOfferForm] = useState({
@@ -583,6 +598,57 @@ export default function AdminPage() {
 
   // Get registrations for a specific event
   const getEventRegistrations = (eventId: string) => registrations.filter(r => r.event_id === eventId)
+
+  // Send waitlist email
+  const sendWaitlistEmail = async () => {
+    if (selectedWaitlist.size === 0) { setWaitlistEmailResult('Select at least one person'); return }
+    setSendingWaitlistEmail(true)
+    setWaitlistEmailResult('')
+    try {
+      const recipients = waitlist.filter(w => selectedWaitlist.has(w.id)).map(w => ({ name: w.name, email: w.email }))
+      const payload: Record<string, unknown> = { password, template: waitlistEmailTemplate, recipients }
+      if (waitlistEmailTemplate === 'upcoming_events') {
+        if (waitlistEmailEvents.length === 0) { setWaitlistEmailResult('Select at least one event'); setSendingWaitlistEmail(false); return }
+        payload.eventIds = waitlistEmailEvents
+      } else {
+        if (!waitlistCustomSubject || !waitlistCustomBody) { setWaitlistEmailResult('Fill in subject and body'); setSendingWaitlistEmail(false); return }
+        payload.customSubject = waitlistCustomSubject
+        payload.customBody = waitlistCustomBody
+      }
+      const res = await fetch('/api/admin/waitlist-email', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+      const data = await res.json()
+      if (data.success) {
+        setWaitlistEmailResult(`Sent ${data.sent} email${data.sent !== 1 ? 's' : ''}${data.failed ? `, ${data.failed} failed` : ''}`)
+        setSelectedWaitlist(new Set())
+        // Refresh data to show in sent emails
+        const refreshRes = await fetch('/api/admin/data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) })
+        const refreshData = await refreshRes.json()
+        if (refreshData.sentEmails) setSentEmails(refreshData.sentEmails)
+      } else {
+        setWaitlistEmailResult(`Error: ${data.error}`)
+      }
+    } catch (err) {
+      setWaitlistEmailResult(`Error: ${err}`)
+    }
+    setSendingWaitlistEmail(false)
+  }
+
+  // Save reply notes on a sent email
+  const saveReplyNotes = async (emailId: string, notes: string, markReplied: boolean) => {
+    try {
+      const res = await fetch('/api/admin/waitlist-email', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, emailId, replyNotes: notes, replied: markReplied }),
+      })
+      if (res.ok) {
+        setSentEmails(prev => prev.map(em => em.id === emailId ? { ...em, reply_notes: notes, ...(markReplied ? { replied_at: new Date().toISOString() } : {}) } : em))
+        setEditingReplyId(null)
+      }
+    } catch (err) {
+      console.error('Failed to save reply notes:', err)
+    }
+  }
 
   // Get hosts linked to event
   const getLinkedHosts = (eventId: string) => {
@@ -1003,12 +1069,102 @@ export default function AdminPage() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700 }}>Waitlist Signups ({waitlist.length})</h2>
-              {waitlist.length > 0 && (
-                <button onClick={exportWaitlistCsv} className="admin-btn" style={{ padding: '8px 16px', fontSize: 13, background: 'transparent', border: '1px solid var(--accent-light)', color: 'var(--accent-light)' }}>
-                  Export CSV
-                </button>
-              )}
+              <div style={{ display: 'flex', gap: 8 }}>
+                {selectedWaitlist.size > 0 && (
+                  <span style={{ fontSize: 12, color: 'var(--accent-light)', padding: '8px 0', fontWeight: 600 }}>{selectedWaitlist.size} selected</span>
+                )}
+                {waitlist.length > 0 && (
+                  <button onClick={exportWaitlistCsv} className="admin-btn" style={{ padding: '8px 16px', fontSize: 13, background: 'transparent', border: '1px solid var(--accent-light)', color: 'var(--accent-light)' }}>
+                    Export CSV
+                  </button>
+                )}
+              </div>
             </div>
+
+            {/* EMAIL COMPOSER */}
+            {waitlist.length > 0 && (
+              <div className="card" style={{ padding: 20, marginBottom: 20, border: '1px solid rgba(108,58,237,0.2)' }}>
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', marginBottom: 12 }}>Send Email to Selected</h3>
+
+                {/* Template selector */}
+                <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+                  <button
+                    onClick={() => setWaitlistEmailTemplate('upcoming_events')}
+                    style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, border: 'none', cursor: 'pointer', background: waitlistEmailTemplate === 'upcoming_events' ? 'var(--accent)' : 'rgba(255,255,255,0.06)', color: waitlistEmailTemplate === 'upcoming_events' ? 'white' : 'var(--text-secondary)' }}
+                  >
+                    Upcoming Events
+                  </button>
+                  <button
+                    onClick={() => setWaitlistEmailTemplate('custom')}
+                    style={{ padding: '8px 16px', fontSize: 12, fontWeight: 600, borderRadius: 8, border: 'none', cursor: 'pointer', background: waitlistEmailTemplate === 'custom' ? 'var(--accent)' : 'rgba(255,255,255,0.06)', color: waitlistEmailTemplate === 'custom' ? 'white' : 'var(--text-secondary)' }}
+                  >
+                    Custom Email
+                  </button>
+                </div>
+
+                {/* Template-specific fields */}
+                {waitlistEmailTemplate === 'upcoming_events' && (
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Select events to include:</label>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      {events.filter(e => e.status === 'published' && new Date(e.start_date) > new Date()).map(ev => (
+                        <label key={ev.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                          <input
+                            type="checkbox"
+                            checked={waitlistEmailEvents.includes(ev.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) setWaitlistEmailEvents(prev => [...prev, ev.id])
+                              else setWaitlistEmailEvents(prev => prev.filter(id => id !== ev.id))
+                            }}
+                            style={{ accentColor: 'var(--accent)' }}
+                          />
+                          <span style={{ color: 'white', fontWeight: 600 }}>{ev.title}</span>
+                          <span style={{ color: 'var(--text-muted)', fontSize: 11 }}>
+                            {new Date(ev.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>Sends a branded email asking if they can make any of these dates, with register buttons for each event.</p>
+                  </div>
+                )}
+
+                {waitlistEmailTemplate === 'custom' && (
+                  <div style={{ marginBottom: 12 }}>
+                    <input
+                      className="admin-input"
+                      placeholder="Email subject line"
+                      value={waitlistCustomSubject}
+                      onChange={(e) => setWaitlistCustomSubject(e.target.value)}
+                      style={{ marginBottom: 8 }}
+                    />
+                    <textarea
+                      className="admin-input"
+                      placeholder="Email body (use blank lines for paragraphs). Each email auto-includes 'Hey [name]' and your sign-off."
+                      value={waitlistCustomBody}
+                      onChange={(e) => setWaitlistCustomBody(e.target.value)}
+                      rows={6}
+                      style={{ resize: 'vertical' }}
+                    />
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <button
+                    onClick={sendWaitlistEmail}
+                    disabled={sendingWaitlistEmail || selectedWaitlist.size === 0}
+                    className="admin-btn"
+                    style={{ padding: '10px 24px', fontSize: 13, opacity: sendingWaitlistEmail || selectedWaitlist.size === 0 ? 0.5 : 1 }}
+                  >
+                    {sendingWaitlistEmail ? 'Sending...' : `Send to ${selectedWaitlist.size} ${selectedWaitlist.size === 1 ? 'person' : 'people'}`}
+                  </button>
+                  {waitlistEmailResult && (
+                    <span style={{ fontSize: 12, color: waitlistEmailResult.startsWith('Error') ? 'var(--danger)' : 'var(--success)', fontWeight: 600 }}>{waitlistEmailResult}</span>
+                  )}
+                </div>
+              </div>
+            )}
+
             {waitlist.length === 0 ? (
               <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No waitlist signups yet.</p>
             ) : (
@@ -1016,6 +1172,17 @@ export default function AdminPage() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
                   <thead>
                     <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      <th style={{ padding: '10px 8px', textAlign: 'left', width: 40 }}>
+                        <input
+                          type="checkbox"
+                          checked={selectedWaitlist.size === waitlist.length && waitlist.length > 0}
+                          onChange={(e) => {
+                            if (e.target.checked) setSelectedWaitlist(new Set(waitlist.map(w => w.id)))
+                            else setSelectedWaitlist(new Set())
+                          }}
+                          style={{ accentColor: 'var(--accent)' }}
+                        />
+                      </th>
                       <th style={{ padding: '10px 12px', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 600 }}>Name</th>
                       <th style={{ padding: '10px 12px', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 600 }}>Email</th>
                       <th style={{ padding: '10px 12px', textAlign: 'left', color: 'var(--text-muted)', fontWeight: 600 }}>Phone</th>
@@ -1025,7 +1192,20 @@ export default function AdminPage() {
                   </thead>
                   <tbody>
                     {waitlist.map((w) => (
-                      <tr key={w.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                      <tr key={w.id} style={{ borderBottom: '1px solid var(--border)', background: selectedWaitlist.has(w.id) ? 'rgba(108,58,237,0.06)' : 'transparent' }}>
+                        <td style={{ padding: '10px 8px' }}>
+                          <input
+                            type="checkbox"
+                            checked={selectedWaitlist.has(w.id)}
+                            onChange={(e) => {
+                              const next = new Set(selectedWaitlist)
+                              if (e.target.checked) next.add(w.id)
+                              else next.delete(w.id)
+                              setSelectedWaitlist(next)
+                            }}
+                            style={{ accentColor: 'var(--accent)' }}
+                          />
+                        </td>
                         <td style={{ padding: '10px 12px' }}>{w.name}</td>
                         <td style={{ padding: '10px 12px', color: 'var(--accent-light)' }}>{w.email}</td>
                         <td style={{ padding: '10px 12px' }}>{w.phone || '—'}</td>
@@ -1795,10 +1975,13 @@ export default function AdminPage() {
           <div>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20 }}>Sent Emails ({sentEmails.length})</h2>
             {sentEmails.map((em) => (
-              <div key={em.id} className="card" style={{ marginBottom: 12, padding: 16 }}>
+              <div key={em.id} className="card" style={{ marginBottom: 12, padding: 16, borderLeft: em.replied_at ? '3px solid var(--success)' : em.reply_notes ? '3px solid var(--accent)' : 'none' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                  <div>
-                    <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 100, background: em.status === 'sent' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', color: em.status === 'sent' ? 'var(--success)' : 'var(--danger)', fontWeight: 600, marginRight: 8 }}>{em.status.toUpperCase()}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                    <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 100, background: em.status === 'sent' ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)', color: em.status === 'sent' ? 'var(--success)' : 'var(--danger)', fontWeight: 600 }}>{em.status.toUpperCase()}</span>
+                    {em.replied_at && (
+                      <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 100, background: 'rgba(16,185,129,0.15)', color: 'var(--success)', fontWeight: 600 }}>REPLIED</span>
+                    )}
                     <span style={{ fontSize: 12, color: 'var(--accent-light)', fontWeight: 600 }}>{em.email_type.replace(/_/g, ' ')}</span>
                   </div>
                   <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(em.created_at).toLocaleDateString()}</span>
@@ -1806,6 +1989,60 @@ export default function AdminPage() {
                 <p style={{ fontSize: 13, color: 'white', fontWeight: 600, margin: '4px 0' }}>{em.subject}</p>
                 <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>To: {em.recipient_email}</p>
                 {em.event_id && <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>Event: {events.find(e => e.id === em.event_id)?.title || em.event_id}</p>}
+
+                {/* Reply notes section */}
+                <div style={{ marginTop: 10, borderTop: '1px solid var(--border)', paddingTop: 10 }}>
+                  {editingReplyId === em.id ? (
+                    <div>
+                      <textarea
+                        className="admin-input"
+                        value={replyNotesText}
+                        onChange={(e) => setReplyNotesText(e.target.value)}
+                        placeholder="Paste their reply or add notes about this email..."
+                        rows={3}
+                        style={{ fontSize: 12, marginBottom: 8, resize: 'vertical' }}
+                      />
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button
+                          onClick={() => saveReplyNotes(em.id, replyNotesText, false)}
+                          className="admin-btn"
+                          style={{ padding: '6px 14px', fontSize: 11, background: 'transparent', border: '1px solid var(--accent-light)', color: 'var(--accent-light)' }}
+                        >
+                          Save Notes
+                        </button>
+                        <button
+                          onClick={() => saveReplyNotes(em.id, replyNotesText, true)}
+                          className="admin-btn"
+                          style={{ padding: '6px 14px', fontSize: 11, background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', color: 'var(--success)' }}
+                        >
+                          Mark as Replied
+                        </button>
+                        <button
+                          onClick={() => setEditingReplyId(null)}
+                          style={{ padding: '6px 14px', fontSize: 11, background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      {em.reply_notes ? (
+                        <div style={{ flex: 1 }}>
+                          <p style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, marginBottom: 2 }}>RESPONSE NOTES</p>
+                          <p style={{ fontSize: 12, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap', margin: 0 }}>{em.reply_notes}</p>
+                          {em.replied_at && <p style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 4 }}>Replied {new Date(em.replied_at).toLocaleDateString()}</p>}
+                        </div>
+                      ) : null}
+                      <button
+                        onClick={() => { setEditingReplyId(em.id); setReplyNotesText(em.reply_notes || '') }}
+                        style={{ padding: '4px 12px', fontSize: 11, background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text-muted)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                      >
+                        {em.reply_notes ? 'Edit Notes' : 'Add Response'}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             {sentEmails.length === 0 && <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No emails sent yet.</p>}

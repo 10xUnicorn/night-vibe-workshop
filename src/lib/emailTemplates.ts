@@ -416,3 +416,105 @@ export function getNewEventNotificationEmail({
     </div>
   `)
 }
+
+// =========================================
+// WAITLIST OUTREACH TEMPLATES
+// =========================================
+
+export function getWaitlistUpcomingEventsEmail({
+  name,
+  events,
+}: {
+  name: string;
+  events: { title: string; startDate: string; endDate: string; timezone: string; price: number; seatsAvailable: number; registrationUrl: string }[];
+}): { subject: string; html: string } {
+  const eventCards = events.map(ev => {
+    const start = new Date(ev.startDate)
+    const end = new Date(ev.endDate)
+    const dateStr = start.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: ev.timezone })
+    const endDateStr = end.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: ev.timezone })
+    const allZones = [
+      { tz: 'America/Los_Angeles', label: 'PT' },
+      { tz: 'America/Denver', label: 'MT' },
+      { tz: 'America/Chicago', label: 'CT' },
+      { tz: 'America/New_York', label: 'ET' },
+    ]
+    const times = allZones.map(z => {
+      const t = start.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: z.tz })
+      return z.tz === ev.timezone
+        ? `<strong style="color:#a78bfa;">${t} ${z.label}</strong>`
+        : `${t} ${z.label}`
+    }).join(' · ')
+
+    return `
+      <div style="background:rgba(108,58,237,0.06);border:1px solid rgba(108,58,237,0.15);border-radius:12px;padding:20px;margin:16px 0;">
+        <h3 style="color:#ffffff;font-size:16px;font-weight:700;margin:0 0 8px;">${ev.title}</h3>
+        <p style="color:#9ca3af;font-size:13px;margin:0 0 4px;">📅 ${dateStr} – ${endDateStr}</p>
+        <p style="color:#9ca3af;font-size:12px;margin:0 0 12px;">${times}</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span style="color:#10b981;font-size:13px;font-weight:600;">${ev.seatsAvailable} spots left · $${ev.price}</span>
+          <a href="${ev.registrationUrl}" style="display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:10px;font-weight:700;font-size:13px;">Register →</a>
+        </div>
+      </div>
+    `
+  }).join('')
+
+  const subject = events.length === 1
+    ? `Can you make it? ${events[0].title}`
+    : `Upcoming workshops — can you make any of these?`
+
+  const html = emailWrapper(`
+    <h1 style="color:#ffffff;font-size:24px;font-weight:800;margin:0 0 8px;line-height:1.2;">Hey ${name},</h1>
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 20px;">
+      You signed up for our waitlist, and I wanted to reach out personally. We have ${events.length === 1 ? 'a workshop' : 'some workshops'} coming up and I want to make sure you don't miss out.
+    </p>
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 8px;">
+      <strong style="color:#ffffff;">Can you make it to any of these?</strong>
+    </p>
+
+    ${eventCards}
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:24px 0 0;">
+      Each workshop is a <strong style="color:#ffffff;">live 2-day build sprint</strong> where you'll go from idea to a fully deployed application — auth, payments, database, everything. No coding experience required.
+    </p>
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:16px 0 0;">
+      Just reply to this email and let me know which date works best for you, or click the register button above to lock in your spot.
+    </p>
+
+    <p style="color:#6b7280;font-size:13px;margin:24px 0 0;">
+      Talk soon,<br/>
+      <strong style="color:#9ca3af;">Daniel</strong>
+    </p>
+  `)
+
+  return { subject, html }
+}
+
+export function getWaitlistCustomEmail({
+  name,
+  subject,
+  body,
+}: {
+  name: string;
+  subject: string;
+  body: string;
+}): { subject: string; html: string } {
+  // Convert line breaks to HTML paragraphs
+  const htmlBody = body
+    .split('\n\n')
+    .map(p => `<p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 16px;">${p.replace(/\n/g, '<br/>')}</p>`)
+    .join('')
+
+  const html = emailWrapper(`
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 20px;">Hey ${name},</p>
+    ${htmlBody}
+    <p style="color:#6b7280;font-size:13px;margin:24px 0 0;">
+      Talk soon,<br/>
+      <strong style="color:#9ca3af;">Daniel</strong>
+    </p>
+  `)
+
+  return { subject, html }
+}
