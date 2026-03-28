@@ -6,9 +6,12 @@ import { useSearchParams } from 'next/navigation'
 function QuestionnaireContent() {
   const searchParams = useSearchParams()
   const eventId = searchParams.get('event_id') || ''
-  const email = searchParams.get('email') || ''
+  const prefillEmail = searchParams.get('email') || ''
+  const prefillName = searchParams.get('name') || ''
 
   const [form, setForm] = useState({
+    name: prefillName,
+    email: prefillEmail,
     app_idea: '',
     problem: '',
     target_customer: '',
@@ -36,7 +39,7 @@ function QuestionnaireContent() {
       await fetch('/api/questionnaire', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, event_id: eventId || null, email }),
+        body: JSON.stringify({ ...form, event_id: eventId || null }),
       })
       setSubmitted(true)
     } catch {
@@ -89,6 +92,30 @@ function QuestionnaireContent() {
 
         <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 24 }}>
           <div style={{ background: 'rgba(19,19,26,0.5)', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 16, padding: 28, display: 'grid', gap: 20 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div>
+                <label style={labelStyle}>Your Name *</label>
+                <input
+                  required
+                  value={form.name}
+                  onChange={e => setForm({ ...form, name: e.target.value })}
+                  placeholder="First & last name"
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle}>Your Email *</label>
+                <input
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  placeholder="you@email.com"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
             <div>
               <label style={labelStyle}>What&apos;s your app idea? *</label>
               <textarea

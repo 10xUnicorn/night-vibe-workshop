@@ -518,3 +518,129 @@ export function getWaitlistCustomEmail({
 
   return { subject, html }
 }
+
+// =========================================
+// QUESTIONNAIRE EMAIL TEMPLATES
+// =========================================
+
+export function getQuestionnaireConfirmationEmail({
+  name,
+  appIdea,
+  eventTitle,
+}: {
+  name: string;
+  appIdea: string;
+  eventTitle?: string;
+}): string {
+  return emailWrapper(`
+    <h1 style="color:#ffffff;font-size:24px;font-weight:800;margin:0 0 8px;line-height:1.2;text-align:center;">We Got Your App Idea 🚀</h1>
+    <p style="color:#2dd4bf;font-size:14px;font-weight:600;text-align:center;margin:0 0 24px;">You're one step closer to building it</p>
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 16px;">Hey ${name},</p>
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 16px;">
+      We just received your questionnaire and we're already thinking about how to help you bring this to life.
+    </p>
+
+    <div style="background:rgba(108,58,237,0.06);border:1px solid rgba(108,58,237,0.15);border-radius:12px;padding:20px;margin:20px 0;">
+      <p style="color:#a78bfa;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 8px;">YOUR APP IDEA</p>
+      <p style="color:#d1d5db;font-size:14px;line-height:1.6;margin:0;font-style:italic;">"${appIdea}"</p>
+    </div>
+
+    ${eventTitle ? `
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 16px;">
+      Daniel and Mark will review your submission before <strong style="color:#ffffff;">${eventTitle}</strong> so your workshop experience is tailored to what you're building.
+    </p>
+    ` : `
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 16px;">
+      Daniel and Mark will review your submission and follow up with anything relevant to help you move forward.
+    </p>
+    `}
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:0 0 16px;">
+      <strong style="color:#ffffff;">What happens next:</strong>
+    </p>
+
+    <div style="padding:0 0 0 4px;">
+      <div style="padding:6px 0;color:#d1d5db;font-size:14px;line-height:1.6;">
+        <span style="color:#10b981;">✓</span>&nbsp;&nbsp;We review your idea and tailor our prep
+      </div>
+      <div style="padding:6px 0;color:#d1d5db;font-size:14px;line-height:1.6;">
+        <span style="color:#10b981;">✓</span>&nbsp;&nbsp;You'll get a pre-workshop checklist to set up your tools
+      </div>
+      <div style="padding:6px 0;color:#d1d5db;font-size:14px;line-height:1.6;">
+        <span style="color:#10b981;">✓</span>&nbsp;&nbsp;On workshop day, you'll start building immediately
+      </div>
+    </div>
+
+    <p style="color:#9ca3af;font-size:15px;line-height:1.65;margin:20px 0 0;">
+      If you have questions before the workshop, just reply to this email.
+    </p>
+
+    <p style="color:#6b7280;font-size:13px;margin:24px 0 0;">
+      Talk soon,<br/>
+      <strong style="color:#9ca3af;">Daniel &amp; Mark</strong>
+    </p>
+  `)
+}
+
+export function getQuestionnaireNotificationEmail({
+  submitterName,
+  submitterEmail,
+  appIdea,
+  problem,
+  targetCustomer,
+  existingBusiness,
+  biggestChallenge,
+  technicalLevel,
+  eventTitle,
+}: {
+  submitterName: string;
+  submitterEmail: string;
+  appIdea: string;
+  problem: string;
+  targetCustomer?: string;
+  existingBusiness?: string;
+  biggestChallenge?: string;
+  technicalLevel?: string;
+  eventTitle?: string;
+}): string {
+  const techLabels: Record<string, string> = {
+    'not_at_all': 'Not at all — brand new',
+    'somewhat': 'Somewhat — used no-code tools or basic coding',
+    'very': 'Very — has development experience',
+  }
+  const bizLabels: Record<string, string> = {
+    'yes': 'Yes',
+    'no': 'No',
+    'working_on_it': 'Working on it',
+  }
+
+  const detailRow = (label: string, value: string) => `
+    <tr>
+      <td style="color:#6b7280;font-size:12px;padding:8px 0;border-bottom:1px solid rgba(108,58,237,0.08);width:120px;vertical-align:top;font-weight:600;">${label}</td>
+      <td style="color:#d1d5db;font-size:13px;padding:8px 0;border-bottom:1px solid rgba(108,58,237,0.08);vertical-align:top;">${value}</td>
+    </tr>
+  `
+
+  return emailWrapper(`
+    <h1 style="color:#ffffff;font-size:22px;font-weight:800;margin:0 0 8px;line-height:1.2;">New Questionnaire Submission</h1>
+    <p style="color:#a78bfa;font-size:14px;font-weight:600;margin:0 0 20px;">${submitterName} (${submitterEmail})</p>
+    ${eventTitle ? `<p style="color:#9ca3af;font-size:13px;margin:0 0 16px;">Event: <strong style="color:#ffffff;">${eventTitle}</strong></p>` : ''}
+
+    <table style="width:100%;border-collapse:collapse;margin:0 0 20px;">
+      ${detailRow('Name', submitterName)}
+      ${detailRow('Email', `<a href="mailto:${submitterEmail}" style="color:#a78bfa;">${submitterEmail}</a>`)}
+      ${detailRow('App Idea', appIdea)}
+      ${detailRow('Problem', problem)}
+      ${targetCustomer ? detailRow('Target Customer', targetCustomer) : ''}
+      ${existingBusiness ? detailRow('Existing Business', bizLabels[existingBusiness] || existingBusiness) : ''}
+      ${biggestChallenge ? detailRow('Biggest Challenge', biggestChallenge) : ''}
+      ${technicalLevel ? detailRow('Technical Level', techLabels[technicalLevel] || technicalLevel) : ''}
+    </table>
+
+    <div style="text-align:center;margin:24px 0 0;">
+      <a href="mailto:${submitterEmail}" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#ffffff!important;text-decoration:none;border-radius:10px;font-weight:700;font-size:14px;">Reply to ${submitterName.split(' ')[0]}</a>
+    </div>
+  `)
+}

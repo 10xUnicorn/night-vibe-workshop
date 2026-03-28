@@ -153,6 +153,7 @@ interface SentEmailRow {
 interface AppQuestionnaireRow {
   id: string
   event_id: string | null
+  name?: string
   email: string
   app_idea: string
   problem: string
@@ -2057,7 +2058,8 @@ export default function AdminPage() {
               <div key={q.id} className="card" style={{ marginBottom: 16, padding: 20 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                   <div>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: 'white' }}>{q.email}</span>
+                    {q.name && <span style={{ fontSize: 14, fontWeight: 600, color: 'white', marginRight: 8 }}>{q.name}</span>}
+                    <span style={{ fontSize: 14, fontWeight: q.name ? 400 : 600, color: q.name ? 'var(--accent-light)' : 'white' }}>{q.email}</span>
                     {q.event_id && <span style={{ fontSize: 12, color: 'var(--accent-light)', marginLeft: 12 }}>{events.find(e => e.id === q.event_id)?.title || 'Unknown event'}</span>}
                   </div>
                   <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{new Date(q.created_at).toLocaleDateString()}</span>
