@@ -6,7 +6,9 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 function checkAuth(password: string) {
-  return password === (process.env.ADMIN_PASSWORD || 'nightvibe2026')
+  const adminPw = process.env.ADMIN_PASSWORD
+  if (!adminPw) return false
+  return password === adminPw
 }
 
 export async function GET() {

@@ -171,21 +171,36 @@ export default function PartnersPage() {
     setTimeout(() => setCopiedId(''), 2000)
   }
 
+  const [saveResult, setSaveResult] = useState('')
   const handleSaveLanding = async (linkId: string) => {
     setSavingLanding(true)
-    await fetch('/api/affiliates/links', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: affiliate?.custom_slug, link_id: linkId, custom_landing_html: landingHtml }),
-    })
+    setSaveResult('')
+    try {
+      const res = await fetch('/api/affiliates/links', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: affiliate?.custom_slug, link_id: linkId, custom_landing_html: landingHtml }),
+      })
+      if (res.ok) {
+        setSaveResult('Landing page saved and published!')
+        await loadData(affiliate!.custom_slug)
+      } else {
+        const err = await res.json()
+        setSaveResult(`Error: ${err.error || 'Failed to save'}`)
+      }
+    } catch {
+      setSaveResult('Network error — try again')
+    }
     setSavingLanding(false)
-    await loadData(affiliate!.custom_slug)
+    setTimeout(() => setSaveResult(''), 4000)
   }
 
   const handleExportCSV = () => {
-    const cols = exportConfig.columns.join(',')
-    const headers = encodeURIComponent(JSON.stringify(exportConfig.headers))
-    window.open(`/api/affiliates/export?slug=${affiliate?.custom_slug}&columns=${cols}&headers=${headers}`, '_blank')
+    const params = new URLSearchParams()
+    params.set('slug', affiliate?.custom_slug || '')
+    params.set('columns', exportConfig.columns.join(','))
+    params.set('headers', JSON.stringify(exportConfig.headers))
+    window.open(`/api/affiliates/export?${params.toString()}`, '_blank')
   }
 
   // Drag reorder for export columns
@@ -612,6 +627,12 @@ export default function PartnersPage() {
                     </button>
                   </div>
                 </div>
+
+                {saveResult && (
+                  <div style={{ padding: '10px 20px', background: saveResult.includes('Error') ? 'rgba(239,68,68,0.1)' : 'rgba(16,185,129,0.1)', color: saveResult.includes('Error') ? '#ef4444' : '#10b981', fontSize: 13, fontWeight: 600 }}>
+                    {saveResult}
+                  </div>
+                )}
 
                 {previewLanding ? (
                   <div style={{ padding: 20 }}>

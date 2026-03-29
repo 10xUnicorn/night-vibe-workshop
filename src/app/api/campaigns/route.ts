@@ -72,10 +72,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(campaign, { status: 201 })
   }
 
+  if (!body.name?.trim() || !body.type) {
+    return NextResponse.json({ error: 'name and type are required' }, { status: 400 })
+  }
+
   const { data, error } = await sb.from('campaigns').insert({
     folder_id: body.folder_id || null,
     event_id: body.event_id || null,
-    name: body.name,
+    name: body.name.trim(),
     description: body.description || null,
     type: body.type,
     status: body.status || 'draft',

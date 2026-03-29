@@ -5,7 +5,9 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 function checkAuth(password: string) {
-  return password === (process.env.ADMIN_PASSWORD || 'nightvibe2026')
+  const adminPw = process.env.ADMIN_PASSWORD
+  if (!adminPw) return false
+  return password === adminPw
 }
 
 // GET admin data — events, waitlist, registrations, hosts — using service_role to bypass RLS

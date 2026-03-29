@@ -9,7 +9,9 @@ function getAdmin() {
 }
 
 function checkAuth(password: string) {
-  return password === (process.env.ADMIN_PASSWORD || 'nightvibe2026')
+  const adminPw = process.env.ADMIN_PASSWORD
+  if (!adminPw) return false
+  return password === adminPw
 }
 
 // GET all offer items (public)

@@ -9,7 +9,9 @@ function getAdmin() {
 }
 
 function checkAuth(password: string) {
-  return password === (process.env.ADMIN_PASSWORD || 'nightvibe2026')
+  const adminPw = process.env.ADMIN_PASSWORD
+  if (!adminPw) return false
+  return password === adminPw
 }
 
 // GET — export referrals as CSV with custom header mapping and column ordering
@@ -22,7 +24,10 @@ export async function GET(req: NextRequest) {
   const columnOrder = req.nextUrl.searchParams.get('columns')?.split(',') || []
   // Header mapping: JSON-encoded { original_key: "Custom Header" }
   const headerMapStr = req.nextUrl.searchParams.get('headers')
-  const headerMap: Record<string, string> = headerMapStr ? JSON.parse(headerMapStr) : {}
+  let headerMap: Record<string, string> = {}
+  if (headerMapStr) {
+    try { headerMap = JSON.parse(decodeURIComponent(headerMapStr)) } catch { /* use defaults */ }
+  }
 
   const sb = getAdmin()
   let targetAffiliateId = affiliateId

@@ -9,7 +9,9 @@ function getAdmin() {
 }
 
 function checkAuth(password: string) {
-  return password === (process.env.ADMIN_PASSWORD || 'nightvibe2026')
+  const adminPw = process.env.ADMIN_PASSWORD
+  if (!adminPw) return false
+  return password === adminPw
 }
 
 function generateSlug(firstName: string, lastName: string): string {
@@ -20,19 +22,21 @@ function generateTrackingCode(): string {
   return 'nv-' + Math.random().toString(36).substring(2, 10)
 }
 
-// GET all affiliates (admin)
+// GET all affiliates (admin) or self-lookup by slug
 export async function GET(req: NextRequest) {
   const password = req.nextUrl.searchParams.get('password') || ''
-  // Also allow affiliate self-lookup by slug
   const slug = req.nextUrl.searchParams.get('slug')
 
   const sb = getAdmin()
 
   if (slug) {
+    const trimmed = slug.trim().toLowerCase()
+    if (!trimmed) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 })
+
     const { data, error } = await sb
       .from('affiliates')
       .select('id, first_name, last_name, email, company, custom_slug, status, created_at')
-      .eq('custom_slug', slug)
+      .eq('custom_slug', trimmed)
       .eq('status', 'active')
       .single()
 
@@ -52,7 +56,7 @@ export async function GET(req: NextRequest) {
     .order('created_at', { ascending: false })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  return NextResponse.json(data)
+  return NextResponse.json(data || [])
 }
 
 // CREATE affiliate (admin)
@@ -62,16 +66,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Validate required fields
+  if (!body.first_name?.trim() || !body.last_name?.trim() || !body.email?.trim()) {
+    return NextResponse.json({ error: 'first_name, last_name, and email are required' }, { status: 400 })
+  }
+
   const sb = getAdmin()
-  const slug = body.custom_slug || generateSlug(body.first_name, body.last_name)
+  const slug = body.custom_slug?.trim() || generateSlug(body.first_name.trim(), body.last_name.trim())
 
   const { data: affiliate, error } = await sb.from('affiliates').insert({
-    first_name: body.first_name,
-    last_name: body.last_name,
-    email: body.email,
+    first_name: body.first_name.trim(),
+    last_name: body.last_name.trim(),
+    email: body.email.trim().toLowerCase(),
     phone: body.phone || null,
     company: body.company || null,
-    commission_rate: body.commission_rate || 0,
+    commission_rate: Math.max(0, Math.min(100, parseFloat(body.commission_rate) || 0)),
     custom_slug: slug,
     bio: body.bio || null,
     notes: body.notes || null,
@@ -80,7 +89,7 @@ export async function POST(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Auto-create tracking links for all active events
+  // Auto-create tracking links for all published events
   if (body.auto_create_links) {
     const { data: events } = await sb
       .from('events')
@@ -93,7 +102,8 @@ export async function POST(req: NextRequest) {
         event_id: ev.id,
         tracking_code: generateTrackingCode(),
       }))
-      await sb.from('affiliate_links').insert(links)
+      const { error: linkErr } = await sb.from('affiliate_links').insert(links)
+      if (linkErr) console.error('Failed to create affiliate links:', linkErr.message)
     }
   }
 
@@ -107,12 +117,19 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!body.id) return NextResponse.json({ error: 'id is required' }, { status: 400 })
+
   const sb = getAdmin()
   const updates: Record<string, unknown> = { updated_at: new Date().toISOString() }
 
   const fields = ['first_name', 'last_name', 'email', 'phone', 'company', 'commission_rate', 'custom_slug', 'bio', 'notes', 'status']
   for (const f of fields) {
     if (body[f] !== undefined) updates[f] = body[f]
+  }
+
+  // Clamp commission rate
+  if (updates.commission_rate !== undefined) {
+    updates.commission_rate = Math.max(0, Math.min(100, parseFloat(String(updates.commission_rate)) || 0))
   }
 
   const { data, error } = await sb
@@ -132,6 +149,8 @@ export async function DELETE(req: NextRequest) {
   if (!checkAuth(body.password)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
+  if (!body.id) return NextResponse.json({ error: 'id is required' }, { status: 400 })
 
   const sb = getAdmin()
   const { error } = await sb.from('affiliates').delete().eq('id', body.id)
