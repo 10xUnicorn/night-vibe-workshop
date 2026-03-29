@@ -174,7 +174,7 @@ export default function AdminPage() {
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
   const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
   const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires'>('events')
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires' | 'affiliates' | 'campaigns'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
@@ -201,6 +201,29 @@ export default function AdminPage() {
   const [waitlistEmailResult, setWaitlistEmailResult] = useState('')
   const [editingReplyId, setEditingReplyId] = useState<string | null>(null)
   const [replyNotesText, setReplyNotesText] = useState('')
+
+  // Affiliate state
+  interface AffiliateRow { id: string; first_name: string; last_name: string; email: string; phone?: string; company?: string; status: string; commission_rate: number; custom_slug: string; bio?: string; notes?: string; agreed_to_terms: boolean; created_at: string }
+  interface AffLinkRow { id: string; affiliate_id: string; event_id: string; tracking_code: string; clicks: number; is_active: boolean; affiliates?: { first_name: string; last_name: string; email: string }; events?: { title: string; slug: string } }
+  interface AffReferralRow { id: string; affiliate_id: string; event_id: string; lead_first_name?: string; lead_last_name?: string; lead_email: string; status: string; revenue: number; commission_amount: number; commission_paid: boolean; created_at: string; affiliates?: { first_name: string; last_name: string; email: string }; events?: { title: string }; affiliate_links?: { tracking_code: string } }
+  const [affiliates, setAffiliates] = useState<AffiliateRow[]>([])
+  const [affLinks, setAffLinks] = useState<AffLinkRow[]>([])
+  const [affReferrals, setAffReferrals] = useState<AffReferralRow[]>([])
+  const [affSubTab, setAffSubTab] = useState<'list' | 'links' | 'referrals' | 'add'>('list')
+  const [affForm, setAffForm] = useState({ first_name: '', last_name: '', email: '', phone: '', company: '', commission_rate: '0', custom_slug: '', notes: '' })
+
+  // Campaign state
+  interface CampaignFolderRow { id: string; name: string; description?: string; sort_order: number; campaigns?: { count: number }[] }
+  interface CampaignRow { id: string; folder_id?: string; event_id?: string; name: string; description?: string; type: string; status: string; created_at: string; updated_at: string; campaign_folders?: { name: string }; campaign_posts?: { count: number }[] }
+  interface CampaignPostRow { id: string; campaign_id: string; step_order: number; title?: string; subject_line?: string; preview_text?: string; body_content: string; body_html?: string; platform?: string; delay_days: number; delay_hours: number; status: string }
+  const [campFolders, setCampFolders] = useState<CampaignFolderRow[]>([])
+  const [campaigns, setCampaigns] = useState<CampaignRow[]>([])
+  const [campPosts, setCampPosts] = useState<CampaignPostRow[]>([])
+  const [campSubTab, setCampSubTab] = useState<'folders' | 'campaigns' | 'posts'>('campaigns')
+  const [selectedCampaign, setSelectedCampaign] = useState<string | null>(null)
+  const [campForm, setCampForm] = useState({ name: '', description: '', type: 'email_html', folder_id: '', event_id: '' })
+  const [postForm, setPostForm] = useState({ title: '', subject_line: '', preview_text: '', body_content: '', body_html: '', platform: 'email', delay_days: '0', delay_hours: '0', step_order: '1' })
+  const [folderForm, setFolderForm] = useState({ name: '', description: '' })
 
   // Offer item form
   const [offerForm, setOfferForm] = useState({
@@ -296,6 +319,24 @@ export default function AdminPage() {
       if (data.sentEmails) setSentEmails(data.sentEmails)
       if (data.appQuestionnaires) setAppQuestionnaires(data.appQuestionnaires)
     }
+
+    // Fetch affiliate data
+    const [affRes, linkRes, refRes] = await Promise.all([
+      fetch(`/api/affiliates?password=${password}`),
+      fetch(`/api/affiliates/links?password=${password}`),
+      fetch(`/api/affiliates/referrals?password=${password}`),
+    ])
+    if (affRes.ok) setAffiliates(await affRes.json())
+    if (linkRes.ok) setAffLinks(await linkRes.json())
+    if (refRes.ok) setAffReferrals(await refRes.json())
+
+    // Fetch campaign data
+    const [foldRes, campRes] = await Promise.all([
+      fetch(`/api/campaigns/folders?password=${password}`),
+      fetch(`/api/campaigns?password=${password}`),
+    ])
+    if (foldRes.ok) setCampFolders(await foldRes.json())
+    if (campRes.ok) setCampaigns(await campRes.json())
   }, [password])
 
   useEffect(() => {
@@ -712,6 +753,8 @@ export default function AdminPage() {
               'social-proof': 'Social Proof',
               'sent-emails': 'Emails',
               'questionnaires': 'Questionnaires',
+              'affiliates': 'Affiliates',
+              'campaigns': 'Campaigns',
             }
             return (
             <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null); setShowCreateMenu(false) }} style={{
@@ -719,7 +762,7 @@ export default function AdminPage() {
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
               {labels[t]}
-              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : t === 'social-proof' ? ` (${socialProofEntries.length})` : t === 'sent-emails' ? ` (${sentEmails.length})` : t === 'questionnaires' ? ` (${appQuestionnaires.length})` : ''}
+              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : t === 'social-proof' ? ` (${socialProofEntries.length})` : t === 'sent-emails' ? ` (${sentEmails.length})` : t === 'questionnaires' ? ` (${appQuestionnaires.length})` : t === 'affiliates' ? ` (${affiliates.length})` : t === 'campaigns' ? ` (${campaigns.length})` : ''}
             </button>
             )
           })}
@@ -2103,6 +2146,382 @@ export default function AdminPage() {
                         Event: {events.find(e => e.id === c.event_id)?.title || c.event_id}
                       </p>
                     )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* =================== AFFILIATES TAB =================== */}
+        {tab === 'affiliates' && (
+          <div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+              {(['list', 'links', 'referrals', 'add'] as const).map(st => (
+                <button key={st} onClick={() => setAffSubTab(st)} style={{
+                  padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                  background: affSubTab === st ? 'var(--accent)' : 'var(--bg-card)', color: affSubTab === st ? '#fff' : 'var(--text-secondary)',
+                }}>
+                  {st === 'list' ? `Partners (${affiliates.length})` : st === 'links' ? `Links (${affLinks.length})` : st === 'referrals' ? `Referrals (${affReferrals.length})` : '+ Add Partner'}
+                </button>
+              ))}
+              <button
+                onClick={() => window.open(`/api/affiliates/export?password=${password}`, '_blank')}
+                style={{ marginLeft: 'auto', padding: '8px 16px', borderRadius: 8, border: '1px solid var(--border)', background: 'transparent', color: 'var(--success)', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+              >📥 Export All CSV</button>
+            </div>
+
+            {/* ADD PARTNER FORM */}
+            {affSubTab === 'add' && (
+              <div className="card" style={{ padding: 20, marginBottom: 20 }}>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Add New Partner</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <input placeholder="First Name *" value={affForm.first_name} onChange={e => setAffForm(p => ({ ...p, first_name: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Last Name *" value={affForm.last_name} onChange={e => setAffForm(p => ({ ...p, last_name: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Email *" value={affForm.email} onChange={e => setAffForm(p => ({ ...p, email: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Phone" value={affForm.phone} onChange={e => setAffForm(p => ({ ...p, phone: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Company" value={affForm.company} onChange={e => setAffForm(p => ({ ...p, company: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Commission % (e.g. 20)" value={affForm.commission_rate} onChange={e => setAffForm(p => ({ ...p, commission_rate: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Custom Slug (auto-generated if blank)" value={affForm.custom_slug} onChange={e => setAffForm(p => ({ ...p, custom_slug: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  <input placeholder="Notes" value={affForm.notes} onChange={e => setAffForm(p => ({ ...p, notes: e.target.value }))} className="input" style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                </div>
+                <button
+                  onClick={async () => {
+                    setSaving(true)
+                    const res = await fetch('/api/affiliates', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ ...affForm, commission_rate: parseFloat(affForm.commission_rate) || 0, auto_create_links: true, password }),
+                    })
+                    if (res.ok) {
+                      setMsg('Partner added successfully')
+                      setAffForm({ first_name: '', last_name: '', email: '', phone: '', company: '', commission_rate: '0', custom_slug: '', notes: '' })
+                      fetchData()
+                      setAffSubTab('list')
+                    } else {
+                      const err = await res.json()
+                      setMsg(err.error || 'Failed to add partner')
+                    }
+                    setSaving(false)
+                  }}
+                  disabled={saving || !affForm.first_name || !affForm.last_name || !affForm.email}
+                  style={{ marginTop: 16, padding: '12px 24px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 700, fontSize: 14, cursor: 'pointer', opacity: saving ? 0.5 : 1 }}
+                >
+                  {saving ? 'Saving...' : 'Add Partner & Create Links'}
+                </button>
+              </div>
+            )}
+
+            {/* PARTNERS LIST */}
+            {affSubTab === 'list' && (
+              <div style={{ overflowX: 'auto' }}>
+                {affiliates.length === 0 ? (
+                  <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No partners yet. Click &quot;+ Add Partner&quot; to get started.</p>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <thead>
+                      <tr>
+                        {['Name', 'Email', 'Company', 'Slug', 'Commission', 'Status', 'Links', 'Referrals', 'Actions'].map(h => (
+                          <th key={h} style={{ textAlign: 'left', padding: '10px 12px', color: 'var(--text-muted)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, borderBottom: '1px solid var(--border)' }}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {affiliates.map(a => {
+                        const aLinks = affLinks.filter(l => l.affiliate_id === a.id)
+                        const aRefs = affReferrals.filter(r => r.affiliate_id === a.id)
+                        return (
+                          <tr key={a.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                            <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600 }}>{a.first_name} {a.last_name}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--accent-light)' }}>{a.email}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--text-secondary)' }}>{a.company || '—'}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 12, fontFamily: 'monospace', color: 'var(--text-muted)' }}>{a.custom_slug}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600, color: 'var(--success)' }}>{a.commission_rate}%</td>
+                            <td style={{ padding: '10px 12px' }}>
+                              <span style={{ padding: '3px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600, background: a.status === 'active' ? 'rgba(16,185,129,0.15)' : 'rgba(107,114,128,0.15)', color: a.status === 'active' ? 'var(--success)' : 'var(--text-muted)' }}>
+                                {a.status.toUpperCase()}
+                              </span>
+                            </td>
+                            <td style={{ padding: '10px 12px', fontSize: 14, color: 'var(--accent-light)' }}>{aLinks.length}</td>
+                            <td style={{ padding: '10px 12px', fontSize: 14, color: 'var(--text-secondary)' }}>{aRefs.length}</td>
+                            <td style={{ padding: '10px 12px' }}>
+                              <div style={{ display: 'flex', gap: 6 }}>
+                                <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/partners`); setMsg(`Partner portal link copied. Their ID: ${a.custom_slug}`) }} style={{ padding: '4px 10px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--accent-light)', fontSize: 11, cursor: 'pointer' }}>
+                                  Copy Portal Link
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    if (confirm(`Deactivate ${a.first_name} ${a.last_name}?`)) {
+                                      await fetch('/api/affiliates', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: a.id, status: a.status === 'active' ? 'inactive' : 'active', password }) })
+                                      fetchData()
+                                    }
+                                  }}
+                                  style={{ padding: '4px 10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: a.status === 'active' ? 'var(--danger)' : 'var(--success)', fontSize: 11, cursor: 'pointer' }}
+                                >
+                                  {a.status === 'active' ? 'Deactivate' : 'Activate'}
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            )}
+
+            {/* LINKS LIST */}
+            {affSubTab === 'links' && (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr>
+                      {['Partner', 'Event', 'Tracking Code', 'Clicks', 'Active'].map(h => (
+                        <th key={h} style={{ textAlign: 'left', padding: '10px 12px', color: 'var(--text-muted)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, borderBottom: '1px solid var(--border)' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {affLinks.map(l => (
+                      <tr key={l.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                        <td style={{ padding: '10px 12px', fontSize: 14 }}>{l.affiliates?.first_name} {l.affiliates?.last_name}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--text-secondary)' }}>{l.events?.title || l.event_id}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 12, fontFamily: 'monospace' }}>
+                          {l.tracking_code}
+                          <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/api/affiliates/track?ref=${l.tracking_code}`); setMsg('Link copied!') }} style={{ marginLeft: 8, padding: '2px 8px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 4, color: 'var(--accent-light)', fontSize: 10, cursor: 'pointer' }}>Copy</button>
+                        </td>
+                        <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600, color: 'var(--accent-light)' }}>{l.clicks}</td>
+                        <td style={{ padding: '10px 12px' }}>
+                          <span style={{ color: l.is_active ? 'var(--success)' : 'var(--text-muted)', fontSize: 12 }}>{l.is_active ? '✓ Active' : 'Inactive'}</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* REFERRALS LIST */}
+            {affSubTab === 'referrals' && (
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr>
+                      {['Lead', 'Email', 'Partner', 'Event', 'Status', 'Revenue', 'Commission', 'Paid', 'Date'].map(h => (
+                        <th key={h} style={{ textAlign: 'left', padding: '10px 12px', color: 'var(--text-muted)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, borderBottom: '1px solid var(--border)' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {affReferrals.map(r => (
+                      <tr key={r.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                        <td style={{ padding: '10px 12px', fontSize: 14 }}>{r.lead_first_name} {r.lead_last_name}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--accent-light)' }}>{r.lead_email}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13 }}>{r.affiliates?.first_name} {r.affiliates?.last_name}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--text-secondary)' }}>{r.events?.title || '—'}</td>
+                        <td style={{ padding: '10px 12px' }}>
+                          <span style={{ padding: '3px 8px', borderRadius: 6, fontSize: 11, fontWeight: 600, background: r.status === 'purchased' ? 'rgba(16,185,129,0.15)' : r.status === 'registered' ? 'rgba(108,58,237,0.15)' : 'rgba(107,114,128,0.15)', color: r.status === 'purchased' ? 'var(--success)' : r.status === 'registered' ? 'var(--accent-light)' : 'var(--text-muted)' }}>
+                            {r.status.toUpperCase()}
+                          </span>
+                        </td>
+                        <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600, color: 'var(--success)' }}>${r.revenue}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600, color: '#f59e0b' }}>${r.commission_amount}</td>
+                        <td style={{ padding: '10px 12px' }}>
+                          <button
+                            onClick={async () => {
+                              await fetch('/api/affiliates/referrals', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: r.id, commission_paid: !r.commission_paid, password }) })
+                              fetchData()
+                            }}
+                            style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid var(--border)', background: r.commission_paid ? 'rgba(16,185,129,0.15)' : 'transparent', color: r.commission_paid ? 'var(--success)' : 'var(--text-muted)', fontSize: 11, cursor: 'pointer' }}
+                          >
+                            {r.commission_paid ? '✓ Paid' : 'Mark Paid'}
+                          </button>
+                        </td>
+                        <td style={{ padding: '10px 12px', fontSize: 12, color: 'var(--text-muted)' }}>{new Date(r.created_at).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* =================== CAMPAIGNS TAB =================== */}
+        {tab === 'campaigns' && (
+          <div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+              {(['campaigns', 'folders', 'posts'] as const).map(st => (
+                <button key={st} onClick={() => setCampSubTab(st)} style={{
+                  padding: '8px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                  background: campSubTab === st ? 'var(--accent)' : 'var(--bg-card)', color: campSubTab === st ? '#fff' : 'var(--text-secondary)',
+                }}>
+                  {st === 'campaigns' ? `Campaigns (${campaigns.length})` : st === 'folders' ? `Folders (${campFolders.length})` : 'Posts'}
+                </button>
+              ))}
+            </div>
+
+            {/* FOLDERS */}
+            {campSubTab === 'folders' && (
+              <div>
+                <div className="card" style={{ padding: 16, marginBottom: 20 }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>New Folder</h3>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <input placeholder="Folder name" value={folderForm.name} onChange={e => setFolderForm(p => ({ ...p, name: e.target.value }))} style={{ flex: 1, padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <input placeholder="Description (optional)" value={folderForm.description} onChange={e => setFolderForm(p => ({ ...p, description: e.target.value }))} style={{ flex: 1, padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <button
+                      onClick={async () => {
+                        const res = await fetch('/api/campaigns/folders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...folderForm, password }) })
+                        if (res.ok) { setFolderForm({ name: '', description: '' }); fetchData(); setMsg('Folder created') }
+                      }}
+                      disabled={!folderForm.name}
+                      style={{ padding: '8px 16px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
+                    >Create</button>
+                  </div>
+                </div>
+
+                {campFolders.map(f => (
+                  <div key={f.id} className="card" style={{ padding: 16, marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <span style={{ fontSize: 15, fontWeight: 600 }}>📁 {f.name}</span>
+                      {f.description && <span style={{ fontSize: 13, color: 'var(--text-muted)', marginLeft: 12 }}>{f.description}</span>}
+                      <span style={{ fontSize: 12, color: 'var(--accent-light)', marginLeft: 12 }}>{f.campaigns?.[0]?.count || 0} campaigns</span>
+                    </div>
+                    <button onClick={async () => { if (confirm('Delete folder?')) { await fetch('/api/campaigns/folders', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: f.id, password }) }); fetchData() } }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--danger)', fontSize: 11, cursor: 'pointer' }}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* CAMPAIGNS LIST */}
+            {campSubTab === 'campaigns' && (
+              <div>
+                {/* New campaign form */}
+                <div className="card" style={{ padding: 16, marginBottom: 20 }}>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>New Campaign</h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 12 }}>
+                    <input placeholder="Campaign name" value={campForm.name} onChange={e => setCampForm(p => ({ ...p, name: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <select value={campForm.type} onChange={e => setCampForm(p => ({ ...p, type: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }}>
+                      <option value="email_html">HTML Email</option>
+                      <option value="email_plain">Plain Text Email</option>
+                      <option value="email_affiliate">Affiliate Promo Email</option>
+                      <option value="sms">SMS</option>
+                      <option value="social_media">Social Media</option>
+                      <option value="multi_step">Multi-Step Campaign</option>
+                    </select>
+                    <select value={campForm.folder_id} onChange={e => setCampForm(p => ({ ...p, folder_id: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }}>
+                      <option value="">No Folder</option>
+                      {campFolders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                    </select>
+                  </div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <select value={campForm.event_id} onChange={e => setCampForm(p => ({ ...p, event_id: e.target.value }))} style={{ flex: 1, padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }}>
+                      <option value="">No Event</option>
+                      {events.map(ev => <option key={ev.id} value={ev.id}>{ev.title}</option>)}
+                    </select>
+                    <input placeholder="Description" value={campForm.description} onChange={e => setCampForm(p => ({ ...p, description: e.target.value }))} style={{ flex: 1, padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <button
+                      onClick={async () => {
+                        const res = await fetch('/api/campaigns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...campForm, password }) })
+                        if (res.ok) { setCampForm({ name: '', description: '', type: 'email_html', folder_id: '', event_id: '' }); fetchData(); setMsg('Campaign created') }
+                      }}
+                      disabled={!campForm.name}
+                      style={{ padding: '8px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
+                    >Create</button>
+                  </div>
+                </div>
+
+                {/* Campaign list */}
+                {campaigns.map(c => (
+                  <div key={c.id} className="card" style={{ padding: 16, marginBottom: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                      <div>
+                        <span style={{ fontSize: 15, fontWeight: 600 }}>{c.name}</span>
+                        <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 700, marginLeft: 8, background: 'rgba(108,58,237,0.15)', color: 'var(--accent-light)', textTransform: 'uppercase' }}>{c.type.replace('_', ' ')}</span>
+                        <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 700, marginLeft: 4, background: c.status === 'active' ? 'rgba(16,185,129,0.15)' : 'rgba(107,114,128,0.15)', color: c.status === 'active' ? 'var(--success)' : 'var(--text-muted)', textTransform: 'uppercase' }}>{c.status}</span>
+                        {c.campaign_folders?.name && <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 8 }}>📁 {c.campaign_folders.name}</span>}
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 8 }}>{c.campaign_posts?.[0]?.count || 0} posts</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button onClick={() => { setSelectedCampaign(c.id); setCampSubTab('posts'); fetch(`/api/campaigns/posts?campaign_id=${c.id}&password=${password}`).then(r => r.json()).then(setCampPosts) }} style={{ padding: '4px 12px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--accent-light)', fontSize: 11, cursor: 'pointer' }}>Edit Posts</button>
+                        <button onClick={async () => { await fetch('/api/campaigns', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ duplicate_id: c.id, password }) }); fetchData(); setMsg('Campaign duplicated') }} style={{ padding: '4px 12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text-secondary)', fontSize: 11, cursor: 'pointer' }}>Duplicate</button>
+                        <button onClick={async () => { if (confirm('Delete campaign?')) { await fetch('/api/campaigns', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: c.id, password }) }); fetchData() } }} style={{ padding: '4px 12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--danger)', fontSize: 11, cursor: 'pointer' }}>Delete</button>
+                      </div>
+                    </div>
+                    {c.description && <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 6 }}>{c.description}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* POSTS EDITOR */}
+            {campSubTab === 'posts' && selectedCampaign && (
+              <div>
+                <button onClick={() => setCampSubTab('campaigns')} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-secondary)', fontSize: 12, cursor: 'pointer', marginBottom: 16 }}>← Back to Campaigns</button>
+
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>
+                  Posts for: {campaigns.find(c => c.id === selectedCampaign)?.name}
+                </h3>
+
+                {/* New post form */}
+                <div className="card" style={{ padding: 16, marginBottom: 20 }}>
+                  <h4 style={{ fontSize: 13, fontWeight: 700, marginBottom: 12 }}>Add Post</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+                    <input placeholder="Title" value={postForm.title} onChange={e => setPostForm(p => ({ ...p, title: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <input placeholder="Subject Line (email)" value={postForm.subject_line} onChange={e => setPostForm(p => ({ ...p, subject_line: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <select value={postForm.platform} onChange={e => setPostForm(p => ({ ...p, platform: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }}>
+                      <option value="email">Email</option>
+                      <option value="sms">SMS</option>
+                      <option value="instagram">Instagram</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="linkedin">LinkedIn</option>
+                      <option value="twitter">X / Twitter</option>
+                      <option value="threads">Threads</option>
+                      <option value="all">All Platforms</option>
+                    </select>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 8 }}>
+                    <input placeholder="Step order (1, 2, 3...)" value={postForm.step_order} onChange={e => setPostForm(p => ({ ...p, step_order: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <input placeholder="Delay days (0)" value={postForm.delay_days} onChange={e => setPostForm(p => ({ ...p, delay_days: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                    <input placeholder="Delay hours (0)" value={postForm.delay_hours} onChange={e => setPostForm(p => ({ ...p, delay_hours: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 14 }} />
+                  </div>
+                  <textarea placeholder="Body content (plain text)" value={postForm.body_content} onChange={e => setPostForm(p => ({ ...p, body_content: e.target.value }))} style={{ width: '100%', minHeight: 120, padding: '10px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 13, resize: 'vertical', marginBottom: 8, boxSizing: 'border-box' }} />
+                  <textarea placeholder="HTML version (optional)" value={postForm.body_html} onChange={e => setPostForm(p => ({ ...p, body_html: e.target.value }))} style={{ width: '100%', minHeight: 80, padding: '10px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 13, fontFamily: 'monospace', resize: 'vertical', marginBottom: 8, boxSizing: 'border-box' }} />
+                  <button
+                    onClick={async () => {
+                      const res = await fetch('/api/campaigns/posts', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...postForm, campaign_id: selectedCampaign, step_order: parseInt(postForm.step_order) || 1, delay_days: parseInt(postForm.delay_days) || 0, delay_hours: parseInt(postForm.delay_hours) || 0, password }) })
+                      if (res.ok) {
+                        setPostForm({ title: '', subject_line: '', preview_text: '', body_content: '', body_html: '', platform: 'email', delay_days: '0', delay_hours: '0', step_order: '1' })
+                        const postsRes = await fetch(`/api/campaigns/posts?campaign_id=${selectedCampaign}&password=${password}`)
+                        setCampPosts(await postsRes.json())
+                        setMsg('Post added')
+                      }
+                    }}
+                    disabled={!postForm.body_content}
+                    style={{ padding: '10px 20px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}
+                  >Add Post</button>
+                </div>
+
+                {/* Existing posts */}
+                {campPosts.map(p => (
+                  <div key={p.id} className="card" style={{ padding: 16, marginBottom: 8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                      <div>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--accent-light)', marginRight: 8 }}>Step {p.step_order}</span>
+                        <span style={{ fontSize: 14, fontWeight: 600 }}>{p.title || '(Untitled)'}</span>
+                        <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 10, fontWeight: 700, marginLeft: 8, background: 'rgba(108,58,237,0.15)', color: 'var(--accent-light)', textTransform: 'uppercase' }}>{p.platform}</span>
+                        {(p.delay_days > 0 || p.delay_hours > 0) && (
+                          <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 8 }}>⏱ {p.delay_days}d {p.delay_hours}h delay</span>
+                        )}
+                      </div>
+                      <div style={{ display: 'flex', gap: 6 }}>
+                        <button onClick={() => { navigator.clipboard.writeText(p.body_content); setMsg('Post content copied') }} style={{ padding: '4px 10px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--accent-light)', fontSize: 11, cursor: 'pointer' }}>Copy</button>
+                        <button onClick={async () => { if (confirm('Delete post?')) { await fetch('/api/campaigns/posts', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: p.id, password }) }); const r = await fetch(`/api/campaigns/posts?campaign_id=${selectedCampaign}&password=${password}`); setCampPosts(await r.json()) } }} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--danger)', fontSize: 11, cursor: 'pointer' }}>Delete</button>
+                      </div>
+                    </div>
+                    {p.subject_line && <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>Subject: {p.subject_line}</p>}
+                    <pre style={{ fontSize: 12, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap', margin: 0, maxHeight: 150, overflow: 'auto', lineHeight: 1.5 }}>{p.body_content}</pre>
                   </div>
                 ))}
               </div>
