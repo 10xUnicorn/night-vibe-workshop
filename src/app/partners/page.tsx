@@ -462,7 +462,7 @@ export default function PartnersPage() {
 
   function personalizeTemplate(content: string): string {
     const link = links.find(l => l.event_id === selectedEvent)
-    const trackingUrl = link ? `${SITE_URL}/api/affiliates/track?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}` : SITE_URL
+    const trackingUrl = link ? `${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}` : SITE_URL
     return content
       .replace(/\{\{affiliate_name\}\}/g, `${affiliate?.first_name} ${affiliate?.last_name}`)
       .replace(/\{\{affiliate_first_name\}\}/g, affiliate?.first_name || '')
@@ -478,7 +478,7 @@ export default function PartnersPage() {
   })
 
   const eventLink = links.find(l => l.event_id === selectedEvent)
-  const trackingUrl = eventLink ? `${SITE_URL}/api/affiliates/track?ref=${eventLink.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${eventLink.events?.slug || ''}` : ''
+  const trackingUrl = eventLink ? `${SITE_URL}/events/${eventLink.events?.slug || ''}?ref=${eventLink.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${eventLink.events?.slug || ''}` : ''
 
   // Stats
   const totalClicks = links.reduce((s, l) => s + (l.clicks || 0), 0)
@@ -565,9 +565,9 @@ export default function PartnersPage() {
             {loading ? 'Loading...' : 'Access Partner Portal →'}
           </button>
 
-          <p style={{ color: '#374151', fontSize: 11, marginTop: 24, lineHeight: 1.6 }}>
-            Don&apos;t have a partner ID?<br />
-            Contact <a href="mailto:dknightunicorn@gmail.com" style={{ color: '#a78bfa' }}>dknightunicorn@gmail.com</a> to join our affiliate program.
+          <p style={{ color: '#6b7280', fontSize: 13, marginTop: 24, lineHeight: 1.8 }}>
+            Don&apos;t have a partner account?<br />
+            <a href="/partners/apply" style={{ color: '#a78bfa', fontWeight: 600, textDecoration: 'none' }}>Apply to become a partner →</a>
           </p>
         </div>
       </div>
@@ -995,24 +995,43 @@ export default function PartnersPage() {
           <div>
             <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 20px' }}>Your Tracking Links</h2>
 
-            {links.map(link => {
-              const fullUrl = `${SITE_URL}/api/affiliates/track?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}`
+            {links.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>No tracking links assigned yet. Contact your admin to get started.</div>
+            ) : links.map(link => {
+              const fullUrl = `${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}`
+              const linkRefs = referrals.filter(r => r.events?.title === link.events?.title)
               return (
                 <div key={link.id} style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 12 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
                     <div>
                       <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{link.events?.title || 'Event'}</div>
-                      <div style={{ color: '#9ca3af', fontSize: 13, fontFamily: 'monospace', wordBreak: 'break-all' }}>{fullUrl}</div>
+                      <div style={{ color: '#6b7280', fontSize: 12, marginBottom: 4 }}>
+                        {link.events?.start_date ? formatDate(link.events.start_date) : ''} — {link.events?.status?.toUpperCase() || ''}
+                      </div>
+                      <div style={{ color: '#9ca3af', fontSize: 12, fontFamily: 'monospace', wordBreak: 'break-all' }}>{fullUrl}</div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <span style={{ color: '#a78bfa', fontSize: 14, fontWeight: 700 }}>{link.clicks} clicks</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                       <button
                         onClick={() => handleCopy(fullUrl, `link-${link.id}`)}
-                        style={{ padding: '8px 16px', background: 'rgba(108,58,237,0.15)', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                        style={{ padding: '8px 16px', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                       >
-                        {copiedId === `link-${link.id}` ? '✓ Copied!' : '📋 Copy'}
+                        {copiedId === `link-${link.id}` ? '✓ Copied!' : '📋 Copy Link'}
+                      </button>
+                      <button
+                        onClick={() => handleCopy(`${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}`, `short-${link.id}`)}
+                        style={{ padding: '8px 16px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8, color: '#2dd4bf', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        {copiedId === `short-${link.id}` ? '✓ Copied!' : '🔗 Short Link'}
                       </button>
                     </div>
+                  </div>
+                  {/* Link stats row */}
+                  <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', paddingTop: 12, borderTop: '1px solid rgba(108,58,237,0.08)' }}>
+                    <div><span style={{ color: '#a78bfa', fontSize: 18, fontWeight: 800 }}>{link.clicks}</span> <span style={{ color: '#6b7280', fontSize: 12 }}>clicks</span></div>
+                    <div><span style={{ color: '#2dd4bf', fontSize: 18, fontWeight: 800 }}>{linkRefs.length}</span> <span style={{ color: '#6b7280', fontSize: 12 }}>leads</span></div>
+                    <div><span style={{ color: '#10b981', fontSize: 18, fontWeight: 800 }}>{linkRefs.filter(r => r.status === 'purchased').length}</span> <span style={{ color: '#6b7280', fontSize: 12 }}>conversions</span></div>
+                    <div><span style={{ color: link.is_active ? '#10b981' : '#ef4444', fontSize: 12, fontWeight: 700, padding: '3px 8px', borderRadius: 6, background: link.is_active ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)' }}>{link.is_active ? 'ACTIVE' : 'INACTIVE'}</span></div>
+                    <div style={{ marginLeft: 'auto', color: '#4b5563', fontSize: 11 }}>Code: <code style={{ color: '#a78bfa' }}>{link.tracking_code}</code></div>
                   </div>
                 </div>
               )
