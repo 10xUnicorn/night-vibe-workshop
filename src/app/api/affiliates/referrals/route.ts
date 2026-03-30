@@ -23,14 +23,14 @@ export async function GET(req: NextRequest) {
 
   const sb = getAdmin()
 
-  // Affiliate self-lookup
-  if (slug) {
-    const { data: affiliate } = await sb
-      .from('affiliates')
-      .select('id')
-      .eq('custom_slug', slug)
-      .eq('status', 'active')
-      .single()
+  const email = req.nextUrl.searchParams.get('email')
+
+  // Affiliate self-lookup by slug or email
+  if (slug || email) {
+    const query = sb.from('affiliates').select('id').eq('status', 'active')
+    if (slug) query.eq('custom_slug', slug)
+    else if (email) query.eq('email', email.trim().toLowerCase())
+    const { data: affiliate } = await query.single()
 
     if (!affiliate) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 

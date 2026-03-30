@@ -7,7 +7,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://workshop.nightvibe
 // ─── Types ───────────────────────────────────────────────────────
 interface AffiliateData {
   id: string; first_name: string; last_name: string; email: string
-  company?: string; custom_slug: string; status: string
+  company?: string; custom_slug: string; status: string; role?: string
 }
 
 interface EventData {
@@ -17,6 +17,7 @@ interface EventData {
 interface LinkData {
   id: string; affiliate_id: string; event_id: string; tracking_code: string
   clicks: number; custom_landing_html?: string; is_active: boolean
+  custom_suffix?: string; utm_source?: string; utm_medium?: string; utm_campaign?: string
   events?: EventData
 }
 
@@ -53,7 +54,6 @@ const PLATFORM_ICONS: Record<string, string> = {
   instagram: '📸', facebook: '📘', linkedin: '💼', twitter: '𝕏', threads: '🧵', tiktok: '🎵', all: '🌐', email: '✉️', sms: '📱',
 }
 
-// ─── Social Share URLs ───────────────────────────────────────────
 function getShareUrl(platform: string, text: string, url: string) {
   const encoded = encodeURIComponent(text)
   const encodedUrl = encodeURIComponent(url)
@@ -85,15 +85,210 @@ const ALL_EXPORT_COLUMNS = [
   { key: 'tracking_code', label: 'Tracking Code' },
 ]
 
+// ─── Landing Page Templates ──────────────────────────────────────
+function generateTemplate(
+  templateId: 'urgency' | 'authority' | 'story',
+  opts: { trackingLink: string; affiliateName: string; eventTitle: string; eventDate: string; eventSlug: string }
+): string {
+  const { trackingLink, affiliateName, eventTitle, eventDate } = opts
+  const cta = trackingLink
+
+  if (templateId === 'urgency') {
+    return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${eventTitle}</title></head>
+<body style="margin:0;padding:0;background:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
+<div style="max-width:680px;margin:0 auto;padding:0 20px;">
+  <!-- URGENCY HERO -->
+  <div style="text-align:center;padding:60px 20px 40px;">
+    <div style="display:inline-block;padding:6px 18px;border:1px solid rgba(239,68,68,0.4);border-radius:20px;color:#ef4444;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;background:rgba(239,68,68,0.08);">SEATS ARE FILLING FAST</div>
+    <h1 style="font-size:42px;font-weight:900;line-height:1.1;margin:0 0 16px;background:linear-gradient(135deg,#a78bfa,#2dd4bf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${eventTitle}</h1>
+    <p style="color:#9ca3af;font-size:18px;margin:0 0 8px;">${eventDate}</p>
+    <p style="color:#6b7280;font-size:14px;margin:0 0 32px;">Referred by ${affiliateName}</p>
+    <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:20px;margin-bottom:32px;">
+      <p style="color:#ef4444;font-size:24px;font-weight:800;margin:0;">Only 8 Seats Remaining</p>
+      <p style="color:#9ca3af;font-size:13px;margin:8px 0 0;">Once they&rsquo;re gone, you&rsquo;ll have to wait for the next cohort.</p>
+    </div>
+    <a href="${cta}" style="display:inline-block;padding:18px 48px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#fff;text-decoration:none;border-radius:14px;font-weight:800;font-size:18px;letter-spacing:0.5px;">RESERVE MY SEAT NOW &rarr;</a>
+  </div>
+  <!-- WHAT YOU LOSE BY WAITING -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);">
+    <h2 style="text-align:center;font-size:22px;font-weight:700;margin:0 0 24px;color:#fff;">Every Day You Wait, You Lose:</h2>
+    <div style="display:grid;gap:12px;">
+      <div style="background:#13131a;border:1px solid rgba(239,68,68,0.15);border-radius:12px;padding:20px;display:flex;gap:16px;align-items:flex-start;">
+        <span style="font-size:28px;">💸</span>
+        <div><strong style="color:#ef4444;">$10,000+</strong><span style="color:#9ca3af;font-size:14px;"> — the cost of hiring a developer to build what you&rsquo;ll build yourself in 4 hours</span></div>
+      </div>
+      <div style="background:#13131a;border:1px solid rgba(239,68,68,0.15);border-radius:12px;padding:20px;display:flex;gap:16px;align-items:flex-start;">
+        <span style="font-size:28px;">⏰</span>
+        <div><strong style="color:#ef4444;">3-6 months</strong><span style="color:#9ca3af;font-size:14px;"> — the typical timeline to launch an app the traditional way</span></div>
+      </div>
+      <div style="background:#13131a;border:1px solid rgba(239,68,68,0.15);border-radius:12px;padding:20px;display:flex;gap:16px;align-items:flex-start;">
+        <span style="font-size:28px;">🚀</span>
+        <div><strong style="color:#ef4444;">Revenue</strong><span style="color:#9ca3af;font-size:14px;"> — every day without your app is a day your competitors are capturing your customers</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- FUTURE PACING -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);text-align:center;">
+    <h2 style="font-size:22px;font-weight:700;margin:0 0 16px;">Picture This: 4 Hours From Now...</h2>
+    <p style="color:#9ca3af;font-size:16px;line-height:1.8;max-width:520px;margin:0 auto 32px;">You&rsquo;re holding your phone, looking at YOUR app — live, deployed, and ready for customers. You built it. In one afternoon. While everyone else is still getting quotes from developers.</p>
+    <a href="${cta}" style="display:inline-block;padding:18px 48px;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;text-decoration:none;border-radius:14px;font-weight:800;font-size:18px;">DON&rsquo;T MISS THIS &rarr;</a>
+  </div>
+  <!-- FOOTER -->
+  <div style="padding:32px 0;border-top:1px solid rgba(108,58,237,0.06);text-align:center;">
+    <p style="color:#374151;font-size:11px;line-height:1.8;">Affiliate Disclosure: This page contains an affiliate link. ${affiliateName} may earn a commission if you register through this page. This does not affect your price.<br>&copy; Night Vibe AI Workshops</p>
+  </div>
+</div>
+</body></html>`
+  }
+
+  if (templateId === 'authority') {
+    return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${eventTitle}</title></head>
+<body style="margin:0;padding:0;background:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
+<div style="max-width:680px;margin:0 auto;padding:0 20px;">
+  <!-- AUTHORITY HERO -->
+  <div style="text-align:center;padding:60px 20px 40px;">
+    <div style="display:inline-block;padding:6px 18px;border:1px solid rgba(45,212,191,0.4);border-radius:20px;color:#2dd4bf;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;background:rgba(45,212,191,0.08);">TRUSTED BY 100+ ENTREPRENEURS</div>
+    <h1 style="font-size:38px;font-weight:900;line-height:1.15;margin:0 0 16px;color:#fff;">${eventTitle}</h1>
+    <p style="color:#a78bfa;font-size:18px;font-weight:600;margin:0 0 8px;">${eventDate}</p>
+    <p style="color:#6b7280;font-size:14px;margin:0 0 32px;">Recommended by ${affiliateName}</p>
+  </div>
+  <!-- RESULTS SECTION -->
+  <div style="padding:0 0 40px;">
+    <h2 style="text-align:center;font-size:20px;font-weight:700;margin:0 0 24px;">What Past Attendees Built:</h2>
+    <div style="display:grid;gap:12px;">
+      <div style="background:#13131a;border:1px solid rgba(45,212,191,0.15);border-radius:12px;padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <strong style="color:#fff;font-size:15px;">Client Portal App</strong>
+          <span style="color:#2dd4bf;font-size:12px;font-weight:700;background:rgba(45,212,191,0.1);padding:4px 10px;border-radius:6px;">LAUNCHED</span>
+        </div>
+        <p style="color:#9ca3af;font-size:13px;margin:0;">&ldquo;I had zero coding experience. Built my client portal in the workshop and had paying customers within a week.&rdquo;</p>
+      </div>
+      <div style="background:#13131a;border:1px solid rgba(45,212,191,0.15);border-radius:12px;padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <strong style="color:#fff;font-size:15px;">AI Booking System</strong>
+          <span style="color:#2dd4bf;font-size:12px;font-weight:700;background:rgba(45,212,191,0.1);padding:4px 10px;border-radius:6px;">LAUNCHED</span>
+        </div>
+        <p style="color:#9ca3af;font-size:13px;margin:0;">&ldquo;Replaced a $500/month SaaS tool with my own custom solution. Built it live at the workshop.&rdquo;</p>
+      </div>
+      <div style="background:#13131a;border:1px solid rgba(45,212,191,0.15);border-radius:12px;padding:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <strong style="color:#fff;font-size:15px;">Lead Generation Tool</strong>
+          <span style="color:#2dd4bf;font-size:12px;font-weight:700;background:rgba(45,212,191,0.1);padding:4px 10px;border-radius:6px;">LAUNCHED</span>
+        </div>
+        <p style="color:#9ca3af;font-size:13px;margin:0;">&ldquo;My agency now has a proprietary lead gen tool. Clients think I spent $30K on it.&rdquo;</p>
+      </div>
+    </div>
+  </div>
+  <!-- ROI CALCULATOR -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);">
+    <h2 style="text-align:center;font-size:20px;font-weight:700;margin:0 0 24px;">The Math Doesn&rsquo;t Lie</h2>
+    <div style="background:#13131a;border:1px solid rgba(108,58,237,0.15);border-radius:16px;padding:32px;text-align:center;">
+      <div style="display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px;margin-bottom:24px;">
+        <div><div style="color:#ef4444;font-size:28px;font-weight:800;">$10K-$50K</div><div style="color:#6b7280;font-size:12px;">Typical App Dev Cost</div></div>
+        <div><div style="color:#6b7280;font-size:28px;font-weight:800;">vs</div></div>
+        <div><div style="color:#2dd4bf;font-size:28px;font-weight:800;">$1,000</div><div style="color:#6b7280;font-size:12px;">Workshop Investment</div></div>
+      </div>
+      <div style="background:rgba(45,212,191,0.06);border-radius:12px;padding:16px;margin-bottom:24px;">
+        <span style="color:#2dd4bf;font-size:14px;font-weight:700;">You save $9,000-$49,000+ AND get it done in 4 hours instead of 3-6 months</span>
+      </div>
+      <a href="${cta}" style="display:inline-block;padding:18px 48px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#fff;text-decoration:none;border-radius:14px;font-weight:800;font-size:18px;">CLAIM MY SPOT &rarr;</a>
+    </div>
+  </div>
+  <!-- WHAT YOU GET -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);">
+    <h2 style="text-align:center;font-size:20px;font-weight:700;margin:0 0 24px;">What You Walk Away With</h2>
+    <div style="display:grid;gap:10px;">
+      ${['Your own deployed, working application', '4 hours of live, hands-on building', 'AI-powered development tools (provided)', '30-day recording access', 'Private community access', 'Full code ownership — yours forever'].map(item =>
+        `<div style="background:#13131a;border-left:3px solid #a78bfa;padding:14px 20px;border-radius:0 10px 10px 0;color:#d1d5db;font-size:14px;">✓ ${item}</div>`
+      ).join('\n      ')}
+    </div>
+  </div>
+  <!-- CTA -->
+  <div style="padding:40px 0;text-align:center;border-top:1px solid rgba(108,58,237,0.1);">
+    <p style="color:#9ca3af;font-size:16px;margin:0 0 24px;">Join 100+ entrepreneurs who&rsquo;ve already built their apps with Night Vibe</p>
+    <a href="${cta}" style="display:inline-block;padding:18px 48px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#fff;text-decoration:none;border-radius:14px;font-weight:800;font-size:18px;">RESERVE MY SEAT &rarr;</a>
+  </div>
+  <!-- FOOTER -->
+  <div style="padding:32px 0;border-top:1px solid rgba(108,58,237,0.06);text-align:center;">
+    <p style="color:#374151;font-size:11px;line-height:1.8;">Affiliate Disclosure: This page contains an affiliate link. ${affiliateName} may earn a commission if you register through this page. This does not affect your price.<br>&copy; Night Vibe AI Workshops</p>
+  </div>
+</div>
+</body></html>`
+  }
+
+  // Story Seller
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${eventTitle}</title></head>
+<body style="margin:0;padding:0;background:#0a0a0f;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;">
+<div style="max-width:680px;margin:0 auto;padding:0 20px;">
+  <!-- STORY HERO -->
+  <div style="text-align:center;padding:60px 20px 40px;">
+    <p style="color:#a78bfa;font-size:14px;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin:0 0 16px;">A ${affiliateName} Recommendation</p>
+    <h1 style="font-size:36px;font-weight:900;line-height:1.15;margin:0 0 24px;color:#fff;">&ldquo;I Had an App Idea for 2 Years.<br>I Built It in 4 Hours.&rdquo;</h1>
+    <p style="color:#6b7280;font-size:14px;margin:0;">${eventTitle} &middot; ${eventDate}</p>
+  </div>
+  <!-- THE BEFORE -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);">
+    <div style="background:rgba(239,68,68,0.04);border:1px solid rgba(239,68,68,0.12);border-radius:16px;padding:32px;">
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 16px;color:#ef4444;">THE BEFORE:</h2>
+      <p style="color:#9ca3af;font-size:15px;line-height:1.8;margin:0;">You have an idea that could change everything. But every time you look into building it, you hit the same walls: developers quoting $15K-$50K, timelines of 3-6 months, technical jargon that makes your head spin. So the idea stays in your head. Another month passes. Then another. Meanwhile, someone else is building something similar.</p>
+    </div>
+  </div>
+  <!-- THE SHIFT -->
+  <div style="text-align:center;padding:0 0 40px;">
+    <div style="display:inline-block;width:2px;height:40px;background:linear-gradient(to bottom,rgba(239,68,68,0.5),rgba(45,212,191,0.5));margin-bottom:16px;"></div>
+    <p style="color:#a78bfa;font-size:20px;font-weight:700;margin:0;">What if it didn&rsquo;t have to be that way?</p>
+  </div>
+  <!-- THE AFTER -->
+  <div style="padding:0 0 40px;">
+    <div style="background:rgba(45,212,191,0.04);border:1px solid rgba(45,212,191,0.12);border-radius:16px;padding:32px;">
+      <h2 style="font-size:18px;font-weight:700;margin:0 0 16px;color:#2dd4bf;">THE AFTER:</h2>
+      <p style="color:#9ca3af;font-size:15px;line-height:1.8;margin:0;">4 hours into the workshop, you&rsquo;re looking at YOUR app on your phone. It works. It&rsquo;s live. Customers can use it right now. You didn&rsquo;t write a single line of code. You didn&rsquo;t spend $30K. You didn&rsquo;t wait 6 months. You just... built it. And now you&rsquo;re one of those people who has an app. Not &ldquo;someday.&rdquo; Today.</p>
+    </div>
+  </div>
+  <!-- IDENTITY SECTION -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);text-align:center;">
+    <h2 style="font-size:22px;font-weight:700;margin:0 0 24px;">This Workshop Is For You If:</h2>
+    <div style="display:grid;gap:10px;text-align:left;">
+      ${[
+        "You've had an app idea collecting dust for months (or years)",
+        "You're tired of paying for tools that don't quite fit your business",
+        "You want to be the person who builds, not the person who waits",
+        "You believe your best ideas deserve to exist in the world",
+        "You're ready to stop planning and start launching"
+      ].map(item =>
+        `<div style="background:#13131a;padding:16px 20px;border-radius:10px;color:#d1d5db;font-size:14px;line-height:1.6;">→ ${item}</div>`
+      ).join('\n      ')}
+    </div>
+  </div>
+  <!-- COMMUNITY -->
+  <div style="padding:40px 0;border-top:1px solid rgba(108,58,237,0.1);text-align:center;">
+    <h2 style="font-size:20px;font-weight:700;margin:0 0 8px;">You&rsquo;re Not Doing This Alone</h2>
+    <p style="color:#9ca3af;font-size:15px;margin:0 0 24px;">Join a room full of entrepreneurs who are all building alongside you.</p>
+    <a href="${cta}" style="display:inline-block;padding:18px 48px;background:linear-gradient(135deg,#6c3aed,#a78bfa);color:#fff;text-decoration:none;border-radius:14px;font-weight:800;font-size:18px;">JOIN US ON ${eventDate.toUpperCase()} &rarr;</a>
+  </div>
+  <!-- FOOTER -->
+  <div style="padding:32px 0;border-top:1px solid rgba(108,58,237,0.06);text-align:center;">
+    <p style="color:#374151;font-size:11px;line-height:1.8;">Affiliate Disclosure: This page contains an affiliate link. ${affiliateName} may earn a commission if you register through this page. This does not affect your price.<br>&copy; Night Vibe AI Workshops</p>
+  </div>
+</div>
+</body></html>`
+}
+
 // ═════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═════════════════════════════════════════════════════════════════
 export default function PartnersPage() {
   // Auth state
-  const [slug, setSlug] = useState('')
+  const [loginInput, setLoginInput] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
   const [authenticated, setAuthenticated] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [initializing, setInitializing] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
 
   // Data
   const [affiliate, setAffiliate] = useState<AffiliateData | null>(null)
@@ -109,6 +304,8 @@ export default function PartnersPage() {
   const [landingHtml, setLandingHtml] = useState('')
   const [savingLanding, setSavingLanding] = useState(false)
   const [previewLanding, setPreviewLanding] = useState(false)
+  const [selectedLandingTemplate, setSelectedLandingTemplate] = useState<string>('')
+  const [hoveredTemplate, setHoveredTemplate] = useState<string>('')
 
   // Export config
   const [showExport, setShowExport] = useState(false)
@@ -117,14 +314,14 @@ export default function PartnersPage() {
     headers: Object.fromEntries(ALL_EXPORT_COLUMNS.map(c => [c.key, c.label])),
   })
 
-  // FTC compliance agreement
   const [agreedToTerms, setAgreedToTerms] = useState(false)
 
-  const loadData = useCallback(async (affiliateSlug: string) => {
+  const loadData = useCallback(async (identifier: string, isEmail = false) => {
+    const param = isEmail ? `email=${encodeURIComponent(identifier)}` : `slug=${identifier}`
     const [affRes, linksRes, refsRes] = await Promise.all([
-      fetch(`/api/affiliates?slug=${affiliateSlug}`),
-      fetch(`/api/affiliates/links?slug=${affiliateSlug}`),
-      fetch(`/api/affiliates/referrals?slug=${affiliateSlug}`),
+      fetch(`/api/affiliates?${param}`),
+      fetch(`/api/affiliates/links?${param}`),
+      fetch(`/api/affiliates/referrals?${param}`),
     ])
 
     if (!affRes.ok) throw new Error('Affiliate not found')
@@ -134,11 +331,10 @@ export default function PartnersPage() {
     const refsData = await refsRes.json()
 
     setAffiliate(affData)
-    setLinks(linksData)
-    setReferrals(refsData)
+    setLinks(Array.isArray(linksData) ? linksData : [])
+    setReferrals(Array.isArray(refsData) ? refsData : [])
 
-    // Load templates for all events this affiliate has links for
-    const eventIds = [...new Set(linksData.map((l: LinkData) => l.event_id))]
+    const eventIds = [...new Set((Array.isArray(linksData) ? linksData : []).map((l: LinkData) => l.event_id))]
     const allTemplates: PromoTemplate[] = []
     for (const eid of eventIds) {
       const tRes = await fetch(`/api/promo-templates?event_id=${eid}`)
@@ -150,19 +346,73 @@ export default function PartnersPage() {
     setTemplates(allTemplates)
 
     if (eventIds.length > 0) setSelectedEvent(eventIds[0] as string)
+    return affData
   }, [])
+
+  // Session persistence — check localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem('nv_partner_session')
+    if (stored) {
+      try {
+        const session = JSON.parse(stored)
+        if (session.slug) {
+          loadData(session.slug)
+            .then(() => {
+              setAuthenticated(true)
+              setAgreedToTerms(true)
+            })
+            .catch(() => {
+              localStorage.removeItem('nv_partner_session')
+            })
+            .finally(() => setInitializing(false))
+          return
+        }
+      } catch { /* invalid JSON */ }
+    }
+    setInitializing(false)
+  }, [loadData])
 
   const handleLogin = async () => {
     setLoading(true)
     setError('')
+    const input = loginInput.trim().toLowerCase()
     try {
-      await loadData(slug.trim().toLowerCase())
+      // Try slug first
+      let affData
+      try {
+        affData = await loadData(input, false)
+      } catch {
+        // Try email
+        affData = await loadData(input, true)
+      }
+      // Save session
+      localStorage.setItem('nv_partner_session', JSON.stringify({ slug: affData.custom_slug, email: affData.email }))
       setAuthenticated(true)
       setAgreedToTerms(true)
     } catch {
-      setError('Partner account not found. Check your partner ID and try again.')
+      setError('Partner account not found. Check your email or partner ID and try again.')
     }
     setLoading(false)
+  }
+
+  const handleSignOut = () => {
+    localStorage.removeItem('nv_partner_session')
+    setAuthenticated(false)
+    setAffiliate(null)
+    setLinks([])
+    setReferrals([])
+    setTemplates([])
+    setLoginInput('')
+    setLoginPassword('')
+  }
+
+  const handleRefresh = async () => {
+    if (!affiliate || refreshing) return
+    setRefreshing(true)
+    try {
+      await loadData(affiliate.custom_slug)
+    } catch { /* silent */ }
+    setRefreshing(false)
   }
 
   const handleCopy = (text: string, id: string) => {
@@ -203,7 +453,6 @@ export default function PartnersPage() {
     window.open(`/api/affiliates/export?${params.toString()}`, '_blank')
   }
 
-  // Drag reorder for export columns
   const moveColumn = (from: number, to: number) => {
     const cols = [...exportConfig.columns]
     const [item] = cols.splice(from, 1)
@@ -211,10 +460,9 @@ export default function PartnersPage() {
     setExportConfig(prev => ({ ...prev, columns: cols }))
   }
 
-  // ─── Replace merge tags ───────────────────────────────────────
   function personalizeTemplate(content: string): string {
     const link = links.find(l => l.event_id === selectedEvent)
-    const trackingUrl = link ? `${SITE_URL}/api/affiliates/track?ref=${link.tracking_code}` : SITE_URL
+    const trackingUrl = link ? `${SITE_URL}/api/affiliates/track?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}` : SITE_URL
     return content
       .replace(/\{\{affiliate_name\}\}/g, `${affiliate?.first_name} ${affiliate?.last_name}`)
       .replace(/\{\{affiliate_first_name\}\}/g, affiliate?.first_name || '')
@@ -223,7 +471,6 @@ export default function PartnersPage() {
       .replace(/\{\{company\}\}/g, affiliate?.company || '')
   }
 
-  // ─── Filtered templates ───────────────────────────────────────
   const filteredTemplates = templates.filter(t => {
     const matchEvent = !selectedEvent || t.event_id === selectedEvent
     const matchType = selectedTemplateType === 'all' || t.type === selectedTemplateType
@@ -231,7 +478,7 @@ export default function PartnersPage() {
   })
 
   const eventLink = links.find(l => l.event_id === selectedEvent)
-  const trackingUrl = eventLink ? `${SITE_URL}/api/affiliates/track?ref=${eventLink.tracking_code}` : ''
+  const trackingUrl = eventLink ? `${SITE_URL}/api/affiliates/track?ref=${eventLink.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${eventLink.events?.slug || ''}` : ''
 
   // Stats
   const totalClicks = links.reduce((s, l) => s + (l.clicks || 0), 0)
@@ -239,9 +486,46 @@ export default function PartnersPage() {
   const totalRevenue = referrals.reduce((s, r) => s + (r.revenue || 0), 0)
   const totalCommission = referrals.reduce((s, r) => s + (r.commission_amount || 0), 0)
 
-  // ═════════════════════════════════════════════════════════════
+  // Landing page template options
+  const landingTemplateOptions = [
+    { id: 'urgency', name: 'The Urgency Play', desc: 'Countdown, scarcity, loss aversion. Creates FOMO that converts.', color: '#ef4444', icon: '⏰' },
+    { id: 'authority', name: 'The Authority Builder', desc: 'Social proof, ROI math, testimonials. Builds trust that converts.', color: '#2dd4bf', icon: '🏆' },
+    { id: 'story', name: 'The Story Seller', desc: 'Before/after narrative, identity shift. Creates connection that converts.', color: '#a78bfa', icon: '📖' },
+  ]
+
+  const generateSelectedTemplate = (tid: string) => {
+    if (!eventLink) return
+    const event = eventLink.events
+    const html = generateTemplate(tid as 'urgency' | 'authority' | 'story', {
+      trackingLink: trackingUrl,
+      affiliateName: `${affiliate?.first_name} ${affiliate?.last_name}`,
+      eventTitle: event?.title || 'Build & Launch Your App Workshop',
+      eventDate: event?.start_date ? formatDate(event.start_date) : 'April 7, 2026',
+      eventSlug: event?.slug || '',
+    })
+    setLandingHtml(html)
+    setSelectedLandingTemplate(tid)
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // INITIALIZING
+  // ═══════════════════════════════════════════════════════════════
+  if (initializing) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#0a0a0f', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: 28, fontWeight: 800, marginBottom: 16 }}>
+            <span style={{ color: '#a78bfa' }}>Night</span> <span style={{ color: '#2dd4bf' }}>Vibe</span>
+          </div>
+          <div style={{ color: '#6b7280', fontSize: 14 }}>Loading...</div>
+        </div>
+      </div>
+    )
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // LOGIN SCREEN
-  // ═════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════
   if (!authenticated) {
     return (
       <div style={{ minHeight: '100vh', background: '#0a0a0f', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
@@ -251,13 +535,22 @@ export default function PartnersPage() {
           </div>
           <p style={{ color: '#6b7280', fontSize: 13, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 32 }}>Partner Portal</p>
 
-          <p style={{ color: '#9ca3af', fontSize: 15, marginBottom: 24 }}>Enter your partner ID to access your promo materials, tracking links, and leads.</p>
+          <p style={{ color: '#9ca3af', fontSize: 15, marginBottom: 24 }}>Sign in with your email or partner ID to access your promo materials, tracking links, and leads.</p>
 
           <input
             type="text"
-            placeholder="Your Partner ID (e.g. john-doe)"
-            value={slug}
-            onChange={e => setSlug(e.target.value)}
+            placeholder="Email or Partner ID"
+            value={loginInput}
+            onChange={e => setLoginInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleLogin()}
+            style={{ width: '100%', padding: '12px 16px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 15, marginBottom: 12, outline: 'none', boxSizing: 'border-box' }}
+          />
+
+          <input
+            type="password"
+            placeholder="Password (optional)"
+            value={loginPassword}
+            onChange={e => setLoginPassword(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleLogin()}
             style={{ width: '100%', padding: '12px 16px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 15, marginBottom: 16, outline: 'none', boxSizing: 'border-box' }}
           />
@@ -266,8 +559,8 @@ export default function PartnersPage() {
 
           <button
             onClick={handleLogin}
-            disabled={loading || !slug.trim()}
-            style={{ width: '100%', padding: '14px 0', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', color: '#fff', border: 'none', borderRadius: 12, fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading || !slug.trim() ? 0.5 : 1 }}
+            disabled={loading || !loginInput.trim()}
+            style={{ width: '100%', padding: '14px 0', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', color: '#fff', border: 'none', borderRadius: 12, fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading || !loginInput.trim() ? 0.5 : 1 }}
           >
             {loading ? 'Loading...' : 'Access Partner Portal →'}
           </button>
@@ -281,9 +574,9 @@ export default function PartnersPage() {
     )
   }
 
-  // ═════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════
   // MAIN PORTAL
-  // ═════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════
   return (
     <div style={{ minHeight: '100vh', background: '#0a0a0f', fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif", color: '#fff' }}>
       {/* Header */}
@@ -295,9 +588,27 @@ export default function PartnersPage() {
             </span>
             <span style={{ color: '#6b7280', fontSize: 12, marginLeft: 12, textTransform: 'uppercase', letterSpacing: 1 }}>Partner Portal</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <span style={{ color: '#9ca3af', fontSize: 14 }}>Welcome, <strong style={{ color: '#fff' }}>{affiliate?.first_name}</strong></span>
-            <button onClick={() => { setAuthenticated(false); setSlug('') }} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, cursor: 'pointer' }}>
+            {/* Refresh Button */}
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              title="Refresh data"
+              style={{
+                width: 34, height: 34, borderRadius: '50%', border: '1px solid rgba(108,58,237,0.3)',
+                background: 'transparent', color: '#a78bfa', fontSize: 16, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'transform 0.3s',
+                transform: refreshing ? 'rotate(360deg)' : 'rotate(0deg)',
+                animation: refreshing ? 'spin 0.8s linear infinite' : 'none',
+              }}
+            >
+              ↻
+            </button>
+            <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            {/* Sign Out */}
+            <button onClick={handleSignOut} style={{ padding: '6px 14px', background: 'transparent', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, cursor: 'pointer' }}>
               Sign Out
             </button>
           </div>
@@ -379,7 +690,6 @@ export default function PartnersPage() {
         {/* ═══════════ PROMO TEMPLATES TAB ═══════════ */}
         {activeTab === 'promo' && (
           <div>
-            {/* Type filter */}
             <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
               {[{ key: 'all', label: 'All' }, ...Object.entries(TYPE_LABELS).map(([k, v]) => ({ key: k, label: v }))].map(f => (
                 <button
@@ -396,11 +706,10 @@ export default function PartnersPage() {
               ))}
             </div>
 
-            {/* FTC Disclosure Banner */}
             <div style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: 10, padding: 16, marginBottom: 20 }}>
               <p style={{ color: '#f59e0b', fontSize: 12, fontWeight: 700, margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: 1 }}>⚠️ FTC Disclosure Required</p>
               <p style={{ color: '#9ca3af', fontSize: 13, margin: 0, lineHeight: 1.6 }}>
-                When promoting as an affiliate, you must disclose your relationship. Include language like: <em style={{ color: '#d1d5db' }}>&quot;I&apos;m an affiliate partner and may earn a commission if you sign up through my link.&quot;</em> All templates below include proper disclosure language.
+                When promoting as an affiliate, you must disclose your relationship. Include language like: <em style={{ color: '#d1d5db' }}>&quot;I&apos;m an affiliate partner and may earn a commission if you sign up through my link.&quot;</em>
               </p>
             </div>
 
@@ -412,7 +721,6 @@ export default function PartnersPage() {
 
             {filteredTemplates.map(template => (
               <div key={template.id} style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, marginBottom: 16, overflow: 'hidden' }}>
-                {/* Template header */}
                 <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(108,58,237,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
                   <div>
                     <span style={{ color: '#a78bfa', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, marginRight: 8 }}>
@@ -420,16 +728,13 @@ export default function PartnersPage() {
                     </span>
                     <span style={{ color: '#fff', fontSize: 15, fontWeight: 600 }}>{template.name}</span>
                   </div>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    {/* Copy content button */}
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     <button
                       onClick={() => handleCopy(personalizeTemplate(template.body_content), `copy-${template.id}`)}
                       style={{ padding: '8px 16px', background: 'rgba(108,58,237,0.15)', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                     >
                       {copiedId === `copy-${template.id}` ? '✓ Copied!' : '📋 Copy Content'}
                     </button>
-
-                    {/* Copy HTML button (if HTML version exists) */}
                     {template.body_html && (
                       <button
                         onClick={() => handleCopy(personalizeTemplate(template.body_html!), `html-${template.id}`)}
@@ -438,19 +743,13 @@ export default function PartnersPage() {
                         {copiedId === `html-${template.id}` ? '✓ Copied!' : '🔗 Copy HTML'}
                       </button>
                     )}
-
-                    {/* Social share buttons */}
                     {(template.type === 'social_media') && (
                       <>
                         {['twitter', 'facebook', 'linkedin', 'threads'].map(platform => {
                           const url = getShareUrl(platform, personalizeTemplate(template.body_content), trackingUrl)
                           if (!url) return null
                           return (
-                            <a
-                              key={platform}
-                              href={url}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <a key={platform} href={url} target="_blank" rel="noopener noreferrer"
                               style={{ padding: '8px 12px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 8, color: '#9ca3af', fontSize: 12, fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
                             >
                               {PLATFORM_ICONS[platform]} {platform.charAt(0).toUpperCase() + platform.slice(1)}
@@ -461,22 +760,15 @@ export default function PartnersPage() {
                     )}
                   </div>
                 </div>
-
-                {/* Subject line (emails) */}
                 {template.subject_line && (
                   <div style={{ padding: '10px 20px', background: 'rgba(108,58,237,0.04)', borderBottom: '1px solid rgba(108,58,237,0.06)' }}>
                     <span style={{ color: '#6b7280', fontSize: 11, marginRight: 8 }}>Subject:</span>
                     <span style={{ color: '#d1d5db', fontSize: 13 }}>{personalizeTemplate(template.subject_line)}</span>
-                    <button
-                      onClick={() => handleCopy(personalizeTemplate(template.subject_line!), `subj-${template.id}`)}
-                      style={{ marginLeft: 8, padding: '2px 8px', background: 'transparent', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 4, color: '#6b7280', fontSize: 10, cursor: 'pointer' }}
-                    >
+                    <button onClick={() => handleCopy(personalizeTemplate(template.subject_line!), `subj-${template.id}`)} style={{ marginLeft: 8, padding: '2px 8px', background: 'transparent', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 4, color: '#6b7280', fontSize: 10, cursor: 'pointer' }}>
                       {copiedId === `subj-${template.id}` ? '✓' : 'Copy'}
                     </button>
                   </div>
                 )}
-
-                {/* Content preview */}
                 <div style={{ padding: 20 }}>
                   <pre style={{ color: '#9ca3af', fontSize: 13, lineHeight: 1.7, whiteSpace: 'pre-wrap', wordBreak: 'break-word', margin: 0, maxHeight: 300, overflow: 'auto' }}>
                     {personalizeTemplate(template.body_content)}
@@ -492,21 +784,15 @@ export default function PartnersPage() {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
               <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: 0 }}>Your Leads & Referrals</h2>
-              <button
-                onClick={() => setShowExport(!showExport)}
-                style={{ padding: '10px 20px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 10, color: '#2dd4bf', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
-              >
+              <button onClick={() => setShowExport(!showExport)} style={{ padding: '10px 20px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 10, color: '#2dd4bf', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
                 📥 Export to CSV
               </button>
             </div>
 
-            {/* Export Configuration */}
             {showExport && (
               <div style={{ background: '#13131a', border: '1px solid rgba(45,212,191,0.2)', borderRadius: 12, padding: 20, marginBottom: 20 }}>
                 <h3 style={{ color: '#2dd4bf', fontSize: 14, fontWeight: 700, margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: 1 }}>Export Settings</h3>
-
                 <p style={{ color: '#6b7280', fontSize: 12, marginBottom: 12 }}>Select columns and drag to reorder. Edit header names as needed.</p>
-
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
                   {exportConfig.columns.map((col, idx) => {
                     const colDef = ALL_EXPORT_COLUMNS.find(c => c.key === col)
@@ -518,57 +804,36 @@ export default function PartnersPage() {
                         </div>
                         <span style={{ color: '#6b7280', fontSize: 11, minWidth: 120 }}>{colDef?.label || col}</span>
                         <span style={{ color: '#4b5563', fontSize: 11 }}>→</span>
-                        <input
-                          type="text"
-                          value={exportConfig.headers[col] || ''}
-                          onChange={e => setExportConfig(prev => ({ ...prev, headers: { ...prev.headers, [col]: e.target.value } }))}
-                          style={{ flex: 1, padding: '4px 8px', background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#fff', fontSize: 12 }}
-                        />
-                        <button
-                          onClick={() => setExportConfig(prev => ({ ...prev, columns: prev.columns.filter(c => c !== col) }))}
-                          style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: 14 }}
-                        >✕</button>
+                        <input type="text" value={exportConfig.headers[col] || ''} onChange={e => setExportConfig(prev => ({ ...prev, headers: { ...prev.headers, [col]: e.target.value } }))} style={{ flex: 1, padding: '4px 8px', background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#fff', fontSize: 12 }} />
+                        <button onClick={() => setExportConfig(prev => ({ ...prev, columns: prev.columns.filter(c => c !== col) }))} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: 14 }}>✕</button>
                       </div>
                     )
                   })}
                 </div>
-
-                {/* Add back removed columns */}
                 {ALL_EXPORT_COLUMNS.filter(c => !exportConfig.columns.includes(c.key)).length > 0 && (
                   <div style={{ marginBottom: 16 }}>
                     <span style={{ color: '#6b7280', fontSize: 11, marginRight: 8 }}>Add column:</span>
                     {ALL_EXPORT_COLUMNS.filter(c => !exportConfig.columns.includes(c.key)).map(c => (
-                      <button
-                        key={c.key}
-                        onClick={() => setExportConfig(prev => ({ ...prev, columns: [...prev.columns, c.key], headers: { ...prev.headers, [c.key]: c.label } }))}
-                        style={{ padding: '4px 10px', background: 'rgba(108,58,237,0.1)', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#a78bfa', fontSize: 11, cursor: 'pointer', marginRight: 6, marginBottom: 4 }}
-                      >
+                      <button key={c.key} onClick={() => setExportConfig(prev => ({ ...prev, columns: [...prev.columns, c.key], headers: { ...prev.headers, [c.key]: c.label } }))} style={{ padding: '4px 10px', background: 'rgba(108,58,237,0.1)', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#a78bfa', fontSize: 11, cursor: 'pointer', marginRight: 6, marginBottom: 4 }}>
                         + {c.label}
                       </button>
                     ))}
                   </div>
                 )}
-
-                <button
-                  onClick={handleExportCSV}
-                  style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #059669, #10b981)', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}
-                >
+                <button onClick={handleExportCSV} style={{ padding: '12px 24px', background: 'linear-gradient(135deg, #059669, #10b981)', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>
                   📥 Download CSV
                 </button>
               </div>
             )}
 
-            {/* Leads table */}
             {referrals.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>
-                No leads yet. Share your tracking link to start getting referrals!
-              </div>
+              <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>No leads yet. Share your tracking link to start getting referrals!</div>
             ) : (
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
                     <tr>
-                      {['Name', 'Email', 'Status', 'Revenue', 'Commission', 'Date'].map(h => (
+                      {['Name', 'Email', 'Status', 'Revenue', 'Commission', 'Paid', 'Date'].map(h => (
                         <th key={h} style={{ textAlign: 'left', padding: '12px 16px', color: '#6b7280', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 1, borderBottom: '1px solid rgba(108,58,237,0.1)' }}>{h}</th>
                       ))}
                     </tr>
@@ -581,14 +846,20 @@ export default function PartnersPage() {
                         <td style={{ padding: '12px 16px' }}>
                           <span style={{
                             padding: '4px 10px', borderRadius: 6, fontSize: 11, fontWeight: 600,
-                            background: ref.status === 'purchased' ? 'rgba(16,185,129,0.15)' : ref.status === 'registered' ? 'rgba(108,58,237,0.15)' : 'rgba(107,114,128,0.15)',
-                            color: ref.status === 'purchased' ? '#10b981' : ref.status === 'registered' ? '#a78bfa' : '#6b7280',
+                            background: ref.status === 'purchased' ? 'rgba(16,185,129,0.15)' : ref.status === 'registered' ? 'rgba(108,58,237,0.15)' : ref.status === 'refunded' ? 'rgba(239,68,68,0.15)' : 'rgba(107,114,128,0.15)',
+                            color: ref.status === 'purchased' ? '#10b981' : ref.status === 'registered' ? '#a78bfa' : ref.status === 'refunded' ? '#ef4444' : '#6b7280',
                           }}>
                             {ref.status.toUpperCase()}
                           </span>
                         </td>
                         <td style={{ padding: '12px 16px', color: '#10b981', fontSize: 14, fontWeight: 600 }}>${ref.revenue}</td>
                         <td style={{ padding: '12px 16px', color: '#f59e0b', fontSize: 14, fontWeight: 600 }}>${ref.commission_amount}</td>
+                        <td style={{ padding: '12px 16px' }}>
+                          {ref.commission_paid
+                            ? <span style={{ color: '#10b981', fontSize: 12, fontWeight: 700 }}>✓ PAID</span>
+                            : <span style={{ color: '#6b7280', fontSize: 12 }}>—</span>
+                          }
+                        </td>
                         <td style={{ padding: '12px 16px', color: '#6b7280', fontSize: 13 }}>{formatDate(ref.created_at)}</td>
                       </tr>
                     ))}
@@ -599,23 +870,82 @@ export default function PartnersPage() {
           </div>
         )}
 
-        {/* ═══════════ LANDING PAGE BUILDER TAB ═══════════ */}
+        {/* ═══════════ LANDING PAGE TAB ═══════════ */}
         {activeTab === 'landing' && (
           <div>
-            <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Custom Landing Page</h2>
-            <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 20, lineHeight: 1.6 }}>
-              Create your own branded landing page. When someone visits your tracking link, they&apos;ll see your custom page instead of the default workshop page. Your tracking link still works — leads are still attributed to you.
+            <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 8px' }}>Landing Page Builder</h2>
+            <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 24, lineHeight: 1.6 }}>
+              Choose a template or build your own. When someone visits your tracking link, they&apos;ll see your custom page. Leads are still attributed to you.
             </p>
 
+            {/* Template Selection Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16, marginBottom: 24 }}>
+              {landingTemplateOptions.map(t => (
+                <div
+                  key={t.id}
+                  onClick={() => generateSelectedTemplate(t.id)}
+                  onMouseEnter={() => setHoveredTemplate(t.id)}
+                  onMouseLeave={() => setHoveredTemplate('')}
+                  style={{
+                    background: selectedLandingTemplate === t.id ? 'rgba(108,58,237,0.12)' : '#13131a',
+                    border: `2px solid ${selectedLandingTemplate === t.id ? t.color : hoveredTemplate === t.id ? 'rgba(108,58,237,0.4)' : 'rgba(108,58,237,0.12)'}`,
+                    borderRadius: 14,
+                    padding: 24,
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    transform: hoveredTemplate === t.id ? 'translateY(-2px)' : 'none',
+                    position: 'relative',
+                  }}
+                >
+                  <div style={{ fontSize: 32, marginBottom: 12 }}>{t.icon}</div>
+                  <h3 style={{ color: t.color, fontSize: 16, fontWeight: 700, margin: '0 0 8px' }}>{t.name}</h3>
+                  <p style={{ color: '#9ca3af', fontSize: 12, lineHeight: 1.6, margin: 0 }}>{t.desc}</p>
+                  {selectedLandingTemplate === t.id && (
+                    <div style={{ position: 'absolute', top: 12, right: 12, background: t.color, color: '#000', fontSize: 10, fontWeight: 800, padding: '3px 8px', borderRadius: 6 }}>SELECTED</div>
+                  )}
+
+                  {/* Hover preview tooltip */}
+                  {hoveredTemplate === t.id && (
+                    <div style={{
+                      position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)',
+                      zIndex: 100, marginTop: 8, width: 320, maxHeight: 400, overflow: 'hidden',
+                      borderRadius: 12, border: '1px solid rgba(108,58,237,0.3)',
+                      boxShadow: '0 20px 60px rgba(0,0,0,0.8)',
+                    }}>
+                      <iframe
+                        srcDoc={generateTemplate(t.id as 'urgency' | 'authority' | 'story', {
+                          trackingLink: trackingUrl || '#',
+                          affiliateName: `${affiliate?.first_name} ${affiliate?.last_name}`,
+                          eventTitle: eventLink?.events?.title || 'Build & Launch Your App Workshop',
+                          eventDate: eventLink?.events?.start_date ? formatDate(eventLink.events.start_date) : 'April 7, 2026',
+                          eventSlug: eventLink?.events?.slug || '',
+                        })}
+                        style={{ width: 640, height: 800, border: 'none', transform: 'scale(0.5)', transformOrigin: 'top left', pointerEvents: 'none' }}
+                        title={`Preview: ${t.name}`}
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Copy HTML + Editor */}
             {eventLink && (
               <div style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, overflow: 'hidden' }}>
-                <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(108,58,237,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>HTML Editor — {eventLink.events?.title}</span>
-                  <div style={{ display: 'flex', gap: 8 }}>
-                    <button
-                      onClick={() => setPreviewLanding(!previewLanding)}
-                      style={{ padding: '6px 14px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 8, color: '#9ca3af', fontSize: 12, cursor: 'pointer' }}
-                    >
+                <div style={{ padding: '16px 20px', borderBottom: '1px solid rgba(108,58,237,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+                  <span style={{ color: '#a78bfa', fontSize: 13, fontWeight: 600 }}>
+                    {selectedLandingTemplate ? `Template: ${landingTemplateOptions.find(t => t.id === selectedLandingTemplate)?.name}` : 'HTML Editor'} — {eventLink.events?.title}
+                  </span>
+                  <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    {landingHtml && (
+                      <button
+                        onClick={() => handleCopy(landingHtml, 'landing-html')}
+                        style={{ padding: '6px 14px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8, color: '#2dd4bf', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        {copiedId === 'landing-html' ? '✓ Copied!' : '📋 Copy HTML'}
+                      </button>
+                    )}
+                    <button onClick={() => setPreviewLanding(!previewLanding)} style={{ padding: '6px 14px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 8, color: '#9ca3af', fontSize: 12, cursor: 'pointer' }}>
                       {previewLanding ? '📝 Editor' : '👁 Preview'}
                     </button>
                     <button
@@ -637,8 +967,8 @@ export default function PartnersPage() {
                 {previewLanding ? (
                   <div style={{ padding: 20 }}>
                     <iframe
-                      srcDoc={landingHtml || eventLink.custom_landing_html || '<p style="color:#6b7280;text-align:center;padding:40px;">No custom page yet. Paste your HTML in the editor.</p>'}
-                      style={{ width: '100%', height: 500, border: '1px solid rgba(108,58,237,0.1)', borderRadius: 8, background: '#fff' }}
+                      srcDoc={landingHtml || eventLink.custom_landing_html || '<p style="color:#6b7280;text-align:center;padding:40px;">No custom page yet. Select a template above or paste HTML in the editor.</p>'}
+                      style={{ width: '100%', height: 600, border: '1px solid rgba(108,58,237,0.1)', borderRadius: 8, background: '#fff' }}
                       title="Landing page preview"
                     />
                   </div>
@@ -647,12 +977,11 @@ export default function PartnersPage() {
                     <textarea
                       value={landingHtml || eventLink.custom_landing_html || ''}
                       onChange={e => setLandingHtml(e.target.value)}
-                      placeholder="Paste your custom HTML landing page here..."
+                      placeholder="Select a template above or paste your custom HTML here..."
                       style={{ width: '100%', minHeight: 400, padding: 16, background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 10, color: '#d1d5db', fontSize: 13, fontFamily: 'monospace', lineHeight: 1.6, resize: 'vertical', boxSizing: 'border-box' }}
                     />
                     <p style={{ color: '#4b5563', fontSize: 11, marginTop: 8, lineHeight: 1.6 }}>
-                      Tip: Include a link to <code style={{ color: '#a78bfa' }}>{SITE_URL}?ref={eventLink.tracking_code}</code> so leads register through your tracked link.
-                      Your page must include an FTC affiliate disclosure.
+                      Tip: Your tracking link <code style={{ color: '#a78bfa' }}>{trackingUrl}</code> is automatically embedded in templates. Your page must include an FTC affiliate disclosure.
                     </p>
                   </div>
                 )}
@@ -666,27 +995,28 @@ export default function PartnersPage() {
           <div>
             <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 20px' }}>Your Tracking Links</h2>
 
-            {links.map(link => (
-              <div key={link.id} style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 12 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-                  <div>
-                    <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{link.events?.title || 'Event'}</div>
-                    <div style={{ color: '#9ca3af', fontSize: 13, fontFamily: 'monospace' }}>
-                      {SITE_URL}/api/affiliates/track?ref={link.tracking_code}
+            {links.map(link => {
+              const fullUrl = `${SITE_URL}/api/affiliates/track?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}`
+              return (
+                <div key={link.id} style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 12 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+                    <div>
+                      <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{link.events?.title || 'Event'}</div>
+                      <div style={{ color: '#9ca3af', fontSize: 13, fontFamily: 'monospace', wordBreak: 'break-all' }}>{fullUrl}</div>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <span style={{ color: '#a78bfa', fontSize: 14, fontWeight: 700 }}>{link.clicks} clicks</span>
+                      <button
+                        onClick={() => handleCopy(fullUrl, `link-${link.id}`)}
+                        style={{ padding: '8px 16px', background: 'rgba(108,58,237,0.15)', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                      >
+                        {copiedId === `link-${link.id}` ? '✓ Copied!' : '📋 Copy'}
+                      </button>
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ color: '#a78bfa', fontSize: 14, fontWeight: 700 }}>{link.clicks} clicks</span>
-                    <button
-                      onClick={() => handleCopy(`${SITE_URL}/api/affiliates/track?ref=${link.tracking_code}`, `link-${link.id}`)}
-                      style={{ padding: '8px 16px', background: 'rgba(108,58,237,0.15)', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
-                    >
-                      {copiedId === `link-${link.id}` ? '✓ Copied!' : '📋 Copy'}
-                    </button>
-                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 

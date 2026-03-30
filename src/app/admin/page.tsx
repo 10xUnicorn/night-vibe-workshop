@@ -174,7 +174,7 @@ export default function AdminPage() {
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
   const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
   const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires' | 'affiliates' | 'campaigns'>('events')
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires' | 'affiliates' | 'campaigns' | 'assets'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
@@ -741,7 +741,7 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires', 'affiliates', 'campaigns'] as const).map((t) => {
+          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires', 'affiliates', 'campaigns', 'assets'] as const).map((t) => {
             const labels: Record<string, string> = {
               'events': 'Events',
               'hosts': 'Hosts',
@@ -755,6 +755,7 @@ export default function AdminPage() {
               'questionnaires': 'Questionnaires',
               'affiliates': 'Affiliates',
               'campaigns': 'Campaigns',
+              'assets': 'Assets',
             }
             return (
             <button key={t} onClick={() => { setTab(t); setMsg(''); setEditingEvent(null); setEditingHost(null); setEditingOffer(null); setShowCreateMenu(false) }} style={{
@@ -2528,7 +2529,211 @@ export default function AdminPage() {
             )}
           </div>
         )}
+
+        {/* ═══════════ ASSETS TAB ═══════════ */}
+        {tab === 'assets' && (
+          <AssetsTab password={password} />
+        )}
       </div>
+    </div>
+  )
+}
+
+// ─── Assets Tab Component ────────────────────────────────────────
+function AssetsTab({ password }: { password: string }) {
+  const [folders, setFolders] = useState<Array<{ id: string; name: string; description: string; sort_order: number }>>([])
+  const [assets, setAssets] = useState<Array<{ id: string; folder_id: string | null; name: string; type: string; url: string; storage_path: string; file_size: number; mime_type: string; created_at: string }>>([])
+  const [selectedFolder, setSelectedFolder] = useState<string | null>(null)
+  const [newFolderName, setNewFolderName] = useState('')
+  const [addMode, setAddMode] = useState<'none' | 'url' | 'upload'>('none')
+  const [urlForm, setUrlForm] = useState({ name: '', url: '', type: 'image' })
+  const [uploading, setUploading] = useState(false)
+  const [msg, setMsg] = useState('')
+
+  const loadAssets = async () => {
+    const params = new URLSearchParams({ password })
+    if (selectedFolder) params.set('folder_id', selectedFolder)
+    const res = await fetch(`/api/assets?${params}`)
+    if (res.ok) {
+      const data = await res.json()
+      setFolders(data.folders || [])
+      setAssets(data.assets || [])
+    }
+  }
+
+  useEffect(() => { loadAssets() }, [selectedFolder])
+
+  const createFolder = async () => {
+    if (!newFolderName.trim()) return
+    await fetch('/api/assets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, action: 'create_folder', name: newFolderName }),
+    })
+    setNewFolderName('')
+    loadAssets()
+  }
+
+  const addUrlAsset = async () => {
+    if (!urlForm.name.trim() || !urlForm.url.trim()) return
+    await fetch('/api/assets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, action: 'create_asset_url', folder_id: selectedFolder, ...urlForm }),
+    })
+    setUrlForm({ name: '', url: '', type: 'image' })
+    setAddMode('none')
+    loadAssets()
+  }
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    setMsg('')
+    const formData = new FormData()
+    formData.append('password', password)
+    formData.append('file', file)
+    formData.append('name', file.name)
+    formData.append('type', file.type.startsWith('video') ? 'video' : file.type.startsWith('image') ? 'image' : 'document')
+    if (selectedFolder) formData.append('folder_id', selectedFolder)
+
+    const res = await fetch('/api/assets', { method: 'POST', body: formData })
+    if (res.ok) {
+      setMsg('File uploaded!')
+      setAddMode('none')
+      loadAssets()
+    } else {
+      const err = await res.json()
+      setMsg(`Error: ${err.error}`)
+    }
+    setUploading(false)
+    e.target.value = ''
+  }
+
+  const deleteAsset = async (id: string, storagePath?: string) => {
+    if (!confirm('Delete this asset?')) return
+    await fetch('/api/assets', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, id, storage_path: storagePath }),
+    })
+    loadAssets()
+  }
+
+  const deleteFolder = async (id: string) => {
+    if (!confirm('Delete this folder and all its assets?')) return
+    await fetch('/api/assets', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, id, target: 'folder' }),
+    })
+    if (selectedFolder === id) setSelectedFolder(null)
+    loadAssets()
+  }
+
+  const filteredAssets = selectedFolder
+    ? assets.filter(a => a.folder_id === selectedFolder)
+    : assets
+
+  const formatSize = (bytes: number) => {
+    if (!bytes) return ''
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  }
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 12 }}>
+        <h2 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>Assets</h2>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={() => setAddMode('url')} style={{ padding: '8px 16px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--accent-light)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>+ Add URL</button>
+          <label style={{ padding: '8px 16px', background: 'linear-gradient(135deg, var(--accent), var(--accent-light))', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+            {uploading ? 'Uploading...' : '+ Upload File'}
+            <input type="file" accept="image/*,video/*,.pdf,.doc,.docx" onChange={handleFileUpload} style={{ display: 'none' }} />
+          </label>
+        </div>
+      </div>
+
+      {msg && <div style={{ padding: '10px 16px', background: msg.includes('Error') ? 'rgba(239,68,68,0.1)' : 'rgba(16,185,129,0.1)', color: msg.includes('Error') ? 'var(--danger)' : '#10b981', borderRadius: 8, marginBottom: 16, fontSize: 13 }}>{msg}</div>}
+
+      {/* Folders */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+        <button onClick={() => setSelectedFolder(null)} style={{
+          padding: '8px 16px', borderRadius: 8, border: '1px solid var(--border)', cursor: 'pointer', fontSize: 12, fontWeight: 600,
+          background: !selectedFolder ? 'rgba(108,58,237,0.2)' : 'transparent',
+          color: !selectedFolder ? 'var(--accent-light)' : 'var(--text-secondary)',
+        }}>All</button>
+        {folders.map(f => (
+          <div key={f.id} style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <button onClick={() => setSelectedFolder(f.id)} style={{
+              padding: '8px 16px', borderRadius: '8px 0 0 8px', border: '1px solid var(--border)', cursor: 'pointer', fontSize: 12, fontWeight: 600,
+              background: selectedFolder === f.id ? 'rgba(108,58,237,0.2)' : 'transparent',
+              color: selectedFolder === f.id ? 'var(--accent-light)' : 'var(--text-secondary)',
+            }}>📁 {f.name}</button>
+            <button onClick={() => deleteFolder(f.id)} style={{ padding: '8px 6px', borderRadius: '0 8px 8px 0', border: '1px solid var(--border)', borderLeft: 'none', cursor: 'pointer', fontSize: 10, background: 'transparent', color: 'var(--danger)' }}>✕</button>
+          </div>
+        ))}
+        <div style={{ display: 'flex', gap: 4 }}>
+          <input placeholder="New folder..." value={newFolderName} onChange={e => setNewFolderName(e.target.value)} onKeyDown={e => e.key === 'Enter' && createFolder()} style={{ padding: '6px 12px', background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 12, width: 140 }} />
+          <button onClick={createFolder} style={{ padding: '6px 12px', background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 11, cursor: 'pointer' }}>+</button>
+        </div>
+      </div>
+
+      {/* Add URL form */}
+      {addMode === 'url' && (
+        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 20, marginBottom: 20 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 700, margin: '0 0 12px', color: 'var(--accent-light)' }}>Add Asset from URL</h3>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <input placeholder="Asset name" value={urlForm.name} onChange={e => setUrlForm(p => ({ ...p, name: e.target.value }))} style={{ flex: 1, minWidth: 150, padding: '8px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }} />
+            <input placeholder="URL" value={urlForm.url} onChange={e => setUrlForm(p => ({ ...p, url: e.target.value }))} style={{ flex: 2, minWidth: 200, padding: '8px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }} />
+            <select value={urlForm.type} onChange={e => setUrlForm(p => ({ ...p, type: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }}>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+              <option value="document">Document</option>
+            </select>
+            <button onClick={addUrlAsset} style={{ padding: '8px 16px', background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Add</button>
+            <button onClick={() => setAddMode('none')} style={{ padding: '8px 12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-secondary)', fontSize: 12, cursor: 'pointer' }}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {/* Assets Grid */}
+      {filteredAssets.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
+          {selectedFolder ? 'No assets in this folder yet.' : 'No assets yet. Upload a file or add a URL.'}
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16 }}>
+          {filteredAssets.map(asset => (
+            <div key={asset.id} style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
+              {/* Preview */}
+              <div style={{ height: 140, background: '#1a1a2e', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                {asset.type === 'image' && asset.url ? (
+                  <img src={asset.url} alt={asset.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }} />
+                ) : asset.type === 'video' ? (
+                  <div style={{ fontSize: 40 }}>🎬</div>
+                ) : (
+                  <div style={{ fontSize: 40 }}>📄</div>
+                )}
+              </div>
+              {/* Info */}
+              <div style={{ padding: 12 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{asset.name}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8 }}>
+                  {asset.type.toUpperCase()} {asset.file_size ? `· ${formatSize(asset.file_size)}` : ''}
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <button onClick={() => { navigator.clipboard.writeText(asset.url); }} style={{ flex: 1, padding: '6px 0', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--accent-light)', fontSize: 11, cursor: 'pointer' }}>Copy URL</button>
+                  <button onClick={() => window.open(asset.url, '_blank')} style={{ padding: '6px 10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text-secondary)', fontSize: 11, cursor: 'pointer' }}>↗</button>
+                  <button onClick={() => deleteAsset(asset.id, asset.storage_path)} style={{ padding: '6px 10px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--danger)', fontSize: 11, cursor: 'pointer' }}>✕</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

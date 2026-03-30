@@ -102,6 +102,18 @@ export default function EventPage() {
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactSubmitting, setContactSubmitting] = useState(false);
 
+  // Affiliate tracking — capture ref param
+  const refCode = searchParams.get('ref') || '';
+
+  // Store ref in sessionStorage so it persists across page navigation
+  useEffect(() => {
+    if (refCode) {
+      sessionStorage.setItem('nv_ref', refCode);
+    }
+  }, [refCode]);
+
+  const getRefCode = () => refCode || (typeof window !== 'undefined' ? sessionStorage.getItem('nv_ref') || '' : '');
+
   const fetchEventData = useCallback(async () => {
     try {
       const { data: eventData, error: eventError } = await supabase
@@ -180,6 +192,23 @@ export default function EventPage() {
       });
       if (!response.ok) throw new Error('Failed to join waitlist');
       setWaitlistSubmitted(true);
+
+      // Record affiliate referral if ref param exists
+      const ref = getRefCode();
+      if (ref) {
+        const nameParts = waitlistForm.name.trim().split(' ');
+        fetch('/api/affiliates/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tracking_code: ref,
+            lead_email: waitlistForm.email,
+            lead_first_name: nameParts[0] || '',
+            lead_last_name: nameParts.slice(1).join(' ') || '',
+            event_id: event.id,
+          }),
+        }).catch(() => { /* silent — don't block user flow */ });
+      }
     } catch (err) {
       alert(err instanceof Error ? err.message : 'Failed to join waitlist');
     } finally {
@@ -221,7 +250,14 @@ export default function EventPage() {
 
   const seatsLeft = Math.max(0, event.capacity - (event.event_tickets[0]?.sold_count || 0));
   const isSoldOut = event.status === 'sold_out' || seatsLeft <= 0;
-  const ctaUrl = event.stripe_payment_link || event.event_tickets[0]?.stripe_payment_link || '#';
+  // Append ref param to Stripe payment link for affiliate tracking
+  const baseCtaUrl = event.stripe_payment_link || event.event_tickets[0]?.stripe_payment_link || '#';
+  const ctaUrl = (() => {
+    const ref = getRefCode();
+    if (!ref || baseCtaUrl === '#') return baseCtaUrl;
+    const sep = baseCtaUrl.includes('?') ? '&' : '?';
+    return `${baseCtaUrl}${sep}client_reference_id=${encodeURIComponent(ref)}`;
+  })();
   const price = event.event_tickets[0]?.price || 997;
 
   const eventDate = new Date(event.start_date);

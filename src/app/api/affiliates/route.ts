@@ -22,20 +22,22 @@ function generateTrackingCode(): string {
   return 'nv-' + Math.random().toString(36).substring(2, 10)
 }
 
-// GET all affiliates (admin) or self-lookup by slug
+// GET all affiliates (admin) or self-lookup by slug or email
 export async function GET(req: NextRequest) {
   const password = req.nextUrl.searchParams.get('password') || ''
   const slug = req.nextUrl.searchParams.get('slug')
+  const email = req.nextUrl.searchParams.get('email')
 
   const sb = getAdmin()
 
+  // Self-lookup by slug
   if (slug) {
     const trimmed = slug.trim().toLowerCase()
     if (!trimmed) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 })
 
     const { data, error } = await sb
       .from('affiliates')
-      .select('id, first_name, last_name, email, company, custom_slug, status, created_at')
+      .select('id, first_name, last_name, email, company, custom_slug, status, role, created_at')
       .eq('custom_slug', trimmed)
       .eq('status', 'active')
       .single()
@@ -46,6 +48,25 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(data)
   }
 
+  // Self-lookup by email
+  if (email) {
+    const trimmed = email.trim().toLowerCase()
+    if (!trimmed) return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
+
+    const { data, error } = await sb
+      .from('affiliates')
+      .select('id, first_name, last_name, email, company, custom_slug, status, role, created_at')
+      .eq('email', trimmed)
+      .eq('status', 'active')
+      .single()
+
+    if (error || !data) {
+      return NextResponse.json({ error: 'Affiliate not found' }, { status: 404 })
+    }
+    return NextResponse.json(data)
+  }
+
+  // Admin: list all
   if (!checkAuth(password)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
