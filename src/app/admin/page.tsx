@@ -741,7 +741,7 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires'] as const).map((t) => {
+          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires', 'affiliates', 'campaigns'] as const).map((t) => {
             const labels: Record<string, string> = {
               'events': 'Events',
               'hosts': 'Hosts',

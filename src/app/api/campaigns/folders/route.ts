@@ -5,7 +5,11 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 function getAdmin() { return createClient(supabaseUrl, supabaseServiceKey) }
-function checkAuth(p: string) { return p === (process.env.ADMIN_PASSWORD || 'nightvibe2026') }
+function checkAuth(p: string) {
+  const adminPw = process.env.ADMIN_PASSWORD
+  if (!adminPw) return false
+  return p === adminPw
+}
 
 export async function GET(req: NextRequest) {
   const password = req.nextUrl.searchParams.get('password') || ''
