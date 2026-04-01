@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
 
   const query = sb
     .from('affiliate_links')
-    .select('*, affiliates(first_name, last_name, email), events(title, slug)')
+    .select('*, affiliates(first_name, last_name, email), events(title, slug, start_date)')
     .order('created_at', { ascending: false })
 
   if (affiliateId) query.eq('affiliate_id', affiliateId)

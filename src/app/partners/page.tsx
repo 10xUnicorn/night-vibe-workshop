@@ -383,6 +383,8 @@ export default function PartnersPage() {
   const [error, setError] = useState('')
   const [initializing, setInitializing] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [loginMethod, setLoginMethod] = useState<'slug' | 'email'>('slug')
+  const [magicLinkSent, setMagicLinkSent] = useState(false)
 
   // Data
   const [affiliate, setAffiliate] = useState<AffiliateData | null>(null)
@@ -409,6 +411,11 @@ export default function PartnersPage() {
   })
 
   const [agreedToTerms, setAgreedToTerms] = useState(false)
+
+  // Custom link creation state
+  const [customTrackingCode, setCustomTrackingCode] = useState('')
+  const [selectedEventForLink, setSelectedEventForLink] = useState<string>('')
+  const [creatingCustomLink, setCreatingCustomLink] = useState(false)
 
   const loadData = useCallback(async (identifier: string, isEmail = false) => {
     const param = isEmail ? `email=${encodeURIComponent(identifier)}` : `slug=${identifier}`
@@ -445,31 +452,81 @@ export default function PartnersPage() {
 
   // Session persistence — check localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('nv_partner_session')
-    if (stored) {
-      try {
-        const session = JSON.parse(stored)
-        if (session.slug) {
-          loadData(session.slug)
-            .then(() => {
-              setAuthenticated(true)
-              setAgreedToTerms(true)
-            })
-            .catch(() => {
-              localStorage.removeItem('nv_partner_session')
-            })
-            .finally(() => setInitializing(false))
-          return
-        }
-      } catch { /* invalid JSON */ }
+    const initAuth = async () => {
+      // Check for magic link token in URL
+      const url = new URL(window.location.href)
+      const magicToken = url.searchParams.get('magic')
+
+      if (magicToken) {
+        try {
+          const res = await fetch(`/api/affiliates/magic-link?token=${encodeURIComponent(magicToken)}`)
+          if (res.ok) {
+            const affData = await res.json()
+            await loadData(affData.custom_slug)
+            localStorage.setItem('nv_partner_session', JSON.stringify({ slug: affData.custom_slug, email: affData.email }))
+            setAuthenticated(true)
+            setAgreedToTerms(true)
+            // Clean up URL
+            window.history.replaceState({}, document.title, '/partners')
+            setInitializing(false)
+            return
+          }
+        } catch { /* token verification failed */ }
+      }
+
+      // Check stored session
+      const stored = localStorage.getItem('nv_partner_session')
+      if (stored) {
+        try {
+          const session = JSON.parse(stored)
+          if (session.slug) {
+            loadData(session.slug)
+              .then(() => {
+                setAuthenticated(true)
+                setAgreedToTerms(true)
+              })
+              .catch(() => {
+                localStorage.removeItem('nv_partner_session')
+              })
+              .finally(() => setInitializing(false))
+            return
+          }
+        } catch { /* invalid JSON */ }
+      }
+      setInitializing(false)
     }
-    setInitializing(false)
+
+    initAuth()
   }, [loadData])
 
   const handleLogin = async () => {
     setLoading(true)
     setError('')
     const input = loginInput.trim().toLowerCase()
+
+    if (loginMethod === 'email') {
+      // Magic link flow
+      try {
+        const res = await fetch('/api/affiliates/magic-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: input }),
+        })
+        if (res.ok) {
+          setMagicLinkSent(true)
+          setLoginInput('')
+        } else {
+          const data = await res.json()
+          setError(data.error || 'Failed to send magic link')
+        }
+      } catch {
+        setError('Failed to send magic link. Please try again.')
+      }
+      setLoading(false)
+      return
+    }
+
+    // Original slug/password flow
     try {
       // Try slug first
       let affData
@@ -545,6 +602,43 @@ export default function PartnersPage() {
     params.set('columns', exportConfig.columns.join(','))
     params.set('headers', JSON.stringify(exportConfig.headers))
     window.open(`/api/affiliates/export?${params.toString()}`, '_blank')
+  }
+
+  const handleCreateCustomLink = async () => {
+    if (!customTrackingCode.trim()) {
+      setError('Tracking code is required')
+      return
+    }
+    if (!selectedEventForLink) {
+      setError('Please select an event')
+      return
+    }
+
+    setCreatingCustomLink(true)
+    setError('')
+    try {
+      const res = await fetch('/api/affiliates/links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug: affiliate?.custom_slug,
+          event_id: selectedEventForLink,
+          tracking_code: customTrackingCode.trim(),
+        }),
+      })
+
+      if (res.ok) {
+        setCustomTrackingCode('')
+        setSelectedEventForLink('')
+        await loadData(affiliate!.custom_slug)
+      } else {
+        const err = await res.json()
+        setError(err.error || 'Failed to create link')
+      }
+    } catch {
+      setError('Network error — try again')
+    }
+    setCreatingCustomLink(false)
   }
 
   const moveColumn = (from: number, to: number) => {
@@ -640,35 +734,98 @@ export default function PartnersPage() {
           </div>
           <p style={{ color: '#6b7280', fontSize: 13, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 32 }}>Partner Portal</p>
 
-          <p style={{ color: '#9ca3af', fontSize: 15, marginBottom: 24 }}>Sign in with your email or partner ID to access your promo materials, tracking links, and leads.</p>
+          {!magicLinkSent ? (
+            <>
+              <p style={{ color: '#9ca3af', fontSize: 15, marginBottom: 24 }}>Sign in with your email or partner ID to access your promo materials, tracking links, and leads.</p>
 
-          <input
-            type="text"
-            placeholder="Email or Partner ID"
-            value={loginInput}
-            onChange={e => setLoginInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            style={{ width: '100%', padding: '12px 16px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 15, marginBottom: 12, outline: 'none', boxSizing: 'border-box' }}
-          />
+              {/* Login method tabs */}
+              <div style={{ display: 'flex', gap: 12, marginBottom: 24, background: '#0a0a0f', padding: 4, borderRadius: 10 }}>
+                <button
+                  onClick={() => setLoginMethod('slug')}
+                  style={{
+                    flex: 1,
+                    padding: '10px 16px',
+                    background: loginMethod === 'slug' ? 'linear-gradient(135deg, #6c3aed, #a78bfa)' : 'transparent',
+                    border: 'none',
+                    borderRadius: 8,
+                    color: loginMethod === 'slug' ? '#fff' : '#9ca3af',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                  }}
+                >
+                  Partner ID
+                </button>
+                <button
+                  onClick={() => setLoginMethod('email')}
+                  style={{
+                    flex: 1,
+                    padding: '10px 16px',
+                    background: loginMethod === 'email' ? 'linear-gradient(135deg, #6c3aed, #a78bfa)' : 'transparent',
+                    border: 'none',
+                    borderRadius: 8,
+                    color: loginMethod === 'email' ? '#fff' : '#9ca3af',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s',
+                  }}
+                >
+                  Magic Link
+                </button>
+              </div>
 
-          <input
-            type="password"
-            placeholder="Password (optional)"
-            value={loginPassword}
-            onChange={e => setLoginPassword(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            style={{ width: '100%', padding: '12px 16px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 15, marginBottom: 16, outline: 'none', boxSizing: 'border-box' }}
-          />
+              <input
+                type={loginMethod === 'email' ? 'email' : 'text'}
+                placeholder={loginMethod === 'email' ? 'Enter your email' : 'Email or Partner ID'}
+                value={loginInput}
+                onChange={e => setLoginInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleLogin()}
+                style={{ width: '100%', padding: '12px 16px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 15, marginBottom: 12, outline: 'none', boxSizing: 'border-box' }}
+              />
 
-          {error && <p style={{ color: '#ef4444', fontSize: 13, marginBottom: 12 }}>{error}</p>}
+              {loginMethod === 'slug' && (
+                <input
+                  type="password"
+                  placeholder="Password (optional)"
+                  value={loginPassword}
+                  onChange={e => setLoginPassword(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleLogin()}
+                  style={{ width: '100%', padding: '12px 16px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 15, marginBottom: 16, outline: 'none', boxSizing: 'border-box' }}
+                />
+              )}
 
-          <button
-            onClick={handleLogin}
-            disabled={loading || !loginInput.trim()}
-            style={{ width: '100%', padding: '14px 0', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', color: '#fff', border: 'none', borderRadius: 12, fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading || !loginInput.trim() ? 0.5 : 1 }}
-          >
-            {loading ? 'Loading...' : 'Access Partner Portal →'}
-          </button>
+              {error && <p style={{ color: '#ef4444', fontSize: 13, marginBottom: 12 }}>{error}</p>}
+
+              <button
+                onClick={handleLogin}
+                disabled={loading || !loginInput.trim()}
+                style={{ width: '100%', padding: '14px 0', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', color: '#fff', border: 'none', borderRadius: 12, fontWeight: 700, fontSize: 15, cursor: 'pointer', opacity: loading || !loginInput.trim() ? 0.5 : 1 }}
+              >
+                {loading ? 'Loading...' : loginMethod === 'email' ? 'Send Magic Link →' : 'Access Partner Portal →'}
+              </button>
+            </>
+          ) : (
+            <>
+              <div style={{ padding: '32px 0' }}>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>✨</div>
+                <h2 style={{ color: '#fff', fontSize: 22, fontWeight: 700, marginBottom: 12 }}>Check your email!</h2>
+                <p style={{ color: '#9ca3af', fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>We've sent a magic link to your email. Click it to log in instantly — no password needed.</p>
+                <p style={{ color: '#6b7280', fontSize: 13, marginBottom: 16 }}>Link expires in 24 hours.</p>
+              </div>
+              <button
+                onClick={() => {
+                  setMagicLinkSent(false)
+                  setLoginInput('')
+                  setError('')
+                }}
+                style={{ width: '100%', padding: '14px 0', background: 'transparent', color: '#a78bfa', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 12, fontWeight: 600, fontSize: 15, cursor: 'pointer' }}
+              >
+                ← Back to Login
+              </button>
+            </>
+          )}
 
           <p style={{ color: '#6b7280', fontSize: 13, marginTop: 24, lineHeight: 1.8 }}>
             Don&apos;t have a partner account?<br />
@@ -787,7 +944,9 @@ export default function PartnersPage() {
               style={{ padding: '10px 14px', background: '#1a1a2e', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 10, color: '#fff', fontSize: 14, minWidth: 300 }}
             >
               {links.map(l => (
-                <option key={l.id} value={l.event_id}>{l.events?.title || l.event_id}</option>
+                <option key={l.id} value={l.event_id || ''}>
+                  {l.events ? `${l.events.start_date ? formatDate(l.events.start_date) + ' — ' : ''}${l.events.title}` : 'Main Site — All Events'}
+                </option>
               ))}
             </select>
           </div>
@@ -1103,19 +1262,43 @@ export default function PartnersPage() {
 
             <div style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 24 }}>
               <div style={{ color: '#9ca3af', fontSize: 12, fontWeight: 600, marginBottom: 12 }}>CREATE CUSTOM LINK</div>
+              {error && activeTab === 'links' && (
+                <div style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 6, padding: 12, marginBottom: 12, color: '#fca5a5', fontSize: 12 }}>
+                  {error}
+                </div>
+              )}
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 200px', minWidth: 200 }}>
+                  <label style={{ color: '#9ca3af', fontSize: 12, display: 'block', marginBottom: 6 }}>Event</label>
+                  <select
+                    value={selectedEventForLink}
+                    onChange={e => setSelectedEventForLink(e.target.value)}
+                    style={{ width: '100%', padding: '8px 12px', background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#fff', fontSize: 13 }}
+                  >
+                    <option value="">Select an event...</option>
+                    {links.map(link => (
+                      <option key={link.id} value={link.event_id || ''}>
+                        {link.events ? `${link.events.start_date ? formatDate(link.events.start_date) + ' — ' : ''}${link.events.title}` : 'Main Site — All Events'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div style={{ flex: '1 1 200px', minWidth: 200 }}>
                   <label style={{ color: '#9ca3af', fontSize: 12, display: 'block', marginBottom: 6 }}>Tracking Code</label>
                   <input
                     type="text"
+                    value={customTrackingCode}
+                    onChange={e => setCustomTrackingCode(e.target.value)}
                     placeholder="Enter custom tracking code"
                     style={{ width: '100%', padding: '8px 12px', background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#fff', fontSize: 13, fontFamily: 'monospace' }}
                   />
                 </div>
                 <button
-                  style={{ padding: '8px 16px', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                  onClick={handleCreateCustomLink}
+                  disabled={creatingCustomLink}
+                  style={{ padding: '8px 16px', background: creatingCustomLink ? '#6b7280' : 'linear-gradient(135deg, #6c3aed, #a78bfa)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: creatingCustomLink ? 'not-allowed' : 'pointer', opacity: creatingCustomLink ? 0.6 : 1 }}
                 >
-                  Generate Link
+                  {creatingCustomLink ? 'Creating...' : 'Create Link'}
                 </button>
               </div>
             </div>
@@ -1129,9 +1312,9 @@ export default function PartnersPage() {
                 <div key={link.id} style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 12 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
                     <div>
-                      <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{link.events?.title || 'Event'}</div>
+                      <div style={{ color: '#fff', fontSize: 15, fontWeight: 600, marginBottom: 4 }}>{link.events?.title || 'Main Site — All Events'}</div>
                       <div style={{ color: '#6b7280', fontSize: 12, marginBottom: 4 }}>
-                        {link.events?.start_date ? formatDate(link.events.start_date) : ''} — {link.events?.status?.toUpperCase() || ''}
+                        {link.events?.start_date ? `${formatDate(link.events.start_date)} — ${link.events.status?.toUpperCase() || ''}` : 'Tracks all event referrals'}
                       </div>
                       <div style={{ color: '#9ca3af', fontSize: 12, fontFamily: 'monospace', wordBreak: 'break-all' }}>{fullUrl}</div>
                     </div>
@@ -1142,12 +1325,14 @@ export default function PartnersPage() {
                       >
                         {copiedId === `link-${link.id}` ? '✓ Copied!' : '📋 Copy Link'}
                       </button>
-                      <button
-                        onClick={() => handleCopy(`${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}`, `short-${link.id}`)}
-                        style={{ padding: '8px 16px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8, color: '#2dd4bf', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
-                      >
-                        {copiedId === `short-${link.id}` ? '✓ Copied!' : '🔗 Short Link'}
-                      </button>
+                      {link.events?.slug && (
+                        <button
+                          onClick={() => handleCopy(`${SITE_URL}/events/${link.events?.slug}?ref=${link.tracking_code}`, `short-${link.id}`)}
+                          style={{ padding: '8px 16px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8, color: '#2dd4bf', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                        >
+                          {copiedId === `short-${link.id}` ? '✓ Copied!' : '🔗 Event Link'}
+                        </button>
+                      )}
                     </div>
                   </div>
                   {/* Link stats row */}

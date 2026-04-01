@@ -204,7 +204,7 @@ export default function AdminPage() {
 
   // Affiliate state
   interface AffiliateRow { id: string; first_name: string; last_name: string; email: string; phone?: string; company?: string; status: string; commission_rate: number; custom_slug: string; bio?: string; notes?: string; agreed_to_terms: boolean; created_at: string }
-  interface AffLinkRow { id: string; affiliate_id: string; event_id: string; tracking_code: string; clicks: number; is_active: boolean; affiliates?: { first_name: string; last_name: string; email: string }; events?: { title: string; slug: string } }
+  interface AffLinkRow { id: string; affiliate_id: string; event_id: string; tracking_code: string; clicks: number; is_active: boolean; affiliates?: { first_name: string; last_name: string; email: string }; events?: { title: string; slug: string; start_date: string } }
   interface AffReferralRow { id: string; affiliate_id: string; event_id: string; lead_first_name?: string; lead_last_name?: string; lead_email: string; status: string; revenue: number; commission_amount: number; commission_paid: boolean; created_at: string; affiliates?: { first_name: string; last_name: string; email: string }; events?: { title: string }; affiliate_links?: { tracking_code: string } }
   const [affiliates, setAffiliates] = useState<AffiliateRow[]>([])
   const [affLinks, setAffLinks] = useState<AffLinkRow[]>([])
@@ -2275,20 +2275,55 @@ export default function AdminPage() {
                   </table>
                 )}
                 {editingAffiliate && (
-                  <div style={{ padding: 16, background: 'var(--bg-card)', borderTop: '1px solid var(--border)', marginTop: 12, borderRadius: 8 }}>
-                    <h3 style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Edit Affiliate</h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginBottom: 12 }}>
-                      <input placeholder="First Name" value={editAffForm.first_name || ''} onChange={e => setEditAffForm(p => ({ ...p, first_name: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
-                      <input placeholder="Last Name" value={editAffForm.last_name || ''} onChange={e => setEditAffForm(p => ({ ...p, last_name: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
-                      <input placeholder="Email" value={editAffForm.email || ''} onChange={e => setEditAffForm(p => ({ ...p, email: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
-                      <input placeholder="Company" value={editAffForm.company || ''} onChange={e => setEditAffForm(p => ({ ...p, company: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
-                      <input placeholder="Commission Rate (%)" value={editAffForm.commission_rate || ''} onChange={e => setEditAffForm(p => ({ ...p, commission_rate: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
-                      <input placeholder="Custom Slug" value={editAffForm.custom_slug || ''} onChange={e => setEditAffForm(p => ({ ...p, custom_slug: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
-                      <input placeholder="Notes" value={editAffForm.notes || ''} onChange={e => setEditAffForm(p => ({ ...p, notes: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13, gridColumn: '1 / -1' }} />
-                    </div>
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      <button onClick={async () => { await fetch('/api/affiliates', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingAffiliate, ...editAffForm, password }) }); setEditingAffiliate(null); fetchData(); setMsg('Affiliate updated') }} style={{ padding: '8px 16px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>Save</button>
-                      <button onClick={() => { setEditingAffiliate(null); setEditAffForm({}) }} style={{ padding: '8px 16px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-secondary)', borderRadius: 6, fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+                  <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+                    <div style={{ background: 'var(--bg-card)', borderRadius: 12, border: '1px solid var(--border)', padding: 24, maxWidth: 500, width: '90%', maxHeight: '90vh', overflowY: 'auto' }}>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16 }}>Edit Affiliate</h3>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginBottom: 16 }}>
+                        <input placeholder="First Name" value={editAffForm.first_name || ''} onChange={e => setEditAffForm(p => ({ ...p, first_name: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                        <input placeholder="Last Name" value={editAffForm.last_name || ''} onChange={e => setEditAffForm(p => ({ ...p, last_name: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                        <input placeholder="Email" value={editAffForm.email || ''} onChange={e => setEditAffForm(p => ({ ...p, email: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                        <input placeholder="Company" value={editAffForm.company || ''} onChange={e => setEditAffForm(p => ({ ...p, company: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                        <input placeholder="Commission Rate (%)" value={editAffForm.commission_rate || ''} onChange={e => setEditAffForm(p => ({ ...p, commission_rate: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                        <input placeholder="Custom Slug" value={editAffForm.custom_slug || ''} onChange={e => setEditAffForm(p => ({ ...p, custom_slug: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13 }} />
+                        <input placeholder="Notes" value={editAffForm.notes || ''} onChange={e => setEditAffForm(p => ({ ...p, notes: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, color: '#fff', fontSize: 13, gridColumn: '1 / -1' }} />
+                      </div>
+
+                      <div style={{ background: 'rgba(108,58,237,0.1)', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, padding: 12, marginBottom: 16 }}>
+                        <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: 0.5, marginBottom: 8 }}>Tracking Link</p>
+                        <div style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, padding: 10, marginBottom: 8, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                          <code style={{ fontSize: 12, color: 'var(--text-secondary)', wordBreak: 'break-all', flex: 1 }}>workshop.nightvibe.me?ref={editAffForm.custom_slug || 'slug'}</code>
+                          <button onClick={() => { navigator.clipboard.writeText(`https://workshop.nightvibe.me?ref=${editAffForm.custom_slug || 'slug'}`); setMsg('Tracking link copied!') }} style={{ padding: '4px 10px', background: 'rgba(108,58,237,0.2)', border: '1px solid rgba(108,58,237,0.4)', borderRadius: 4, color: 'var(--accent-light)', fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>Copy</button>
+                        </div>
+                        <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: 0.5, marginBottom: 8 }}>Magic Link</p>
+                        <div style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6, padding: 10, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                          <span style={{ fontSize: 12, color: 'var(--text-secondary)', flex: 1 }}>Generate a one-time login link (24hr expiry)</span>
+                          <button onClick={async () => {
+                            try {
+                              const res = await fetch('/api/affiliates/magic-link', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: editAffForm.email }) })
+                              if (res.ok) {
+                                setMsg('Magic link sent to ' + editAffForm.email + '!')
+                              } else {
+                                setMsg('Failed to send magic link')
+                              }
+                            } catch { setMsg('Error sending magic link') }
+                          }} style={{ padding: '4px 10px', background: 'rgba(45,212,191,0.15)', border: '1px solid rgba(45,212,191,0.4)', borderRadius: 4, color: '#2dd4bf', fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>Send Magic Link</button>
+                          <button onClick={async () => {
+                            try {
+                              const res = await fetch('/api/affiliates/magic-link/generate', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: editAffForm.email, password }) })
+                              const data = await res.json()
+                              if (data.magic_link) {
+                                navigator.clipboard.writeText(data.magic_link)
+                                setMsg('Magic link copied!')
+                              } else { setMsg('Failed to generate magic link') }
+                            } catch { setMsg('Error generating magic link') }
+                          }} style={{ padding: '4px 10px', background: 'rgba(108,58,237,0.2)', border: '1px solid rgba(108,58,237,0.4)', borderRadius: 4, color: 'var(--accent-light)', fontSize: 11, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>Copy Link</button>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        <button onClick={async () => { await fetch('/api/affiliates', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingAffiliate, ...editAffForm, password }) }); setEditingAffiliate(null); fetchData(); setMsg('Affiliate updated') }} style={{ padding: '10px 16px', background: 'var(--accent)', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, fontSize: 13, cursor: 'pointer', flex: 1 }}>Save</button>
+                        <button onClick={() => { setEditingAffiliate(null); setEditAffForm({}) }} style={{ padding: '10px 16px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--text-secondary)', borderRadius: 6, fontWeight: 600, fontSize: 13, cursor: 'pointer', flex: 1 }}>Cancel</button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -2310,7 +2345,7 @@ export default function AdminPage() {
                     <select onChange={e => setAffForm(p => ({ ...p, company: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 13 }}>
                       <option value="">Select Event</option>
                       {events.map(ev => (
-                        <option key={ev.id} value={ev.id}>{ev.title}</option>
+                        <option key={ev.id} value={ev.id}>{new Date(ev.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} — {ev.title}</option>
                       ))}
                     </select>
                     <input placeholder="Tracking Code (optional)" onChange={e => setAffForm(p => ({ ...p, custom_slug: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, color: '#fff', fontSize: 13 }} />
@@ -2330,10 +2365,10 @@ export default function AdminPage() {
                     {affLinks.map(l => (
                       <tr key={l.id} style={{ borderBottom: '1px solid var(--border)' }}>
                         <td style={{ padding: '10px 12px', fontSize: 14 }}>{l.affiliates?.first_name} {l.affiliates?.last_name}</td>
-                        <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--text-secondary)' }}>{l.events?.title || l.event_id}</td>
+                        <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--text-secondary)' }}>{l.events?.title || 'Main Site — All Events'}</td>
                         <td style={{ padding: '10px 12px', fontSize: 12, fontFamily: 'monospace' }}>
                           {l.tracking_code}
-                          <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/events/${l.events?.slug || ''}?ref=${l.tracking_code}`); setMsg('Link copied!') }} style={{ marginLeft: 8, padding: '2px 8px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 4, color: 'var(--accent-light)', fontSize: 10, cursor: 'pointer' }}>Copy</button>
+                          <button onClick={() => { const url = l.event_id ? `${window.location.origin}/events/${l.events?.slug}?ref=${l.tracking_code}` : `${window.location.origin}?ref=${l.tracking_code}`; navigator.clipboard.writeText(url); setMsg('Link copied!') }} style={{ marginLeft: 8, padding: '2px 8px', background: 'rgba(108,58,237,0.1)', border: '1px solid var(--border)', borderRadius: 4, color: 'var(--accent-light)', fontSize: 10, cursor: 'pointer' }}>Copy</button>
                         </td>
                         <td style={{ padding: '10px 12px', fontSize: 14, fontWeight: 600, color: 'var(--accent-light)' }}>{l.clicks}</td>
                         <td style={{ padding: '10px 12px' }}>
