@@ -2586,11 +2586,11 @@ export default function AdminPage() {
 // ─── Assets Tab Component ────────────────────────────────────────
 function AssetsTab({ password }: { password: string }) {
   const [folders, setFolders] = useState<Array<{ id: string; name: string; description: string; sort_order: number }>>([])
-  const [assets, setAssets] = useState<Array<{ id: string; folder_id: string | null; name: string; type: string; url: string; storage_path: string; file_size: number; mime_type: string; created_at: string }>>([])
+  const [assets, setAssets] = useState<Array<{ id: string; folder_id: string | null; name: string; type: string; url: string; storage_path: string; file_size: number; mime_type: string; partner_visible: boolean; created_at: string }>>([])
   const [selectedFolder, setSelectedFolder] = useState<string | null>(null)
   const [newFolderName, setNewFolderName] = useState('')
   const [addMode, setAddMode] = useState<'none' | 'url' | 'upload'>('none')
-  const [urlForm, setUrlForm] = useState({ name: '', url: '', type: 'image' })
+  const [urlForm, setUrlForm] = useState({ name: '', url: '', type: 'image', partner_visible: false })
   const [uploading, setUploading] = useState(false)
   const [msg, setMsg] = useState('')
 
@@ -2625,7 +2625,7 @@ function AssetsTab({ password }: { password: string }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password, action: 'create_asset_url', folder_id: selectedFolder, ...urlForm }),
     })
-    setUrlForm({ name: '', url: '', type: 'image' })
+    setUrlForm({ name: '', url: '', type: 'image', partner_visible: false })
     setAddMode('none')
     loadAssets()
   }
@@ -2640,6 +2640,7 @@ function AssetsTab({ password }: { password: string }) {
     formData.append('file', file)
     formData.append('name', file.name)
     formData.append('type', file.type.startsWith('video') ? 'video' : file.type.startsWith('image') ? 'image' : 'document')
+    formData.append('partner_visible', 'false')
     if (selectedFolder) formData.append('folder_id', selectedFolder)
 
     const res = await fetch('/api/assets', { method: 'POST', body: formData })
@@ -2653,6 +2654,15 @@ function AssetsTab({ password }: { password: string }) {
     }
     setUploading(false)
     e.target.value = ''
+  }
+
+  const togglePartnerVisible = async (id: string, currentValue: boolean) => {
+    await fetch('/api/assets', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, id, partner_visible: !currentValue }),
+    })
+    loadAssets()
   }
 
   const deleteAsset = async (id: string, storagePath?: string) => {
@@ -2729,7 +2739,7 @@ function AssetsTab({ password }: { password: string }) {
       {addMode === 'url' && (
         <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 12, padding: 20, marginBottom: 20 }}>
           <h3 style={{ fontSize: 14, fontWeight: 700, margin: '0 0 12px', color: 'var(--accent-light)' }}>Add Asset from URL</h3>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
             <input placeholder="Asset name" value={urlForm.name} onChange={e => setUrlForm(p => ({ ...p, name: e.target.value }))} style={{ flex: 1, minWidth: 150, padding: '8px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }} />
             <input placeholder="URL" value={urlForm.url} onChange={e => setUrlForm(p => ({ ...p, url: e.target.value }))} style={{ flex: 2, minWidth: 200, padding: '8px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }} />
             <select value={urlForm.type} onChange={e => setUrlForm(p => ({ ...p, type: e.target.value }))} style={{ padding: '8px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-primary)', fontSize: 13 }}>
@@ -2737,6 +2747,10 @@ function AssetsTab({ password }: { password: string }) {
               <option value="video">Video</option>
               <option value="document">Document</option>
             </select>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', userSelect: 'none' }}>
+              <input type="checkbox" checked={urlForm.partner_visible} onChange={e => setUrlForm(p => ({ ...p, partner_visible: e.target.checked }))} style={{ cursor: 'pointer' }} />
+              <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Partner Visible</span>
+            </label>
             <button onClick={addUrlAsset} style={{ padding: '8px 16px', background: 'var(--accent)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Add</button>
             <button onClick={() => setAddMode('none')} style={{ padding: '8px 12px', background: 'transparent', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--text-secondary)', fontSize: 12, cursor: 'pointer' }}>Cancel</button>
           </div>

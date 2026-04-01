@@ -67,15 +67,37 @@ export async function GET(req: NextRequest) {
 // CREATE link
 export async function POST(req: NextRequest) {
   const body = await req.json()
+  const sb = getAdmin()
+
+  // Allow affiliates to create custom links for themselves via slug
+  if (body.slug) {
+    const { data: aff } = await sb
+      .from('affiliates')
+      .select('id')
+      .eq('custom_slug', body.slug)
+      .eq('status', 'active')
+      .single()
+
+    if (!aff) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+    const { data, error } = await sb.from('affiliate_links').insert({
+      affiliate_id: aff.id,
+      event_id: body.event_id || null,
+      tracking_code: body.tracking_code || generateTrackingCode(),
+    }).select().single()
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json(data, { status: 201 })
+  }
+
+  // Admin creation
   if (!checkAuth(body.password)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const sb = getAdmin()
-
   const { data, error } = await sb.from('affiliate_links').insert({
     affiliate_id: body.affiliate_id,
-    event_id: body.event_id,
+    event_id: body.event_id || null,
     tracking_code: body.tracking_code || generateTrackingCode(),
     custom_landing_html: body.custom_landing_html || null,
   }).select().single()

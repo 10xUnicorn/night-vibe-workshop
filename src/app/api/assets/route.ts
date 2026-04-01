@@ -19,10 +19,29 @@ function checkAuth(p: string) {
 // GET folders + assets
 export async function GET(req: NextRequest) {
   const password = req.nextUrl.searchParams.get('password') || ''
-  if (!checkAuth(password)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-
+  const partnerMode = req.nextUrl.searchParams.get('partner')
   const folderId = req.nextUrl.searchParams.get('folder_id')
   const sb = getAdmin()
+
+  // Partner mode: return only partner-visible folders and assets (no auth required)
+  if (partnerMode === 'true') {
+    const { data: folders } = await sb
+      .from('asset_folders')
+      .select('*')
+      .eq('partner_visible', true)
+      .order('sort_order')
+
+    let assetsQuery = sb.from('assets').select('*').eq('partner_visible', true).order('created_at', { ascending: false })
+    if (folderId) {
+      assetsQuery = assetsQuery.eq('folder_id', folderId)
+    }
+    const { data: assets } = await assetsQuery
+
+    return NextResponse.json({ folders: folders || [], assets: assets || [] })
+  }
+
+  // Admin mode: full access with password
+  if (!checkAuth(password)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   // Get folders
   const { data: folders, error: fErr } = await sb
@@ -59,6 +78,7 @@ export async function POST(req: NextRequest) {
     const folderId = formData.get('folder_id') as string | null
     const name = formData.get('name') as string || file?.name || 'Untitled'
     const type = formData.get('type') as string || 'image'
+    const partnerVisible = formData.get('partner_visible') === 'true' ? true : false
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
@@ -86,6 +106,7 @@ export async function POST(req: NextRequest) {
       storage_path: storagePath,
       file_size: file.size,
       mime_type: file.type,
+      partner_visible: partnerVisible,
     }).select().single()
 
     if (dbErr) return NextResponse.json({ error: dbErr.message }, { status: 500 })
@@ -104,6 +125,7 @@ export async function POST(req: NextRequest) {
       description: body.description || null,
       parent_folder_id: body.parent_folder_id || null,
       sort_order: body.sort_order || 0,
+      partner_visible: body.partner_visible || false,
     }).select().single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -121,6 +143,7 @@ export async function POST(req: NextRequest) {
       type: body.type || 'image',
       url: body.url.trim(),
       mime_type: body.mime_type || null,
+      partner_visible: body.partner_visible || false,
     }).select().single()
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -134,6 +157,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   const body = await req.json()
   if (!checkAuth(body.password)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!body.id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
   const sb = getAdmin()
 
@@ -142,6 +166,7 @@ export async function PATCH(req: NextRequest) {
     if (body.name !== undefined) updates.name = body.name
     if (body.description !== undefined) updates.description = body.description
     if (body.sort_order !== undefined) updates.sort_order = body.sort_order
+    if (body.partner_visible !== undefined) updates.partner_visible = body.partner_visible
 
     const { data, error } = await sb.from('asset_folders').update(updates).eq('id', body.id).select().single()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
@@ -153,6 +178,7 @@ export async function PATCH(req: NextRequest) {
   if (body.name !== undefined) updates.name = body.name
   if (body.folder_id !== undefined) updates.folder_id = body.folder_id
   if (body.url !== undefined) updates.url = body.url
+  if (body.partner_visible !== undefined) updates.partner_visible = body.partner_visible
 
   const { data, error } = await sb.from('assets').update(updates).eq('id', body.id).select().single()
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })

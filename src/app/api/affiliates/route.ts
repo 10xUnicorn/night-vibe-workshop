@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { sendEmail } from '@/lib/email'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -110,23 +111,66 @@ export async function POST(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Auto-create tracking links for all published events
-  if (body.auto_create_links) {
-    const { data: events } = await sb
-      .from('events')
-      .select('id')
-      .eq('status', 'published')
+  // Create main site tracking link using their slug as the tracking code
+  const { error: linkErr } = await sb.from('affiliate_links').insert({
+    affiliate_id: affiliate.id,
+    event_id: null,
+    tracking_code: slug,
+  })
+  if (linkErr) console.error('Failed to create main tracking link:', linkErr.message)
 
-    if (events?.length) {
-      const links = events.map(ev => ({
-        affiliate_id: affiliate.id,
-        event_id: ev.id,
-        tracking_code: generateTrackingCode(),
-      }))
-      const { error: linkErr } = await sb.from('affiliate_links').insert(links)
-      if (linkErr) console.error('Failed to create affiliate links:', linkErr.message)
-    }
-  }
+  // Send welcome email
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://workshop.nightvibe.me'
+  const trackingLink = `${siteUrl}?ref=${slug}`
+  const portalLink = `${siteUrl}/partners`
+
+  const emailHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f0f0f; color: #e0e0e0; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 0 auto; background: #1a1a1a; padding: 40px 20px; border-radius: 8px; }
+    .header { color: #a78bfa; font-size: 24px; margin-bottom: 30px; font-weight: bold; }
+    .title { color: #14b8a6; font-size: 20px; margin: 20px 0; }
+    .link-box { background: #2a2a2a; padding: 15px; border-radius: 6px; margin: 20px 0; border-left: 4px solid #a78bfa; }
+    .link-text { color: #14b8a6; word-break: break-all; font-size: 14px; }
+    .button { display: inline-block; background: #a78bfa; color: #0f0f0f; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+    .footer { color: #808080; font-size: 12px; margin-top: 30px; border-top: 1px solid #333; padding-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">✨ Night Vibe</div>
+    <div class="title">You're in!</div>
+    <p>Welcome to the Night Vibe Partner Program. We're excited to have you on board.</p>
+
+    <div class="link-box">
+      <p style="margin: 0 0 8px 0; font-size: 12px; color: #a0a0a0;">Your Tracking Link:</p>
+      <div class="link-text">${trackingLink}</div>
+    </div>
+
+    <p>Use this link in your content, emails, or social media to track referrals.</p>
+
+    <a href="${portalLink}" class="button">Visit Partner Portal</a>
+
+    <p>Log in with your email to access your dashboard, track clicks and commissions, and manage your links.</p>
+
+    <div class="footer">
+      <p>Questions? Contact us at partners@nightvibe.me</p>
+      <p>© Night Vibe. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>`
+
+  await sendEmail({
+    to: affiliate.email,
+    subject: 'Welcome to the Night Vibe Partner Program!',
+    html: emailHtml,
+  }).catch(err => {
+    console.error('Failed to send welcome email:', err)
+  })
 
   return NextResponse.json(affiliate, { status: 201 })
 }

@@ -43,11 +43,11 @@ function formatDate(d: string) {
 }
 
 const TYPE_LABELS: Record<string, string> = {
-  email_html: 'HTML Email',
-  email_plain: 'Plain Text Email',
-  email_affiliate: 'Affiliate Promo Email',
-  sms: 'SMS / Text',
   social_media: 'Social Media',
+  sms: 'SMS / Text',
+  email_plain: 'Plain Text Email',
+  email_html: 'HTML Email',
+  email_affiliate: 'Affiliate Promo Email',
 }
 
 const PLATFORM_ICONS: Record<string, string> = {
@@ -278,6 +278,100 @@ function generateTemplate(
 }
 
 // ═════════════════════════════════════════════════════════════════
+// RESOURCES TAB COMPONENT
+// ═════════════════════════════════════════════════════════════════
+interface ResourceFolder {
+  name: string
+  assets: { id: string; name: string; url: string; type: string }[]
+}
+
+function ResourcesTab() {
+  const [folders, setFolders] = useState<ResourceFolder[]>([])
+  const [loading, setLoading] = useState(true)
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const response = await fetch('/api/assets?partner=true')
+        if (!response.ok) throw new Error('Failed to fetch assets')
+        const data = await response.json()
+
+        const grouped: Record<string, ResourceFolder['assets']> = {}
+        data.assets?.forEach((asset: any) => {
+          const folder = asset.folder || 'General'
+          if (!grouped[folder]) grouped[folder] = []
+          grouped[folder].push(asset)
+        })
+
+        setFolders(Object.entries(grouped).map(([name, assets]) => ({ name, assets })))
+      } catch (err) {
+        console.error('Error fetching assets:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchAssets()
+  }, [])
+
+  const toggleFolder = (folderName: string) => {
+    const newExpanded = new Set(expandedFolders)
+    if (newExpanded.has(folderName)) {
+      newExpanded.delete(folderName)
+    } else {
+      newExpanded.add(folderName)
+    }
+    setExpandedFolders(newExpanded)
+  }
+
+  if (loading) return <div style={{ color: '#9ca3af', textAlign: 'center', padding: 40 }}>Loading resources...</div>
+
+  return (
+    <div>
+      <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 20px' }}>Resources</h2>
+      {folders.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>No resources available.</div>
+      ) : (
+        folders.map(folder => (
+          <div key={folder.name} style={{ marginBottom: 12 }}>
+            <button
+              onClick={() => toggleFolder(folder.name)}
+              style={{
+                width: '100%', textAlign: 'left', padding: '12px 16px', background: '#13131a', border: '1px solid rgba(108,58,237,0.15)',
+                borderRadius: 8, color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+              }}
+            >
+              {folder.name}
+              <span>{expandedFolders.has(folder.name) ? '▼' : '▶'}</span>
+            </button>
+            {expandedFolders.has(folder.name) && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 12, padding: '12px 0' }}>
+                {folder.assets.map(asset => (
+                  <a
+                    key={asset.id}
+                    href={asset.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      padding: 12, background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.1)', borderRadius: 6, color: '#a78bfa',
+                      fontSize: 12, textDecoration: 'none', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+                    }}
+                    title={asset.name}
+                  >
+                    {asset.name}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      )}
+    </div>
+  )
+}
+
+// ═════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
 // ═════════════════════════════════════════════════════════════════
 export default function PartnersPage() {
@@ -297,7 +391,7 @@ export default function PartnersPage() {
   const [templates, setTemplates] = useState<PromoTemplate[]>([])
 
   // UI state
-  const [activeTab, setActiveTab] = useState<'promo' | 'leads' | 'landing' | 'links'>('promo')
+  const [activeTab, setActiveTab] = useState<'promo' | 'leads' | 'landing' | 'links' | 'resources'>('promo')
   const [selectedEvent, setSelectedEvent] = useState<string>('')
   const [selectedTemplateType, setSelectedTemplateType] = useState<string>('all')
   const [copiedId, setCopiedId] = useState<string>('')
@@ -460,15 +554,26 @@ export default function PartnersPage() {
     setExportConfig(prev => ({ ...prev, columns: cols }))
   }
 
-  function personalizeTemplate(content: string): string {
+  function personalizeTemplate(content: string, type?: string): string {
     const link = links.find(l => l.event_id === selectedEvent)
-    const trackingUrl = link ? `${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}` : SITE_URL
-    return content
+    const trackingUrl = link ? `${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}` : SITE_URL
+    let personalized = content
       .replace(/\{\{affiliate_name\}\}/g, `${affiliate?.first_name} ${affiliate?.last_name}`)
       .replace(/\{\{affiliate_first_name\}\}/g, affiliate?.first_name || '')
       .replace(/\{\{tracking_link\}\}/g, trackingUrl)
       .replace(/\{\{workshop_link\}\}/g, `${SITE_URL}?ref=${link?.tracking_code || ''}`)
       .replace(/\{\{company\}\}/g, affiliate?.company || '')
+
+    // Append FTC disclosure based on template type
+    if (type === 'social_media') {
+      personalized += '\n\n🔗 Affiliate disclosure: I earn a commission from purchases made through this link.'
+    } else if (type === 'sms') {
+      personalized += '\n\nDisclosure: I earn a commission from purchases via this link.'
+    } else if (type === 'email') {
+      personalized += '\n\n---\nFTC Disclosure: As an affiliate, I earn a commission from qualifying purchases.'
+    }
+
+    return personalized
   }
 
   const filteredTemplates = templates.filter(t => {
@@ -478,7 +583,7 @@ export default function PartnersPage() {
   })
 
   const eventLink = links.find(l => l.event_id === selectedEvent)
-  const trackingUrl = eventLink ? `${SITE_URL}/events/${eventLink.events?.slug || ''}?ref=${eventLink.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${eventLink.events?.slug || ''}` : ''
+  const trackingUrl = eventLink ? `${SITE_URL}/events/${eventLink.events?.slug || ''}?ref=${eventLink.tracking_code}` : ''
 
   // Stats
   const totalClicks = links.reduce((s, l) => s + (l.clicks || 0), 0)
@@ -656,6 +761,7 @@ export default function PartnersPage() {
             { key: 'leads' as const, label: '👥 My Leads' },
             { key: 'landing' as const, label: '🌐 Landing Page' },
             { key: 'links' as const, label: '🔗 My Links' },
+            { key: 'resources' as const, label: '📁 Resources' },
           ].map(tab => (
             <button
               key={tab.key}
@@ -730,14 +836,14 @@ export default function PartnersPage() {
                   </div>
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                     <button
-                      onClick={() => handleCopy(personalizeTemplate(template.body_content), `copy-${template.id}`)}
+                      onClick={() => handleCopy(personalizeTemplate(template.body_content, template.type), `copy-${template.id}`)}
                       style={{ padding: '8px 16px', background: 'rgba(108,58,237,0.15)', border: '1px solid rgba(108,58,237,0.3)', borderRadius: 8, color: '#a78bfa', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                     >
                       {copiedId === `copy-${template.id}` ? '✓ Copied!' : '📋 Copy Content'}
                     </button>
                     {template.body_html && (
                       <button
-                        onClick={() => handleCopy(personalizeTemplate(template.body_html!), `html-${template.id}`)}
+                        onClick={() => handleCopy(personalizeTemplate(template.body_html!, template.type), `html-${template.id}`)}
                         style={{ padding: '8px 16px', background: 'rgba(45,212,191,0.1)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8, color: '#2dd4bf', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                       >
                         {copiedId === `html-${template.id}` ? '✓ Copied!' : '🔗 Copy HTML'}
@@ -746,7 +852,7 @@ export default function PartnersPage() {
                     {(template.type === 'social_media') && (
                       <>
                         {['twitter', 'facebook', 'linkedin', 'threads'].map(platform => {
-                          const url = getShareUrl(platform, personalizeTemplate(template.body_content), trackingUrl)
+                          const url = getShareUrl(platform, personalizeTemplate(template.body_content, template.type), trackingUrl)
                           if (!url) return null
                           return (
                             <a key={platform} href={url} target="_blank" rel="noopener noreferrer"
@@ -764,14 +870,14 @@ export default function PartnersPage() {
                   <div style={{ padding: '10px 20px', background: 'rgba(108,58,237,0.04)', borderBottom: '1px solid rgba(108,58,237,0.06)' }}>
                     <span style={{ color: '#6b7280', fontSize: 11, marginRight: 8 }}>Subject:</span>
                     <span style={{ color: '#d1d5db', fontSize: 13 }}>{personalizeTemplate(template.subject_line)}</span>
-                    <button onClick={() => handleCopy(personalizeTemplate(template.subject_line!), `subj-${template.id}`)} style={{ marginLeft: 8, padding: '2px 8px', background: 'transparent', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 4, color: '#6b7280', fontSize: 10, cursor: 'pointer' }}>
+                    <button onClick={() => handleCopy(personalizeTemplate(template.subject_line!, template.type), `subj-${template.id}`)} style={{ marginLeft: 8, padding: '2px 8px', background: 'transparent', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 4, color: '#6b7280', fontSize: 10, cursor: 'pointer' }}>
                       {copiedId === `subj-${template.id}` ? '✓' : 'Copy'}
                     </button>
                   </div>
                 )}
                 <div style={{ padding: 20 }}>
                   <pre style={{ color: '#9ca3af', fontSize: 13, lineHeight: 1.7, whiteSpace: 'pre-wrap', wordBreak: 'break-word', margin: 0, maxHeight: 300, overflow: 'auto' }}>
-                    {personalizeTemplate(template.body_content)}
+                    {personalizeTemplate(template.body_content, template.type)}
                   </pre>
                 </div>
               </div>
@@ -995,10 +1101,29 @@ export default function PartnersPage() {
           <div>
             <h2 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 20px' }}>Your Tracking Links</h2>
 
+            <div style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 24 }}>
+              <div style={{ color: '#9ca3af', fontSize: 12, fontWeight: 600, marginBottom: 12 }}>CREATE CUSTOM LINK</div>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end', flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 200px', minWidth: 200 }}>
+                  <label style={{ color: '#9ca3af', fontSize: 12, display: 'block', marginBottom: 6 }}>Tracking Code</label>
+                  <input
+                    type="text"
+                    placeholder="Enter custom tracking code"
+                    style={{ width: '100%', padding: '8px 12px', background: '#0a0a0f', border: '1px solid rgba(108,58,237,0.2)', borderRadius: 6, color: '#fff', fontSize: 13, fontFamily: 'monospace' }}
+                  />
+                </div>
+                <button
+                  style={{ padding: '8px 16px', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', border: 'none', borderRadius: 8, color: '#fff', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Generate Link
+                </button>
+              </div>
+            </div>
+
             {links.length === 0 ? (
               <div style={{ textAlign: 'center', padding: 40, color: '#6b7280' }}>No tracking links assigned yet. Contact your admin to get started.</div>
             ) : links.map(link => {
-              const fullUrl = `${SITE_URL}/events/${link.events?.slug || ''}?ref=${link.tracking_code}&utm_source=affiliate&utm_medium=referral&utm_campaign=${link.events?.slug || ''}`
+              const fullUrl = link.events ? `${SITE_URL}/events/${link.events.slug}?ref=${link.tracking_code}` : `${SITE_URL}?ref=${link.tracking_code}`
               const linkRefs = referrals.filter(r => r.events?.title === link.events?.title)
               return (
                 <div key={link.id} style={{ background: '#13131a', border: '1px solid rgba(108,58,237,0.15)', borderRadius: 12, padding: 20, marginBottom: 12 }}>
@@ -1038,6 +1163,9 @@ export default function PartnersPage() {
             })}
           </div>
         )}
+
+        {/* ═══════════ RESOURCES TAB ═══════════ */}
+        {activeTab === 'resources' && <ResourcesTab />}
 
         {/* Footer compliance */}
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid rgba(108,58,237,0.08)', textAlign: 'center' }}>
