@@ -41,7 +41,9 @@ body {
 
 /* ====== BUTTONS ====== */
 .btn-accent {
-  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  background: linear-gradient(135deg, #6c3aed 0%, #8b5cf6 40%, #a78bfa 70%, #6c3aed 100%);
+  background-size: 200% 100%;
+  animation: btn-shimmer 3s ease-in-out infinite, btn-glow 2s ease-in-out infinite;
   color: white;
   font-weight: 700;
   padding: 16px 40px;
@@ -50,17 +52,53 @@ body {
   cursor: pointer;
   font-size: 18px;
   letter-spacing: 0.3px;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
   box-shadow: 0 4px 24px var(--accent-glow), 0 0 60px rgba(108, 58, 237, 0.15);
   display: inline-block;
   text-decoration: none;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-accent::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: btn-shine 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes btn-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes btn-shine {
+  0%, 70%, 100% { left: -100%; }
+  85% { left: 150%; }
+}
+
+@keyframes btn-glow {
+  0%, 100% { box-shadow: 0 4px 24px var(--accent-glow), 0 0 40px rgba(108, 58, 237, 0.12); }
+  50% { box-shadow: 0 4px 32px var(--accent-glow), 0 0 60px rgba(108, 58, 237, 0.25); }
 }
 
 .btn-accent:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 40px var(--accent-glow), 0 0 80px rgba(108, 58, 237, 0.2);
-  filter: brightness(1.1);
+  box-shadow: 0 8px 40px var(--accent-glow), 0 0 80px rgba(108, 58, 237, 0.3);
+  filter: brightness(1.15);
+  animation: none;
+  background-position: 100% 50%;
+}
+
+.btn-accent:hover::after {
+  animation: none;
+  left: 150%;
 }
 
 .btn-accent-sm { padding: 12px 28px; font-size: 15px; }
