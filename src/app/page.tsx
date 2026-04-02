@@ -224,26 +224,46 @@ export default function LandingPage() {
           <span>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}</span>
           <span>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} – ${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'Pacific' : event.timezone === 'America/New_York' ? 'Eastern' : event.timezone === 'America/Chicago' ? 'Central' : 'Mountain'}` : '9 AM – 1 PM Pacific'}</span>
           <span>&#128187; Live Virtual</span>
-          <span style={{ fontWeight: 700, color: 'white' }}>&#36;{price}</span>
+          {/* price removed from hero */}
         </div>
 
         <div style={{ marginBottom: 32 }}>
           <div className="seat-counter">
             <span className="seat-dot" />
-            {isSoldOut ? 'SOLD OUT — Join Waitlist' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left`}
+            {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left`}
           </div>
         </div>
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center', marginBottom: 20 }}>
           <CtaButton />
-          {!isSoldOut && (
-            <button className="btn-secondary" onClick={() => setShowWaitlist(true)}>Join the Waitlist</button>
-          )}
         </div>
 
         <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>
           Live 2-day workshop. 20 seats only. Recording included. Designed for business owners, not developers.
         </p>
+      </section>
+
+      {/* ===== VIDEO ===== */}
+      <section style={{ padding: '0 20px 70px', maxWidth: 860, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ position: 'relative' }}>
+          {/* Glow effect behind video */}
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '120%', height: '120%', background: 'radial-gradient(ellipse at center, rgba(108,58,237,0.15) 0%, rgba(45,212,191,0.05) 40%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+          <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 16, border: '2px solid rgba(108,58,237,0.4)', boxShadow: '0 0 60px rgba(108,58,237,0.2), 0 0 120px rgba(108,58,237,0.08)', zIndex: 1 }}>
+            <iframe
+              src="https://www.youtube.com/embed/J3_GSRcB_ac?rel=0"
+              title="Night Vibe Workshop"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+            />
+          </div>
+        </div>
+        <div style={{ textAlign: 'center', marginTop: 28 }}>
+          <p style={{ fontSize: 15, color: 'var(--text-secondary)', marginBottom: 20 }}>
+            Watch how everyday entrepreneurs are building real apps in just 2 days
+          </p>
+          <CtaButton />
+        </div>
       </section>
 
       {/* ===== THE PROBLEM ===== */}
@@ -638,7 +658,7 @@ export default function LandingPage() {
             </div>
             <div style={{ marginTop: 24, textAlign: 'center' }}>
               <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of ${event?.capacity || 20} seats remaining`}</div>
-              {isSoldOut ? (<button className="btn-accent" style={{ width: '100%' }} onClick={() => setShowWaitlist(true)}>Join the Waitlist</button>) : (<a href={ctaUrl} className="btn-accent" style={{ width: '100%', display: 'block' }} target="_blank" rel="noopener noreferrer">Reserve Your Seat — ${price}</a>)}
+              <a href={ctaUrl} className="btn-accent" style={{ width: '100%', display: 'block' }} target="_blank" rel="noopener noreferrer">{isSoldOut ? 'View Details' : `Reserve Your Seat — $${price}`}</a>
             </div>
           </div>
           <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Secure checkout via Stripe. Instant confirmation. Calendar invite sent within minutes.</p>
@@ -738,7 +758,7 @@ export default function LandingPage() {
       {/* STICKY CTA */}
       <div className={`sticky-cta ${showSticky ? 'visible' : ''}`}>
         <div className="seat-counter" style={{ fontSize: 13 }}><span className="seat-dot" />{seatsLeft} seats left</div>
-        {isSoldOut ? (<button className="btn-accent btn-accent-sm" onClick={() => setShowWaitlist(true)}>Join Waitlist</button>) : (<a href={ctaUrl} className="btn-accent btn-accent-sm" target="_blank" rel="noopener noreferrer">Reserve Your Seat — ${price}</a>)}
+        <a href={ctaUrl} className="btn-accent btn-accent-sm" target="_blank" rel="noopener noreferrer">{isSoldOut ? 'View Details' : `Reserve Your Seat — $${price}`}</a>
       </div>
 
       {/* WAITLIST MODAL */}
