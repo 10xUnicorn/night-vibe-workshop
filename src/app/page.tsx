@@ -231,17 +231,15 @@ export default function LandingPage() {
 
       {/* ===== DATE | TIME | VIRTUAL + SEATS + CTA ===== */}
       <section style={{ padding: '24px 20px 0', textAlign: 'center', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px 0', marginBottom: 20, fontSize: 'clamp(13px, 2.5vw, 15px)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          <span style={{ whiteSpace: 'nowrap' }}>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}</span>
-          <span style={{ margin: '0 8px', color: 'var(--text-muted)' }}>·</span>
-          <span style={{ whiteSpace: 'nowrap' }}>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}</span>
-          <span style={{ margin: '0 8px', color: 'var(--text-muted)' }}>·</span>
-          <span style={{ whiteSpace: 'nowrap' }}>&#128187; Live Virtual</span>
-          <span style={{ margin: '0 10px', color: 'rgba(108,58,237,0.4)', fontWeight: 300 }}>|</span>
-          <span style={{ whiteSpace: 'nowrap', fontWeight: 700, color: 'var(--accent-light)' }}>
-            <span className="seat-dot" style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: 'var(--success)', marginRight: 6, verticalAlign: 'middle', animation: 'pulse 2s ease-in-out infinite' }} />
+        <p style={{ marginBottom: 16, fontSize: 'clamp(13px, 2.5vw, 15px)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          &#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}{' · '}&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}{' · '}&#128187; Live Virtual
+        </p>
+
+        <div style={{ marginBottom: 20 }}>
+          <div className="seat-counter">
+            <span className="seat-dot" />
             {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left!`}
-          </span>
+          </div>
         </div>
 
         <div style={{ marginBottom: 32 }}>
