@@ -207,18 +207,14 @@ export default function LandingPage() {
       </div>
 
       {/* ===== HERO ===== */}
-      <section style={{ padding: '100px 20px 0', textAlign: 'center', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(108,58,237,0.1)', border: '1px solid rgba(108,58,237,0.3)', padding: '8px 20px', borderRadius: 100, marginBottom: 28, fontSize: 14, fontWeight: 600, color: 'var(--accent-light)' }}>
-          Night Vibe — AI App Development
-        </div>
-
-        <h1 style={{ fontSize: 'clamp(34px, 5vw, 60px)', fontWeight: 800, lineHeight: 1.08, marginBottom: 0, letterSpacing: '-0.03em' }} className="gradient-text">
+      <section style={{ padding: '56px 20px 0', textAlign: 'center', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 800, lineHeight: 1.08, marginBottom: 0, letterSpacing: '-0.03em' }} className="gradient-text">
           {event?.title || 'Build & Launch Your Profitable App Using Claude & Top AI Tools'}
         </h1>
       </section>
 
       {/* ===== VIDEO ===== */}
-      <section style={{ padding: '36px 20px 0', maxWidth: 860, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      <section style={{ padding: '28px 20px 0', maxWidth: 820, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <div style={{ position: 'relative' }}>
           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '120%', height: '120%', background: 'radial-gradient(ellipse at center, rgba(108,58,237,0.15) 0%, rgba(45,212,191,0.05) 40%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
           <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: 16, border: '2px solid rgba(108,58,237,0.4)', boxShadow: '0 0 60px rgba(108,58,237,0.2), 0 0 120px rgba(108,58,237,0.08)', zIndex: 1 }}>
@@ -233,28 +229,28 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ===== HERO CONTINUED (below video) ===== */}
-      <section style={{ padding: '32px 20px 70px', textAlign: 'center', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <p style={{ fontSize: 'clamp(17px, 2.2vw, 21px)', color: 'var(--text-secondary)', maxWidth: 700, margin: '0 auto 28px', lineHeight: 1.65 }}>
-          {event?.subtitle || 'In this live 2-day workshop, you will turn a real business problem into a working AI app that saves time or generates revenue — even if you are not a developer.'}
-        </p>
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24, marginBottom: 24, fontSize: 15, color: 'var(--text-secondary)' }}>
+      {/* ===== DATE | TIME | VIRTUAL + SEATS + CTA ===== */}
+      <section style={{ padding: '24px 20px 0', textAlign: 'center', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 24, marginBottom: 16, fontSize: 15, color: 'var(--text-secondary)' }}>
           <span>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}</span>
           <span>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} – ${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'Pacific' : event.timezone === 'America/New_York' ? 'Eastern' : event.timezone === 'America/Chicago' ? 'Central' : 'Mountain'}` : '9 AM – 1 PM Pacific'}</span>
           <span>&#128187; Live Virtual</span>
         </div>
 
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 20 }}>
           <div className="seat-counter">
             <span className="seat-dot" />
-            {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left`}
+            {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left!`}
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
+        <div style={{ marginBottom: 32 }}>
           <CtaButton />
         </div>
+
+        <p style={{ fontSize: 'clamp(16px, 2vw, 19px)', color: 'var(--text-secondary)', maxWidth: 700, margin: '0 auto', lineHeight: 1.65, paddingBottom: 48 }}>
+          {event?.subtitle || 'In this live 2-day workshop, you will turn a real business problem into a working AI app that saves time or generates revenue — even if you are not a developer.'}
+        </p>
       </section>
 
       {/* ===== THE PROBLEM ===== */}
