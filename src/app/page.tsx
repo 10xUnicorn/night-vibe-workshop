@@ -231,15 +231,17 @@ export default function LandingPage() {
 
       {/* ===== DATE | TIME | VIRTUAL + SEATS + CTA ===== */}
       <section style={{ padding: '24px 20px 0', textAlign: 'center', maxWidth: 900, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        <p style={{ marginBottom: 16, fontSize: 'clamp(13px, 2.5vw, 15px)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          &#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}{' · '}&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}{' · '}&#128187; Live Virtual
-        </p>
-
-        <div style={{ marginBottom: 20 }}>
-          <div className="seat-counter">
-            <span className="seat-dot" />
+        <div style={{ display: 'flex', flexWrap: 'nowrap', justifyContent: 'center', alignItems: 'center', gap: 0, marginBottom: 20, fontSize: 'clamp(11px, 2.2vw, 14px)', lineHeight: 1.4 }}>
+          <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}</span>
+          <span style={{ color: 'var(--text-muted)', margin: '0 6px' }}>·</span>
+          <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}</span>
+          <span style={{ color: 'var(--text-muted)', margin: '0 6px' }}>·</span>
+          <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>&#128187; Virtual</span>
+          <span style={{ color: 'rgba(239,68,68,0.3)', margin: '0 8px', fontWeight: 300 }}>|</span>
+          <span style={{ whiteSpace: 'nowrap', fontWeight: 700, color: '#EF4444' }}>
+            <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: '#EF4444', marginRight: 5, verticalAlign: 'middle', animation: 'pulse 2s infinite' }} />
             {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left!`}
-          </div>
+          </span>
         </div>
 
         <div style={{ marginBottom: 32 }}>
