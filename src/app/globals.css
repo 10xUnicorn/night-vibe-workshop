@@ -232,9 +232,9 @@ body {
   background: linear-gradient(90deg, var(--accent), #6366F1, #4F46E5, var(--teal), #6366F1, var(--accent));
   background-size: 300% auto;
   animation: shimmer 12s linear infinite;
-  padding: 10px 20px;
+  padding: 8px 16px;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.3px;
   position: relative;
