@@ -362,7 +362,7 @@ export default function LandingPage() {
                 <input className="admin-input" type="text" required value={blueprintForm.biggest_problem} onChange={(e) => setBlueprintForm({ ...blueprintForm, biggest_problem: e.target.value })} placeholder="e.g. Client onboarding, lead follow-up, reporting..." style={{ background: "rgba(16,16,28,0.8)" }} />
               </div>
               <button type="submit" disabled={blueprintSubmitting} className="btn-accent" style={{ width: "100%", marginTop: 20, fontSize: 16, background: blueprintSubmitting ? "#555" : undefined }}>
-                {blueprintSubmitting ? "Generating..." : 🚀 Get My Free App Blueprint"}
+                {blueprintSubmitting ? "Generating..." : "🚀 Get My Free App Blueprint"}
               </button>
               <p style={{ fontSize: 12, color: "var(--text-muted)", textAlign: "center", marginTop: 12 }}>
                 No spam. Unsubscribe anytime. Your blueprint arrives instantly.
