@@ -235,15 +235,13 @@ export default function LandingPage() {
           {event?.subtitle || 'In this live 2-day workshop, you will turn a real business problem into a working AI app that saves time or generates revenue — even if you are not a developer.'}
         </p>
 
-        <div style={{ display: 'flex', flexWrap: 'nowrap', justifyContent: 'center', alignItems: 'center', gap: 0, marginBottom: 14, fontSize: 'clamp(11px, 2.2vw, 14px)', lineHeight: 1.4 }}>
-          <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>&#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}</span>
-          <span style={{ color: 'var(--text-muted)', margin: '0 6px' }}>·</span>
-          <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}</span>
-          <span style={{ color: 'var(--text-muted)', margin: '0 6px' }}>·</span>
-          <span style={{ color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>&#128187; Virtual</span>
-          <span style={{ color: 'rgba(239,68,68,0.3)', margin: '0 8px', fontWeight: 300 }}>|</span>
-          <span style={{ whiteSpace: 'nowrap', fontWeight: 700, color: '#EF4444' }}>
-            <span style={{ display: 'inline-block', width: 7, height: 7, borderRadius: '50%', background: '#EF4444', marginRight: 5, verticalAlign: 'middle', animation: 'pulse 2s infinite' }} />
+        <p style={{ marginBottom: 10, fontSize: 'clamp(12px, 2.5vw, 15px)', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          &#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}{' · '}&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}{' · '}&#128187; Virtual
+        </p>
+
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.5)', padding: '8px 18px', borderRadius: 8, marginBottom: 16, boxShadow: '0 0 20px rgba(239,68,68,0.2), 0 0 40px rgba(239,68,68,0.1)', animation: 'urgency-glow 2s ease-in-out infinite' }}>
+          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#EF4444', animation: 'pulse 2s infinite', flexShrink: 0 }} />
+          <span style={{ fontWeight: 700, fontSize: 'clamp(13px, 2.5vw, 15px)', color: '#EF4444', whiteSpace: 'nowrap' }}>
             {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left!`}
           </span>
         </div>
