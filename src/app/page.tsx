@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import ParticleBackground from '@/components/ParticleBackground'
 import RevenueCalculator from '@/components/RevenueCalculator'
@@ -175,8 +175,55 @@ export default function LandingPage() {
     setContactSubmitting(false)
   }
 
+  // Intersection Observer for scroll-triggered animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    )
+    const els = document.querySelectorAll('.fade-in-section, .stagger-children, .fade-scale, .tech-grid-bg')
+    els.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [loading])
+
   const ctaUrl = event?.stripe_payment_link || '#'
   const price = event?.event_tickets?.[0]?.price || 997
+
+  // Reusable wave divider between sections
+  const WaveDivider = ({ flip, variant = 'purple' }: { flip?: boolean; variant?: 'purple' | 'teal' | 'mixed' }) => {
+    const colors = {
+      purple: { start: 'rgba(108,58,237,0.15)', mid: 'rgba(108,58,237,0.08)', end: 'rgba(108,58,237,0.03)' },
+      teal: { start: 'rgba(45,212,191,0.12)', mid: 'rgba(45,212,191,0.06)', end: 'rgba(45,212,191,0.02)' },
+      mixed: { start: 'rgba(108,58,237,0.12)', mid: 'rgba(45,212,191,0.08)', end: 'rgba(108,58,237,0.03)' },
+    }
+    const c = colors[variant]
+    return (
+      <div className={`wave-divider${flip ? ' flip' : ''}`} aria-hidden="true">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id={`wg-${variant}-${flip ? 'f' : 'n'}`} x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={c.end} />
+              <stop offset="50%" stopColor={c.start} />
+              <stop offset="100%" stopColor={c.end} />
+            </linearGradient>
+          </defs>
+          <path d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,20 1440,30 L1440,60 L0,60 Z" fill={`url(#wg-${variant}-${flip ? 'f' : 'n'})`} />
+          <path d="M0,40 C480,10 960,50 1440,25 L1440,60 L0,60 Z" fill={c.mid} opacity="0.5" />
+        </svg>
+      </div>
+    )
+  }
+
+  // Glowing line divider
+  const GlowDivider = ({ type = 'line' }: { type?: 'line' | 'orb' | 'scan' }) => (
+    <div className={type === 'orb' ? 'section-divider-orb' : type === 'scan' ? 'scan-line' : 'section-divider'} aria-hidden="true" />
+  )
 
   if (loading) {
     return (
@@ -250,16 +297,19 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: Hero → Problem */}
+      <WaveDivider variant="purple" />
+
       {/* ===== THE PROBLEM ===== */}
-      <section className="section-dark">
-        <div className="section">
+      <section className="section-dark tech-grid-bg">
+        <div className="section fade-in-section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The problem</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 36, lineHeight: 1.2 }}>
             You know AI can change your business.<br />
             <span style={{ color: 'var(--text-secondary)' }}>You just have not found the right way in.</span>
           </h2>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
+          <div className="stagger-children" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
             {[
               { icon: '&#128260;', title: 'Drowning in manual work', desc: 'You are doing the same tasks by hand every week. Things that should be automated are eating your hours and killing your margins.', glow: 'purple' },
               { icon: '&#128184;', title: 'Paying for too many tools', desc: 'Your tech stack costs hundreds per month. Half the features go unused. You know you could build something better and cheaper.', glow: 'teal' },
@@ -282,8 +332,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: Problem → Transformation */}
+      <GlowDivider type="orb" />
+
       {/* ===== TRANSFORMATION ===== */}
-      <section className="section">
+      <section className="section fade-in-section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The transformation</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>
           Walk in with a problem. Walk out with a working app.
@@ -310,9 +363,12 @@ export default function LandingPage() {
         <div style={{ marginTop: 40 }}><CtaButton /></div>
       </section>
 
+      {/* TRANSITION: Transformation → Why Different */}
+      <WaveDivider variant="teal" />
+
       {/* ===== WHY THIS IS DIFFERENT ===== */}
       <section className="section-dark">
-        <div className="section">
+        <div className="section fade-in-section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Why this is different</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>This is not a course. This is a build sprint.</h2>
           <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>You do not sit and watch. You open your laptop, follow along live, and walk out with something real.</p>
@@ -335,13 +391,16 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: Why Different → What You Build */}
+      <GlowDivider type="scan" />
+
       {/* ===== WHAT YOU WILL BUILD — single row ===== */}
-      <section className="section">
+      <section className="section fade-in-section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>What you will build</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Real apps. Real revenue. Real time savings.</h2>
         <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>You do not need the perfect idea before joining. The workshop helps you identify the right use case.</p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16 }}>
+        <div className="stagger-children" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16 }}>
           {[
             { icon: '\u{1F6E0}', title: 'Internal Tools', glow: 'purple' },
             { icon: '\u{1F465}', title: 'Customer Portals', glow: 'teal' },
@@ -361,9 +420,12 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: What You Build → Roadmap */}
+      <WaveDivider variant="mixed" />
+
       {/* ===== ANIMATED ROADMAP ===== */}
-      <section className="section-dark">
-        <div className="section">
+      <section className="section-dark tech-grid-bg">
+        <div className="section fade-in-section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Your journey</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>From idea to live app in 4 steps</h2>
 
@@ -388,17 +450,23 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: Roadmap → Revenue */}
+      <GlowDivider type="orb" />
+
       {/* ===== REVENUE CALCULATOR ===== */}
-      <section className="section">
+      <section className="section fade-in-section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Revenue potential</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>See what your app could generate</h2>
         <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 600, margin: '0 auto 48px' }}>Adjust the numbers to match your market. Even a small app can pay for this workshop many times over.</p>
         <RevenueCalculator workshopPrice={price} ctaUrl={ctaUrl} isSoldOut={isSoldOut} onWaitlist={() => setShowWaitlist(true)} />
       </section>
 
+      {/* TRANSITION: Revenue → Tool Stack */}
+      <WaveDivider variant="purple" />
+
       {/* ===== TOOL STACK ===== */}
       <section className="section-dark">
-        <div className="section">
+        <div className="section fade-in-section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The tool stack</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Modern tools. Minimal cost. Maximum power.</h2>
           <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 650, margin: '0 auto 48px' }}>Everything is beginner-friendly and guided live during the workshop. Some tools are optional — the essentials are free or under $20/mo.</p>
@@ -431,12 +499,15 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: Tool Stack → Offer */}
+      <GlowDivider type="scan" />
+
       {/* ===== OFFER STACK ===== */}
-      <section className="section">
+      <section className="section fade-in-section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Everything included</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>This is not just a workshop. It is a full implementation package.</h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
+        <div className="stagger-children" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 20 }}>
           {(offerItems.length > 0 ? offerItems.filter(oi => !oi.is_bonus).map(oi => ({ icon: oi.icon, title: oi.title, desc: oi.description, glow: oi.glow })) : [
             { icon: '🎬', title: 'Live 2-Day Build Sprint', desc: '8 hours of guided, hands-on building. Not lectures — execution.', glow: 'purple' },
             { icon: '💻', title: 'Your Functional App', desc: 'Walk away with a real, deployed application. Not a mockup — a live app.', glow: 'teal' },
@@ -492,9 +563,12 @@ export default function LandingPage() {
         <div style={{ marginTop: 40 }}><CtaButton /></div>
       </section>
 
+      {/* TRANSITION: Offer → Who This Is For */}
+      <WaveDivider variant="teal" />
+
       {/* ===== WHO THIS IS FOR ===== */}
-      <section className="section-dark">
-        <div className="section">
+      <section className="section-dark tech-grid-bg">
+        <div className="section fade-in-section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Is this right for you</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>This workshop is built for a specific kind of person</h2>
 
@@ -515,8 +589,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: Who This Is For → Hosts */}
+      <GlowDivider type="orb" />
+
       {/* ===== HOSTS / SPEAKERS ===== */}
-      <section className="section">
+      <section className="section fade-in-section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>
           {eventHosts.length > 1 ? 'Your hosts' : 'Your instructor'}
         </p>
@@ -583,8 +660,10 @@ export default function LandingPage() {
 
       {/* ===== UPCOMING EVENTS ===== */}
       {upcomingEvents.length > 1 && (
+        <>
+        <WaveDivider variant="mixed" />
         <section className="section-dark">
-          <div className="section" id="upcoming-events">
+          <div className="section fade-in-section" id="upcoming-events">
             <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Upcoming sessions</p>
             <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 36px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Pick the date that works for you</h2>
             <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 600, margin: '0 auto 40px' }}>Multiple sessions available. Same workshop, same results — choose when you want to build.</p>
@@ -610,10 +689,14 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+        </>
       )}
 
+      {/* TRANSITION: → Pricing */}
+      <GlowDivider type="line" />
+
       {/* ===== PRICING ===== */}
-      <section className="section" id="pricing">
+      <section className="section fade-in-section" id="pricing">
         <div style={{ maxWidth: 560, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Reserve your seat</p>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 8 }}>${price}</h2>
@@ -666,9 +749,12 @@ export default function LandingPage() {
         </section>
       )}
 
+      {/* TRANSITION: → FAQ */}
+      <WaveDivider variant="purple" />
+
       {/* ===== FAQ ===== */}
       <section className="section-dark">
-        <div className="section" style={{ maxWidth: 720 }}>
+        <div className="section fade-in-section" style={{ maxWidth: 720 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Questions</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 36px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>Frequently asked questions</h2>
           {[
@@ -694,8 +780,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: → Contact */}
+      <GlowDivider type="scan" />
+
       {/* ===== CONTACT / QUESTIONS ===== */}
-      <section className="section" style={{ paddingTop: 40, paddingBottom: 60 }}>
+      <section className="section fade-in-section" style={{ paddingTop: 40, paddingBottom: 60 }}>
         <div style={{ maxWidth: 560, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Have questions?</p>
           <h2 style={{ fontSize: 'clamp(24px, 3vw, 32px)', fontWeight: 700, marginBottom: 8 }}>Get in touch</h2>
@@ -728,8 +817,11 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* TRANSITION: → Final CTA */}
+      <GlowDivider type="orb" />
+
       {/* ===== FINAL CTA ===== */}
-      <section className="section" style={{ paddingBottom: 120 }}>
+      <section className="section fade-in-section" style={{ paddingBottom: 120 }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">Two days from now, you could have a working app.</h2>
         <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 'April 7-8, 2026'}. {event?.capacity || 20} seats only.</p>
         <p style={{ fontSize: 28, fontWeight: 800, marginBottom: 28 }}>${price}</p>
