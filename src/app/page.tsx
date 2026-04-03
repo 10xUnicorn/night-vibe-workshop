@@ -239,15 +239,14 @@ export default function LandingPage() {
           &#128197; {event ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}-${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Apr 7-8, 2026'}{' · '}&#128336; {event ? `${new Date(event.start_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })}–${new Date(event.end_date).toLocaleTimeString('en-US', { hour: 'numeric', timeZone: event.timezone })} ${event.timezone === 'America/Los_Angeles' ? 'PT' : event.timezone === 'America/New_York' ? 'ET' : event.timezone === 'America/Chicago' ? 'CT' : 'MT'}` : '9 AM–1 PM PT'}{' · '}&#128187; Virtual
         </p>
 
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.5)', padding: '8px 18px', borderRadius: 8, marginBottom: 16, boxShadow: '0 0 20px rgba(239,68,68,0.2), 0 0 40px rgba(239,68,68,0.1)', animation: 'urgency-glow 2s ease-in-out infinite' }}>
-          <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#EF4444', animation: 'pulse 2s infinite', flexShrink: 0 }} />
-          <span style={{ fontWeight: 700, fontSize: 'clamp(13px, 2.5vw, 15px)', color: '#EF4444', whiteSpace: 'nowrap' }}>
-            {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left!`}
-          </span>
-        </div>
-
-        <div style={{ paddingBottom: 48 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 16, paddingBottom: 48 }}>
           <CtaButton />
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.5)', padding: '10px 20px', borderRadius: 8, boxShadow: '0 0 20px rgba(239,68,68,0.2), 0 0 40px rgba(239,68,68,0.1)', animation: 'urgency-glow 2s ease-in-out infinite' }}>
+            <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#EF4444', animation: 'pulse 2s infinite', flexShrink: 0 }} />
+            <span style={{ fontWeight: 700, fontSize: 'clamp(13px, 2.5vw, 15px)', color: '#EF4444', whiteSpace: 'nowrap' }}>
+              {isSoldOut ? 'SOLD OUT' : `Only ${seatsLeft} of ${event?.capacity || 20} seats left!`}
+            </span>
+          </div>
         </div>
       </section>
 
