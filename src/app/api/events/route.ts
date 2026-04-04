@@ -112,8 +112,12 @@ export async function PATCH(req: NextRequest) {
       }
     }
 
-    // Update landing_page_data fields
-    if (body.special_offer !== undefined || body.instructor_name !== undefined || body.company_name !== undefined) {
+    // Update landing_page_data — full replacement if provided, or field-level merge
+    if (body.landing_page_data && typeof body.landing_page_data === 'object') {
+      // Full landing_page_data object from Page Content editor
+      eventUpdates.landing_page_data = body.landing_page_data
+    } else if (body.special_offer !== undefined || body.instructor_name !== undefined || body.company_name !== undefined) {
+      // Legacy field-level updates from event edit form
       const { data: existing } = await sb.from('events').select('landing_page_data').eq('id', body.id).single()
       const lpd = (existing?.landing_page_data as Record<string, unknown>) || {}
       if (body.special_offer !== undefined) lpd.special_offer = body.special_offer
