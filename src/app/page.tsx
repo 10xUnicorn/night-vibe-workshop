@@ -72,9 +72,6 @@ export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [loading, setLoading] = useState(true)
   const [upcomingEvents, setUpcomingEvents] = useState<EventData[]>([])
-  const [blueprintForm, setBlueprintForm] = useState({ name: '', email: '', business_type: '', biggest_problem: '' })
-  const [blueprintSubmitted, setBlueprintSubmitted] = useState(false)
-  const [blueprintSubmitting, setBlueprintSubmitting] = useState(false)
 
   const [eventHosts, setEventHosts] = useState<EventHostData[]>([])
   const [offerItems, setOfferItems] = useState<{ icon: string; title: string; description: string; glow: string; is_bonus: boolean; featured_image_url?: string; bonus_description?: string; bonus_tags?: string[] }[]>([])
@@ -195,24 +192,6 @@ export default function LandingPage() {
     return () => observer.disconnect()
   }, [loading])
 
-  const handleBlueprintSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setBlueprintSubmitting(true)
-    try {
-      const params = new URLSearchParams(window.location.search)
-      const ref = params.get('ref') || undefined
-      await fetch('/api/blueprint', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...blueprintForm, ref_code: ref }),
-      })
-      setBlueprintSubmitted(true)
-    } catch {
-      setBlueprintSubmitted(true)
-    }
-    setBlueprintSubmitting(false)
-  }
-
   const ctaUrl = event?.stripe_payment_link || '#'
   const price = event?.event_tickets?.[0]?.price || 997
 
@@ -318,64 +297,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ===== BLUEPRINT LEAD MAGNET ===== */}
-      <GlowDivider type="scan" />
-      <section className="section fade-in-section" style={{ paddingTop: 48, paddingBottom: 48 }}>
-        <div style={{ maxWidth: 560, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-            <span style={{ fontSize: 12, fontWeight: 800, color: "var(--teal)", textTransform: "uppercase", letterSpacing: 2, background: "rgba(45,212,191,0.1)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(45,212,191,0.3)" }}>Free — Instant</span>
-          </div>
-          <h2 style={{ fontSize: "clamp(24px, 3.5vw, 36px)", fontWeight: 800, marginBottom: 8, lineHeight: 1.15 }} className="gradient-text">
-            Get Your Custom AI App Blueprint
-          </h2>
-          <p style={{ fontSize: 16, color: "var(--text-secondary)", marginBottom: 28, maxWidth: 480, margin: "0 auto 28px", lineHeight: 1.6 }}>
-            Tell us about your business and we will map out the exact app you should build — the tech stack, revenue potential, and a 2-day build timeline. Sent straight to your inbox.
-          </p>
-
-          {blueprintSubmitted ? (
-            <div className="card glow-ring" style={{ textAlign: "center", padding: 40, borderColor: "var(--teal)" }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>&#127881;</div>
-              <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: "var(--teal)" }}>Blueprint incoming!</h3>
-              <p style={{ fontSize: 15, color: "var(--text-secondary)", marginBottom: 20, lineHeight: 1.6 }}>
-                Check your inbox — we just sent your personalized AI App Blueprint with everything you need to get started.
-              </p>
-              <CtaButton label="Reserve Your Workshop Seat" />
-            </div>
-          ) : (
-            <form onSubmit={handleBlueprintSubmit} className="card glow-ring" style={{ textAlign: "left", padding: 32, borderColor: "rgba(45,212,191,0.3)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 14 }}>
-                <div>
-                  <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6, fontWeight: 600 }}>Your Name</label>
-                  <input className="admin-input" type="text" required value={blueprintForm.name} onChange={(e) => setBlueprintForm({ ...blueprintForm, name: e.target.value })} placeholder="First & Last" style={{ background: "rgba(16,16,28,0.8)" }} />
-                </div>
-                <div>
-                  <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6, fontWeight: 600 }}>Email</label>
-                  <input className="admin-input" type="email" required value={blueprintForm.email} onChange={(e) => setBlueprintForm({ ...blueprintForm, email: e.target.value })} placeholder="you@company.com" style={{ background: "rgba(16,16,28,0.8)" }} />
-                </div>
-              </div>
-              <div style={{ marginTop: 14 }}>
-                <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6, fontWeight: 600 }}>What type of business do you run?</label>
-                <input className="admin-input" type="text" required value={blueprintForm.business_type} onChange={(e) => setBlueprintForm({ ...blueprintForm, business_type: e.target.value })} placeholder="e.g. Marketing agency, SaaS, Coaching, E-commerce" style={{ background: "rgba(16,16,28,0.8)" }} />
-              </div>
-              <div style={{ marginTop: 14 }}>
-                <label style={{ fontSize: 12, color: "var(--text-muted)", display: "block", marginBottom: 6, fontWeight: 600 }}>What manual task or problem costs you the most time?</label>
-                <input className="admin-input" type="text" required value={blueprintForm.biggest_problem} onChange={(e) => setBlueprintForm({ ...blueprintForm, biggest_problem: e.target.value })} placeholder="e.g. Client onboarding, lead follow-up, reporting..." style={{ background: "rgba(16,16,28,0.8)" }} />
-              </div>
-              <button type="submit" disabled={blueprintSubmitting} className="btn-accent" style={{ width: "100%", marginTop: 20, fontSize: 16, background: blueprintSubmitting ? "#555" : undefined }}>
-                {blueprintSubmitting ? "Generating..." : "🚀 Get My Free App Blueprint"}
-              </button>
-              <p style={{ fontSize: 12, color: "var(--text-muted)", textAlign: "center", marginTop: 12 }}>
-                No spam. Unsubscribe anytime. Your blueprint arrives instantly.
-              </p>
-            </form>
-          )}
-        </div>
-      </section>
-
-      {/* TRANSITION: Blueprint → Problem */}
-      <WaveDivider variant="purple" />
-
-      {/* ===== THE PROBLEM ===== */}
+            {/* ===== THE PROBLEM ===== */}
       <section className="section-dark tech-grid-bg">
         <div className="section fade-in-section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The problem</p>
