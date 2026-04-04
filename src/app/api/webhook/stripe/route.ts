@@ -1,26 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import Stripe from 'stripe'
 import { sendEmail } from '@/lib/email'
 import { getRegistrationConfirmationEmail } from '@/lib/emailTemplates'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
-// This webhook receives Stripe checkout.session.completed events
-// and increments the sold_count on the matching event ticket.
-//
-// To set up:
-// 1. In Stripe Dashboard > Developers > Webhooks
-// 2. Add endpoint: https://your-domain.vercel.app/api/webhook/stripe
-// 3. Select event: checkout.session.completed
-// 4. Copy the webhook signing secret to STRIPE_WEBHOOK_SECRET env var
-//
-// For production, add signature verification using STRIPE_WEBHOOK_SECRET
+// Initialize Stripe for signature verification
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-03-31.basil' as Stripe.LatestApiVersion })
+  : null
+
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: string, customerName: string, amountPaid: number, currency: string) {
   try {
-    // Fetch event details with hosts
     const { data: eventData } = await sb
       .from('events')
       .select('id, title, start_date, end_date, timezone, meeting_link')
@@ -30,7 +26,6 @@ async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: st
     const event = eventData as { id: string; title: string; start_date: string; end_date: string; timezone: string; meeting_link: string | null } | null
     if (!event) return
 
-    // Fetch host names
     const { data: eventHosts } = await sb
       .from('event_hosts')
       .select('hosts(name)')
@@ -40,6 +35,19 @@ async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: st
     const hostNames = (eventHosts || [])
       .map((eh: { hosts: { name: string } | null }) => eh.hosts?.name)
       .filter(Boolean) as string[]
+
+    // Check for duplicate registration
+    const { data: existing } = await sb
+      .from('event_registrations')
+      .select('id')
+      .eq('event_id', eventId)
+      .eq('customer_email', customerEmail)
+      .limit(1)
+
+    if (existing && existing.length > 0) {
+      console.log(`Duplicate registration skipped for ${customerEmail} on event ${eventId}`)
+      return
+    }
 
     // Insert registration record
     await sb.from('event_registrations').insert({
@@ -89,85 +97,178 @@ async function sendRegistrationEmail(sb: any, eventId: string, customerEmail: st
   }
 }
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json()
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function handleCheckoutCompleted(session: any) {
+  const sb = createClient(supabaseUrl, supabaseServiceKey)
 
-    // Handle checkout.session.completed
-    if (body.type === 'checkout.session.completed') {
-      const session = body.data?.object
-      const paymentLink = session?.payment_link
-      const customerEmail = session?.customer_details?.email || session?.customer_email
-      const customerName = session?.customer_details?.name || ''
-      const amountPaid = (session?.amount_total || 0) / 100
-      const currency = session?.currency || 'usd'
+  const customerEmail = session.customer_details?.email || session.customer_email
+  const customerName = session.customer_details?.name || ''
+  const amountPaid = (session.amount_total || 0) / 100
+  const currency = session.currency || 'usd'
 
-      if (!paymentLink) {
-        return NextResponse.json({ received: true, action: 'no_payment_link' })
-      }
+  // --- PRIMARY: Get event_id from session metadata (new dynamic checkout flow) ---
+  const eventId = session.metadata?.event_id
+  const ticketId = session.metadata?.ticket_id
+  const refCode = session.metadata?.ref_code
 
-      const sb = createClient(supabaseUrl, supabaseServiceKey)
-
-      // Find ticket by stripe payment link (payment link ID from Stripe)
-      // Stripe sends the payment_link ID, but we store the full URL
-      // So we match by checking if the stored link contains the payment_link ID
-      const { data: tickets } = await sb
+  if (eventId) {
+    // Increment sold_count on the ticket
+    if (ticketId) {
+      const { data: ticket } = await sb
         .from('event_tickets')
         .select('id, sold_count, capacity, event_id')
-        .like('stripe_payment_link', `%${paymentLink}%`)
+        .eq('id', ticketId)
+        .single()
 
-      if (tickets && tickets.length > 0) {
-        const ticket = tickets[0]
+      if (ticket) {
         const newCount = (ticket.sold_count || 0) + 1
-
         await sb.from('event_tickets').update({ sold_count: newCount }).eq('id', ticket.id)
 
-        // Auto-mark as sold_out if at capacity
         if (newCount >= ticket.capacity) {
           await sb.from('events').update({ status: 'sold_out' }).eq('id', ticket.event_id)
           await sb.from('event_tickets').update({ status: 'sold_out' }).eq('id', ticket.id)
         }
-
-        // Send registration confirmation email
-        if (customerEmail) {
-          await sendRegistrationEmail(sb, ticket.event_id, customerEmail, customerName, amountPaid, currency)
-        }
-
-        return NextResponse.json({ received: true, action: 'incremented', sold_count: newCount })
       }
+    } else {
+      // No ticket_id in metadata — find ticket by event_id
+      const { data: tickets } = await sb
+        .from('event_tickets')
+        .select('id, sold_count, capacity')
+        .eq('event_id', eventId)
+        .limit(1)
 
-      // Fallback: try matching by the full URL stored in events table
-      const { data: events } = await sb
-        .from('events')
-        .select('id')
-        .like('stripe_payment_link', `%${paymentLink}%`)
+      if (tickets && tickets.length > 0) {
+        const ticket = tickets[0]
+        const newCount = (ticket.sold_count || 0) + 1
+        await sb.from('event_tickets').update({ sold_count: newCount }).eq('id', ticket.id)
 
-      if (events && events.length > 0) {
-        const eventId = events[0].id
-        const { data: eventTickets } = await sb
-          .from('event_tickets')
-          .select('id, sold_count, capacity')
-          .eq('event_id', eventId)
-
-        if (eventTickets && eventTickets.length > 0) {
-          const ticket = eventTickets[0]
-          const newCount = (ticket.sold_count || 0) + 1
-          await sb.from('event_tickets').update({ sold_count: newCount }).eq('id', ticket.id)
-
-          if (newCount >= ticket.capacity) {
-            await sb.from('events').update({ status: 'sold_out' }).eq('id', eventId)
-          }
-
-          // Send registration confirmation email
-          if (customerEmail) {
-            await sendRegistrationEmail(sb, eventId, customerEmail, customerName, amountPaid, currency)
-          }
-
-          return NextResponse.json({ received: true, action: 'incremented_via_event', sold_count: newCount })
+        if (newCount >= ticket.capacity) {
+          await sb.from('events').update({ status: 'sold_out' }).eq('id', eventId)
+          await sb.from('event_tickets').update({ status: 'sold_out' }).eq('id', ticket.id)
         }
       }
+    }
 
-      return NextResponse.json({ received: true, action: 'no_matching_ticket' })
+    // Track affiliate referral if ref_code present
+    if (refCode) {
+      try {
+        const { data: affiliate } = await sb
+          .from('affiliates')
+          .select('id')
+          .eq('slug', refCode)
+          .single()
+
+        if (affiliate) {
+          await sb.from('affiliate_referrals').insert({
+            affiliate_id: affiliate.id,
+            event_id: eventId,
+            customer_email: customerEmail,
+            customer_name: customerName,
+            amount: amountPaid,
+            status: 'confirmed',
+          } as any)
+        }
+      } catch (e) { console.error('Affiliate tracking error (non-fatal):', e) }
+    }
+
+    // Send registration email
+    if (customerEmail) {
+      await sendRegistrationEmail(sb, eventId, customerEmail, customerName, amountPaid, currency)
+    }
+
+    return { action: 'registered_via_metadata', event_id: eventId }
+  }
+
+  // --- FALLBACK: Match by payment_link ID (legacy payment link flow) ---
+  const paymentLink = session.payment_link
+  if (!paymentLink) {
+    return { action: 'no_event_id_or_payment_link' }
+  }
+
+  const { data: tickets } = await sb
+    .from('event_tickets')
+    .select('id, sold_count, capacity, event_id')
+    .like('stripe_payment_link', `%${paymentLink}%`)
+
+  if (tickets && tickets.length > 0) {
+    const ticket = tickets[0]
+    const newCount = (ticket.sold_count || 0) + 1
+    await sb.from('event_tickets').update({ sold_count: newCount }).eq('id', ticket.id)
+
+    if (newCount >= ticket.capacity) {
+      await sb.from('events').update({ status: 'sold_out' }).eq('id', ticket.event_id)
+      await sb.from('event_tickets').update({ status: 'sold_out' }).eq('id', ticket.id)
+    }
+
+    if (customerEmail) {
+      await sendRegistrationEmail(sb, ticket.event_id, customerEmail, customerName, amountPaid, currency)
+    }
+
+    return { action: 'registered_via_payment_link', event_id: ticket.event_id }
+  }
+
+  // Last fallback: match via events table
+  const { data: events } = await sb
+    .from('events')
+    .select('id')
+    .like('stripe_payment_link', `%${paymentLink}%`)
+
+  if (events && events.length > 0) {
+    const fallbackEventId = events[0].id
+    const { data: eventTickets } = await sb
+      .from('event_tickets')
+      .select('id, sold_count, capacity')
+      .eq('event_id', fallbackEventId)
+
+    if (eventTickets && eventTickets.length > 0) {
+      const ticket = eventTickets[0]
+      const newCount = (ticket.sold_count || 0) + 1
+      await sb.from('event_tickets').update({ sold_count: newCount }).eq('id', ticket.id)
+
+      if (newCount >= ticket.capacity) {
+        await sb.from('events').update({ status: 'sold_out' }).eq('id', fallbackEventId)
+      }
+
+      if (customerEmail) {
+        await sendRegistrationEmail(sb, fallbackEventId, customerEmail, customerName, amountPaid, currency)
+      }
+
+      return { action: 'registered_via_event_fallback', event_id: fallbackEventId }
+    }
+  }
+
+  return { action: 'no_matching_event' }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    let event: Stripe.Event | null = null
+
+    // Verify webhook signature if secret is configured
+    if (webhookSecret && stripe) {
+      const body = await req.text()
+      const signature = req.headers.get('stripe-signature')
+
+      if (!signature) {
+        return NextResponse.json({ error: 'Missing signature' }, { status: 400 })
+      }
+
+      try {
+        event = stripe.webhooks.constructEvent(body, signature, webhookSecret)
+      } catch (err) {
+        console.error('Webhook signature verification failed:', err)
+        return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
+      }
+    } else {
+      // No signature verification (legacy mode — still works but less secure)
+      const body = await req.json()
+      event = body as unknown as Stripe.Event
+    }
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object
+      const result = await handleCheckoutCompleted(session)
+      return NextResponse.json({ received: true, ...result })
     }
 
     return NextResponse.json({ received: true })

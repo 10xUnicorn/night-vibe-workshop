@@ -192,7 +192,30 @@ export default function LandingPage() {
     return () => observer.disconnect()
   }, [loading])
 
-  const ctaUrl = event?.stripe_payment_link || '#'
+  const [checkoutLoading, setCheckoutLoading] = useState(false)
+
+  const handleCheckout = async () => {
+    if (!event?.id || checkoutLoading) return
+    setCheckoutLoading(true)
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const ref = params.get('ref') || undefined
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_id: event.id, ref_code: ref }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert(data.error || 'Checkout unavailable. Please try again.')
+      }
+    } catch {
+      alert('Something went wrong. Please try again.')
+    }
+    setCheckoutLoading(false)
+  }
   const price = event?.event_tickets?.[0]?.price || 997
 
   // Reusable wave divider between sections
@@ -238,7 +261,9 @@ export default function LandingPage() {
     isSoldOut ? (
       <button className="btn-accent" style={s} onClick={() => setShowWaitlist(true)}>{label || 'Join the Waitlist'}</button>
     ) : (
-      <a href={ctaUrl} className="btn-accent" style={s} target="_blank" rel="noopener noreferrer">{label || 'Reserve Your Seat'}</a>
+      <button className="btn-accent" style={s} onClick={handleCheckout} disabled={checkoutLoading}>
+        {checkoutLoading ? 'Loading checkout...' : (label || 'Reserve Your Seat')}
+      </button>
     )
   )
 
@@ -722,7 +747,7 @@ export default function LandingPage() {
             </div>
             <div style={{ marginTop: 24, textAlign: 'center' }}>
               <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of ${event?.capacity || 20} seats remaining`}</div>
-              <a href={ctaUrl} className="btn-accent" style={{ width: '100%', display: 'block' }} target="_blank" rel="noopener noreferrer">{isSoldOut ? 'View Details' : `Reserve Your Seat`}</a>
+              <button className="btn-accent" style={{ width: '100%', display: 'block' }} onClick={isSoldOut ? () => setShowWaitlist(true) : handleCheckout} disabled={checkoutLoading}>{checkoutLoading ? 'Loading...' : (isSoldOut ? 'View Details' : 'Reserve Your Seat')}</button>
             </div>
           </div>
           <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Secure checkout via Stripe. Instant confirmation. Calendar invite sent within minutes.</p>
@@ -831,7 +856,7 @@ export default function LandingPage() {
       {/* STICKY CTA */}
       <div className={`sticky-cta ${showSticky ? 'visible' : ''}`}>
         <div className="seat-counter" style={{ fontSize: 13 }}><span className="seat-dot" />{seatsLeft} seats left</div>
-        <a href={ctaUrl} className="btn-accent btn-accent-sm" target="_blank" rel="noopener noreferrer">{isSoldOut ? 'View Details' : `Reserve Your Seat`}</a>
+        <button className="btn-accent btn-accent-sm" onClick={isSoldOut ? () => setShowWaitlist(true) : handleCheckout} disabled={checkoutLoading}>{checkoutLoading ? 'Loading...' : (isSoldOut ? 'View Details' : 'Reserve Your Seat')}</button>
       </div>
 
       {/* WAITLIST MODAL */}
