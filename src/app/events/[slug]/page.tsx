@@ -8,6 +8,7 @@ import RevenueCalculator from '@/components/RevenueCalculator';
 import SocialProofPopup from '@/components/SocialProofPopup';
 import Link from 'next/link';
 import { renderRichText } from '@/lib/richText';
+import { getLandingContent, type LandingPageContent } from '@/lib/landingPageDefaults';
 
 interface Host {
   id: string;
@@ -74,6 +75,7 @@ interface EventData {
   event_tickets: EventTicket[];
   event_hosts: EventHost[];
   event_offer_items: EventOfferItem[];
+  landing_page_data?: Partial<LandingPageContent>;
 }
 
 const supabase = createClient(
@@ -259,6 +261,7 @@ export default function EventPage() {
     return `${baseCtaUrl}${sep}client_reference_id=${encodeURIComponent(ref)}`;
   })();
   const price = event.event_tickets[0]?.price || 997;
+  const content = getLandingContent(event?.landing_page_data);
 
   const eventDate = new Date(event.start_date);
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -353,21 +356,14 @@ export default function EventPage() {
       {/* ===== THE PROBLEM ===== */}
       <section className="section-dark">
         <div className="section">
-          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The problem</p>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.problem_section.label}</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 36, lineHeight: 1.2 }}>
-            You know AI can change your business.<br />
-            <span style={{ color: 'var(--text-secondary)' }}>You just have not found the right way in.</span>
+            {content.problem_section.title}<br />
+            <span style={{ color: 'var(--text-secondary)' }}>{content.problem_section.subtitle}</span>
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
-            {[
-              { icon: '\u{1F504}', title: 'Drowning in manual work', desc: 'You are doing the same tasks by hand every week. Things that should be automated are eating your hours and killing your margins.', glow: 'purple' },
-              { icon: '\u{1F4B8}', title: 'Paying for too many tools', desc: 'Your tech stack costs hundreds per month. Half the features go unused. You know you could build something better and cheaper.', glow: 'teal' },
-              { icon: '\u{1F636}', title: 'AI feels overwhelming', desc: 'You see the potential but every course is theory-heavy, developer-focused, or too broad to be useful for your specific business.', glow: 'purple' },
-              { icon: '\u{1F4A1}', title: 'Ideas that never launch', desc: 'You have had the app idea for months. Maybe years. But hiring a developer costs $10K-$50K and you are not sure it will even work.', glow: 'teal' },
-              { icon: '\u{23F3}', title: 'Falling behind competitors', desc: 'Every month you wait, someone else in your industry is automating, building, and pulling ahead. The gap is growing.', glow: 'purple' },
-              { icon: '\u{1F6AB}', title: 'Do not want to learn code', desc: 'You are a business builder, not a programmer. You need a practical path that works with your skills, not against them.', glow: 'teal' },
-            ].map((item, i) => (
+            {content.problem_section.items.map((item, i) => (
               <div key={i} className={`card card-glow-${item.glow}`} style={{ textAlign: 'left' }}>
                 <div style={{ fontSize: 28, marginBottom: 12 }}>{item.icon}</div>
                 <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{item.title}</h3>
@@ -377,22 +373,22 @@ export default function EventPage() {
           </div>
 
           <p style={{ textAlign: 'center', marginTop: 36, fontSize: 18, fontWeight: 600, color: 'var(--warning)' }}>
-            The real cost of waiting is not just money. It is lost time, missed revenue, and falling further behind every single month.
+            {content.problem_section.bottom_text}
           </p>
         </div>
       </section>
 
       {/* ===== TRANSFORMATION ===== */}
       <section className="section">
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The transformation</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.transformation_section.label}</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>
-          Walk in with a problem. Walk out with a working app.
+          {content.transformation_section.title}
         </h2>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32 }}>
           <div className="card" style={{ borderColor: 'rgba(239,68,68,0.2)', background: 'rgba(239,68,68,0.02)' }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#EF4444', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 20, textAlign: 'left' }}>Before the workshop</h3>
-            {['Stuck with ideas that never move forward', 'Paying for fragmented SaaS tools', 'Manual processes eating your time', 'Confused about where to start with AI', 'Dependent on expensive developers', 'No clear path from idea to revenue'].map((item, i) => (
+            {content.transformation_section.before_items.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 12, fontSize: 15, color: 'var(--text-secondary)', textAlign: 'left' }}>
                 <span style={{ color: '#EF4444', flexShrink: 0 }}>{'\u{2716}'}</span>{item}
               </div>
@@ -400,7 +396,7 @@ export default function EventPage() {
           </div>
           <div className="card" style={{ borderColor: 'rgba(16,185,129,0.2)', background: 'rgba(16,185,129,0.02)' }}>
             <h3 style={{ fontSize: 14, fontWeight: 700, color: '#10B981', textTransform: 'uppercase', letterSpacing: 1.5, marginBottom: 20, textAlign: 'left' }}>After the workshop</h3>
-            {['A working app deployed and live on the web', 'A clearer offer tied to real business outcomes', 'Skills to build more apps on your own', 'A system that saves time or generates revenue', 'Full ownership of your code and product', 'Confidence to execute with modern AI tools'].map((item, i) => (
+            {content.transformation_section.after_items.map((item, i) => (
               <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 12, fontSize: 15, color: 'var(--text-secondary)', textAlign: 'left' }}>
                 <span style={{ color: '#10B981', flexShrink: 0 }}>{'\u{2714}'}</span>{item}
               </div>
@@ -413,9 +409,9 @@ export default function EventPage() {
       {/* ===== WHY THIS IS DIFFERENT ===== */}
       <section className="section-dark">
         <div className="section">
-          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Why this is different</p>
-          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>This is not a course. This is a build sprint.</h2>
-          <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>You do not sit and watch. You open your laptop, follow along live, and walk out with something real.</p>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.comparison_section.label}</p>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.comparison_section.title}</h2>
+          <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>{content.comparison_section.subtitle}</p>
           <div style={{ overflowX: 'auto' }}>
             <table className="comparison-table">
               <thead>
@@ -426,8 +422,8 @@ export default function EventPage() {
                 </tr>
               </thead>
               <tbody>
-                {[['Format', 'Pre-recorded videos', 'Live, guided build sessions'], ['Outcome', 'Knowledge (maybe)', 'A deployed, working app'], ['Support', 'Community forum', `${event.capacity}-person live Q&A`], ['Duration', 'Weeks or months', '2 days, 8 hours total'], ['Focus', 'Broad AI theory', 'Your specific business problem'], ['Tools', 'Outdated or generic', 'Claude + Supabase + Vercel (2026 stack)'], ['After the event', 'You are on your own', 'Community + future sessions included']].map(([f, t, o], i) => (
-                  <tr key={i}><td style={{ fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left' }}>{f}</td><td style={{ color: 'var(--text-muted)', textAlign: 'left' }}>{t}</td><td style={{ color: 'var(--success)', fontWeight: 500, textAlign: 'left' }}>{o}</td></tr>
+                {content.comparison_section.rows.map((row, i) => (
+                  <tr key={i}><td style={{ fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left' }}>{row.feature}</td><td style={{ color: 'var(--text-muted)', textAlign: 'left' }}>{row.typical}</td><td style={{ color: 'var(--success)', fontWeight: 500, textAlign: 'left' }}>{row.ours}</td></tr>
                 ))}
               </tbody>
             </table>
@@ -437,18 +433,12 @@ export default function EventPage() {
 
       {/* ===== WHAT YOU WILL BUILD ===== */}
       <section className="section">
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>What you will build</p>
-        <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Real apps. Real revenue. Real time savings.</h2>
-        <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>You do not need the perfect idea before joining. The workshop helps you identify the right use case.</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.build_section.label}</p>
+        <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.build_section.title}</h2>
+        <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>{content.build_section.subtitle}</p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 16 }}>
-          {[
-            { icon: '\u{1F6E0}', title: 'Internal Tools', glow: 'purple' },
-            { icon: '\u{1F465}', title: 'Customer Portals', glow: 'teal' },
-            { icon: '\u{1F3AF}', title: 'Lead Gen Tools', glow: 'purple' },
-            { icon: '\u{26A1}', title: 'Automation', glow: 'teal' },
-            { icon: '\u{1F4B0}', title: 'Micro-SaaS', glow: 'purple' },
-          ].map((item, i) => (
+          {content.build_section.items.map((item, i) => (
             <div key={i} className={`card card-glow-${item.glow}`} style={{ textAlign: 'center', padding: 24 }}>
               <div style={{ fontSize: 36, marginBottom: 12 }}>{item.icon}</div>
               <h3 style={{ fontSize: 15, fontWeight: 700 }}>{item.title}</h3>
@@ -464,16 +454,11 @@ export default function EventPage() {
       {/* ===== ANIMATED ROADMAP ===== */}
       <section className="section-dark">
         <div className="section">
-          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Your journey</p>
-          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>From idea to live app in 4 steps</h2>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.roadmap_section.label}</p>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>{content.roadmap_section.title}</h2>
 
           <div className="roadmap">
-            {[
-              { num: '01', icon: '\u{1F4DD}', title: 'Register & Prep', desc: 'Secure your seat, set up your free accounts, and arrive with your business problem ready to solve.', color: '#8B5CF6' },
-              { num: '02', icon: '\u{1F4A1}', title: 'Define Your App', desc: 'Use our 3-Step AI Blueprint to turn your idea into a clear architecture. No code needed.', color: '#6366F1' },
-              { num: '03', icon: '\u{1F528}', title: 'Build It Live', desc: 'Follow along step-by-step as you use Claude, Supabase, and Vercel to build your real app.', color: '#2DD4BF' },
-              { num: '04', icon: '\u{1F389}', title: 'Deploy & Launch', desc: 'Push your app live. It works. People can use it. You own the code forever.', color: '#22D3EE' },
-            ].map((step, i) => (
+            {content.roadmap_section.steps.map((step, i) => (
               <div key={i} className="roadmap-step">
                 {i < 3 && <div className="roadmap-line" />}
                 <div className={`roadmap-dot ${i === 2 ? 'active' : ''}`} style={{ background: `${step.color}20`, border: `2px solid ${step.color}`, color: step.color }}>
@@ -490,22 +475,22 @@ export default function EventPage() {
 
       {/* ===== REVENUE CALCULATOR ===== */}
       <section className="section">
-        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Revenue potential</p>
-        <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>See what your app could generate</h2>
-        <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 600, margin: '0 auto 48px' }}>Adjust the numbers to match your market. Even a small app can pay for this workshop many times over.</p>
+        <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.calculator_section.label}</p>
+        <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.calculator_section.title}</h2>
+        <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 600, margin: '0 auto 48px' }}>{content.calculator_section.subtitle}</p>
         <RevenueCalculator workshopPrice={price} ctaUrl={ctaUrl} isSoldOut={isSoldOut} onWaitlist={() => setShowWaitlist(true)} />
       </section>
 
       {/* ===== TOOL STACK ===== */}
       <section className="section-dark">
         <div className="section">
-          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>The tool stack</p>
-          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>Modern tools. Minimal cost. Maximum power.</h2>
-          <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 650, margin: '0 auto 48px' }}>Everything is beginner-friendly and guided live during the workshop. Some tools are optional — the essentials are free or under $20/mo.</p>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.tools_section.label}</p>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.tools_section.title}</h2>
+          <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 650, margin: '0 auto 48px' }}>{content.tools_section.subtitle}</p>
 
           <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: 'var(--success)', marginBottom: 20 }}>Required</p>
           <div className="tool-row" style={{ marginBottom: 40 }}>
-            {[{ name: 'Claude', cost: '$20/mo', emoji: '\u{1F916}', desc: 'Your AI building partner' }, { name: 'Supabase', cost: 'Free', emoji: '\u{26A1}', desc: 'Database & auth' }, { name: 'Vercel', cost: 'Free', emoji: '\u{25B2}', desc: 'Hosting & deploy' }].map((tool, i) => (
+            {content.tools_section.required.map((tool, i) => (
               <div key={i} className="tool-item">
                 <div className="tool-icon">{tool.emoji}</div>
                 <span style={{ fontSize: 14, fontWeight: 700 }}>{tool.name}</span>
@@ -517,7 +502,7 @@ export default function EventPage() {
 
           <p style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 2, color: 'var(--text-muted)', marginBottom: 20 }}>Optional (recommended)</p>
           <div className="tool-row" style={{ marginBottom: 32 }}>
-            {[{ name: 'Emergent Labs', cost: '$20/mo', emoji: '\u{1F52C}', desc: 'AI dev tools' }, { name: 'Gemini', cost: 'Free', emoji: '\u{2B50}', desc: 'Supporting AI' }, { name: 'Gamma', cost: 'Free', emoji: '\u{1F3A8}', desc: 'Presentations' }].map((tool, i) => (
+            {content.tools_section.optional.map((tool, i) => (
               <div key={i} className="tool-item" style={{ opacity: 0.75 }}>
                 <div className="tool-icon">{tool.emoji}</div>
                 <span style={{ fontSize: 14, fontWeight: 700 }}>{tool.name}</span>
@@ -527,7 +512,7 @@ export default function EventPage() {
             ))}
           </div>
 
-          <p style={{ fontSize: 15, color: 'var(--text-secondary)', maxWidth: 550, margin: '0 auto' }}>Total budget: about <span style={{ fontWeight: 700, color: 'white' }}>$20-$50/month</span>. Most tools are free. We walk through every setup step live.</p>
+          <p style={{ fontSize: 15, color: 'var(--text-secondary)', maxWidth: 550, margin: '0 auto' }>{content.tools_section.budget_text}</p>
         </div>
       </section>
 
@@ -596,19 +581,19 @@ export default function EventPage() {
       {/* ===== WHO THIS IS FOR ===== */}
       <section className="section-dark">
         <div className="section">
-          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Is this right for you</p>
-          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>This workshop is built for a specific kind of person</h2>
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.audience_section.label}</p>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>{content.audience_section.title}</h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32, textAlign: 'left' }}>
             <div className="card card-glow-teal" style={{ borderColor: 'rgba(16,185,129,0.25)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--success)', marginBottom: 20 }}>This is for you if...</h3>
-              {['You already have a business, have a business idea, or want to see how you can turn your app idea into a business', 'You want to replace software tools or build a new revenue stream', 'You are ready to execute live, not just watch', 'You want a working app, not more theory', 'You are comfortable using AI tools and following guidance', 'You want to move fast and build something real this month'].map((item, i) => (
+              {content.audience_section.for_items.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--success)', flexShrink: 0, fontWeight: 700 }}>{'\u{2714}'}</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
               ))}
             </div>
             <div className="card card-glow-purple" style={{ borderColor: 'rgba(239,68,68,0.2)' }}>
               <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--danger)', marginBottom: 20 }}>This is not for you if...</h3>
-              {['You just want to learn about AI without building anything', 'You are looking for a passive video course', 'You are not willing to show up live for both days', 'You do not have a business problem or idea to work on', 'You expect someone else to build your app for you', 'You are looking for the cheapest option, not the best outcome'].map((item, i) => (
+              {content.audience_section.not_for_items.map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, marginBottom: 14, fontSize: 15 }}><span style={{ color: 'var(--danger)', flexShrink: 0, fontWeight: 700 }}>{'\u{2716}'}</span><span style={{ color: 'var(--text-secondary)' }}>{item}</span></div>
               ))}
             </div>
@@ -673,7 +658,7 @@ export default function EventPage() {
         <div className="section" style={{ maxWidth: 560, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Reserve your seat</p>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 8 }}>${price}</h2>
-          <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 32 }}>One-time investment. Lifetime access to recordings and community.</p>
+          <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 32 }}>{content.pricing_section.subtitle}</p>
 
           <div className="card glow-ring" style={{ textAlign: 'left', borderColor: 'var(--accent)', padding: 36, marginBottom: 24 }}>
             {(offerItems.length > 0 ? offerItems : [
@@ -693,15 +678,15 @@ export default function EventPage() {
               </div>
             ))}
             <div style={{ borderTop: '1px solid var(--border)', margin: '20px 0', paddingTop: 16 }}>
-              <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--warning)', marginBottom: 4 }}>Special Offer</p>
-              <p style={{ fontSize: 15, color: 'var(--text-secondary)' }}>Bring 3 employees or 3 friends and your session is free.</p>
+              <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--warning)', marginBottom: 4 }}>{content.pricing_section.special_offer_title}</p>
+              <p style={{ fontSize: 15, color: 'var(--text-secondary)' }}>{content.pricing_section.special_offer_text}</p>
             </div>
             <div style={{ marginTop: 24, textAlign: 'center' }}>
               <div className="seat-counter" style={{ marginBottom: 20, justifyContent: 'center', width: '100%' }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT' : `${seatsLeft} of ${event.capacity} seats remaining`}</div>
               {isSoldOut ? (<button className="btn-accent" style={{ width: '100%' }} onClick={() => setShowWaitlist(true)}>Join the Waitlist</button>) : (<a href={ctaUrl} className="btn-accent" style={{ width: '100%', display: 'block' }} target="_blank" rel="noopener noreferrer">Reserve Your Seat — ${price}</a>)}
             </div>
           </div>
-          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Secure checkout via Stripe. Instant confirmation. Calendar invite sent within minutes.</p>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{content.pricing_section.checkout_note}</p>
         </div>
       </section>
 
@@ -727,17 +712,7 @@ export default function EventPage() {
         <div className="section" style={{ maxWidth: 720, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Questions</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 36px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>Frequently asked questions</h2>
-          {[
-            { q: 'Do I need to know how to code?', a: 'No. This workshop is designed for business owners and non-developers. You will use AI tools to build your app with guided, step-by-step instructions.' },
-            { q: 'What kind of app can I build?', a: 'Internal tools, customer-facing products, lead generation tools, workflow automation, or even a paid micro-SaaS. The workshop helps you identify the right use case.' },
-            { q: 'What if I do not have my idea yet?', a: 'That is completely fine. The workshop includes a framework for identifying the best app opportunity for your business.' },
-            { q: 'Will I really finish with something functional?', a: 'Yes. You build and deploy a working app by the end of Day 2. It will be live on the internet, functional, and yours to keep.' },
-            { q: 'What tools do I need?', a: 'A computer with internet access. Claude ($20/mo), Supabase (free), Vercel (free). Optional: Emergent Labs ($20/mo), Gemini (free). Total: $20-$50/month.' },
-            { q: 'Is the recording included?', a: 'Yes. Full recordings of both days are included. Rewatch any section anytime.' },
-            { q: 'What if the workshop sells out?', a: 'Join the waitlist. All future sessions are included with your purchase when you do register.' },
-            { q: 'Can I bring my team?', a: 'Yes. Bring 3 employees or 3 friends and your seat is free. Each person needs their own device.' },
-            { q: 'What is the Launch Accelerator Tool?', a: 'A bonus AI-powered tool exclusively for attendees. It guides you through the most thorough and effective app launch process — your personal launch checklist on steroids.' },
-          ].map((item, i) => (
+          {content.faq_items.map((item, i) => (
             <div key={i} className={`faq-item ${openFaq === i ? 'open' : ''}`} onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ textAlign: 'left' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 style={{ fontSize: 16, fontWeight: 600, paddingRight: 16 }}>{item.q}</h3>
@@ -751,12 +726,12 @@ export default function EventPage() {
 
       {/* ===== FINAL CTA ===== */}
       <section className="section" style={{ paddingBottom: 120 }}>
-        <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">Two days from now, you could have a working app.</h2>
+        <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">{content.final_cta.title}</h2>
         <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{dateRange}. {formattedTime} {displayTimezone}. {event.capacity} seats only.</p>
         <p style={{ fontSize: 28, fontWeight: 800, marginBottom: 28 }}>${price}</p>
         <div className="seat-counter" style={{ marginBottom: 28 }}><span className="seat-dot" />{isSoldOut ? 'SOLD OUT — Join Waitlist Below' : `${seatsLeft} seats remaining — these will go fast`}</div>
         <div style={{ marginBottom: 16 }}><CtaButton /></div>
-        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 12 }}>Secure checkout. Instant access. Recording included.</p>
+        <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 12 }}>{content.final_cta.subtitle}</p>
         <div style={{ marginTop: 48, paddingTop: 48, borderTop: '1px solid var(--border)' }}><p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Night Vibe — AI App Development Company</p></div>
       </section>
 
