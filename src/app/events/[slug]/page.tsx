@@ -512,7 +512,7 @@ export default function EventPage() {
             ))}
           </div>
 
-          <p style={{ fontSize: 15, color: 'var(--text-secondary)', maxWidth: 550, margin: '0 auto' }>{content.tools_section.budget_text}</p>
+          <p style={{ fontSize: 15, color: 'var(--text-secondary)', maxWidth: 550, margin: '0 auto' }}>{content.tools_section.budget_text}</p>
         </div>
       </section>
 
