@@ -138,6 +138,22 @@ export interface LandingPageContent {
     title: string
     subtitle: string
   }
+
+  // Section visibility toggles — each can be independently shown/hidden per event
+  sections_enabled: {
+    video: boolean
+    problem: boolean
+    transformation: boolean
+    comparison: boolean
+    build: boolean
+    roadmap: boolean
+    calculator: boolean
+    tools: boolean
+    audience: boolean
+    faq: boolean
+    pricing: boolean
+    final_cta: boolean
+  }
 }
 
 export const DEFAULT_LANDING_PAGE_CONTENT: LandingPageContent = {
@@ -285,6 +301,21 @@ export const DEFAULT_LANDING_PAGE_CONTENT: LandingPageContent = {
     { q: 'What timezone is this in?', a: '9:00 AM to 1:00 PM Pacific (12:00 PM to 4:00 PM Eastern).' },
     { q: 'What is the Launch Accelerator Tool?', a: 'A bonus AI-powered tool exclusively for attendees. It guides you through the most thorough and effective app launch process — your personal launch checklist on steroids.' },
   ],
+
+  sections_enabled: {
+    video: true,
+    problem: true,
+    transformation: true,
+    comparison: true,
+    build: true,
+    roadmap: true,
+    calculator: true,
+    tools: true,
+    audience: true,
+    faq: true,
+    pricing: true,
+    final_cta: true,
+  },
 
   pricing_section: {
     subtitle: 'One-time investment. Lifetime access to recordings and community.',

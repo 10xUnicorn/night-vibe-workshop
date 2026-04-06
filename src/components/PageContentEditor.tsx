@@ -78,15 +78,36 @@ export default function PageContentEditor({ events, password, onSaved }: Props) 
   const addBtnStyle: React.CSSProperties = { fontSize: 13, padding: '8px 16px', background: 'rgba(45,212,191,0.1)', color: 'var(--teal)', border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8, cursor: 'pointer', fontWeight: 600 }
   const removeBtnStyle: React.CSSProperties = { fontSize: 11, padding: '4px 10px', background: 'rgba(239,68,68,0.08)', color: '#EF4444', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 6, cursor: 'pointer' }
 
-  const SectionHeader = ({ sectionKey, title, icon }: { sectionKey: SectionKey; title: string; icon: string }) => (
-    <div style={sectionHeaderStyle} onClick={() => toggleSection(sectionKey)}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{ fontSize: 20 }}>{icon}</span>
-        <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{title}</span>
+  const SectionHeader = ({ sectionKey, title, icon }: { sectionKey: SectionKey; title: string; icon: string }) => {
+    const enabled = content.sections_enabled[sectionKey]
+    return (
+      <div style={sectionHeaderStyle} onClick={() => toggleSection(sectionKey)}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 20 }}>{icon}</span>
+          <span style={{ fontSize: 15, fontWeight: 700, color: enabled ? 'var(--text-primary)' : 'var(--text-muted)' }}>{title}</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div
+            onClick={e => {
+              e.stopPropagation()
+              setContent(p => ({
+                ...p,
+                sections_enabled: { ...p.sections_enabled, [sectionKey]: !p.sections_enabled[sectionKey] }
+              }))
+            }}
+            title={enabled ? 'Click to hide this section on the event page' : 'Click to show this section on the event page'}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', padding: '4px 8px', borderRadius: 20, background: enabled ? 'rgba(45,212,191,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${enabled ? 'rgba(45,212,191,0.3)' : 'rgba(255,255,255,0.1)'}`, transition: 'all 0.2s' }}
+          >
+            <div style={{ width: 36, height: 20, borderRadius: 10, background: enabled ? 'var(--teal)' : 'rgba(255,255,255,0.15)', position: 'relative', transition: 'background 0.2s', flexShrink: 0 }}>
+              <div style={{ width: 14, height: 14, borderRadius: '50%', background: 'white', position: 'absolute', top: 3, left: enabled ? 19 : 3, transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.3)' }} />
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 700, color: enabled ? 'var(--teal)' : 'var(--text-muted)', minWidth: 24 }}>{enabled ? 'ON' : 'OFF'}</span>
+          </div>
+          <span style={{ fontSize: 18, color: 'var(--text-muted)', transform: openSections.has(sectionKey) ? 'rotate(45deg)' : 'none', transition: 'transform 0.2s' }}>+</span>
+        </div>
       </div>
-      <span style={{ fontSize: 18, color: 'var(--text-muted)', transform: openSections.has(sectionKey) ? 'rotate(45deg)' : 'none', transition: 'transform 0.2s' }}>+</span>
-    </div>
-  )
+    )
+  }
 
   if (!selectedEventId) {
     return (

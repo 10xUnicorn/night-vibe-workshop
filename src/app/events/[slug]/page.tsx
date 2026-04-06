@@ -354,7 +354,7 @@ export default function EventPage() {
       </section>
 
       {/* ===== THE PROBLEM ===== */}
-      <section className="section-dark">
+      {content.sections_enabled.problem && (<section className="section-dark">
         <div className="section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.problem_section.label}</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 36, lineHeight: 1.2 }}>
@@ -376,10 +376,10 @@ export default function EventPage() {
             {content.problem_section.bottom_text}
           </p>
         </div>
-      </section>
+      </section>)}
 
       {/* ===== TRANSFORMATION ===== */}
-      <section className="section">
+      {content.sections_enabled.transformation && (<section className="section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.transformation_section.label}</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>
           {content.transformation_section.title}
@@ -404,10 +404,10 @@ export default function EventPage() {
           </div>
         </div>
         <div style={{ marginTop: 40 }}><CtaButton /></div>
-      </section>
+      </section>)}
 
       {/* ===== WHY THIS IS DIFFERENT ===== */}
-      <section className="section-dark">
+      {content.sections_enabled.comparison && (<section className="section-dark">
         <div className="section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.comparison_section.label}</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.comparison_section.title}</h2>
@@ -429,10 +429,10 @@ export default function EventPage() {
             </table>
           </div>
         </div>
-      </section>
+      </section>)}
 
       {/* ===== WHAT YOU WILL BUILD ===== */}
-      <section className="section">
+      {content.sections_enabled.build && (<section className="section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.build_section.label}</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.build_section.title}</h2>
         <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 40, maxWidth: 650, margin: '0 auto 40px' }}>{content.build_section.subtitle}</p>
@@ -449,10 +449,10 @@ export default function EventPage() {
           <div className="seat-counter" style={{ marginBottom: 20 }}><span className="seat-dot" />{seatsLeft} seats remaining</div><br />
           <CtaButton label="Reserve Your Seat" />
         </div>
-      </section>
+      </section>)}
 
       {/* ===== ANIMATED ROADMAP ===== */}
-      <section className="section-dark">
+      {content.sections_enabled.roadmap && (<section className="section-dark">
         <div className="section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.roadmap_section.label}</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 48, lineHeight: 1.2 }}>{content.roadmap_section.title}</h2>
@@ -471,18 +471,18 @@ export default function EventPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section>)}
 
       {/* ===== REVENUE CALCULATOR ===== */}
-      <section className="section">
+      {content.sections_enabled.calculator && (<section className="section">
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.calculator_section.label}</p>
         <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.calculator_section.title}</h2>
         <p style={{ fontSize: 17, color: 'var(--text-secondary)', marginBottom: 48, maxWidth: 600, margin: '0 auto 48px' }}>{content.calculator_section.subtitle}</p>
         <RevenueCalculator workshopPrice={price} ctaUrl={ctaUrl} isSoldOut={isSoldOut} onWaitlist={() => setShowWaitlist(true)} />
-      </section>
+      </section>)}
 
       {/* ===== TOOL STACK ===== */}
-      <section className="section-dark">
+      {content.sections_enabled.tools && (<section className="section-dark">
         <div className="section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.tools_section.label}</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 16, lineHeight: 1.2 }}>{content.tools_section.title}</h2>
@@ -514,7 +514,7 @@ export default function EventPage() {
 
           <p style={{ fontSize: 15, color: 'var(--text-secondary)', maxWidth: 550, margin: '0 auto' }}>{content.tools_section.budget_text}</p>
         </div>
-      </section>
+      </section>)}
 
       {/* ===== OFFER STACK ===== */}
       <section className="section">
@@ -579,7 +579,7 @@ export default function EventPage() {
       </section>
 
       {/* ===== WHO THIS IS FOR ===== */}
-      <section className="section-dark">
+      {content.sections_enabled.audience && (<section className="section-dark">
         <div className="section">
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>{content.audience_section.label}</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>{content.audience_section.title}</h2>
@@ -599,7 +599,7 @@ export default function EventPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section>)}
 
       {/* ===== HOSTS / SPEAKERS ===== */}
       {hosts.length > 0 && (
@@ -654,7 +654,7 @@ export default function EventPage() {
       )}
 
       {/* ===== PRICING ===== */}
-      <section className={hosts.length > 0 ? 'section-dark' : 'section'} id="pricing">
+      {content.sections_enabled.pricing && (<section className={hosts.length > 0 ? 'section-dark' : 'section'} id="pricing">
         <div className="section" style={{ maxWidth: 560, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Reserve your seat</p>
           <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 8 }}>${price}</h2>
@@ -688,7 +688,7 @@ export default function EventPage() {
           </div>
           <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>{content.pricing_section.checkout_note}</p>
         </div>
-      </section>
+      </section>)}
 
       {/* ===== GUARANTEE ===== */}
       {guarantees.length > 0 && (
@@ -708,7 +708,7 @@ export default function EventPage() {
       )}
 
       {/* ===== FAQ ===== */}
-      <section className={hosts.length > 0 ? 'section' : 'section-dark'}>
+      {content.sections_enabled.faq && (<section className={hosts.length > 0 ? 'section' : 'section-dark'}>
         <div className="section" style={{ maxWidth: 720, margin: '0 auto' }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-light)', textTransform: 'uppercase', letterSpacing: 2, marginBottom: 12 }}>Questions</p>
           <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 36px)', fontWeight: 700, marginBottom: 40, lineHeight: 1.2 }}>Frequently asked questions</h2>
@@ -722,10 +722,10 @@ export default function EventPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section>)}
 
       {/* ===== FINAL CTA ===== */}
-      <section className="section" style={{ paddingBottom: 120 }}>
+      {content.sections_enabled.final_cta && (<section className="section" style={{ paddingBottom: 120 }}>
         <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 800, marginBottom: 16, lineHeight: 1.15 }} className="gradient-text">{content.final_cta.title}</h2>
         <p style={{ fontSize: 18, color: 'var(--text-secondary)', marginBottom: 12, maxWidth: 600, margin: '0 auto 12px' }}>{dateRange}. {formattedTime} {displayTimezone}. {event.capacity} seats only.</p>
         <p style={{ fontSize: 28, fontWeight: 800, marginBottom: 28 }}>${price}</p>
@@ -733,7 +733,7 @@ export default function EventPage() {
         <div style={{ marginBottom: 16 }}><CtaButton /></div>
         <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 12 }}>{content.final_cta.subtitle}</p>
         <div style={{ marginTop: 48, paddingTop: 48, borderTop: '1px solid var(--border)' }}><p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Night Vibe — AI App Development Company</p></div>
-      </section>
+      </section>)}
 
       {/* ===== CONTACT / QUESTIONS ===== */}
       <section className="section" style={{ paddingTop: 40, paddingBottom: 60 }}>
