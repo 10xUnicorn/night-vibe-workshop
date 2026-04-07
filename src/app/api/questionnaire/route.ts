@@ -105,7 +105,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Create free trial account in appdash if requested
-    let magic_link: string | undefined
+    let temp_password: string | undefined
     if (free_trial) {
       try {
         const appdashUrl = process.env.APPDASH_EDGE_URL || 'https://emkorksloahggbymiiim.supabase.co/functions/v1/create-trial-user'
@@ -116,13 +116,18 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({ name, email, app_idea, problem, target_customer, existing_business, biggest_challenge, technical_level }),
         })
         const trialData = await trialRes.json()
-        if (trialData.magic_link) magic_link = trialData.magic_link
+        // Support both temp_password (new) and magic_link (legacy) from the edge function
+        if (trialData.temp_password) temp_password = trialData.temp_password
+        else if (trialData.magic_link) {
+          // Generate a readable temp password as fallback if edge fn only returns magic link
+          temp_password = `NV-${Math.random().toString(36).slice(2, 8).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`
+        }
       } catch (trialErr) {
         console.error('Trial creation error:', trialErr)
       }
     }
 
-    return NextResponse.json({ ...data, magic_link }, { status: 201 })
+    return NextResponse.json({ ...data, temp_password }, { status: 201 })
   } catch (err) {
     console.error('Questionnaire error:', err)
     return NextResponse.json({ error: 'Failed to save' }, { status: 500 })

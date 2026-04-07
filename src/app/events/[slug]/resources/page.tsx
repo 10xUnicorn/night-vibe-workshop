@@ -908,7 +908,7 @@ If you want to build your own app — the next workshop is coming. 🔥
                 />
               </div>
               <a
-                href="https://assets.api.gamma.app/export/pdf/smkbzpysmaskumb/a4478555f23ac04cd782b50f3802fe11/Build-and-Launch-Your-App-LIVE.pdf"
+                href="https://assets.api.gamma.app/export/pdf/smkbzpysmaskumb/e8e5d5a070a825b20580e8fb2c86c019/Build-and-Launch-Your-App-LIVE.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

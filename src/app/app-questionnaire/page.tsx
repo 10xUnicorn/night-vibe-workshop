@@ -21,7 +21,8 @@ function QuestionnaireContent() {
     technical_level: '',
   })
   const [freeTrial, setFreeTrial] = useState(trialParam)
-  const [magicLink, setMagicLink] = useState('')
+  const [tempPassword, setTempPassword] = useState('')
+  const [copied, setCopied] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [eventTitle, setEventTitle] = useState('')
@@ -45,7 +46,7 @@ function QuestionnaireContent() {
         body: JSON.stringify({ ...form, event_id: eventId || null, free_trial: freeTrial }),
       })
       const qData = await res.json()
-      if (qData.magic_link) setMagicLink(qData.magic_link)
+      if (qData.temp_password) setTempPassword(qData.temp_password)
       setSubmitted(true)
     } catch {
       alert('Something went wrong. Please try again.')
@@ -54,28 +55,81 @@ function QuestionnaireContent() {
   }
 
   if (submitted) {
+    const appdashLogin = 'https://appdash.me/login'
     return (
       <div style={{ minHeight: '100vh', background: '#0a0a0f', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-        <div style={{ maxWidth: 520, textAlign: 'center' }}>
-          <div style={{ fontSize: 64, marginBottom: 20 }}>{freeTrial && magicLink ? '🚀' : '🎉'}</div>
+        <div style={{ maxWidth: 540, textAlign: 'center' }}>
+          <div style={{ fontSize: 64, marginBottom: 20 }}>{freeTrial && tempPassword ? '🚀' : '🎉'}</div>
           <h1 style={{ fontSize: 32, fontWeight: 800, color: '#fff', marginBottom: 12 }}>
-            {freeTrial && magicLink ? "You're in. Let's build." : 'Thanks!'}
+            {freeTrial && tempPassword ? "You're in. Let's build." : 'Thanks!'}
           </h1>
           <p style={{ fontSize: 17, color: '#9ca3af', lineHeight: 1.6, marginBottom: 28 }}>
-            {freeTrial && magicLink
-              ? 'Your free trial account is ready and your app idea is pre-loaded. Click below to access your dashboard.'
+            {freeTrial && tempPassword
+              ? 'Your free trial account is ready and your app idea is pre-loaded. Use the credentials below to log in — you\'ll be prompted to set a permanent password on first login.'
               : "We'll use your answers to personalize your workshop experience. Get ready to build something incredible."}
           </p>
-          {freeTrial && magicLink ? (
+
+          {freeTrial && tempPassword ? (
             <div>
+              {/* Credentials card */}
+              <div style={{
+                background: 'rgba(45,212,191,0.06)',
+                border: '1px solid rgba(45,212,191,0.25)',
+                borderRadius: 16,
+                padding: '24px 28px',
+                marginBottom: 24,
+                textAlign: 'left',
+              }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#2dd4bf', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 16px' }}>
+                  Your Login Credentials
+                </p>
+                <div style={{ marginBottom: 14 }}>
+                  <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 4px' }}>Email</p>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: '#fff', margin: 0, fontFamily: 'monospace' }}>{form.email}</p>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                  <p style={{ fontSize: 12, color: '#6b7280', margin: '0 0 4px' }}>Temporary Password</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <p style={{ fontSize: 18, fontWeight: 800, color: '#2dd4bf', margin: 0, fontFamily: 'monospace', letterSpacing: '0.05em', flex: 1, wordBreak: 'break-all' }}>
+                      {tempPassword}
+                    </p>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(tempPassword)
+                        setCopied(true)
+                        setTimeout(() => setCopied(false), 2000)
+                      }}
+                      style={{
+                        padding: '8px 14px', background: copied ? '#166534' : 'rgba(45,212,191,0.15)',
+                        border: '1px solid rgba(45,212,191,0.3)', borderRadius: 8,
+                        color: copied ? '#86efac' : '#2dd4bf', fontSize: 12, fontWeight: 700,
+                        cursor: 'pointer', whiteSpace: 'nowrap', transition: 'all 0.2s',
+                      }}
+                    >
+                      {copied ? '✓ Copied' : 'Copy'}
+                    </button>
+                  </div>
+                </div>
+                <p style={{ fontSize: 12, color: '#6b7280', margin: 0, lineHeight: 1.5 }}>
+                  You&apos;ll be asked to set a permanent password after your first login. Check your email for a confirmation link too.
+                </p>
+              </div>
+
               <a
-                href={magicLink}
-                style={{ display: 'inline-block', padding: '16px 40px', background: 'linear-gradient(135deg, #2dd4bf, #6c3aed)', color: '#fff', textDecoration: 'none', borderRadius: 12, fontWeight: 700, fontSize: 16, marginBottom: 16 }}
+                href={appdashLogin}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block', padding: '16px 40px',
+                  background: 'linear-gradient(135deg, #2dd4bf, #6c3aed)',
+                  color: '#fff', textDecoration: 'none', borderRadius: 12,
+                  fontWeight: 700, fontSize: 16, marginBottom: 12,
+                }}
               >
-                Access My App Dashboard →
+                Log In to appdash.me →
               </a>
-              <p style={{ fontSize: 13, color: '#6b7280', marginTop: 12 }}>
-                One-time login link · expires in 24 hours
+              <p style={{ fontSize: 13, color: '#4b5563', marginTop: 8 }}>
+                appdash.me · your app is already pre-loaded
               </p>
             </div>
           ) : (
