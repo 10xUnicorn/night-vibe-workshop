@@ -8,6 +8,7 @@ function QuestionnaireContent() {
   const eventId = searchParams.get('event_id') || ''
   const prefillEmail = searchParams.get('email') || ''
   const prefillName = searchParams.get('name') || ''
+  const trialParam = searchParams.get('trial') === 'true'
 
   const [form, setForm] = useState({
     name: prefillName,
@@ -19,6 +20,8 @@ function QuestionnaireContent() {
     biggest_challenge: '',
     technical_level: '',
   })
+  const [freeTrial, setFreeTrial] = useState(trialParam)
+  const [magicLink, setMagicLink] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [eventTitle, setEventTitle] = useState('')
@@ -36,11 +39,13 @@ function QuestionnaireContent() {
     e.preventDefault()
     setSubmitting(true)
     try {
-      await fetch('/api/questionnaire', {
+      const res = await fetch('/api/questionnaire', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, event_id: eventId || null }),
+        body: JSON.stringify({ ...form, event_id: eventId || null, free_trial: freeTrial }),
       })
+      const qData = await res.json()
+      if (qData.magic_link) setMagicLink(qData.magic_link)
       setSubmitted(true)
     } catch {
       alert('Something went wrong. Please try again.')
@@ -51,15 +56,33 @@ function QuestionnaireContent() {
   if (submitted) {
     return (
       <div style={{ minHeight: '100vh', background: '#0a0a0f', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
-        <div style={{ maxWidth: 500, textAlign: 'center' }}>
-          <div style={{ fontSize: 64, marginBottom: 20 }}>🎉</div>
-          <h1 style={{ fontSize: 32, fontWeight: 800, color: '#fff', marginBottom: 12 }}>Thanks!</h1>
-          <p style={{ fontSize: 17, color: '#9ca3af', lineHeight: 1.6, marginBottom: 24 }}>
-            We'll use your answers to personalize your workshop experience. Get ready to build something incredible.
+        <div style={{ maxWidth: 520, textAlign: 'center' }}>
+          <div style={{ fontSize: 64, marginBottom: 20 }}>{freeTrial && magicLink ? '🚀' : '🎉'}</div>
+          <h1 style={{ fontSize: 32, fontWeight: 800, color: '#fff', marginBottom: 12 }}>
+            {freeTrial && magicLink ? "You're in. Let's build." : 'Thanks!'}
+          </h1>
+          <p style={{ fontSize: 17, color: '#9ca3af', lineHeight: 1.6, marginBottom: 28 }}>
+            {freeTrial && magicLink
+              ? 'Your free trial account is ready and your app idea is pre-loaded. Click below to access your dashboard.'
+              : "We'll use your answers to personalize your workshop experience. Get ready to build something incredible."}
           </p>
-          <a href="/" style={{ display: 'inline-block', padding: '14px 32px', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', color: '#fff', textDecoration: 'none', borderRadius: 12, fontWeight: 700, fontSize: 15 }}>
-            Back to Night Vibe
-          </a>
+          {freeTrial && magicLink ? (
+            <div>
+              <a
+                href={magicLink}
+                style={{ display: 'inline-block', padding: '16px 40px', background: 'linear-gradient(135deg, #2dd4bf, #6c3aed)', color: '#fff', textDecoration: 'none', borderRadius: 12, fontWeight: 700, fontSize: 16, marginBottom: 16 }}
+              >
+                Access My App Dashboard →
+              </a>
+              <p style={{ fontSize: 13, color: '#6b7280', marginTop: 12 }}>
+                One-time login link · expires in 24 hours
+              </p>
+            </div>
+          ) : (
+            <a href="/" style={{ display: 'inline-block', padding: '14px 32px', background: 'linear-gradient(135deg, #6c3aed, #a78bfa)', color: '#fff', textDecoration: 'none', borderRadius: 12, fontWeight: 700, fontSize: 15 }}>
+              Back to Night Vibe
+            </a>
+          )}
         </div>
       </div>
     )
@@ -187,6 +210,34 @@ function QuestionnaireContent() {
             </div>
           </div>
 
+          {/* Free trial checkbox */}
+          <div
+            onClick={() => setFreeTrial(v => !v)}
+            style={{
+              display: 'flex', alignItems: 'flex-start', gap: 14, padding: '20px 24px',
+              background: freeTrial ? 'rgba(45,212,191,0.06)' : 'rgba(19,19,26,0.3)',
+              border: `1px solid ${freeTrial ? 'rgba(45,212,191,0.3)' : 'rgba(108,58,237,0.2)'}`,
+              borderRadius: 16, cursor: 'pointer', transition: 'all 0.2s',
+            }}
+          >
+            <div style={{
+              width: 22, height: 22, borderRadius: 6, flexShrink: 0, marginTop: 2,
+              background: freeTrial ? '#2dd4bf' : 'transparent',
+              border: `2px solid ${freeTrial ? '#2dd4bf' : 'rgba(108,58,237,0.4)'}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s',
+            }}>
+              {freeTrial && <span style={{ color: '#0a0a0f', fontSize: 13, fontWeight: 900, lineHeight: 1 }}>✓</span>}
+            </div>
+            <div>
+              <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: freeTrial ? '#2dd4bf' : '#d1d5db' }}>
+                Start my build with a free trial at app.me
+              </p>
+              <p style={{ margin: '4px 0 0', fontSize: 13, color: '#6b7280', lineHeight: 1.5 }}>
+                Your app idea will be pre-loaded in your dashboard. 14-day free trial, no credit card required.
+              </p>
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={submitting}
@@ -197,7 +248,7 @@ function QuestionnaireContent() {
               transition: 'all 0.2s',
             }}
           >
-            {submitting ? 'Submitting...' : 'Submit My Answers'}
+            {submitting ? 'Submitting...' : freeTrial ? 'Submit & Start My Free Trial →' : 'Submit My Answers'}
           </button>
         </form>
       </div>

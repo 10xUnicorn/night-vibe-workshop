@@ -14,7 +14,7 @@ const NOTIFY_EMAILS = ['dknightunicorn@gmail.com', 'mark@marksavantmedia.com']
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { name, email, app_idea, problem, target_customer, existing_business, biggest_challenge, technical_level, event_id } = body
+    const { name, email, app_idea, problem, target_customer, existing_business, biggest_challenge, technical_level, event_id, free_trial } = body
 
     if (!app_idea || !problem) {
       return NextResponse.json({ error: 'App idea and problem are required' }, { status: 400 })
@@ -104,7 +104,25 @@ export async function POST(req: NextRequest) {
       console.error('Failed to send notification emails:', notifyErr)
     }
 
-    return NextResponse.json(data, { status: 201 })
+    // Create free trial account in appdash if requested
+    let magic_link: string | undefined
+    if (free_trial) {
+      try {
+        const appdashUrl = process.env.APPDASH_EDGE_URL || 'https://emkorksloahggbymiiim.supabase.co/functions/v1/create-trial-user'
+        const secret = process.env.TRIAL_INTERNAL_SECRET || 'nvw_trial_secret_xK9mP3qR'
+        const trialRes = await fetch(appdashUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Internal-Secret': secret },
+          body: JSON.stringify({ name, email, app_idea, problem, target_customer, existing_business, biggest_challenge, technical_level }),
+        })
+        const trialData = await trialRes.json()
+        if (trialData.magic_link) magic_link = trialData.magic_link
+      } catch (trialErr) {
+        console.error('Trial creation error:', trialErr)
+      }
+    }
+
+    return NextResponse.json({ ...data, magic_link }, { status: 201 })
   } catch (err) {
     console.error('Questionnaire error:', err)
     return NextResponse.json({ error: 'Failed to save' }, { status: 500 })
