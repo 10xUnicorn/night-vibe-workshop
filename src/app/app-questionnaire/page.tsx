@@ -47,7 +47,8 @@ function QuestionnaireContent() {
       })
       const qData = await res.json()
       if (qData.temp_password) setTempPassword(qData.temp_password)
-      setSubmitted(true)
+      // Redirect to appdash dashboard
+      window.location.href = 'https://appdash.me/app'
     } catch {
       alert('Something went wrong. Please try again.')
     }
