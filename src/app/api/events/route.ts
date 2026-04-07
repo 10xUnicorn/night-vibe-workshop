@@ -100,7 +100,7 @@ export async function PATCH(req: NextRequest) {
   // Full event edit
   if (body.id) {
     const eventUpdates: Record<string, unknown> = {}
-    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'is_public', 'theme', 'stripe_payment_link', 'stripe_product_id', 'meeting_link']
+    const editableEventFields = ['title', 'slug', 'subtitle', 'start_date', 'end_date', 'timezone', 'capacity', 'status', 'is_featured', 'is_public', 'theme', 'stripe_payment_link', 'stripe_product_id', 'meeting_link', 'resources_url']
 
     for (const field of editableEventFields) {
       if (body[field] !== undefined) {

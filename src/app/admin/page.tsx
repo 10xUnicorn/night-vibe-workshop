@@ -20,6 +20,7 @@ interface EventRow {
   stripe_payment_link: string
   stripe_product_id: string
   meeting_link?: string
+  resources_url?: string
   landing_page_data: Record<string, unknown>
   event_tickets: { id: string; sold_count: number; capacity: number; price: number; status: string; stripe_payment_link: string; stripe_product_id: string; stripe_price_id: string }[]
   created_at: string
@@ -279,6 +280,7 @@ export default function AdminPage() {
     special_offer: '',
     theme: 'default',
     meeting_link: '',
+    resources_url: '',
   })
 
   // Host form
@@ -552,6 +554,7 @@ export default function AdminPage() {
       special_offer: (lpd as Record<string, string>).special_offer || '',
       theme: ev.theme || 'default',
       meeting_link: ev.meeting_link || '',
+      resources_url: ev.resources_url || '',
     })
     setEditingEvent(ev)
   }
@@ -739,6 +742,7 @@ export default function AdminPage() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <a href="/events" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>View calendar →</a>
             <a href="/" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>View landing page →</a>
+                        <a href={ev.resources_url || `/events/${ev.slug}/resources`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#2DD4BF", display: "inline-block", marginTop: 4, marginLeft: 12 }}>Resources page →</a>
           </div>
         </div>
 
@@ -963,6 +967,13 @@ export default function AdminPage() {
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Zoom / Meeting Link</label>
                   <input className="admin-input" value={editForm.meeting_link} onChange={(e) => setEditForm({ ...editForm, meeting_link: e.target.value })} placeholder="https://zoom.us/j/..." />
                   <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>Added to calendar invites, reminder emails, and join buttons.</p>
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Resources Page URL</label>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <input className="admin-input" style={{ flex: 1 }} value={editForm.resources_url} onChange={(e) => setEditForm({ ...editForm, resources_url: e.target.value })} placeholder={`/events/${editForm.slug}/resources`} />
+                    {editForm.resources_url && <a href={editForm.resources_url} target="_blank" rel="noopener noreferrer" style={{ color: "#2DD4BF", fontSize: 13, whiteSpace: "nowrap" }}>Open →</a>}
+                  </div>
                 </div>
                 <div>
                   <label style={{ fontSize: 13, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Stripe Payment Link</label>
