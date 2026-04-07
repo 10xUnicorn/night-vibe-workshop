@@ -775,7 +775,7 @@ export default function AdminPage() {
           <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
             <a href="/events" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>View calendar →</a>
             <a href="/" style={{ fontSize: 13, color: 'var(--accent-light)', textDecoration: 'none' }}>View landing page →</a>
-                        <a href={ev.resources_url || `/events/${ev.slug}/resources`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#2DD4BF", display: "inline-block", marginTop: 4, marginLeft: 12 }}>Resources page →</a>
+            {events[0] && <a href={events[0].resources_url || `/events/${events[0].slug}/resources`} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#2DD4BF', textDecoration: 'none' }}>Resources page →</a>}
           </div>
         </div>
 
