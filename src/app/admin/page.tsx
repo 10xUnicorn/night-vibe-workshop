@@ -166,6 +166,24 @@ interface AppQuestionnaireRow {
   created_at: string
 }
 
+interface ReviewRow {
+  id: string
+  name: string
+  company?: string | null
+  review: string
+  stars: number
+  media_urls?: string[]
+  is_public: boolean
+  source: string
+  created_at: string
+}
+
+interface ReviewSettingsRow {
+  id: string
+  review_prompt: string
+  notification_email: string
+}
+
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState('')
@@ -176,9 +194,14 @@ export default function AdminPage() {
   const [eventHosts, setEventHosts] = useState<EventHostRow[]>([])
   const [offerItems, setOfferItems] = useState<OfferItemRow[]>([])
   const [eventOfferItems, setEventOfferItems] = useState<EventOfferItemRow[]>([])
-  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires' | 'affiliates' | 'campaigns' | 'assets' | 'page-content'>('events')
+  const [tab, setTab] = useState<'events' | 'waitlist' | 'registrants' | 'create' | 'hosts' | 'create-host' | 'offers' | 'create-offer' | 'guarantees' | 'create-guarantee' | 'contacts' | 'social-proof' | 'create-social-proof' | 'sent-emails' | 'questionnaires' | 'affiliates' | 'campaigns' | 'reviews' | 'assets' | 'page-content'>('events')
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
+  const [reviews, setReviews] = useState<ReviewRow[]>([])
+  const [reviewSettings, setReviewSettings] = useState<ReviewSettingsRow | null>(null)
+  const [reviewSettingsForm, setReviewSettingsForm] = useState({ review_prompt: '', notification_email: '' })
+  const [addReviewForm, setAddReviewForm] = useState({ name: '', company: '', review: '', stars: 5, is_public: false })
+  const [showAddReview, setShowAddReview] = useState(false)
   const [editingEvent, setEditingEvent] = useState<EventRow | null>(null)
   const [editingHost, setEditingHost] = useState<HostRow | null>(null)
   const [editingOffer, setEditingOffer] = useState<OfferItemRow | null>(null)
@@ -324,6 +347,16 @@ export default function AdminPage() {
       if (data.sentEmails) setSentEmails(data.sentEmails)
       if (data.appQuestionnaires) setAppQuestionnaires(data.appQuestionnaires)
     }
+
+    // Load reviews separately
+    fetch('/api/reviews', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) })
+      .then(r => r.json()).then(d => {
+        if (d.reviews) setReviews(d.reviews)
+        if (d.settings) {
+          setReviewSettings(d.settings)
+          setReviewSettingsForm({ review_prompt: d.settings.review_prompt || '', notification_email: d.settings.notification_email || '' })
+        }
+      })
 
     // Fetch affiliate data
     const [affRes, linkRes, refRes] = await Promise.all([
@@ -748,7 +781,7 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <div style={{ display: 'flex', gap: 4, marginBottom: 28, borderBottom: '1px solid var(--border)', paddingBottom: 2, flexWrap: 'wrap', alignItems: 'center' }}>
-          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires', 'affiliates', 'campaigns', 'assets', 'page-content'] as const).map((t) => {
+          {(['events', 'hosts', 'offers', 'guarantees', 'waitlist', 'registrants', 'contacts', 'social-proof', 'sent-emails', 'questionnaires', 'affiliates', 'campaigns', 'reviews', 'assets', 'page-content'] as const).map((t) => {
             const labels: Record<string, string> = {
               'events': 'Events',
               'hosts': 'Hosts',
@@ -770,7 +803,7 @@ export default function AdminPage() {
               color: tab === t ? 'white' : 'var(--text-secondary)', border: 'none', borderRadius: '8px 8px 0 0', cursor: 'pointer', textTransform: 'capitalize'
             }}>
               {labels[t]}
-              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : t === 'social-proof' ? ` (${socialProofEntries.length})` : t === 'sent-emails' ? ` (${sentEmails.length})` : t === 'questionnaires' ? ` (${appQuestionnaires.length})` : t === 'affiliates' ? ` (${affiliates.length})` : t === 'campaigns' ? ` (${campaigns.length})` : ''}
+              {t === 'events' ? ` (${events.length})` : t === 'waitlist' ? ` (${waitlist.length})` : t === 'registrants' ? ` (${registrations.length})` : t === 'hosts' ? ` (${hosts.length})` : t === 'offers' ? ` (${offerItems.length})` : t === 'guarantees' ? ` (${guarantees.length})` : t === 'contacts' ? ` (${contactSubmissions.length})` : t === 'social-proof' ? ` (${socialProofEntries.length})` : t === 'sent-emails' ? ` (${sentEmails.length})` : t === 'questionnaires' ? ` (${appQuestionnaires.length})` : t === 'affiliates' ? ` (${affiliates.length})` : t === 'campaigns' ? ` (${campaigns.length})` : t === 'reviews' ? ` (${reviews.length})` : ''}
             </button>
             )
           })}
@@ -2618,6 +2651,151 @@ export default function AdminPage() {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* ═══════════ REVIEWS TAB ═══════════ */}
+        {tab === 'reviews' && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 700 }}>Reviews ({reviews.length}) — {reviews.filter(r => r.is_public).length} public</h2>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <a href="/workshop-review" target="_blank" rel="noopener noreferrer" style={{ padding: '8px 16px', background: 'var(--accent)', color: 'white', borderRadius: 8, fontSize: 13, fontWeight: 600, textDecoration: 'none' }}>
+                  View Form ↗
+                </a>
+                <button onClick={() => setShowAddReview(v => !v)} style={{ padding: '8px 16px', background: showAddReview ? 'var(--border)' : 'var(--card)', border: '1px solid var(--border)', color: 'white', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                  {showAddReview ? 'Cancel' : '+ Add Manually'}
+                </button>
+              </div>
+            </div>
+
+            {/* Settings */}
+            {reviewSettings && (
+              <div className="card" style={{ padding: 20, marginBottom: 24 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14, color: 'var(--accent-light)' }}>Review Form Settings</h3>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Review Prompt (shown on intake form)</label>
+                  <textarea
+                    value={reviewSettingsForm.review_prompt}
+                    onChange={e => setReviewSettingsForm({ ...reviewSettingsForm, review_prompt: e.target.value })}
+                    rows={3}
+                    className="admin-input"
+                    style={{ resize: 'vertical', width: '100%' }}
+                  />
+                </div>
+                <div style={{ marginBottom: 14 }}>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 6 }}>Notification Email</label>
+                  <input
+                    type="email"
+                    value={reviewSettingsForm.notification_email}
+                    onChange={e => setReviewSettingsForm({ ...reviewSettingsForm, notification_email: e.target.value })}
+                    className="admin-input"
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <button
+                  onClick={async () => {
+                    const res = await fetch('/api/reviews', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password, update_settings: true, settings_id: reviewSettings.id, ...reviewSettingsForm }) })
+                    if (res.ok) { setMsg('Settings saved'); setTimeout(() => setMsg(''), 2000) }
+                  }}
+                  style={{ padding: '8px 20px', background: 'var(--accent)', color: 'white', borderRadius: 8, fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+                >
+                  Save Settings
+                </button>
+              </div>
+            )}
+
+            {/* Add Review Manually */}
+            {showAddReview && (
+              <div className="card" style={{ padding: 20, marginBottom: 24, border: '1px solid var(--accent)' }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 14 }}>Add Review Manually</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Name *</label>
+                    <input className="admin-input" value={addReviewForm.name} onChange={e => setAddReviewForm({ ...addReviewForm, name: e.target.value })} placeholder="Jane Smith" />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Company</label>
+                    <input className="admin-input" value={addReviewForm.company} onChange={e => setAddReviewForm({ ...addReviewForm, company: e.target.value })} placeholder="Business Name" />
+                  </div>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Review *</label>
+                  <textarea className="admin-input" rows={4} value={addReviewForm.review} onChange={e => setAddReviewForm({ ...addReviewForm, review: e.target.value })} placeholder="Review text..." style={{ resize: 'vertical', width: '100%' }} />
+                </div>
+                <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 14 }}>
+                  <div>
+                    <label style={{ fontSize: 12, color: 'var(--text-muted)', display: 'block', marginBottom: 4 }}>Stars</label>
+                    <select className="admin-input" value={addReviewForm.stars} onChange={e => setAddReviewForm({ ...addReviewForm, stars: parseInt(e.target.value) })}>
+                      {[5,4,3,2,1].map(s => <option key={s} value={s}>{s} ⭐</option>)}
+                    </select>
+                  </div>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer', marginTop: 16 }}>
+                    <input type="checkbox" checked={addReviewForm.is_public} onChange={e => setAddReviewForm({ ...addReviewForm, is_public: e.target.checked })} />
+                    Publish immediately
+                  </label>
+                </div>
+                <button
+                  disabled={!addReviewForm.name || !addReviewForm.review}
+                  onClick={async () => {
+                    const res = await fetch('/api/reviews', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password, ...addReviewForm }) })
+                    if (res.ok) {
+                      setShowAddReview(false)
+                      setAddReviewForm({ name: '', company: '', review: '', stars: 5, is_public: false })
+                      const d = await (await fetch('/api/reviews', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) })).json()
+                      if (d.reviews) setReviews(d.reviews)
+                      setMsg('Review added'); setTimeout(() => setMsg(''), 2000)
+                    }
+                  }}
+                  style={{ padding: '8px 20px', background: 'var(--accent)', color: 'white', borderRadius: 8, fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer', opacity: (!addReviewForm.name || !addReviewForm.review) ? 0.5 : 1 }}
+                >
+                  Add Review
+                </button>
+              </div>
+            )}
+
+            {/* Review List */}
+            {reviews.length === 0 && (
+              <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 40 }}>No reviews yet. Share the form link to start collecting!</p>
+            )}
+            <div style={{ display: 'grid', gap: 12 }}>
+              {reviews.map(r => (
+                <div key={r.id} className="card" style={{ padding: 16, borderLeft: `3px solid ${r.is_public ? '#22c55e' : 'var(--border)'}` }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                    <div>
+                      <span style={{ fontWeight: 700, fontSize: 14 }}>{r.name}</span>
+                      {r.company && <span style={{ color: 'var(--text-muted)', fontSize: 13, marginLeft: 8 }}>{r.company}</span>}
+                      <span style={{ marginLeft: 10, fontSize: 14 }}>{'⭐'.repeat(r.stars)}</span>
+                      <span style={{ marginLeft: 8, fontSize: 11, padding: '2px 8px', borderRadius: 4, background: r.source === 'manual' ? '#1d4ed8' : '#166534', color: 'white' }}>{r.source}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <span style={{ fontSize: 11, color: r.is_public ? '#22c55e' : 'var(--text-muted)' }}>{r.is_public ? '✅ Public' : '🔒 Private'}</span>
+                      <button
+                        onClick={async () => {
+                          await fetch('/api/reviews', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password, review_id: r.id, is_public: !r.is_public }) })
+                          setReviews(reviews.map(x => x.id === r.id ? { ...x, is_public: !x.is_public } : x))
+                        }}
+                        style={{ padding: '4px 12px', fontSize: 12, border: '1px solid var(--border)', borderRadius: 6, background: 'transparent', color: 'white', cursor: 'pointer', fontWeight: 600 }}
+                      >
+                        {r.is_public ? 'Unpublish' : 'Publish'}
+                      </button>
+                      <button
+                        onClick={async () => {
+                          if (!confirm('Delete this review?')) return
+                          await fetch('/api/reviews', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password, review_id: r.id }) })
+                          setReviews(reviews.filter(x => x.id !== r.id))
+                        }}
+                        style={{ padding: '4px 10px', fontSize: 12, border: '1px solid #dc2626', borderRadius: 6, background: 'transparent', color: '#dc2626', cursor: 'pointer' }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{r.review}</p>
+                  <p style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 8, marginBottom: 0 }}>{new Date(r.created_at).toLocaleDateString()}</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

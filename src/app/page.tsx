@@ -7,6 +7,7 @@ import RevenueCalculator from '@/components/RevenueCalculator'
 import SocialProofPopup from '@/components/SocialProofPopup'
 import { renderRichText } from '@/lib/richText'
 import { getLandingContent, type LandingPageContent } from '@/lib/landingPageDefaults'
+import ReviewsWidget from '@/components/ReviewsWidget'
 
 interface HostData {
   id: string
@@ -822,6 +823,9 @@ export default function LandingPage() {
           )}
         </div>
       </section>
+
+      {/* ===== REVIEWS WIDGET ===== */}
+      <ReviewsWidget />
 
       {/* TRANSITION: → Final CTA */}
       <GlowDivider type="orb" />
