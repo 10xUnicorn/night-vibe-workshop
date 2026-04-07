@@ -8,7 +8,7 @@ function QuestionnaireContent() {
   const eventId = searchParams.get('event_id') || ''
   const prefillEmail = searchParams.get('email') || ''
   const prefillName = searchParams.get('name') || ''
-  const trialParam = searchParams.get('trial') === 'true'
+  const trialParam = searchParams.get('trial') !== 'false'
 
   const [form, setForm] = useState({
     name: prefillName,
@@ -230,7 +230,7 @@ function QuestionnaireContent() {
             </div>
             <div>
               <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: freeTrial ? '#2dd4bf' : '#d1d5db' }}>
-                Start my build with a free trial at app.me
+                Start my build with a free trial at appdash.me
               </p>
               <p style={{ margin: '4px 0 0', fontSize: 13, color: '#6b7280', lineHeight: 1.5 }}>
                 Your app idea will be pre-loaded in your dashboard. 14-day free trial, no credit card required.
