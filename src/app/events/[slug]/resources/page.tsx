@@ -321,7 +321,7 @@ const TOOLS = [
 
 const POST_EVENT = [
   { label: 'Share your app in the community', url: 'https://www.skool.com/unicornuniverse', cta: 'Post in Unicorn Universe →' },
-  { label: 'Leave a workshop testimonial', url: 'https://nightvibe.me/workshop-review', cta: 'Submit Testimonial →' },
+  { label: 'Leave a workshop testimonial', url: 'http://workshop.nightvibe.me/workshop-review', cta: 'Submit Testimonial →' },
   { label: 'Refer someone / become an affiliate', url: 'https://workshop.nightvibe.me/partners', cta: 'Join Partner Program →' },
   { label: 'Send us feedback', url: 'mailto:team@knightops.biz', cta: 'Email the Team →' },
 ]
