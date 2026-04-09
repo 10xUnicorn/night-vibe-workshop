@@ -20,14 +20,15 @@ Why: You've used all your daily tokens (like a data limit on a phone)
 Solutions:
 
 OPTION 1: Wait for Daily Reset
-- Token limit resets at 1pm Pacific Time daily
-- Stop working and come back tomorrow
+- Token limits reset every 4-5 hours automatically
+- Take a short break and come back — you don't have to wait until tomorrow
 - Your work is saved - Claude will remember what you were doing
 
-OPTION 2: Upgrade to Claude Max
-- Costs $20/month
-- Gives you approximately 4 hours of usage per day instead of 3
-- Subscribe at claude.ai
+OPTION 2: Upgrade to Claude Max (Optional)
+- You're already on Claude Pro ($20/month), which is what was used in the workshop
+- Claude Max costs ~$125/month and gives significantly more daily usage
+- If you're hitting limits often and building a lot, Max is worth it
+- Subscribe at claude.ai → Settings → Plans
 
 OPTION 3: Use Sonnet Instead of Opus
 - Sonnet uses fewer tokens (faster, lighter weight)
@@ -508,10 +509,14 @@ Token Cost Estimates:
 - Small change: 100-300 tokens
 - Medium change: 300-800 tokens
 
-With Max plan (~4 hours):
-- You can build 2-3 complete small apps per day
-- Or build 1 complex app and make several iterations
-- Or make 10-20 small changes throughout the day
+With Claude Pro (current plan — $20/mo):
+- Tokens reset every 4-5 hours throughout the day
+- You can build a complete app in a focused 2-3 hour session
+- Tip: plan your sessions around the reset cycle
+
+With Claude Max ($125/mo — optional upgrade):
+- Significantly higher token allowance per session
+- Better for heavy daily building and complex apps
 
 HOW TO STRETCH TOKENS FURTHER:
 ---------
@@ -575,7 +580,7 @@ QUICK REFERENCE: ERROR MESSAGES
 
 IF YOU SEE THIS...              DO THIS...
 ---------
-"Token limit reached"           Wait until 1pm PT tomorrow
+"Token limit reached"           Take a break — resets every 4-5 hours
 "404 Not Found"                 Ask Claude to create admin account
 "npm: command not found"        Install Node.js from nodejs.org
 "No such file or directory"     Use quotation marks around path names

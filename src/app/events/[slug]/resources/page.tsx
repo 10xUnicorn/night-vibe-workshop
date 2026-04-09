@@ -627,16 +627,16 @@ Still building. More coming Day 2. 👀
               <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>🎥 Day 1 Recording</h3>
               <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 14 }}>
                 <iframe
-                  src="https://www.youtube.com/embed/Gd0Q12W495A"
+                  src="https://fathom.video/embed/3zjy4QVy9sRFSQfxx69f6cSky6NYaoxQ"
                   style={{ width: '100%', height: 450, border: 'none', display: 'block' }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="fullscreen"
                   allowFullScreen
                   title="Day 1 Workshop Recording"
                 />
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <a
-                  href="https://youtu.be/Gd0Q12W495A"
+                  href="https://fathom.video/share/3zjy4QVy9sRFSQfxx69f6cSky6NYaoxQ"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -651,7 +651,7 @@ Still building. More coming Day 2. 👀
                     fontSize: 14,
                   }}
                 >
-                  Watch on YouTube →
+                  Watch on Fathom →
                 </a>
                 <a
                   href="/workshop-day1-transcript.txt"
@@ -738,16 +738,16 @@ If you want to build your own app — the next workshop is coming. 🔥
               <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>🎥 Day 2 Recording</h3>
               <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 14 }}>
                 <iframe
-                  src="https://www.youtube.com/embed/yY8_x8UCFbE"
+                  src="https://fathom.video/embed/e2sVr2SghBLmagRrb2NtrfxBaMcC-z1f"
                   style={{ width: '100%', height: 450, border: 'none', display: 'block' }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="fullscreen"
                   allowFullScreen
                   title="Day 2 Workshop Recording"
                 />
               </div>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <a
-                  href="https://youtu.be/yY8_x8UCFbE"
+                  href="https://fathom.video/share/e2sVr2SghBLmagRrb2NtrfxBaMcC-z1f"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -762,7 +762,7 @@ If you want to build your own app — the next workshop is coming. 🔥
                     fontSize: 14,
                   }}
                 >
-                  Watch on YouTube →
+                  Watch on Fathom →
                 </a>
                 <a
                   href="/workshop-day2-transcript.txt"
@@ -801,9 +801,9 @@ If you want to build your own app — the next workshop is coming. 🔥
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 16, marginBottom: 32 }}>
               <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
                 <iframe
-                  src="https://www.youtube.com/embed/Gd0Q12W495A"
+                  src="https://fathom.video/embed/3zjy4QVy9sRFSQfxx69f6cSky6NYaoxQ"
                   style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="fullscreen"
                   allowFullScreen
                   title="Day 1 Recording"
                 />
@@ -814,9 +814,9 @@ If you want to build your own app — the next workshop is coming. 🔥
               </div>
               <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
                 <iframe
-                  src="https://www.youtube.com/embed/yY8_x8UCFbE"
+                  src="https://fathom.video/embed/e2sVr2SghBLmagRrb2NtrfxBaMcC-z1f"
                   style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allow="fullscreen"
                   allowFullScreen
                   title="Day 2 Recording"
                 />
@@ -1187,9 +1187,9 @@ If you want to build your own app — the next workshop is coming. 🔥
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 16 }}>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
                   <iframe
-                    src="https://www.youtube.com/embed/Gd0Q12W495A"
+                    src="https://fathom.video/embed/3zjy4QVy9sRFSQfxx69f6cSky6NYaoxQ"
                     style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allow="fullscreen"
                     allowFullScreen
                     title="Day 1 Recording"
                   />
@@ -1200,9 +1200,9 @@ If you want to build your own app — the next workshop is coming. 🔥
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
                   <iframe
-                    src="https://www.youtube.com/embed/yY8_x8UCFbE"
+                    src="https://fathom.video/embed/e2sVr2SghBLmagRrb2NtrfxBaMcC-z1f"
                     style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allow="fullscreen"
                     allowFullScreen
                     title="Day 2 Recording"
                   />
