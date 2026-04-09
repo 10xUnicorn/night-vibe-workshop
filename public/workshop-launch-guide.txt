@@ -1,0 +1,791 @@
+================================================================================
+         NIGHT VIBE WORKSHOP LAUNCH GUIDE
+         Go-to-Market & Launch Strategy
+         April 7-8, 2026
+         workshop.nightvibe.me
+================================================================================
+
+You've built your app. You've deployed it live. Now it's time to launch it to
+the world. This guide walks you through preparing your app for launch and
+getting your first users excited about it.
+
+================================================================================
+SECTION 1: LOGO & VISUAL IDENTITY
+================================================================================
+
+Your app needs a logo. This is your first visual impression on users.
+
+GENERATING YOUR LOGO WITH GEMINI
+---------
+Gemini can generate logos in seconds. Here's how:
+
+STEP 1: Open Gemini
+- Go to gemini.google.com
+- Sign in with your Google account
+- You'll see the chat interface
+
+STEP 2: Write Your Logo Prompt
+Create a detailed prompt describing your app's visual identity:
+
+EXAMPLE PROMPTS:
+   "Generate a modern, minimalist logo for a productivity app called TaskFlow.
+   The logo should feature a checkmark and flowing lines. Use blue and white
+   colors. Make it suitable for both light and dark backgrounds. Style: clean,
+   professional, SaaS-ready."
+
+   "Create a playful logo for a note-taking app called NotePath. Include a
+   path or trail metaphor. Use warm colors (orange, yellow). The style should
+   feel friendly and approachable. Make sure it works small (app icon size)."
+
+KEY ELEMENTS TO INCLUDE IN YOUR PROMPT:
+- App name
+- What the app does (in one line)
+- Visual metaphor or concept (checkmark, path, graph, etc.)
+- Color preferences (2-3 main colors)
+- Style (modern, playful, minimalist, bold, etc.)
+- Intended use (app icon, website header, both)
+
+STEP 3: Request Logo Options
+- Paste your prompt into Gemini
+- Ask for "3 different logo variations"
+- Gemini will generate logo options
+
+STEP 4: Refine Your Favorite
+- Pick the variation you like best
+- Ask Gemini to refine it: "I like option 2. Make the colors slightly more
+  saturated and add more depth."
+- Request specific changes until it's perfect
+
+STEP 5: Download and Save
+- Right-click the final logo
+- Select "Save image as..."
+- Save as PNG (keeps transparency) with a clear filename: logo_final.png
+- Save multiple formats: PNG (web), JPG (social media), SVG (if available)
+
+LOGO BEST PRACTICES
+---------
+✓ Keep it simple (should work at 16x16 pixels)
+✓ Use 2-3 colors maximum
+✓ Ensure it works on both light and dark backgrounds
+✓ Make sure it's distinct from competitors
+✓ Save multiple sizes: 64x64, 128x128, 256x256, 512x512
+✓ Keep the original file organized in your project folder
+
+WHERE TO USE YOUR LOGO
+---------
+- Top left of your website (links to home)
+- Browser tab icon (favicon)
+- Social media profile pictures
+- Email signatures from your app
+- Any marketing materials
+
+================================================================================
+SECTION 2: SOCIAL SHARE IMAGES
+================================================================================
+
+When users share your app on social media, you want a professional image to
+appear alongside the link.
+
+CREATING SHARE IMAGES WITH GEMINI
+---------
+Share images should be 1200x630 pixels (standard for social media preview)
+
+IMAGE CONTENT IDEAS
+---------
+✓ App screenshot with headline overlay
+✓ Logo with tagline on colored background
+✓ Mockup of app interface with benefits listed
+✓ Before/after (problem solved) visual
+✓ Quote from early user testimonial
+
+EXAMPLE GEMINI PROMPTS:
+   "Create a social media share image for a productivity app called TaskFlow.
+   Size: 1200x630. Include the app logo in the top left. Show a clean,
+   modern app interface screenshot in the center. Add headline text: 'Get More
+   Done Every Day.' Use a gradient background (blue to purple). Make it eye-
+   catching and professional. Include small tagline at bottom: 'TaskFlow -
+   Productivity Made Simple.'"
+
+   "Design a launch social image for EmailBlast (email marketing tool). 1200
+   x630. Show the app dashboard in the center. Add bold headline: 'Send 1000
+   Emails in 60 Seconds.' Use bright colors (orange and white). Include
+   testimonial at bottom: '3,500+ marketers trust EmailBlast.' Make it
+   shareable and conversion-focused."
+
+GEMINI WORKFLOW FOR IMAGES
+---------
+1. Describe exactly what you want in the image
+2. Specify dimensions (1200x630)
+3. Request visual style (modern, colorful, minimalist, etc.)
+4. Ask for variations (light version, dark version, etc.)
+5. Refine the best one
+6. Download and save as PNG
+
+SIZING FOR DIFFERENT PLATFORMS
+---------
+- Facebook & LinkedIn: 1200x630
+- Twitter/X: 1200x675
+- Instagram: 1080x1080 (square)
+- Pinterest: 1000x1500
+- Email: 600x300
+
+CREATE MULTIPLE VERSIONS
+---------
+You need at least 3 versions:
+1. Standard launch image (app + headline)
+2. Alternative (different design, different message)
+3. Mobile-friendly (taller, vertical format)
+
+================================================================================
+SECTION 3: ONE-LINER & APP DESCRIPTION
+================================================================================
+
+You need a perfect one-sentence description of your app. This appears
+everywhere: App Store, landing page, social media bio, pitch decks.
+
+CRAFTING THE ONE-LINER
+---------
+Formula: [App Name] is a [category] for [target audience] that [solves problem]
+
+EXAMPLES:
+   TaskFlow is a task management app for busy professionals that helps them
+   organize their day and hit deadlines.
+
+   EmailBlast is an email marketing platform for small businesses that lets
+   them send professional campaigns without technical skills.
+
+   NotePath is a note-taking app for students and researchers that organizes
+   information by topics and connections.
+
+CHARACTERISTICS OF GREAT ONE-LINERS
+---------
+✓ Under 20 words
+✓ Clear problem/benefit
+✓ Identifies target user
+✓ No jargon (avoid: "leverages", "synergizes", "utilizes")
+✓ Memorable
+✓ Action-oriented
+
+COMMON MISTAKES TO AVOID
+---------
+✗ "TaskFlow is a comprehensive solution for organizational challenges"
+   (Too vague, too corporate)
+✗ "The #1 email platform in the world" (Unprovable, weak)
+✗ "We leverage AI-driven synergies for digital transformation"
+   (Corporate jargon, meaningless)
+
+TESTING YOUR ONE-LINER
+---------
+Read it to someone who's never heard of your app. Do they immediately
+understand:
+1. What the app does?
+2. Who it's for?
+3. What problem it solves?
+
+If not, it needs refinement.
+
+WHERE YOUR ONE-LINER GOES
+---------
+- Website hero section (below headline)
+- Social media bio
+- Email signature
+- Pitch deck introduction slide
+- App Store description (first line)
+- LinkedIn company description
+- Any marketing materials
+
+================================================================================
+SECTION 4: LAUNCH ANNOUNCEMENT POSTS
+================================================================================
+
+When you launch, you'll announce it on social media. Here are templates to
+make it easy.
+
+INSTAGRAM LAUNCH POST TEMPLATE
+---------
+Caption:
+
+   We're live! 🎉
+
+   After weeks of building, debugging, and perfecting, [App Name] is here.
+
+   [App Name] does [main benefit]. Whether you're [target user 1] or
+   [target user 2], this is built for you.
+
+   Here's what you can do with [App Name]:
+   ✓ [Feature 1 with benefit]
+   ✓ [Feature 2 with benefit]
+   ✓ [Feature 3 with benefit]
+
+   [One-liner description]
+
+   Try it free: [link to app]
+
+   Tag someone who needs this 👇
+
+Image: Your best app screenshot or launch social image (1080x1080)
+
+LINKEDIN LAUNCH POST TEMPLATE
+---------
+Title: "We Launched! Here's What [App Name] Does"
+
+Post Body:
+
+   After [X months] of development, [App Name] is officially live.
+
+   Building [App Name] has been [brief personal reflection about process].
+   The idea came from [origin story - problem you faced or saw others face].
+
+   Today, [App Name] helps [target audience] by [core benefit].
+
+   What we built:
+   • [Feature 1] - [why it matters]
+   • [Feature 2] - [why it matters]
+   • [Feature 3] - [why it matters]
+
+   If you're [target user], you'll love this. Try it here: [link]
+
+   Would love your feedback. What feature would you most want to see next?
+
+   #Launch #SaaS #[Industry] #[AppName] #Startup
+
+Image: Professional logo + tagline image (1200x630)
+
+TONE DIFFERENCES
+---------
+Instagram: Casual, excited, visual-first
+LinkedIn: Professional, personal reflection, value-focused
+Twitter: Quick, punchy, link-heavy
+Email: Detailed, benefit-focused, urgency
+
+KEY MESSAGES TO INCLUDE (ALL PLATFORMS)
+---------
+✓ App is live (excitement)
+✓ What problem it solves
+✓ Target audience
+✓ Key features (2-3 max)
+✓ Call to action (try it, sign up, download)
+✓ Link to app
+
+TIMING YOUR POSTS
+---------
+Don't post everything at once. Spread over time:
+- Monday: Instagram announcement
+- Tuesday: LinkedIn detailed post
+- Wednesday: Twitter thread with tips
+- Thursday: Email to mailing list
+- Friday: Community post (Skool, Unicorn Universe)
+
+This keeps your launch visible across the week.
+
+================================================================================
+SECTION 5: EMAIL SETUP WITH RESEND
+================================================================================
+
+Resend sends transactional emails from your app (password resets, notifications,
+confirmations) and marketing emails (announcements, newsletters).
+
+SETTING UP RESEND (If You Haven't Already)
+---------
+1. Go to resend.com
+2. Sign up with your email
+3. Verify your email address
+4. Go to "API Keys" section
+5. Copy your API key
+6. Add it to your app (Claude will show you where)
+7. Add your app's "from" email address
+
+SENDING LAUNCH ANNOUNCEMENT EMAILS
+---------
+If you collected user emails during beta or waitlist:
+
+STEP 1: Create Email List
+- Gather all emails from interested users
+- Keep list organized: first name, email, signup date
+- Remove any bounced/invalid emails
+
+STEP 2: Write Launch Email
+
+Subject: "Your Invite: [App Name] is Now Live"
+
+Body:
+
+   Hi [Name],
+
+   We're excited to tell you that [App Name] is now live!
+
+   [Background: What we built and why]
+
+   [Problem statement: The challenge we're solving]
+
+   [Your solution: How [App Name] fixes it]
+
+   Your Exclusive Invite:
+   As someone who was interested in this, here's your early access link:
+   [Custom signup link]
+
+   Key features:
+   • [Feature 1]
+   • [Feature 2]
+   • [Feature 3]
+
+   Questions? Reply to this email. We read every message.
+
+   Ready to try it? Click below:
+   [Big CTA Button]
+
+   [Your Name]
+   [Your Title]
+   [App Name]
+
+STEP 3: Set Up In Resend
+- Use Resend dashboard to send emails
+- Or ask Claude: "Set up Resend in my app to send launch announcements"
+- Claude will integrate it
+
+EMAIL BEST PRACTICES
+---------
+✓ Personalize with first name
+✓ Keep subject line under 50 characters
+✓ One clear call-to-action
+✓ Show your personality
+✓ Include your contact info
+✓ Mobile-friendly format
+✓ Test on phone before sending
+
+TRACKING EMAIL PERFORMANCE
+---------
+Resend shows you:
+- Open rate (how many opened email)
+- Click rate (how many clicked links)
+- Bounce rate (invalid emails)
+- Spam complaints
+
+Watch these metrics to improve future emails.
+
+================================================================================
+SECTION 6: PITCH DECK WITH GAMMA.APP
+================================================================================
+
+You might need to pitch your app to investors, partners, or collaborators.
+Gamma.app creates beautiful pitch decks in minutes.
+
+WHAT TO INCLUDE IN YOUR PITCH DECK
+---------
+Slide 1: Title Slide
+- App name
+- Your name
+- Tagline/one-liner
+- Launch date
+
+Slide 2: Problem
+- What problem does your app solve?
+- Why is this problem important?
+- Who has this problem?
+
+Slide 3: Solution
+- How does your app solve it?
+- What's unique about your approach?
+- Show app screenshot
+
+Slide 4: Features
+- 3-5 key features
+- Brief description of each
+- Include screenshots if possible
+
+Slide 5: Target Market
+- Who is your ideal customer?
+- Market size (how many potential users?)
+- Growth opportunity
+
+Slide 6: Business Model
+- How do you make money?
+- Pricing strategy
+- Revenue projections
+
+Slide 7: Competition
+- Who are your competitors?
+- How are you different?
+- Competitive advantage
+
+Slide 8: Traction/Launch
+- User numbers (if any)
+- Waitlist signups
+- Beta feedback
+- Launch milestone
+
+Slide 9: What's Next
+- Features you're building
+- Growth plans
+- Timeline
+
+Slide 10: Call to Action
+- Investors: "We're raising $X for Y"
+- Partners: "Let's work together"
+- Users: "Join us"
+
+USING GAMMA.APP
+---------
+1. Go to gamma.app
+2. Click "Create" or "New Presentation"
+3. Paste your app description (from AppDash.me is perfect)
+4. Ask Claude: "Create a 10-slide pitch deck for my app"
+5. Gamma generates deck automatically
+6. Customize with your colors, logo, screenshots
+7. Download as PDF or share link
+
+PITCH DECK BEST PRACTICES
+---------
+✓ One idea per slide
+✓ Large, readable fonts
+✓ Professional images/screenshots
+✓ Consistent color scheme (use your brand colors)
+✓ Data-driven (numbers > vague claims)
+✓ Tell a story (problem → solution → traction)
+✓ End with clear ask (what do you want the audience to do?)
+
+================================================================================
+SECTION 7: MARKETING COPY WITH COPYLAUNCH.APP
+================================================================================
+
+Your landing page and marketing materials need compelling copy.
+CopyLaunch.app helps you write conversion-focused copy quickly.
+
+LANDING PAGE SECTIONS YOU NEED
+---------
+1. Hero Headline
+   - Main benefit in one powerful sentence
+   - Example: "Save 5 hours every week on email management"
+
+2. Subheading
+   - Expand on the benefit
+   - Add a specific number if possible
+   - Example: "EmailBlast does in seconds what used to take hours"
+
+3. Hero Image/Screenshot
+   - Show your app in action
+   - Screenshot or mockup of dashboard
+
+4. Pain Point Section
+   - Acknowledge the problem
+   - Show you understand user frustration
+   - Example: "Tired of writing the same email 50 times?"
+
+5. Solution Section
+   - How your app solves the problem
+   - Focus on results, not features
+   - Example: "Create a template once, send to thousands instantly"
+
+6. Features Section
+   - 3-5 key features
+   - Benefit of each (not just description)
+   - Include screenshots or icons
+
+7. Social Proof
+   - User testimonials
+   - Number of users
+   - Case study or success story
+   - Example: "Used by 500+ marketing teams"
+
+8. Call to Action
+   - Big, clear button
+   - Specific action (Try Free, Get Started, Join Now)
+   - Remove friction (no credit card required?)
+   - Example: "Start free - no credit card needed"
+
+USING COPYLAUNCH.APP
+---------
+1. Go to copylaunch.app
+2. Describe your app and target audience
+3. CopyLaunch generates copy suggestions for each section
+4. Edit and customize for your voice
+5. Test different headlines (which converts better?)
+6. Add to your landing page
+
+COPYWRITING PRINCIPLES
+---------
+✓ Focus on benefits, not features
+   Bad: "Supports 50 integrations"
+   Good: "Connect all your tools in seconds"
+
+✓ Use power words
+   Save, Increase, Discover, Eliminate, Unlock, Create, Achieve
+
+✓ Specific numbers beat vague claims
+   Bad: "Helps you work faster"
+   Good: "Save 5 hours every week"
+
+✓ Address objections
+   "No credit card required" (removes risk)
+   "Free forever plan" (lowers barrier)
+   "30-day money back guarantee" (removes risk)
+
+✓ Create urgency (without being pushy)
+   "Limited spots for beta access"
+   "Early founder pricing ends Friday"
+
+================================================================================
+SECTION 8: PRICING STRATEGY
+================================================================================
+
+How much should you charge? This depends on your app and market.
+
+PRICING MODELS
+---------
+1. Free Forever Model
+   - All features free
+   - No ads, no limitations
+   - Good for: building user base, B2B tools, utilities
+   - Revenue: through premium features later, or sponsorships
+   - Example: Notion, Discord, Figma (free tier)
+
+2. Freemium Model (Recommended for Most Launches)
+   - Free tier: limited features
+   - Paid tier: unlimited or advanced features
+   - Pricing: $5-20/month entry level
+   - Good for: SaaS, productivity apps, content tools
+   - Example: Slack, Dropbox, Notion
+   - Pro: Lets users try free, easy upgrade
+
+3. Tiered Pricing
+   - Basic: $5-10/month (limited features)
+   - Pro: $20-50/month (most features)
+   - Enterprise: Custom pricing (all features)
+   - Good for: complex apps, B2B software
+   - Example: HubSpot, Zapier
+   - Pro: Captures customers at different budgets
+
+4. One-Time Purchase
+   - Single payment, lifetime access
+   - Price: $20-99
+   - Good for: tools, utilities, templates
+   - Pro: Simpler (no recurring billing)
+   - Con: Harder to scale revenue
+
+5. Usage-Based Pricing
+   - Pay per action (per email sent, per API call, etc.)
+   - Good for: tools with variable usage
+   - Pro: Users only pay for what they use
+   - Con: Can be unpredictable for users
+
+PRICING PSYCHOLOGY
+---------
+✓ $9/month feels cheaper than $10/month (psychology of .99)
+✓ Annual pricing ($99/year) feels cheaper than monthly ($9/month)
+   even though it's similar cost
+✓ Middle tier sells most (people avoid "cheapest")
+✓ Show savings on annual plans ("-33% vs monthly")
+✓ Include money-back guarantee (reduces risk)
+
+RECOMMENDED FIRST LAUNCH STRATEGY
+---------
+1. Start with Freemium (free + $9-19/month)
+2. Make free tier genuinely useful (so people try it)
+3. Make paid tier obviously valuable (clear difference)
+4. Check conversion rate after 3 months
+5. Adjust pricing if needed
+
+PRICING MISTAKES TO AVOID
+---------
+✗ Pricing too low (undervalues your work, hard to raise later)
+✗ Pricing too high (nobody converts)
+✗ Hidden fees (makes users angry)
+✗ Changing pricing mid-use (users feel betrayed)
+✗ Too many tiers (confuses buyers)
+
+================================================================================
+SECTION 9: COMMUNITY SHARING & GROWTH
+================================================================================
+
+Launch communities help you get your first users and feedback.
+
+UNICORN UNIVERSE
+---------
+What: Community of makers launching side projects and startups
+Where: unicorn.universe
+Best for: Getting feedback, finding users, finding co-founders
+How to launch there:
+1. Create an account
+2. Post your launch with screenshot and link
+3. Engage with others' launches
+4. Ask for feedback
+Tip: The community values genuine feedback loops, not just promotion
+
+SKOOL
+---------
+What: Community platform for creators and entrepreneurs
+Where: skool.com
+Best for: Building a community around your app, getting early adopters
+How to use:
+1. Create a Skool community for your app
+2. Invite users to join
+3. Post updates, ask for feedback
+4. Build relationships with your audience
+Tip: Communities that engage regularly grow faster
+
+PRODUCT HUNT
+---------
+What: Largest product launch community
+Where: producthunt.com
+Best for: Getting massive attention, press coverage
+How to launch:
+1. Create account a few days before launch
+2. Build hype with "Coming Soon" post
+3. Launch on a Tuesday-Thursday
+4. Engage with comments all day
+5. Thank everyone who upvotes
+Tip: Product Hunt launches can bring 1,000+ users in 24 hours if successful
+
+OTHER COMMUNITIES TO CONSIDER
+---------
+- Indie Hackers (indiehackers.com) - Very engaged maker community
+- Hacker News (news.ycombinator.com) - Tech-focused, smart audience
+- BetaList (betalist.com) - Early adopters looking for new tools
+- Remote.co - For remote work tools
+- Twitter/X - Direct audience building through threads
+
+LAUNCH COMMUNITY ETIQUETTE
+---------
+✓ Be genuine and responsive
+✓ Ask for feedback, don't just promote
+✓ Engage with others' launches too
+✓ Thank people who support you
+✓ Be humble about your app's limitations
+✗ Don't spam multiple communities with same message
+✗ Don't argue with critics
+✗ Don't claim to be #1 at something unproven
+
+================================================================================
+SECTION 10: NEXT STEPS AFTER WORKSHOP
+================================================================================
+
+Your launch is the beginning, not the end. Here's what comes next.
+
+WEEK 1 AFTER LAUNCH
+---------
+□ Send launch email to all interested users
+□ Post on social media (Instagram, LinkedIn, Twitter)
+□ Launch on Product Hunt (if you choose to)
+□ Post in communities (Unicorn Universe, Skool, etc.)
+□ Respond to all feedback within 24 hours
+□ Track metrics: signups, free-to-paid conversion, user engagement
+
+WEEK 2-4 AFTER LAUNCH
+---------
+□ Collect user feedback systematically
+□ Fix bugs and improve UX based on feedback
+□ Build your first feature requests (from user feedback)
+□ Start email newsletter if applicable
+□ Create content about how to use your app
+□ Reach out to 10 users for detailed feedback interviews
+
+MONTH 2 AFTER LAUNCH
+---------
+□ Plan your "Version 1.1" (improvements based on feedback)
+□ Build 2-3 small features users requested
+□ Create case studies of happy users
+□ Consider what metrics matter (DAU, conversion, retention)
+□ Plan paid feature rollout if not done yet
+□ Start growth experiment (referral program, partnerships, etc.)
+
+ONGOING
+---------
+□ Monthly: Review metrics and adjust strategy
+□ Weekly: Respond to user feedback
+□ Monthly: Ship small improvements
+□ Quarterly: Plan and build next big features
+□ Always: Talk to your users (best insights come from conversations)
+
+COMMON METRICS TO TRACK
+---------
+- Signups (how many new users)
+- Activation rate (% of signups that use the app)
+- Free-to-paid conversion (% of free users who upgrade)
+- Churn rate (% of users who leave)
+- Daily Active Users / Monthly Active Users (DAU/MAU)
+- Retention (% of users still using after 1 month, 3 months, etc.)
+
+WHAT YOU SHOULD NOT OPTIMIZE FOR YET
+---------
+✗ Revenue (focus on usage and retention first)
+✗ Growth speed (focus on product quality)
+✗ Number of features (focus on core value)
+✗ User count (focus on happy users)
+
+GETTING HELP AFTER LAUNCH
+---------
+- Claude can help with feature building and bug fixes
+- Use Engineering Plugin for architecture questions
+- Share user feedback with Claude to guide development
+- Ask "What should I build next?" - Claude helps prioritize
+
+HANDLING COMMON POST-LAUNCH CHALLENGES
+---------
+Challenge: Users love the app but don't upgrade
+Solution: Make free tier more limited OR make paid tier more valuable
+
+Challenge: Users churn after 2 weeks
+Solution: Interview churned users to understand why, fix pain points
+
+Challenge: No users signing up
+Solution: Change messaging, target different audience, improve landing page
+
+Challenge: Too much feedback, don't know what to build
+Solution: Count requests, build most-requested features first
+
+Challenge: Running out of time/energy
+Solution: Focus on core features, get help, consider pricing to fund team
+
+================================================================================
+FINAL THOUGHTS
+================================================================================
+
+You've accomplished something significant. You went from idea to shipped product
+in two days. That's remarkable.
+
+The work after launch is different from the work before. You're no longer
+building for yourself - you're building for real users with real problems.
+
+Listen to them. Be responsive. Iterate quickly. Most successful apps improve
+dramatically in months 2-6 based on real user feedback.
+
+Your launch is not the end of the journey. It's the beginning.
+
+The best is yet to come.
+
+================================================================================
+QUICK REFERENCE: LAUNCH CHECKLIST
+================================================================================
+
+Visual Identity:
+□ Logo generated and saved (multiple sizes)
+□ Social share images created (multiple variations)
+□ One-liner perfected and documented
+□ Brand colors and fonts defined
+
+Launch Content:
+□ Instagram announcement post written
+□ LinkedIn announcement post written
+□ Email to launch list written
+□ Pitch deck created (if needed)
+□ Landing page copy written and optimized
+
+Technical Setup:
+□ Resend email configured
+□ Launch emails scheduled (or ready to send)
+□ Analytics configured (track signups, conversions)
+□ Email list organized and verified
+
+Community & Growth:
+□ Selected 2-3 launch communities
+□ Accounts created in chosen communities
+□ Launch post prepared and scheduled
+□ Follow-up plan for responding to comments
+
+Post-Launch:
+□ Metrics dashboard set up
+□ User feedback collection plan
+□ First 30-day roadmap planned
+□ Team/support plan for week 1
+
+================================================================================

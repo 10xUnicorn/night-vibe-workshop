@@ -1,0 +1,632 @@
+================================================================================
+         NIGHT VIBE WORKSHOP SKILLS GUIDE
+         Claude Skills Installation & Usage
+         April 7-8, 2026
+         workshop.nightvibe.me
+================================================================================
+
+Claude Skills are powerful add-ons that streamline your app development
+workflow. This guide shows you exactly how to install and use each skill.
+
+================================================================================
+SECTION 1: WHAT ARE CLAUDE SKILLS?
+================================================================================
+
+DEFINITION:
+---------
+Skills are specialized prompts that you install once, then use repeatedly
+to solve specific problems. Think of them like plugins that extend Claude's
+abilities.
+
+WHY YOU NEED THEM:
+---------
+Without skills:
+- You have to explain the same problem over and over
+- You waste tokens on repetitive explanations
+- You might forget the best approach to common problems
+
+With skills:
+- One-click solutions to common problems
+- Consistent quality every time
+- Save tokens by not re-explaining
+- Faster workflow
+
+EXAMPLE SKILL IN ACTION:
+---------
+Vercel Deploy Skill:
+- Problem: Deployment to Vercel always fails with MCP errors
+- Old way: Explain the error to Claude, get help, try again, fail again
+- New way: Click "Deploy to Vercel" skill, it works immediately
+- The skill knows to use terminal commands instead of trying MCP
+
+================================================================================
+SECTION 2: HOW TO INSTALL SKILLS
+================================================================================
+
+The Installation Process (Same for All Skills):
+
+STEP 1: Copy the Skill Prompt
+- Find the skill prompt below in this guide
+- Select all of the text (Ctrl+A)
+- Copy it (Ctrl+C)
+
+STEP 2: Open Claude Cowork
+- Launch Claude desktop app
+- Click on Cowork
+- Click "New Task"
+
+STEP 3: Paste and Create
+- Click in the message area
+- Paste the prompt (Ctrl+V)
+- Click Send / Enter
+- Claude creates the skill automatically
+
+STEP 4: That's It
+- The skill is now installed
+- You can use it whenever you need it
+- Click "+" near the message area to see installed skills
+
+INSTALLATION TAKES: 2-3 minutes per skill
+
+INSTALLATION ORDER RECOMMENDATION:
+1. Safety Guard (prevents file accidents)
+2. Session Tracker (preserves context)
+3. Vercel Deploy (fixes deployment)
+4. Project Selector (chooses right project)
+5. Prompt Optimizer (makes better prompts)
+
+Start with #1 and #2 before you build anything.
+
+================================================================================
+SECTION 3: THE 5 RECOMMENDED SKILLS
+================================================================================
+
+================================================================================
+SKILL #1: SAFETY GUARD (Install First!)
+================================================================================
+
+PURPOSE: Prevents Claude from accidentally deleting or moving your files
+
+WHY YOU NEED IT:
+- Claude sometimes tries to "organize" your computer
+- This can make files impossible to find
+- This skill blocks dangerous operations
+- Non-negotiable for safety
+
+WHEN TO USE: Automatically protects you whenever you use Claude Cowork
+
+INSTALLATION PROMPT:
+---------
+Copy everything between the lines:
+
+================================================================================
+Create a skill called "Safety Guard" that helps protect my computer files.
+
+Here are the rules:
+1. Never delete files, folders, or modify file timestamps
+2. Never move files to different folders without asking first
+3. Never organize or restructure my file system
+4. Never clear downloads or temporary folders
+5. Before any file operation, ask: "Should I [describe operation]?"
+6. If I say no, stop immediately
+
+If you're about to do something that touches files, ask me first.
+
+The only exception: saving new files to my project working folder that I
+explicitly asked you to create.
+
+====================================================================
+
+WHY IT MATTERS:
+---------
+Without Safety Guard, Claude might:
+- Move all your files into folders by type (you lose them)
+- Delete duplicate files (losing important versions)
+- Change when files were modified (breaking how you find things)
+- Organize downloads in ways that make them unsearchable
+
+With Safety Guard, you're protected from these accidents.
+
+================================================================================
+SKILL #2: SESSION TRACKER
+================================================================================
+
+PURPOSE: Remembers everything about your app across long conversations
+
+WHY YOU NEED IT:
+- Long sessions get "compacted" to save space
+- Claude might forget earlier context
+- This skill preserves everything
+- Keeps full memory of your app through entire project
+
+WHEN TO USE: Automatically preserves context in every Cowork session
+
+INSTALLATION PROMPT:
+---------
+Copy everything between the lines:
+
+================================================================================
+Create a skill called "Session Tracker" that preserves context about my app
+building project.
+
+Every time we work on an app, maintain a "Session Context" that includes:
+
+1. App Name and Purpose
+   - What app are we building?
+   - What does it do?
+
+2. Key Features Built So Far
+   - List every feature completed
+   - List features still needed
+   - Any features in progress
+
+3. Technical Details
+   - Database tables created
+   - Vercel deployment status
+   - Supabase connection details
+   - Environment variables configured
+
+4. Recent Changes
+   - What did we last build or fix?
+   - What was working/broken?
+
+5. Next Steps
+   - What should we build next?
+   - Any known issues to fix?
+
+Before doing anything, briefly remind me: "We're building [App Name],
+which [purpose]. Last we worked on: [last thing]. Next: [next task]."
+
+If I seem to forget context, remind me of these details.
+
+====================================================================
+
+WHY IT MATTERS:
+---------
+Without Session Tracker:
+- After 30 minutes, Claude might forget your app's name
+- You have to re-explain everything
+- You waste time and tokens on context-rebuilding
+
+With Session Tracker:
+- Claude always remembers your full app
+- Smooth conversations without re-explaining
+- Faster progress on your project
+
+================================================================================
+SKILL #3: VERCEL DEPLOY
+================================================================================
+
+PURPOSE: Fixes deployment issues and ensures reliable uploads to Vercel
+
+WHY YOU NEED IT:
+- Vercel deployment often fails without this
+- Claude tries to use "MCP servers" which don't work
+- This skill forces Claude to use terminal commands
+- Terminal commands work reliably every time
+
+WHEN TO USE: Always when deploying to Vercel (when asked: "Deploy this")
+
+INSTALLATION PROMPT:
+---------
+Copy everything between the lines:
+
+================================================================================
+Create a skill called "Vercel Deploy" for reliable Vercel deployments.
+
+When I ask you to deploy something to Vercel, follow these rules:
+
+1. ALWAYS use terminal commands, NEVER use MCP servers
+   - Terminal works reliably
+   - MCP servers fail frequently
+
+2. Use this exact flow:
+   Step 1: Use "cd" command to navigate to project folder
+   - Ask for the working folder path if needed
+   - Use quotation marks if path has spaces
+   - Verify we're in the right folder
+
+   Step 2: Run "npx vercel" command
+   - Provide the exact command to copy/paste
+   - Don't try to push packages through MCP
+   - Just let Vercel CLI do its job
+
+   Step 3: Answer Vercel's questions
+   - "Link to existing project?" → Yes
+   - "Which project?" → The one we're building
+   - Wait for deployment to complete
+
+3. After deployment succeeds:
+   - Tell me the live URL (looks like: yourapp-abc123.vercel.app)
+   - Direct me to vercel.com to check deployment status
+   - Tell me to test the app at the live URL
+
+4. If deployment fails:
+   - Show me the error message
+   - Diagnose the problem
+   - Fix the issue before trying again
+
+Never use MCP servers for Vercel. Always use terminal commands.
+
+====================================================================
+
+WHY IT MATTERS:
+---------
+Without Vercel Deploy skill:
+- Deployment attempts fail ~30% of the time
+- Claude tries MCP which doesn't work reliably
+- You get stuck waiting for it to work
+
+With Vercel Deploy skill:
+- Deployment succeeds ~95% of the time
+- Uses proven terminal method
+- Deploys are fast and reliable
+
+================================================================================
+SKILL #4: PROJECT SELECTOR
+================================================================================
+
+PURPOSE: Prevents deploying the wrong app version when you have multiple
+projects
+
+WHY YOU NEED IT:
+- You might work on multiple apps in one session
+- Easy to accidentally deploy the wrong one
+- This skill confirms which app before deploying
+- Prevents costly mistakes
+
+WHEN TO USE: Once you're working on multiple apps
+
+INSTALLATION PROMPT:
+---------
+Copy everything between the lines:
+
+================================================================================
+Create a skill called "Project Selector" for choosing the right deployment
+target.
+
+When I ask to deploy, save, push, or make changes to an app:
+
+1. Confirm which app before doing anything:
+   "You're working on [App Name]. Is this correct? Y/N"
+
+2. Show me:
+   - Current app name
+   - Current working folder path
+   - Current Vercel project (if known)
+   - Current Supabase project (if connected)
+
+3. If I say "No" or don't confirm:
+   - Ask: "Which app should I work on instead?"
+   - Wait for me to choose
+   - Then proceed with the right app
+
+4. Before every major action (deploy, reset, major change):
+   - Re-confirm we're in the right project
+   - Show the details again
+   - Prevent accidental operations on wrong app
+
+This prevents me from deploying App A to App B's server by mistake.
+
+====================================================================
+
+WHY IT MATTERS:
+---------
+Without Project Selector:
+- You might deploy App A but it goes to App B
+- Hard to realize the mistake until users see wrong app
+- Can corrupt multiple projects at once
+
+With Project Selector:
+- Confirmation step before any risky operations
+- Clear visibility of which app you're working on
+- Prevents accidental cross-project mistakes
+
+================================================================================
+SKILL #5: PROMPT OPTIMIZER
+================================================================================
+
+PURPOSE: Makes your prompts to Claude more effective and efficient
+
+WHY YOU NEED IT:
+- Better prompts = better results
+- Vague prompts waste tokens and get poor results
+- This skill helps you write clear instructions
+- Saves tokens by getting it right first time
+
+WHEN TO USE: When writing important prompts to Claude
+
+INSTALLATION PROMPT:
+---------
+Copy everything between the lines:
+
+================================================================================
+Create a skill called "Prompt Optimizer" for writing better prompts.
+
+When I ask you to help optimize a prompt, review it for:
+
+1. CLARITY: Is the goal absolutely clear?
+   - "Fix the app" (bad) vs "Fix the login button not submitting" (good)
+   - Suggest making vague prompts more specific
+
+2. CONTEXT: Does it have enough background?
+   - Mention what the app does
+   - Mention what currently happens vs what should happen
+   - Mention any constraints (tokens, time, technology)
+
+3. STRUCTURE: Is it well organized?
+   - Lead with the main ask
+   - Provide context/background
+   - Give specific examples or steps
+
+4. EFFICIENCY: Will it waste tokens?
+   - Point out redundant requests
+   - Suggest bundling similar requests together
+   - Identify if multiple prompts should become one
+
+5. SPECIFICITY: Include examples?
+   - Ask for sample output formats
+   - Provide example inputs/outputs
+   - Reference specific files or code sections
+
+Then provide a REVISED VERSION that's clearer and more efficient.
+
+The goal: Get better results with fewer tokens.
+
+====================================================================
+
+WHY IT MATTERS:
+---------
+Without Prompt Optimizer:
+- Vague prompts need follow-up and re-prompting
+- Wasted tokens on clarification
+- Lower quality output
+
+With Prompt Optimizer:
+- Clear prompts get good results first time
+- Fewer follow-up requests needed
+- Better use of your tokens
+
+================================================================================
+SECTION 4: USING SKILLS
+================================================================================
+
+HOW TO ACCESS YOUR INSTALLED SKILLS:
+---------
+1. In Claude Cowork, look for the "+" button (usually bottom left)
+2. Click it
+3. See list of installed skills
+4. Click the skill you want to use
+5. It opens a new task with that skill loaded
+
+USING A SKILL EXAMPLE:
+---------
+Let's say you installed "Prompt Optimizer" and have a confusing prompt
+you want to improve.
+
+STEP 1: Click "+" button
+STEP 2: Click "Prompt Optimizer"
+STEP 3: Paste your prompt
+STEP 4: Say: "Optimize this prompt"
+STEP 5: Claude rewrites it better
+
+CREATING CUSTOM SKILLS:
+---------
+You can create your own skills for things you do repeatedly.
+
+Example custom skills:
+- "Social Media Post Writer" (generates posts in your voice)
+- "Error Debugger" (helps fix common errors fast)
+- "API Integration Helper" (walks through API setup)
+- "Test Case Generator" (creates test cases for features)
+
+To create a custom skill:
+1. Open new task
+2. Describe what the skill should do (like the prompts above)
+3. Ask Claude: "Create a skill called [name] that [does this]"
+4. Claude creates it
+5. Use it like any other skill
+
+SKILLS YOU MIGHT CREATE:
+---------
+1. "Bug Fixer" - Specialized in debugging your specific app
+2. "Feature Builder" - Builds features in your app's style
+3. "Documentation Writer" - Writes docs for your app
+4. "UI/UX Reviewer" - Reviews and improves user interface
+5. "Performance Optimizer" - Makes your app faster
+
+As you find yourself asking similar questions repeatedly, turn that into a
+skill.
+
+================================================================================
+SECTION 5: ENGINEERING PLUGIN & SYSTEM DESIGN
+================================================================================
+
+WHAT IS THE ENGINEERING PLUGIN?
+---------
+The Engineering Plugin is a specialized set of tools for:
+- System architecture design
+- Advanced database planning
+- Performance optimization
+- Security implementation
+- Scalability decisions
+
+WHEN TO USE IT:
+---------
+After your MVP is built and working, use this for:
+- Planning future features
+- Scaling your app for more users
+- Adding advanced features (real-time, heavy computation, etc.)
+- Security hardening
+- Performance improvements
+
+HOW TO ACCESS IT:
+---------
+1. Click the "+" menu in Claude Cowork
+2. Look for "Engineering" or "System Design"
+3. Click it
+4. Ask about architectural questions
+
+EXAMPLE QUESTIONS FOR ENGINEERING PLUGIN:
+---------
+"Design a real-time notification system for this app"
+"How should we handle 1 million users with current architecture?"
+"What database changes do we need for advanced features?"
+"Design a caching strategy for performance"
+"Plan the security architecture for handling payments"
+
+The plugin helps you think through complex technical decisions without
+implementing them yet. Great for planning Phase 2+ features.
+
+================================================================================
+SECTION 6: SKILLS BEST PRACTICES
+================================================================================
+
+DO:
+---------
+✓ Install Safety Guard and Session Tracker first (before building)
+✓ Install Vercel Deploy before any deployment
+✓ Use skills as shortcuts for common problems
+✓ Create custom skills for repetitive tasks
+✓ Keep your installed skills list lean (don't install "just in case")
+✓ Review skill prompts before installing
+✓ Test skills on non-critical tasks first
+
+DON'T:
+---------
+✗ Install skills and never use them
+✗ Create skills that are too specific (won't reuse)
+✗ Skip Safety Guard (you'll regret it)
+✗ Use same prompt every time without improving it
+✗ Create skills with vague instructions
+✗ Install skill then forget what it does
+
+MAINTAINING YOUR SKILLS:
+---------
+After 1-2 weeks of using a skill:
+1. Ask Claude: "Is [skill name] still working well? Any improvements?"
+2. Refine it based on what you've learned
+3. Update it with better instructions if needed
+4. Delete skills you don't use
+
+This keeps your skill collection sharp and useful.
+
+================================================================================
+SECTION 7: TROUBLESHOOTING SKILLS
+================================================================================
+
+PROBLEM: Skill Won't Install
+---------
+Symptoms: Error when pasting skill prompt
+Solutions:
+1. Copy the entire prompt again (start to end)
+2. Make sure you're in Claude Cowork (not Chat)
+3. Click "New Task" first
+4. Paste entire prompt
+5. Try again
+
+PROBLEM: Skill Isn't Appearing in Menu
+---------
+Symptoms: Installed skill but not in "+" menu
+Solutions:
+1. Close and reopen Claude
+2. Click "+" menu again
+3. Scroll through full list (might be at bottom)
+4. If still not there, reinstall the skill
+
+PROBLEM: Skill Not Working as Expected
+---------
+Symptoms: Skill installed but giving wrong behavior
+Solutions:
+1. Ask Claude: "This skill isn't working right. Can you [describe problem]?"
+2. Claude will debug the skill and fix it
+3. If unfixable, delete and reinstall
+4. Or create an improved version
+
+PROBLEM: Too Many Skills Installed
+---------
+Symptoms: Confusing menu, can't find what you need
+Solutions:
+1. Keep only skills you use at least once a week
+2. Delete unused skills to clean up menu
+3. You can always reinstall them later
+4. Start with 3-5 core skills, add others as needed
+
+================================================================================
+SECTION 8: QUICK REFERENCE: WHEN TO USE EACH SKILL
+================================================================================
+
+SAFETY GUARD
+- Whenever: Using Claude Cowork to build
+- Why: Prevents file accidents
+
+SESSION TRACKER
+- When: In long building sessions (30+ minutes)
+- Why: Keeps context about your app
+
+VERCEL DEPLOY
+- When: Deploying to Vercel ("Deploy this to Vercel")
+- Why: Ensures reliable deployments
+
+PROJECT SELECTOR
+- When: Working on multiple apps
+- Why: Prevents deploying wrong app
+
+PROMPT OPTIMIZER
+- When: Writing important or complex prompts
+- Why: Gets better results, saves tokens
+
+ENGINEERING PLUGIN
+- When: Planning Phase 2 features or architecture
+- Why: Professional system design thinking
+
+================================================================================
+SECTION 9: RECOMMENDED WORKFLOW WITH SKILLS
+================================================================================
+
+BEFORE YOU START BUILDING:
+1. Install Safety Guard
+2. Install Session Tracker
+3. Install Vercel Deploy
+4. Install Prompt Optimizer
+
+WHEN YOU START BUILDING:
+1. Use AppDash.me to create your app spec
+2. Open Claude Cowork
+3. Use Session Tracker (it activates automatically)
+4. Paste your app prompt
+5. Let Claude build
+
+DURING DEVELOPMENT:
+1. Safety Guard protects you (automatic)
+2. Session Tracker preserves context (automatic)
+3. Use Prompt Optimizer when making big asks
+4. Use Project Selector if working on multiple apps
+
+WHEN DEPLOYING:
+1. Use Vercel Deploy skill
+2. Follow its guidance for terminal commands
+3. Watch deployment complete
+4. Test your live app
+
+AFTER MVP IS BUILT:
+1. Install Engineering Plugin
+2. Plan Phase 2 features
+3. Design architecture improvements
+4. Create custom skills for repeated tasks
+
+================================================================================
+FINAL TIPS
+================================================================================
+
+- Start with 2 skills (Safety Guard + Session Tracker)
+- Add others as you need them
+- Don't over-engineer your skill stack
+- Review and refine skills as you learn
+- Share good custom skills with other builders
+- Skills should save time, not complicate your workflow
+
+The goal isn't to have every possible skill - it's to have the right ones
+for YOUR workflow.
+
+================================================================================

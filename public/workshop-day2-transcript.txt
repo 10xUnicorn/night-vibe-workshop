@@ -1,0 +1,728 @@
+Night Vibe Workshop — Day 2 Full Transcript
+Build & Launch Your App LIVE 2-Day Workshop
+April 8, 2026
+
+Recording: https://youtu.be/yY8_x8UCFbE
+Duration: ~243 minutes
+
+═══════════════════════════════════════════════════
+
+# Build & Launch Your App LIVE 2-Day Workshop
+
+**Meeting Date:** 8th Apr, 2026 - 9:00 AM
+
+---
+
+**James** *[02:30]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[02:36]*: Morning, James. 
+**James** *[02:37]*: Good morning. Is my camera working? What's going on here? 
+**Daniel Knight - 10xUnicorn** *[02:43]*: You do not see him. 
+**James** *[02:45]*: Yeah. See this, but I don't see. Start video. There we go. How you doing? 
+**Daniel Knight - 10xUnicorn** *[02:54]*: Awesome. Good. Doing good. 
+**James** *[02:56]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:57]*: How about you? 
+**James** *[02:59]*: Good. I got a bajillion questions, but that's, you know, that's good. 
+**Daniel Knight - 10xUnicorn** *[03:02]*: I love it. 
+**James** *[03:03]*: Where you at? 
+**Daniel Knight - 10xUnicorn** *[03:05]*: I'm in Chandler. Chandler, Arizona. 
+**James** *[03:07]*: Oh, Arizona. Okay. So you're probably like maybe what, 10 o' clock or something like that. 
+**Daniel Knight - 10xUnicorn** *[03:12]*: 9 O'. Clock? Yeah, yeah. What time is it for you? 
+**James** *[03:17]*: Six. You can see it's still dark outside. 
+**Daniel Knight - 10xUnicorn** *[03:19]*: Six. Okay. Nice. Well, hey, I appreciate you getting up and you getting on here. I'm curious if it being this early actually kind of helped you so that it doesn't. It's not like right in the middle of your day. 
+**James** *[03:33]*: Yeah, you know, it's good. Yesterday was kind of crazy because I. I woke up like a tube a little bit too early and then I couldn't go back to sleep. So that was kind of a bummer. But I got some good sleep last night, so I'm happy about that. 
+**Daniel Knight - 10xUnicorn** *[03:44]*: Nice. 
+**James** *[03:44]*: So. But yeah, it. It does help because by the time I'm done, it's like 10, you know, and I can just head out and take care of business. 
+**Daniel Knight - 10xUnicorn** *[03:51]*: Nice. You're unlike. Unlike most people who after they start using Claude for the first time, don't sleep for the next week. So really congrats on. On making that happen. 
+**James** *[04:03]*: Yeah, yeah. I'm more of a morning thinker. If, you know, when I'm fresh, I can. Like, I got up, you know, about four, and it just started kind of going through stuff and, you know, a little better. 
+**Daniel Knight - 10xUnicorn** *[04:13]*: Yeah. Yeah. I gotta force myself to go to bed sometimes. Or sometimes my body does it for me. It's like, you know what? We're done working and there's nothing you can do about it. 
+**James** *[04:25]*: Yeah, well, once you get into that groove, that's how it is. Once you're. You kind of get that focus. Yeah, I. I know exactly what you're talking about. 
+**Daniel Knight - 10xUnicorn** *[04:33]*: Yeah. 
+**James** *[04:34]*: Yeah. 
+**Mark Savant** *[04:35]*: I've done early, I've done late. But I find that it works best when I'm on the same rhythm as my wife. Go to bed. When my wife goes to bed, wake up when she wakes up. That tends to work out best. 
+**James** *[04:45]*: Yeah. On multi levels, I'm sure. 
+**Mark Savant** *[04:48]*: Indeed. Indeed. 
+**Daniel Knight - 10xUnicorn** *[04:51]*: Awesome. 
+**Mark Savant** *[04:52]*: Indeed. I'm stoked today. I feel like we're gonna bring this thing. Bring this thing home, pump it, start pumping it out. I'm excited. 
+**James** *[04:59]*: Yeah, yeah, definitely. Yeah, it's. Yeah. Hey, I was, I didn't, I made a bunch of notes on, you know, what to input and stuff. I haven't imported anything. I. And I was on the app where, you know the app generator that's on the app. Dash me. Right. Dot me. 
+**Daniel Knight - 10xUnicorn** *[05:23]*: Yeah. 
+**Tucker Bascom** *[05:24]*: Where. 
+**James** *[05:26]*: Where is that? Input the generator. Input on that. 
+**Daniel Knight - 10xUnicorn** *[05:32]*: If you want to share your screen, maybe clarify what you're asking. 
+**James** *[05:38]*: Well, because I know yesterday we were. Let's see this one. We, you know, came onto this and then you kind of briefly said, hey, this is where you can put input and kind of this will help generate the prompt, right? 
+**Daniel Knight - 10xUnicorn** *[05:59]*: Yeah. 
+**James** *[06:00]*: And I was like, okay, where is that again? I couldn't find it. 
+**Daniel Knight - 10xUnicorn** *[06:04]*: Yes, for you. We, we kind of moved past the app, the prompt generator. So you can still use this to kind of fill out some of the details and it'll help you with some of the other prompts that. 
+**James** *[06:25]*: I want to input. 
+**Daniel Knight - 10xUnicorn** *[06:26]*: Yeah, but honestly, this is, this app dashboard is, I'd say really more so for if you're like creating a commercial type of application to sell. And so with like a subscription and all that. So yeah, it's really kind of more designed for that. And you know, that was really made clear, that's true yesterday with you and Mark kind of building something more for yourself and just that structure and some of the questions and all that are really kind of geared towards like, you know, subscription based app. So. So yeah, so I don't think you'll need to use this too much. There'll be a couple things that we might grab that you might want to store like in this dashboard. But also you might just want to just use the Google Document as well. So. 
+**James** *[07:21]*: So just prompt straight into cloud is probably the best, easiest thing. 
+**Daniel Knight - 10xUnicorn** *[07:25]*: Yeah. I think at this point with where you're at because for the most part that prompt that it creates is for like the very initial prompt. But we covered a lot of it in the conversation that we had. 
+**James** *[07:37]*: Yeah. Yeah. Okay, cool. And then, so I did sign up for the three things. Vercel. I got the URL super base and then resend. I did sign up for it and it just. But it had onboarding and it asked for an API key. 
+**Daniel Knight - 10xUnicorn** *[08:00]*: Yeah. 
+**James** *[08:01]*: So I didn't get past that. 
+**Daniel Knight - 10xUnicorn** *[08:03]*: Okay, cool, Sounds good. What other questions do you have? Kind of frozen. See frozen for you too, what Claude. 
+**James** *[08:25]*: Was saying, you know, because I didn't, you know, just to kind of see how it's Thinking and putting things out. I do want to tweak on there,. 
+**Daniel Knight - 10xUnicorn** *[08:35]*: But. 
+**James** *[08:39]*: I'm sure, you know, you're gonna bring us online and that might answer some things. So let's see what else we got. You know, because everything is pretty much button based. You know, most of what I have is really expanding off what I got. Yeah, yeah. And I don't want to detract too much from, you know, what the next phase is here. 
+**Daniel Knight - 10xUnicorn** *[09:10]*: Yeah. 
+**James** *[09:11]*: But you know, just coming from, you know, I, I was running a larger company, you know, about eight, 10 years ago and because it was a larger company, we did kind of try to incorporate some of these things, you know, a lot of SaaS software and apps for the workers and things like that. And I found that some of it, you know, and obviously if it's a larger company, you got to keep track of a lot of that stuff, the documentation things and, but I found that sometimes it overwhelmed some of the field people. Like it was too much and it kind of pulled away from what they're really supposed to be doing because the office, you know, the office was a larger office and they were like, hey, we need this and this. You got to keep track of that, that. 
+**James** *[10:00]*: And it killed what they're really their skill levels and actual what they're bringing to the table. Right. 
+**Daniel Knight - 10xUnicorn** *[10:07]*: Yeah. 
+**James** *[10:07]*: So, so luckily, you know, for me right now it's pretty, it's not, I don't have a super large company overhead like that, but I like to kind of, there is a fluidity to, I, I like it to whatever vendors I have that can, I can automatically input, you know, via their automatic emails would be great. And then really if they're, if we're at a vendor that doesn't have, because we have a few vendors that are just, you know, they're just straight up, you know, you get your invoice when you walk out the door. You know what I mean? Those ones they'd have to manually put in. But I, I, I'd like to be able to, them to, they have to input what they have to input, but the least amount if they pop, you know, you don't. So it doesn't just, yeah. 
+**James** *[10:59]*: Become this whole like 20 minute task every day for them to do, you know, type of thing. 
+**Daniel Knight - 10xUnicorn** *[11:03]*: Yeah, yeah, for sure. Okay, cool. Well, thank you for the update. Tucker. Good to see you. Yeah. So today we're really just going to be kind of pushing through and getting our applications live so they can be accessed anywhere. So you Know, James, if you have people who are on your team, they can add information while they're out there if that's what you end up having them do. I understand that's pretty much what you're saying that kind of got in the way. And I think there's, you know, a further conversation that I would love to have with you just about kind of, you know, the long term vision of the company and things like that. Because like, really that's ultimately what's important, right. 
+**Daniel Knight - 10xUnicorn** *[11:50]*: Is making sure that what we're building is built for the vision that we have, but won't get into that right now. And yeah, really just want to make sure that we like have a functional tool that we can start sharing out there with everybody today. So definitely going to be some feature and you know, button improvements and UI improvements and things like that we'll work on today. But definitely want to get to, you know, let's get it live where everything set up, everything's connected so that when people fill things out, it actually gets stored because otherwise we just have, you know, it's basically a, it's like not even a piece of paper because it's not even physical. But otherwise it's basically what we have. It's like, here's a calculator, but it's just like a drawn calculator, right? 
+**Daniel Knight - 10xUnicorn** *[12:40]*: It's like it doesn't actually work, you know, so, yeah, so let's get to it. Would love to know some additional updates. Just kind of where you guys are at since yesterday's conversation. If you made any progress on your apps, if there are any kind of lingering questions or anything kind of, you know, sticking out that you guys want to ask, we'll kind of start there. 
+**Tucker Bascom** *[13:07]*: Yeah, I'll share an update on mine. I have a, a prototype. Very impressed with the way it turned out just in terms of the UI and the text. Like it really did a really good job. I love the headline turn your business into a franchise in 24 hours. Like that feels appealing to me. 
+**James** *[13:33]*: Yeah. 
+**Tucker Bascom** *[13:37]*: So what I did, I kind of using your suggestion, Daniel, I just, I whipped out a Word document and started listing like changes to some of the text and some of the word choice. Like for example, it said in a previous prototype it said like over 500 FTDs created. And like that's just a lie, right? Because it doesn't even exist. So like just some things like that I changed. One thing I did notice the get started now, the sign in Those buttons don't work. And so exactly what you said. We're going to have to do some UI iterations and stuff like that. I just put all of those notes into a Word document that I'm sure later on today will feed back into Claude Cowork. Then one other thing I would love your input on and maybe we will, I'm sure we'll get there. 
+**Tucker Bascom** *[14:38]*: Let me make sure I've got the right word document up here. So franchising is super legalese heavy. You've got to be super careful when you're offering guidance and consultant. Even if I put a disclaimer on the website, consult with your attorney, I still want to give like the most high quality info to prospective franchisors as possible. Right. So I built out a 45 page knowledge base of franchise nuance that I would love to guide the AI, right. So that it's giving state specific guidelines and best practices when you're trying to sell your franchise, et cetera. So I would love your input and thoughts on how to give that knowledge base to Claude, how to incorporate it into a website and all that good stuff. So I'm not just attaching it into the chat and expecting it to perfectly incorporate it into the website. 
+**Tucker Bascom** *[15:42]*: So that's something I would love some input on. 
+**Daniel Knight - 10xUnicorn** *[15:45]*: Okay, got it. Yeah. And with something like that, you know, for one, Claude can definitely give you input on how it could see you essentially delivering that to people. And so, and it might be like a process journey map or something that kind of shows people, you know, where they're at, what needs to be done next. Things like that could also be, you know, like a series of checklists maybe could just be a knowledge base that people access. So yeah, a handful of different things could also just be its own AI chatbot. Right. Where it becomes part of the knowledge base that they're able to communicate with. 
+**Tucker Bascom** *[16:29]*: Yeah, that's kind of what I was leaning towards is a, it's like a chat bot that could just answer any questions that it has. Mark proposed a really good point yesterday where if I did something like that, I wouldn't want it chewing up my tokens. 
+**Daniel Knight - 10xUnicorn** *[16:46]*: Right. 
+**Tucker Bascom** *[16:46]*: So I don't know how to get around that. Like at the end of the day, if I've got to launch it and it chews up my tokens, it is what it is. 
+**Daniel Knight - 10xUnicorn** *[16:54]*: You know, no one knows about the. 
+**Tucker Bascom** *[16:55]*: Site yet, but down the road that could get expensive. 
+**Daniel Knight - 10xUnicorn** *[17:00]*: Yeah, I mean, what you got to consider is how much are you Making like what versus the cost that they would actually eat up. Right. So if you're charging 500amonth, I don't know if that's the price point you're going with. Is that going to be enough to cover all of your token usage so that you don't have to make your users pay for their tokens? You'll lose people in that 100% just in the setting it up process. They'll be like, what, I got to go find an API key from, you know, cloud or chat or whatever. But at 500 bucks a month, you know, what is the token usage cost per individual on average? Right. Because chances are they're not even coming close to that. Maybe $10 a month. Right. In actual token usage, depending on like how far they're going with it. 
+**Daniel Knight - 10xUnicorn** *[17:50]*: They're using it to like fully build out their whole franchise operations, playbook and all that. Maybe, maybe there'd be some serious usage with it. Right. 
+**Tucker Bascom** *[18:03]*: So I don't have a good grasp on like, token usage. Yeah, I've never really looked into like my own usage even. So I'm not sure the companies ping. 
+**Mark Savant** *[18:16]*: You if it's like, oh, you're being charged $10 for tokens, so you can kind of see when it's happening in real time. 
+**Tucker Bascom** *[18:22]*: Gotcha. 
+**Daniel Knight - 10xUnicorn** *[18:23]*: Yeah. 
+**Mark Savant** *[18:23]*: Also, you know, you might not necessarily need an AI bot. You could have a FAQ page on your site too that answers questions that people could, you know, search for. And, you know, I was just kind of briefly showing this. You know, when it comes to using these AI tools, a lot of the key here is make sure you give them the correct context. So, you know, with your, in your cloud project space, you know, you can add a folder on your desktop or you can additional memory to help. To help give it the context when it's working as well. 
+**James** *[18:58]*: Right? 
+**Tucker Bascom** *[18:59]*: Yeah, absolutely. Like, so I want to regurgitate it, make sure I understand people would be using a chatbot, potentially to answer questions, and the chatbot would be linked to like a knowledge base that's hosted on my desktop to like pull answers from. Am I getting that right? 
+**Mark Savant** *[19:19]*: Well, not exactly. I was just referring to, you know, if you want to get the best prompt out of your Claude, giving it additional context about your business legal problems, FAQs, your ideal customer profile, giving it all that will help it to give you a better response because it has more context. 
+**Tucker Bascom** *[19:38]*: Gotcha. Gotcha. Absolutely. 
+**Mark Savant** *[19:41]*: You know, the other, the other, the thing that you're referring to, which I'VE played with in the past is like you set up your own, you set up like a little chat bot that pops up if someone has a question and then that's tied into like an open AI API or another LLM API that you have, which of course will have that context. 
+**Tucker Bascom** *[19:58]*: Which will have that context. 
+**Mark Savant** *[19:59]*: It's all about context, right? 
+**Daniel Knight - 10xUnicorn** *[20:00]*: Yep, yep, yeah. So I would, you know, to kind of what Mark's saying, I would definitely feed your Claude the knowledge base that you have and then ask for its suggestions based on what it is and what your goal is with it. It's not hard to set up a chatbot, but there are some nuances and it tends to not be as reliable. Having like an AI based knowledge system with, you know, a chat communication, it works. It's just not as reliable I would say as I would like it to be. So yeah, and the other thing I would say is, you know, is that required? Is that what you are, you know, is that part of your minimum product that you want to kind of give to people? 
+**Tucker Bascom** *[20:55]*: So unless there's a better format for the intake, because what is going to actually produce the franchise disclosure document is a series of questions. And I'll show you the questionnaire that I'm going to be using. So just so you have an idea. So this is the FDD wizard questionnaire. So it starts very basic, like contact information, the name of your legal entity, you know, etc. Do you have any affiliated entities, any new affiliate outlets? And this is actually structured for like FDD renewal. I'm going to have to change it for like a raw first time, someone who is just starting to franchise their business. But this is all the nuts and bolts are here. So it's a really long questionnaire. It asks about employment history and let's see how many pages it's like. It's like a 21 page questionnaire. And this is FTC compliant. 
+**Tucker Bascom** *[22:07]*: I mean this is what professional attorneys use when they're renewing franchisors franchise disclosure documents. So it's a lengthy questionnaire but when the user is done with it and they've uploaded all of their information, they will have a like legally compliant fdd. So what's the best way for that intake? Would an AI driven process be kind of the best user experience for that? Especially if they have questions about maybe some of the questions in the questionnaire? Would AI be the best at helping the user along with that? Or would like a static Google form work? You know that's kind of what I'M thinking through right now. 
+**Daniel Knight - 10xUnicorn** *[22:48]*: I think what I would do right now is just build it as a form, an intake form, not a Google form, but have Claude build it as part of your application and that would push all of the information into the system for them to produce the FDD as well as anything else that they might need. And I think really this system makes a lot of sense for it to support them with producing some of the necessary documents or accessing them, understanding them. Right. And so I think just for kind of, you know, keeping it simple. Because if you try doing the, you know, the information gathering from AI plus pushing it to like the fields for it to be stored and then used later, that does sound. I just feel like you might run into some issues with getting the exact responses in there. 
+**Daniel Knight - 10xUnicorn** *[23:49]*: I would start with this and basically have Claude start building out the. I imagine it probably already started the dashboard. Did it look like it said anything about, like it's. It already started building out the dashboard because you showed us the landing page. But I'm curious. It actually started on the application itself. 
+**Tucker Bascom** *[24:12]*: It implied that it did. I didn't know how to access it. 
+**Daniel Knight - 10xUnicorn** *[24:18]*: Right. 
+**Tucker Bascom** *[24:19]*: But yeah, here's the response that it gave me. Yeah, it says, here's what's inside the landing page. 
+**Daniel Knight - 10xUnicorn** *[24:30]*: That's what we looked at. 
+**Tucker Bascom** *[24:31]*: Auth Dashboard, FDD Wizard, FDD Preview. So it said it started all of that stuff. I wasn't able to like, find it and actually test it all. All I was able to see was the landing page. 
+**Daniel Knight - 10xUnicorn** *[24:46]*: Yeah, yeah, that makes sense. So it's giving you the landing page, which is Page tsx. And then App Preview is probably the preview. You can't open that like in Chrome, but it should open in the preview if you just kind of click on it. 
+**Tucker Bascom** *[25:05]*: App Preview right here. 
+**Daniel Knight - 10xUnicorn** *[25:07]*: Yeah, that one. It should at least give you. Okay, so what you want to do. It does give you the login is you want to. Well, we really need to connect the Supabase and create the. Yeah, yeah, and all that for the next part of it. Yeah, like it's saying for the authentication. So I would say let's move into that phase with everybody so we can, you know, get it there. And it's always once it's live, I mean, revising things, it all happens pretty seamlessly for the most part, once we install a skill that we're going to use. So, yeah, so, and that's what I would do. I would definitely, I would definitely get in there before making any other Any revisions, because otherwise you might be doing or asking it to do things that it's already done. 
+**Tucker Bascom** *[26:04]*: Awesome. 
+**Daniel Knight - 10xUnicorn** *[26:06]*: So, yeah. All right, cool. Yeah, you're right where we need to be. So what else? Mark, Julian, any updates or questions where you're at? 
+**Mark Savant** *[26:22]*: I'm ready. I'm ready to rock. I made some adjustments based on our chat yesterday to the app. So I'm ready to get it connected and start sending traffic and yoloing it. I will say, guys, by the end of the day, early tomorrow, you know, we'll get out all the recordings to you guys, we'll get out all the standard operating procedures to you guys, so you can just kind of continue to. To go through and iterate and improve and. Yeah, ready to. Ready to rock and roll. 
+**Daniel Knight - 10xUnicorn** *[26:49]*: Cool. Yeah, let's. 
+**Tucker Bascom** *[26:50]*: Yolo. 
+**Daniel Knight - 10xUnicorn** *[26:51]*: Yolo. Awesome. So is everybody signed up with Supabase? Yeah. Okay, so what we'll do is we're actually just going to use the prompt that. Let's see here. Yeah, we'll use the prompt that's in the resources dashboard. I'll place that in the chat again. And. And then this is just. I guess I could have just pasted the prompt, the Connect Supabase database prompt. And so we're going to use that. And you're not going to have a project URL or Supabase Anon key yet. I. But I do want to make sure everybody has it set up as a connection. 
+**Daniel Knight - 10xUnicorn** *[27:50]*: So what that'll look like, just real quick is whatever project you're working on, you'll just click on the connectors down here and then manage connectors, make sure you actually have them installed as a connector, because then Claude can actually get in there, create things for you and do things for you as well. So all you do is the plus, browse connectors and then just search Supabase. And you should be able to install that with the button here. Do you guys already have that installed or you need to install that? 
+**James** *[28:27]*: Yeah, I gotta install that. 
+**Tucker Bascom** *[28:28]*: Yeah, I need to install it right now. 
+**Daniel Knight - 10xUnicorn** *[28:30]*: Okay. It only takes a second. 
+**James** *[28:33]*: So connectors add a connector. 
+**Daniel Knight - 10xUnicorn** *[28:38]*: Okay. 
+**James** *[28:38]*: So the base. Okay. Cleat the same instance in a new browser. Okay. 
+**Mark Savant** *[28:59]*: It's amazing how much easier all this stuff has become. 
+**Daniel Knight - 10xUnicorn** *[29:04]*: Oh, I know, it's great. 
+**Mark Savant** *[29:05]*: It's crazy. Okay, I've got my supabase. I did run into a question with Vercel. It's asking if I'm working on commercial projects or personal projects. I was inclined to do personal projects, but I don't know if you have a thought on that. 
+**Daniel Knight - 10xUnicorn** *[29:33]*: Yeah, I. I would just do. I mean, I would just do personal for now. 
+**James** *[29:49]*: Yeah, I think I'm done. Should be done. Doesn't. Should it pop up Shower? Should it show somewhere that it's connected? Oh, it's authorizing. Authorizing. Still thinking, I guess. 
+**Daniel Knight - 10xUnicorn** *[30:06]*: Yeah. If you guys want to share your screen, that'll help me out. So this one I can flip between multiple. 
+**James** *[30:18]*: That one. This one. 
+**Daniel Knight - 10xUnicorn** *[30:24]*: Yeah, so scroll down. Oh, yeah, just loading. It looks like. 
+**James** *[30:32]*: Yeah, I think it's still thinking. 
+**Daniel Knight - 10xUnicorn** *[30:37]*: Okay. 
+**James** *[30:46]*: Failed. 
+**Mark Savant** *[30:49]*: Mine said failed, but it also looked. If I go into Claude, cowork, it looks like it is. It is connected, so. Oh, wait, no, it says, needs approval. 
+**James** *[30:56]*: Please retry your authorization. Oh, you know what? Let me. I have a vpn. It might be that. Let me disconnect that thing. Was that. That probably raises issues. Yeah, VPNs not really. 
+**Daniel Knight - 10xUnicorn** *[31:16]*: I don't think it should. I mean, it definitely can, but. 
+**James** *[31:26]*: I'm just gonna do. I'm just gonna disconnect it for now, just to make sure. 
+**Daniel Knight - 10xUnicorn** *[31:30]*: Well, it looks. I mean, it looks connected. I would. 
+**Mark Savant** *[31:33]*: This is mine. 
+**Daniel Knight - 10xUnicorn** *[31:36]*: Oh, that's yours. Oh, got it. Okay. 
+**James** *[31:38]*: Oh, because mine says failed to fetch details. That's all it says. 
+**Mark Savant** *[31:42]*: Yeah, mine said that too. James, if you pop open co work, do you see if it's connected? Because mine. 
+**James** *[31:49]*: Where do you see that on co. 
+**Mark Savant** *[31:50]*: Work, you go into cowork connectors or customize connectors. 
+**Daniel Knight - 10xUnicorn** *[31:57]*: Go back into Claude. 
+**James** *[32:03]*: Here, let me go back here. Come on. Why am I not. There? Okay, so share. Okay, let's go to this one. Share. Okay, so. Okay, so where would it be? Over here. Connectors manage connectors. Supabase. Okay, I guess that's it. It's saying. 
+**Daniel Knight - 10xUnicorn** *[32:38]*: Yeah, yeah. Okay. It's connected. Tucker. 
+**Tucker Bascom** *[32:44]*: That's what mine looks like too. I got it. 
+**Daniel Knight - 10xUnicorn** *[32:46]*: Okay, cool. Okay. All right. 
+**Jelene Wilkinson** *[32:58]*: So yeah, I just went to Supabase, like, because you got to sign up for it before you can have your credentials in to put it into cloud, right? 
+**Daniel Knight - 10xUnicorn** *[33:08]*: Okay. 
+**Jelene Wilkinson** *[33:09]*: So, yeah, I'm always behind. 
+**Daniel Knight - 10xUnicorn** *[33:13]*: Yeah, no worries. So then the next thing we're going to do is just grab the prompt from the resources page and then it's going to specify asking for your project URL and the anon key and then creating the table names with all of that. Just delete all of those specifics. Basically everything from just. I would honestly just. Just basically say the first sentence. Connect my app to Supabase. Just keep it simple. 
+**Tucker Bascom** *[34:01]*: And which. Which prompt is that? 
+**James** *[34:04]*: Day one, hour three. Is that the one? 
+**Daniel Knight - 10xUnicorn** *[34:07]*: Yeah, just Use the first sentence. Honestly, the rest of it's excessive. Just ask it to connect it to Supabase. 
+**James** *[34:14]*: Okay,. 
+**Daniel Knight - 10xUnicorn** *[34:19]*: Mark, we can't hear you say. 
+**Mark Savant** *[34:22]*: Connect my app to Supabase. 
+**Daniel Knight - 10xUnicorn** *[34:23]*: That's. Yeah, yeah. 
+**Tucker Bascom** *[34:24]*: Okay. In Cowork, right? Yes. 
+**Daniel Knight - 10xUnicorn** *[34:34]*: Yeah. From your app. Yep. Okay. 
+**Mark Savant** *[34:38]*: I'm going to remove the word my. Just to save it a fraction of a token. 
+**Daniel Knight - 10xUnicorn** *[34:45]*: Connect. Probably get rid of my app too. You could probably just. You could probably just say Supabase and it would. I love the name Supabase. Good. 
+**Mark Savant** *[35:07]*: You know, the other thing that I thought was really cool, Dan, and kind of preparing for this was you sending me analytics as far as like traffic click throughs and bounce through rates. Are you comfortable with, like, how accurate that information is? Because in the marketing world, like seeing your data analytics is everything. And so where do you get that from? Do you get that from your app itself? Is that from a dashboard you made on the app or. 
+**Daniel Knight - 10xUnicorn** *[35:32]*: So that was just from Vercel. Yeah. 
+**James** *[35:36]*: This is. Wants to list organization. Just always allow. 
+**Daniel Knight - 10xUnicorn** *[35:42]*: Yeah. Do you want to share your screen? 
+**James** *[35:44]*: Oh, yeah,. 
+**Daniel Knight - 10xUnicorn** *[35:48]*: Yeah. Always allow. It's fine. And then again, always allow. 
+**Mark Savant** *[36:02]*: Dan, I have another question. Assuming that we're going to make additional changes to our app, like additional features, additional question. 
+**Daniel Knight - 10xUnicorn** *[36:12]*: Yep. 
+**Mark Savant** *[36:12]*: Additional questions, that sort of thing. The. The database in Supabase isn't going to have those rows or columns yet. So do we just tell Cowork. Will Cowork automatically update the database in Supabase? Okay. 
+**Daniel Knight - 10xUnicorn** *[36:30]*: Yeah, yeah. James, hit yes on that one. Pick whatever region. I don't understand this question, but it apparently matters. 
+**James** *[36:45]*: Okay, so I guess west, wherever you're at, maybe it's the closest data center they got. 
+**Daniel Knight - 10xUnicorn** *[36:52]*: Could be. 
+**Mark Savant** *[36:58]*: Pretty soon you'll be answering Moon. 
+**Daniel Knight - 10xUnicorn** *[37:03]*: Yeah. Then hit always allow. You guys all going through this too? Okay,. 
+**Mark Savant** *[37:48]*: Yeah, I'll show you. What I have here says the Supabase is fully connected. Here's what it's done. It created a leads table with the column that matches exactly. First name, last name, email, job title, industry ready. So these are all the question. These are all the answers to my questionnaire. 
+**Daniel Knight - 10xUnicorn** *[38:07]*: So these keys are what I would store in the app dashboard if you guys want it is secured. The database I've made sure, you know, is a secure database. So, you know, saving keys, you want to make sure you're saving them in a secure location. So that part was important, but yeah, so totally up to you guys. A lot of the, like secret keys and things you can only see once, you should only need it once. But yeah. So just keep allowing for. Yeah, that you should be pretty much there. So for marker, if you guys are done connecting Supabase, then I would move to Vercel and just follow the same process of adding a connector. Choosing Vercel and then. Yeah, got it. We'll basically go through and get that connected. 
+**Mark Savant** *[39:42]*: Then we just type in Connect. Connect Vercel. 
+**Daniel Knight - 10xUnicorn** *[39:45]*: Yeah. Go to the connectors and then search for Vercell under browser connectors. 
+**Mark Savant** *[39:51]*: I got that. Looks like it's connected. 
+**Daniel Knight - 10xUnicorn** *[39:57]*: It is connected. 
+**Mark Savant** *[40:00]*: When you deploy Vercel, add these three environment variables there too. 
+**Daniel Knight - 10xUnicorn** *[40:07]*: Yeah. If you want to share your screen, it'd be good. This is where the head can start to hurt. Doing the Versaille variables. Okay, cool. 
+**Mark Savant** *[40:20]*: I'm just looking up here, like, I don't even know. I'm not even really connecting the open API. I mean, I guess I had that initially set up, but I don't. I think I'm going to skip that part for now. In the. In the lead Magnet workflow, I think it's kind of a cool idea. Like, it's an idea for like an upsell. Like, hey, now that you've gotten your AI readiness score, for $10, we can build out your custom plan, answer these additional questions, and so on and so forth. But. 
+**Daniel Knight - 10xUnicorn** *[40:52]*: Okay. 
+**Mark Savant** *[40:53]*: But, yeah, in any event, I don't. I don't think that's. So when you're talking about saving APIs. I don't even think I have any APIs to save right now. From what I can tell. 
+**Daniel Knight - 10xUnicorn** *[41:03]*: Yeah, I mean, I guess this maybe, but that's. Yeah. So that's one thing that you. You might want to save the Supabase Anon key. And then if you're not going to use the OpenAI API, then that's fine too. So. And I'll walk you through kind of where to save these. What I would say is for everybody to kind of watch so that you guys also know you can follow along as well. But basically. So grab the. Go back to your cloud, Grab that URL, just the public Supabase URL, and copy that. And then. Oh, shoot, we need to deploy to Vercel first. So. Yeah, so you're at the point where you can just say, deploy to Vercel. 
+**Mark Savant** *[42:02]*: Is everyone else with me here? 
+**James** *[42:05]*: I'm just. I guess if I. 
+**Tucker Bascom** *[42:10]*: Go ahead. James. 
+**James** *[42:11]*: Oh, unless I can multitask, I'm still waiting for this one to finish Super Base. 
+**Daniel Knight - 10xUnicorn** *[42:15]*: Yeah, yours is still going. 
+**Tucker Bascom** *[42:17]*: Yeah, mine is finishing Super Bases Supabase as well. 
+**Mark Savant** *[42:20]*: Okay, we can hold off. I don't want to get too far ahead. 
+**Daniel Knight - 10xUnicorn** *[42:23]*: It's fine. There's a good chance we get to do this a couple times. 
+**Mark Savant** *[42:28]*: All right, then we'll deploy to Vercel. 
+**Daniel Knight - 10xUnicorn** *[42:30]*: Boom. Yeah, we might as well watch you progress. While others are watching their screen load. We're all just watching our screens load. I think about that. I'm like, am I maximizing the time while my Claude is running or am I just looking? 
+**Tucker Bascom** *[42:49]*: That's so funny. I have the exact same experience, 100%. 
+**Daniel Knight - 10xUnicorn** *[42:55]*: It's over here building out tech that is just super powerful and valuable. And I'm like, am I really making the most out of my time? 
+**Mark Savant** *[43:08]*: Well, I was talking to a CTO for this company the other day and he's like, two months ago I thought I needed to hire coders for the team, but he's like, now the AI is doing all that, so I don't even need to hire coders and programmers now. And he said he's using the AI to build so much that the bottleneck now is his brain power because he's always thinking about high level strategy all the time. He's not doing that easy work, which, you know, like writing the code, it's all high level. He's like, I just feel like after a few hours my brain is overworked. 
+**Tucker Bascom** *[43:42]*: You know, he needs a neuralink. 
+**Daniel Knight - 10xUnicorn** *[43:48]*: No, you know what, it's interesting because I was thinking about that yesterday. I'm like, how do I, you know, I'm capable of like producing so much, but only as much as I'm capable of producing. I'm like, how do I replicate myself? Like, how do I have more of me building for me? Like, what are the things that I like, am good at that I could systematize and have it actually like operating as me? So I started building a brain. I started building my brain using Obsidian. And she's going to have everything, just going to give it all. 
+**Mark Savant** *[44:23]*: One of the projects I'm working on too now is because even talked about this yesterday is creating checklists which helps AI to kind of know, okay, this is. But you know, I've been paying a guy to write blogs for a client of mine and now it's like, well, Claude is actually like writing, designing, maximizing for SEO, creating metadata on these blogs so fast. And. And I was, I told him the other day, he was like, do you want me to write more blogs? I'm like, honestly, I don't think so. Because the designs I'm getting over Here, like, you need to show, like, why, you know, where do you fit in? Maybe it's like you can take us from 90% to 100%. But anyway, my kind of thought is create, you know, look at all the, like, great. 
+**Mark Savant** *[45:08]*: Like after I get it to a point where like, okay, this blog looks perfect. This is exactly what I want. Now, Claude, write me out a list, a full checklist of everything that it took to get here so that I can. So we can train you to be a blog writer. You know what I'm saying? 
+**Daniel Knight - 10xUnicorn** *[45:25]*: Yeah. 
+**Mark Savant** *[45:25]*: And, you know, same thing here as we go through this process with clotting and say, hey, Claude, give me all the step by step processes that it took us to get to here and create a checklist so that we can get there more quickly and easily, you know, so once I finally get to the end result, using Claude to break down exactly how it got there, to create SOPs, to train that brain or to train that agent on that task. So that's what I'm. That's what I'm working on this, April. 
+**Daniel Knight - 10xUnicorn** *[45:53]*: Nice. I like it. All right, cool. So James, if you want to just say deploy to Vercel, you should be. 
+**James** *[46:03]*: Yeah, it's. It's thinking in Vercel right now. 
+**Daniel Knight - 10xUnicorn** *[46:06]*: Oh, okay, cool. 
+**James** *[46:07]*: Yeah, it's on the Allow think thing. 
+**Daniel Knight - 10xUnicorn** *[46:10]*: Okay. I can only see one of your screens. It seems like you have two. 
+**Mark Savant** *[46:15]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[46:16]*: Mark, what are you looking at? Because it looks like it was done loading, so I want to see. 
+**Mark Savant** *[46:20]*: Yeah, I think it's done. I'm looks like it done it. I don't know if it just stopped or if it's just. Just done, but I see the connectors here. So. 
+**Daniel Knight - 10xUnicorn** *[46:32]*: Yeah, so scroll up. So this is where the fun starts. So now we need to actually like push the project to Vercel. And this is. This is where things kind of get a bit confusing. So what we need to do is actually find the folder that your project is in. You can just click on the little folder button on the right next to AI, update the actual folder. So not the carrot, the drop down, but the actual icon. Yeah, there you go. And so. Oh, this is great. What'd you click on? Okay, yeah, stay where you're at. So you'll see over on the right, it says file location. You're gonna want to copy that if it'll let you maybe hit Properties and then. Yeah, and then copy that. So this is the directory that your project lives within. Okay. 
+**Daniel Knight - 10xUnicorn** *[47:47]*: And this is important for you to know because the terminal that is the next step needs to know where the project is. Okay. And so we need to know how to get, how to tell it. So that's how you find that out. And then you're able to basically work within that project from the terminal. So now go back to Claude and we're basically just going to follow the instructions. And option A is to open the terminal on your machine. And I love Claude because it doesn't give you, like, too much information, but sometimes it doesn't give you enough information. So what we need to do is open the terminal. So on Windows, I think you can just do a search and type Terminal. And then you should be able to see that application. Yeah, just in there. Yeah, perfect. 
+**Daniel Knight - 10xUnicorn** *[48:48]*: So then this is the nuance. This is. This right here is like. Yeah, worth the whole workshop. So you're going to type CD and then space and then the quotation marks, and then paste the directory and then do quotation marks again and then hit Enter. And now you should see. See how it switched the folder that you were in and now it's in AI Update. Do you see that, what I'm saying? Okay, this is your. This is like your compass, like you knowing that you're in the right spot. Right? So as long as the project you're working on shows here, then you know you're in the right folder because the next prompt is going to basically say, hey, take everything in this folder and push it to Vercel so we can host it. Okay, so Mike, just a quick question. 
+**Mark Savant** *[49:50]*: Here, because there's other stuff in that folder that's not directly related to this project. You know what I'm saying? 
+**Daniel Knight - 10xUnicorn** *[50:01]*: Okay. 
+**Mark Savant** *[50:02]*: Like, a lot of this stuff is like upper. Like, it's like higher level, like about my company, about the audience, etc. So I wonder if we need to go a level deeper into this. 
+**Daniel Knight - 10xUnicorn** *[50:17]*: Go back to Claude. Yeah, so AI Readiness Score. Okay. Yeah, sorry, I thought that folder was the one you're in. So go back into. Yeah, the AI Readiness Score folder. 
+**Mark Savant** *[50:37]*: Yeah, I think this is the folder, right? 
+**Daniel Knight - 10xUnicorn** *[50:40]*: Yeah, yeah, it is. So, and here's. Here's something that you want to take note of. What you're looking at is the location of that folder. So you're going to want to actually open the folder first and then right click just anywhere and the blank space, and then click Properties, and then that should give you the actual folder. I don't think it did still. So copy that. And then just type CD and the quotation marks again. 
+**Mark Savant** *[51:15]*: Do we change this or Just do it again. 
+**Daniel Knight - 10xUnicorn** *[51:17]*: We're gonna. We're gonna change it. Yeah. To the one that we just chose. So just type CD and then the quotation marks, and then we're still not in the right folder. Try this. Go back into your. Your folder and click on an actual. Right click on an actual file. This is kind of the cheat code to get the right location. And then hit Properties over on the right. Or. Yeah, right there. And then copy that URL. Yeah, that's. That's correct. It's confusing because the Properties is telling you the folder that the file is. That you're looking at is in. Does that make sense? 
+**Mark Savant** *[52:05]*: Yeah. Yeah. 
+**Daniel Knight - 10xUnicorn** *[52:11]*: Cool. So, yeah, that should be correct. 
+**Mark Savant** *[52:15]*: And you know what's crazy is just missing that small step screws up the whole connector, right? 
+**Daniel Knight - 10xUnicorn** *[52:21]*: Yeah. I mean, what we just went through was hours of me banging my head against the wall. You know, like, let me. 
+**Tucker Bascom** *[52:29]*: So sorry, Daniel. 
+**Daniel Knight - 10xUnicorn** *[52:32]*: I mean, and. And you guys can see, even with me walking through this with you, like, that's a. There's a little nuance to it that it's. It's confusing. 
+**Mark Savant** *[52:43]*: And we need to go through this for every project that I'm connecting to Vercel, right? 
+**Daniel Knight - 10xUnicorn** *[52:47]*: You do, yeah. Yep. So every time you're pushing a new project to Vercel, you're going to open the terminal and you're going to basically do that. There is a skill, but until you have a project, it doesn't make sense to install the skill. But now that you do, it will actually reference the instructions, and the instructions should be updated with the. The location. But I almost always, once I get into the right folder, I copy that whole CD line with the location, and I tell Claude, hey, make sure you update the instructions so that anytime we do a deployment, this is the folder you're deploying from so that it updates it so that it just knows, hey, this is the file. And then we can even have it deploy for us with this skill that I'm talking about. 
+**Daniel Knight - 10xUnicorn** *[53:34]*: But we're not going to worry about that right now. I want to get us deployed. So, Mark, now go back into Claude and then see that? Scroll up NPX Vercel. Just copy that, prompt either one, and then paste that in the terminal. And then hit Enter. And this is going to actually push the package to Vercel. So I would just copy just all of the error message that it gave you. Yeah, all of that. And then paste it in there and just tell it. Switch to Sonic. 
+**Mark Savant** *[54:31]*: I went to Opus for, like, the. The app build. 
+**Daniel Knight - 10xUnicorn** *[54:34]*: Yeah. Yep. You Saw it. I saw it. We went from Opus to Sony. 
+**James** *[54:43]*: Yep. 
+**Mark Savant** *[54:44]*: All right, where's that. Where's everyone else now? Is there any everyone else in the. 
+**James** *[54:48]*: Vercel. I'm by. Vercel is just sitting there thinking. 
+**Daniel Knight - 10xUnicorn** *[54:55]*: Do you want to share your screen, James? 
+**James** *[54:57]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[55:01]*: It's funny because the commands are. It's different for every app. 
+**Mark Savant** *[55:10]*: I don't know if you're watching this, Dan, but it says you're on Windows without a Node JS installed. Let me open Vercel in your browser and deploy through the web UI instead. No terminal needed. Do we want that? 
+**Daniel Knight - 10xUnicorn** *[55:23]*: Yeah, that's fine. 
+**Mark Savant** *[55:26]*: I'm okay. I like it when it controls my computer. 
+**Daniel Knight - 10xUnicorn** *[55:28]*: I think it's so cool, but I do, too. I'm a big fan when it just takes over and does it for me. 
+**Mark Savant** *[55:34]*: It's unbelievable. 
+**Daniel Knight - 10xUnicorn** *[55:36]*: Yeah. Okay, so we'll let that run on yours and we'll troubleshoot. So, James, We just refresh this. Just refresh your page. Let's just. Yeah. Try it again. 
+**Mark Savant** *[55:59]*: You can also, James, open up Cloud Cowork, and you might see that it's already connected. It's possible. 
+**James** *[56:05]*: Oh, yeah, that's kind of. Oh, here's something happened. Oh, wait. What happened here? 
+**Daniel Knight - 10xUnicorn** *[56:12]*: Looks like it's connected now. 
+**James** *[56:14]*: Yeah. So I should see it on the connectors. Yeah, it says Vercel. Yeah, Shows it on. 
+**Daniel Knight - 10xUnicorn** *[56:22]*: Yeah. 
+**James** *[56:24]*: Yep. 
+**Daniel Knight - 10xUnicorn** *[56:26]*: Are you logged into Vercel on? 
+**James** *[56:29]*: I am. Well, you know, I didn't see a login. I see all this stuff from me. Yeah. I must be logged in because here's my. Yeah, here. My info. 
+**Daniel Knight - 10xUnicorn** *[56:40]*: Yep. Okay, cool. 
+**James** *[56:44]*: So I guess if I go to this one and go to this one now. Share that one. Okay. So, yeah, so I see it's right here. 
+**Daniel Knight - 10xUnicorn** *[57:07]*: Yeah. So I would. I would send it that prompt now. Just say deploy to Vercel. 
+**James** *[57:15]*: Just rare. 
+**Daniel Knight - 10xUnicorn** *[57:16]*: Yeah. And, Tucker, have you already gone to the terminal yet? 
+**Tucker Bascom** *[57:27]*: I am ready to do the cd. 
+**Daniel Knight - 10xUnicorn** *[57:32]*: Yeah. 
+**Tucker Bascom** *[57:33]*: Here, let me share my whole screen. So. So you can see all the windows. 
+**Daniel Knight - 10xUnicorn** *[57:41]*: All right. 
+**Tucker Bascom** *[57:42]*: So where's my terminal? Terminal's right here. Pretty sure it's already in the right folder, but Franchise Whispers AI is what I'm assuming is the correct folder. It's inside of the projects folder. 
+**Daniel Knight - 10xUnicorn** *[58:01]*: Okay. So I open that up. Open project as well. Just want to make sure. Okay. Yeah. So this is. This will be the one. Is this the one? The file. The project that you're in my terminal. Yeah. 
+**Tucker Bascom** *[58:27]*: Looks like I might need to go one layer deeper. 
+**Daniel Knight - 10xUnicorn** *[58:29]*: I think so. Yeah. I would grab the location from that project file. If you get info on that right here. Yeah, Yeah, because you've got app preview in there. Just hit enter. You're going to need to put CD in front of that. Oh, shoot. And then the quotation marks, and then enter. Paste, and then quotation marks, and then enter. 
+**Tucker Bascom** *[59:18]*: Do I need to rename Franchise Whisperer so there's no spaces? 
+**Daniel Knight - 10xUnicorn** *[59:23]*: No, it's fine. Did you already push something from this Vercel? 
+**Tucker Bascom** *[59:35]*: I have not pushed anything to Vercel yet. No. 
+**Daniel Knight - 10xUnicorn** *[59:38]*: Okay, will you. Let's see here. We scroll up in your terminal. 
+**Tucker Bascom** *[59:46]*: Yeah, this is when I was. Pulling up the localhost3000 link to actually look at the Franchise Whispers app. 
+**Daniel Knight - 10xUnicorn** *[01:00:01]*: Okay. So I would just close this. Well, grab a. Grab the URL first or the last prompt that you sent just to the cd. That's the CD part. Yeah. Okay. And then close this. Let's just do a new terminal close. 
+**Tucker Bascom** *[01:00:25]*: And then new. New tab. 
+**Daniel Knight - 10xUnicorn** *[01:00:31]*: A new window with profile Basic. Yeah. And then paste. And enter. Still not getting you in there. Try that again. Hit paste and then delete the last quotation mark. And then type forward, slash, project, and then the quotation marks and then hit enter. Will you just copy that? Actually, just go in your cloud and just say, I'm not able to get into my terminal. Get into the. It'll know what you mean. And then just paste the. What you. What you have in your clipboard and hit Enter. Yeah, that. That should be the right. Okay, just try that command in Terminal, Then hit Enter. All right. You're in your project folder, so. Interesting, because that almost never works for me when Claude gives me that prompt, so that's fine. 
+**Tucker Bascom** *[01:02:37]*: It looked like it put backslashes where the spaces and franchise was, which is interesting. 
+**Daniel Knight - 10xUnicorn** *[01:02:47]*: Yeah, I mean, I. I have spaces in my project names. It doesn't usually give me an issue, so. But then again, I'm on a different version of Mac now. I was on the one you were on until yesterday, so. Yeah. 
+**Tucker Bascom** *[01:03:03]*: Hey, Fame. 
+**Daniel Knight - 10xUnicorn** *[01:03:06]*: Yeah. So, all right, now go back to Claude. And then that did work. So now you're going to want to scroll up back to the last messages it was giving us. 
+**Tucker Bascom** *[01:03:18]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:03:19]*: And let's see here. Probably just use that. Yeah, that prompt. That command up above where it says bash. 
+**Tucker Bascom** *[01:03:30]*: Oh, right here to deploy. 
+**Daniel Knight - 10xUnicorn** *[01:03:32]*: Yep. Yep. 
+**James** *[01:03:33]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[01:03:35]*: And paste that and hit Enter. We are rolling. Boom. We are cooking. Let's go. All right. How's everybody else doing? 
+**James** *[01:04:05]*: I just burned up all my tokens. 
+**Daniel Knight - 10xUnicorn** *[01:04:07]*: Oh, no. 
+**James** *[01:04:10]*: So I'm upgrading here. 
+**Daniel Knight - 10xUnicorn** *[01:04:14]*: You burned them up? 
+**James** *[01:04:15]*: That's what it said. 
+**Daniel Knight - 10xUnicorn** *[01:04:17]*: Oh, man. 
+**James** *[01:04:19]*: Is. 
+**Tucker Bascom** *[01:04:20]*: Is hitting your limit the same as burning through your tokens? Because I don't know, after Yesterday, I'm not 100% sure they're the same thing. Because can't you, like, reach an API limit and that's, like, not the same as burning through your tokens, or is it? 
+**Daniel Knight - 10xUnicorn** *[01:04:41]*: Yeah, so what he's talking about is running out of Claude tokens, from what I can tell. But then as far as, like, the limit is concerned, I mean, you're. If you're using an API for, like, what you're talking about, Tucker, with having an AI chatbot, you can set a limit so that only a certain amount will be spent, you know, every day, every month or whatever. And you can also run out if you don't have enough money in your wallet to actually pay for other people's usage. Gotcha. Yeah. All right, so, Tucker, it looks like you. If you go to Vercel, you should be able to see the project. Actually, maybe not, says I. I'll refresh it. So click on. Will you maximize that screen? Yeah. And then click on Import. Project might be shown up. No, it's not. Clickbank. Click Add new project. 
+**Daniel Knight - 10xUnicorn** *[01:06:06]*: All right, let's go back to Claude. 
+**Tucker Bascom** *[01:06:16]*: Here is my terminal output. 
+**Daniel Knight - 10xUnicorn** *[01:06:19]*: Yeah, we've got a next JS build worker exited with code one, which means it might not have actually built out all the way. Will you scroll up in Terminal or Claude in the terminal? It looks like everything looks pretty good. So I just select all. Just command A and then copy. We'll give that to Claude. And switch from opus to sonnet for this stuff. Okay. And extend it. 
+**James** *[01:07:03]*: Yep. 
+**Daniel Knight - 10xUnicorn** *[01:07:26]*: Okay, then just copy that command and paste it in Terminal. This is a lot of what we get to do. Okay, so now you're going to say yes, so type Y, then hit Enter. Okay, so go to Vercel and then, yeah, hit back. And then. See here, scroll down on the left and hit Settings. And then we need click on Web Hooks. 
+**Tucker Bascom** *[01:08:35]*: Web hooks, where's that on the left? 
+**Daniel Knight - 10xUnicorn** *[01:08:38]*: Oh, right here. 
+**Tucker Bascom** *[01:08:39]*: Okay. 
+**Mark Savant** *[01:08:46]*: I might have something, Dan. I went on a side quest. 
+**Daniel Knight - 10xUnicorn** *[01:08:50]*: Okay,. 
+**James** *[01:08:53]*: Let's see. 
+**Mark Savant** *[01:08:53]*: But I'll wait. I'll wait for you to get through there. 
+**Daniel Knight - 10xUnicorn** *[01:08:56]*: Yeah, I need to upgrade. No, you shouldn't need to. No, you don't have any projects. Will you just copy that error message? Just give it back to Claude. Yeah, Probably. Yeah, that's fine. And your Vercel is connected, right? Yeah. Yeah. So just deploy that command again. Vercel login. Probably just Lost the authentication. 
+**Tucker Bascom** *[01:09:56]*: Should I write this code down? 
+**Daniel Knight - 10xUnicorn** *[01:09:58]*: Yeah, copy that code. Yeah, looks like it's got it, though. I hit Allow, Then hit yes. Type yes. All right, now. Yep, copy that. 
+**Mark Savant** *[01:10:41]*: This is. This is looking similar to where I'm at here. 
+**Daniel Knight - 10xUnicorn** *[01:10:45]*: Yeah. And then type yes. And then hit Enter. And then hit N. And then I would type in your project name AI Franchise Whispers. Use dashes for spaces, Then hit Enter, then type N. N. Oh, okay. You can't have uppercase letters. Did it still. 
+**Mark Savant** *[01:11:41]*: Okay, I was about to say that any. Anytime I use uppercase in any UTM parameters, my CTO goes nuts. He's like, hey, no uppercase encode. 
+**Daniel Knight - 10xUnicorn** *[01:11:55]*: All right, so we so copy that. Prompt that command again. Or we just got to deploy. Yeah, yeah. It's like, okay, so make them lowercase. Come on, figure it out for me. We have to go through this. You're capable of so much, but not chang an uppercase to a lowercase for me. 
+**Tucker Bascom** *[01:12:17]*: So we're going to deploy that. 
+**Daniel Knight - 10xUnicorn** *[01:12:21]*: And hit enter and then type N. Yeah, Franchise. 
+**Tucker Bascom** *[01:12:32]*: No caps. 
+**Daniel Knight - 10xUnicorn** *[01:12:36]*: AI and enter. No, no. All right. Come on, baby. You see what I mean? Third time, it's. It's always the third time's a charm. Fell once, fell twice. Third push it should be. Don't worry about that message. It seems scary. It's like, oh, great, depreciated. All right. Shouldn't take too long. The first push is usually the longest. All right, give it that error message. You should be able to at least see the project in Vercel. Now, if you want to go into Vercel while that's run in, you can close this tab and then click out of Settings and click Project. Okay. Maybe refresh. Hey, look at that. So then you can click on the name, the project name, and then click Deployments on the left. This will show you. Basically, you know, if it worked or not. So. 
+**Daniel Knight - 10xUnicorn** *[01:14:42]*: Yeah, but it's good to see that it's in there. So it's communicating. So click on the. The word, the letters above production, whatever that is. And so then sometimes I'll grab. See the copy button next to the 307 lines? Yeah, that could be useful. I'll usually give it the error message I get from here in the deployment failure. It doesn't always give you that. Sometimes it just gives the command npm, run, build exited with one. So I'll usually give it the error message from here as well as the error message from the terminal. The two communicate with each other. But this one usually gives more details right. Yeah. So I'd go back to Claude now, see what's up with that. Okay. And then if you want, we probably. We won't. I don't think we'll need to do it now. 
+**Daniel Knight - 10xUnicorn** *[01:15:43]*: But as you guys are working through some more things over time, there is a skill in here, in the resources Dashboard that you can install to streamline deploying to Vercel. It's prompt number one, which will basically just allow Claude to just deploy it for you. 
+**Tucker Bascom** *[01:16:10]*: That's the starter build prompt. 
+**Daniel Knight - 10xUnicorn** *[01:16:11]*: It's under cloud skills. Oh, play. 
+**James** *[01:16:23]*: Cool. 
+**Daniel Knight - 10xUnicorn** *[01:16:27]*: Yeah. 
+**Tucker Bascom** *[01:16:27]*: These are so helpful just having this. 
+**Daniel Knight - 10xUnicorn** *[01:16:30]*: Cheat sheet right here. Yeah, yeah. I'm gonna, you know, for future workshops, get this to people ahead of time so you can show up with your skills installed and your tokens already used up. At least use them up the night before. Right. You know, hit your four hour threshold. That's crazy to me. I can't even like handle how quickly you guys are hitting your token limits it. Yeah. All right. 
+**Mark Savant** *[01:17:04]*: We talked about this before. I think now's the best time to build because once these companies get people hooked, they're gonna upcharge on. On tokens. So. Yeah, this is the cheapest it's ever going to be, in my opinion. I mean, we'll see. 
+**Daniel Knight - 10xUnicorn** *[01:17:17]*: Yeah. 
+**Tucker Bascom** *[01:17:22]*: All right, so we're gonna run this again, it looks like. 
+**Daniel Knight - 10xUnicorn** *[01:17:26]*: Yep, There we go. Then run that last one. I'm talking about. How's everybody else doing? I want to make sure we're making progress. 
+**James** *[01:18:41]*: So I see the invoice paid, but it's not digging it. It just keeps saying I hit it, but I have the receipt for it. Right. 
+**Mark Savant** *[01:18:50]*: So try closing and opening Claude again. If you haven't. 
+**James** *[01:18:54]*: Yeah. Close the window. 
+**Daniel Knight - 10xUnicorn** *[01:18:56]*: Oh, on your usage. 
+**James** *[01:18:59]*: Yeah. All right, keep working. Try it again here. And now it's asked me to upgrade it, so I'm not sure how do you actually. I mean, I don't see an actual log out. If I close the window. I don't think that's it. 
+**Daniel Knight - 10xUnicorn** *[01:19:16]*: Right. 
+**James** *[01:19:16]*: How do you log out a cloud? Is there a logout point. 
+**Daniel Knight - 10xUnicorn** *[01:19:22]*: In the bottom left? Click on your name and as your plan, type and then hit log out. 
+**James** *[01:19:27]*: Log out. Okay, there we go. We'll try that. Okay, let's try that again. 
+**Mark Savant** *[01:19:36]*: It, You know, Claude does a good job of kind of like walking you through what you need to do, but it's not always clear like why I'm doing it. And maybe I just don't need to know why, You know, And I guess that's why it's helpful to be on a call with someone like you, Dan, who can kind of walk you through. Hey, you know, you got do this, you got to do that. Because I'm doing things over here. We're doing. We're doing things. 
+**Daniel Knight - 10xUnicorn** *[01:20:34]*: Okay. 
+**Mark Savant** *[01:20:35]*: Clicking lots of buttons. Basically, the problem I ran into is because the. The code wanted to deploy with an open AI API, and I just. I haven't set that up. That's maybe like a phase two down the road. 
+**Daniel Knight - 10xUnicorn** *[01:20:50]*: Yeah. 
+**Mark Savant** *[01:20:52]*: And so it kind of aired out, so I had to add some additional. I just had. I've been doing some different things. 
+**Daniel Knight - 10xUnicorn** *[01:21:03]*: Yeah. 
+**Mark Savant** *[01:21:05]*: So anyway, let's see. Go back to CMD and run NPC Vercel again. 
+**James** *[01:21:12]*: Okay. So I'm a little bit stuck here. I don't know why this is. Let me share this. What's going on here? So, all right, so I reopened it. It gives me this window and I. I don't know, this thing is stuck. I can't drag it out. I can't maximize it. 
+**Daniel Knight - 10xUnicorn** *[01:21:28]*: You know what I mean? 
+**James** *[01:21:30]*: I don't know why it does that. It's happened to me before. 
+**Daniel Knight - 10xUnicorn** *[01:21:33]*: Yeah. And it says, you're on the max plan. So. 
+**James** *[01:21:36]*: Yeah. So when I logged out and logged back in, it gives me this window, but I can't move this window. I can't maximize it. 
+**Daniel Knight - 10xUnicorn** *[01:21:47]*: Stuck up there. 
+**James** *[01:21:48]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:21:49]*: I would just quit and reopen it. 
+**James** *[01:21:58]*: Here's one here. I guess we'll just try to do this. Get started maybe. 
+**Daniel Knight - 10xUnicorn** *[01:22:12]*: Okay. Okay, Tucker, you're just going to enter those. Just one at a time. And then I would hit yes, type yes, enter, and then copy the value right there. Yeah. And hit enter. Okay. And then go to the next prompt. 
+**Mark Savant** *[01:23:15]*: James, I don't see your stuff that you're building. 
+**Daniel Knight - 10xUnicorn** *[01:23:18]*: Yeah, it's on the left in recent. 
+**Mark Savant** *[01:23:21]*: Build expense and labor tracking. 
+**Daniel Knight - 10xUnicorn** *[01:23:23]*: Yeah. 
+**James** *[01:23:24]*: Oh, yeah, yeah. This one. Yeah. Okay. 
+**Daniel Knight - 10xUnicorn** *[01:23:27]*: And then do leap as is. 
+**James** *[01:23:35]*: Just do this. Just hit it again. 
+**Daniel Knight - 10xUnicorn** *[01:23:40]*: Yeah, Yeah. And then your last one. Right. Isn't this so much fun you guys have? 
+**Tucker Bascom** *[01:24:08]*: It feels like a. 
+**Daniel Knight - 10xUnicorn** *[01:24:09]*: Like a carrot, right? 
+**Tucker Bascom** *[01:24:11]*: Just being dangled. And then. And then you just hit that breakthrough and you see it. You're just like, yes. 
+**Daniel Knight - 10xUnicorn** *[01:24:20]*: Yeah. Sometimes it's like. Especially where you're at. Tucker, you still haven't seen the application, right? 
+**Tucker Bascom** *[01:24:29]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:24:30]*: So you'd like, so badly want to get this thing deployed so you can just see it. Yeah. It's like this nebulous. Like, what mystery. Like, what is it? Like, what do I have here? And you can't see it till you can actually get in it. 
+**Tucker Bascom** *[01:24:45]*: Yeah, but this is already so much better than what I was doing on chat. Like. Like, Cloud Cowork is such a game changer compared to my old, you know, workflow. 
+**Daniel Knight - 10xUnicorn** *[01:24:59]*: Yeah, man. And, like. And you guys are on the max plan. Like, I'd really, you know, get creative with how it can streamline all sorts of different things in your. In your workflow. 
+**Tucker Bascom** *[01:25:12]*: Yeah. I'm super excited. 
+**Daniel Knight - 10xUnicorn** *[01:25:17]*: The gems you'll want to hit always allow on that. 
+**Tucker Bascom** *[01:25:24]*: So I don't see any errors in my terminal this time. 
+**Daniel Knight - 10xUnicorn** *[01:25:28]*: Yeah. So now Vercel is your spot to check. So click Deployments again. Oh, we got a green light. We got it ready. Yeah. So click on that and then this will give your live URL. If you look under Domains, you'll see Franchise Dash Whispers. Sorry. Go back to your deployments. It shows domains in two spots. And then click on Ready and scroll down. You'll see the word domain. 
+**Tucker Bascom** *[01:25:59]*: Oh, yeah, yeah. There it is. 
+**Daniel Knight - 10xUnicorn** *[01:26:01]*: Yeah. 
+**Tucker Bascom** *[01:26:03]*: So there's probably a way that I can find on offline, but I'm guessing since I own Franchise Whispers AI, there would be a way to bring that domain into here. 
+**Daniel Knight - 10xUnicorn** *[01:26:16]*: Yeah, yeah, absolutely. Cool. So click on that link right here. Yep. This is your live site. This is the actual live domain. You can access this from anywhere. Now look at this. Yeah. So click sign in. There's a good chance that takes us to an error page. Yeah. And so this is where you'll want to just basically tell it, hey, we're live on Vercel. The login page gives me an error 404, and I need you to create an admin account so I can log in using my email. Here's my email, and then it'll do all of that for you. Cool. 
+**Tucker Bascom** *[01:27:06]*: I'll start there. And like I mentioned earlier, I do have, like a list of notes and changes and stuff, but probably get the buttons working first and then we can iterate from there. 
+**Daniel Knight - 10xUnicorn** *[01:27:17]*: Yeah, I'd get in. I'd worry about the front end last, honestly. Okay. 
+**Tucker Bascom** *[01:27:22]*: Yeah, because there's. It kind of in implied that there's some. Some stuff actually within the app, like once I can sign in. So I should probably check that first. 
+**Daniel Knight - 10xUnicorn** *[01:27:35]*: Yeah, yeah. And there it is. All right, James, looking good. You are. I don't believe you're in the folder. So click. So go into Claude. 
+**James** *[01:28:00]*: Okay,. 
+**Daniel Knight - 10xUnicorn** *[01:28:03]*: Let's see here. Did you already run this. This prompt that it's asking you? 
+**James** *[01:28:11]*: No, I haven't done anything yet. 
+**Daniel Knight - 10xUnicorn** *[01:28:12]*: Copy the Line just under number one. We're going to do this one at a time. Yeah. So copy that and then go back to your terminal. And then paste and then hit Enter. Yeah. Okay, cool. So go back to your claude. 
+**James** *[01:28:47]*: Copy this one. 
+**Daniel Knight - 10xUnicorn** *[01:28:48]*: No, I want to. We need to get into the correct folder. So click on the. There's a little folder button on the right hand side of your screen that says working folder. The actual icon. Yeah, that guy. Location not available. App data roaming Cloud local. Okay, hit okay on that. And let's just open your. I've never seen that happen. Let's open your file system. 
+**James** *[01:29:37]*: Okay. Just regular files. 
+**Daniel Knight - 10xUnicorn** *[01:29:39]*: Yeah, we're gonna. Going on a hunt. Yeah. Thank you. So click. Click on this PC. I'm sorry, on this PC on the left. And then click on osc. And then Program files. Yeah, not even showing in here. Okay, go back to your claude. So it's under users reboot App data roaming. Wonder why that said wasn't found. Will you just ask. Ask Claude for the file location. 
+**James** *[01:31:04]*: Just go ahead. 
+**Daniel Knight - 10xUnicorn** *[01:31:07]*: What is the working folder location? And will you scroll up? Okay. Okay, so copy that. That URL, the folder location. 
+**James** *[01:31:43]*: This. 
+**Daniel Knight - 10xUnicorn** *[01:31:44]*: Yeah. Will you scroll up a little bit more? Wonder if it's. We click on download your project. 
+**James** *[01:32:03]*: Where's that at? 
+**Daniel Knight - 10xUnicorn** *[01:32:05]*: Close to the top of the. Just above that terminal command. 
+**James** *[01:32:10]*: Oh, yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[01:32:18]*: And hit. Hit cancel. 
+**James** *[01:32:20]*: Oh, sorry. 
+**Daniel Knight - 10xUnicorn** *[01:32:21]*: Fine. It just won't open. And then click Windows Explorer on the top right. Cannot open the folder. Okay, hit okay, Nice. Mark. Click on the letter number combo just above preview. And then. Yeah, then you'll see the URL under where it says domains. Yeah, that should be live. I'd go through and do a test with it. All right, James, so let's see here. 
+**Mark Savant** *[01:33:12]*: It's going back to like a previous version, is it? Yeah, so I. I guess I didn't properly. Well, I'll let you. I'll let you go through it, James. Let me see if I can figure it out. 
+**Daniel Knight - 10xUnicorn** *[01:33:26]*: Yeah, I would just tell it that it probably just didn't push the most recent version of it. All right, James, we gotta find your folder. Okay, so we've got the working folder and we've got that copied. That's where it should be. So let's try. Let's go back to your terminal. And then type cd. Keep it lowercase and then space and then quotation marks, and then paste and then quotation marks and then enter. Cross your fingers. No, Because it does not exist. What is this talking about? Okay, go back to your file system. Your Folders, And then up where it says home, you're going to click in the bar up there, just in the blank space, and then paste, delete home, and then hit Enter. Okay, that's what I expected. So then do that again. 
+**Daniel Knight - 10xUnicorn** *[01:35:02]*: We're going to hit paste again, but then this time we're going to delete all the way to see where it says local agent mode sessions. Are you going to delete everything after. 
+**James** *[01:35:14]*: That, including the slash or no? 
+**Daniel Knight - 10xUnicorn** *[01:35:17]*: Yeah, including the slash. Delete that and hit enter. Have you been using the Claude desktop or the browser? 
+**James** *[01:35:34]*: I don't know what it is here. 
+**Daniel Knight - 10xUnicorn** *[01:35:35]*: To build because you're. We're on the cloud desktop right now, and so. I am just wondering if. I mean, if you weren't. It wouldn't make sense that it. I mean, it's saying it's on your computer, but it's just not even finding it. Okay, go back to Claude, And then I would just tell it what's going on. Let's click on download your project again. Actually on the left,. 
+**James** *[01:36:20]*: Where is that at here? 
+**Daniel Knight - 10xUnicorn** *[01:36:21]*: A little bit more. So just above the terminal run prompt, there's a download. 
+**James** *[01:36:28]*: Oh, yeah. 
+**Tucker Bascom** *[01:36:30]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[01:36:31]*: On that. 
+**James** *[01:36:33]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[01:36:36]*: Is anything happening? 
+**James** *[01:36:39]*: Clicking on it, but nothing's happening. 
+**Daniel Knight - 10xUnicorn** *[01:36:43]*: Okay. Yeah, so just type into Claude. Say, My computer can't find the folder, please. 
+**James** *[01:37:09]*: The specific folder. Which folder? 
+**Daniel Knight - 10xUnicorn** *[01:37:11]*: Yeah, the working folder. Please resave all of the files. You're getting this on a loop. Okay. 
+**James** *[01:37:34]*: Really good. 
+**Daniel Knight - 10xUnicorn** *[01:37:36]*: Okay, Tucker, I'll come back to you. Yeah, yeah, that should be good. Tucker, I hate to say you're gonna have to start a new conversation. 
+**Tucker Bascom** *[01:38:01]*: Okay, I. I was leaning that way, but I wanted to check with you first. 
+**Daniel Knight - 10xUnicorn** *[01:38:07]*: Yeah, I've run into this before, and once I. Once that happens, it's basically game over. This is why we have the instructions. So what you'll want to do is hit the working folder button right here. Yeah. That'll open up your folder and then start a new chat with the instructions file. Okay. And your most recent prompt that you sent it. Got it. Ask it to continue. 
+**Tucker Bascom** *[01:38:38]*: Which one is my instructions file? 
+**Daniel Knight - 10xUnicorn** *[01:38:41]*: Should say. Oh, it's Claude md. 
+**Tucker Bascom** *[01:38:55]*: Is it right in front of me and I'm not seeing it? 
+**Daniel Knight - 10xUnicorn** *[01:38:57]*: I can only see your cloud screen. Oh. Oh,. 
+**Mark Savant** *[01:39:09]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:39:10]*: Choose folder. 
+**James** *[01:39:11]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[01:39:15]*: Which folder? Sorry, I'm. I'm looking at two people's. Oh, good. Okay. Oh, here's. 
+**Tucker Bascom** *[01:39:27]*: I see the instructions. 
+**Daniel Knight - 10xUnicorn** *[01:39:29]*: Yeah, but you need a. Drop it from your binder. Your file system too. So scroll down real quick, Tucker. Okay, so yours is. It's going to Be the Project summary md. Got it. So just start a new conversation, copy your most recent prompt, and then start a new combo with that Project summary. 
+**Jelene Wilkinson** *[01:39:57]*: Okay. 
+**Tucker Bascom** *[01:39:57]*: And I. I dropped that. I just drag and drop that Project summary. 
+**Daniel Knight - 10xUnicorn** *[01:40:01]*: Yeah. Okay, so do new task. 
+**Tucker Bascom** *[01:40:14]*: Drop files. 
+**Daniel Knight - 10xUnicorn** *[01:40:15]*: Yeah. And then. Yeah, yeah, that'll be fine. Should be good. Cool. All right, James, click on App data. All right. Click on the. Where it says the that bar again. And you're going to paste the file location that we had should still be in your clipboard. And then this time. Okay, we're pretty much there. So just double click on Roaming, see if Claude. And then click on Claude. And then click on Local Agent Mode Sessions. It's right there. And then click on the one with all the numbers and letters and click that one again. Then click on the top one. Shim. Is that what you ended up calling this? 
+**James** *[01:41:46]*: I don't remember. 
+**Daniel Knight - 10xUnicorn** *[01:41:50]*: Hit the back button. Okay. And then just click in the white space down below. Okay. Click on the. The last string of numbers and letters at the top of the address bar. Yeah, perfect. Okay. Then hit Select Folder down at the bottom to confirm this is the folder you want to be in. 
+**James** *[01:42:29]*: You're good. 
+**Daniel Knight - 10xUnicorn** *[01:42:30]*: You're good that you got it. Okay. That's so interesting. It's like not finding. Did it work? 
+**James** *[01:42:48]*: It's thinking here. I don't know. Sometimes this thinks. Unless I do something here. 
+**Daniel Knight - 10xUnicorn** *[01:42:54]*: Yeah. Hit Choose Folder again. That should have been what we just did. So then click App Data, then Roaming, then Claude and Local Agent mode sessions. And then just stop here and hit Select Folder. It'll look through all of them. 
+**Mark Savant** *[01:43:23]*: Dan, I have a question. 
+**Daniel Knight - 10xUnicorn** *[01:43:25]*: Yeah. 
+**Mark Savant** *[01:43:26]*: It strikes me that over time, we're going to make changes, updates, adjustments to the app. Right. How do we get those updates and changes from Claude into Vercel? 
+**Daniel Knight - 10xUnicorn** *[01:43:40]*: Yeah. So the. So Claude will give you the command that you push to. That you use in the terminal that pushes the files from your computer to Vercel. 
+**Mark Savant** *[01:43:55]*: So Claude Cowork will update all the files on our local computer. 
+**Daniel Knight - 10xUnicorn** *[01:44:01]*: Right. 
+**Mark Savant** *[01:44:01]*: And then give us the instructions on how to push it with the command to Vercel. 
+**Daniel Knight - 10xUnicorn** *[01:44:06]*: Right. 
+**Mark Savant** *[01:44:07]*: Because that's kind of what I'm going through right now. Ended up populating an old version of the. Of the app that I had built, because, you know, I kind of worked on it overnight. So I guess maybe I perhaps didn't. Maybe I didn't properly push it from my Claude Cowork app onto my local computer. And then when it pushed it out, it pushed out the version that I had Completed last night, not the version I had worked on today. You know what I mean? 
+**Daniel Knight - 10xUnicorn** *[01:44:34]*: Yeah. This is why it's important to be in the right working folder, because sometimes what will happen is Claude will actually go another layer deep in your folder and it'll create another folder, and then that's actually what needs to be deployed. But it's deploying the old folder, even though it has the new one inside of it doesn't know that's where all the actual files are that need to be deployed. So that's probably what it is you probably have another folder within your folder that has the most recent version. 
+**Mark Savant** *[01:45:16]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:45:17]*: And so then you just need to make sure that you're in the right folder when you deploy it. And so what you can do is kind of like what James and I just did is go to the parent folder and basically say, hey, this is where we're at. This is what we're working with. Something's not pushing right. You know, maybe there's a duplicate folder in there. Look through it and let me know what the right directory is for us to push to Vercel to have the most recent version. Kind of a pain, but it doesn't usually happen. But every now and then something will happen and we end up creating a duplicate. So. And that's. That's where it's just important to be in the right folder. So. Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:46:07]*: All right, so, James, so now we should be able to access this unless there are some restrictions, which there very well might be on your computer. So copy that. That URL again. 
+**James** *[01:46:21]*: This one? 
+**Daniel Knight - 10xUnicorn** *[01:46:22]*: Yeah, just copy that. And let's just try to get into there. Go to your files, your folder system, and just paste that up and up at the top and hit Enter. Hey. All right, we can get in there. Claude should be able to get in there, too. 
+**James** *[01:46:44]*: Okay, perfect. 
+**Daniel Knight - 10xUnicorn** *[01:46:46]*: So now go back to your terminal. 
+**James** *[01:46:53]*: Come on. Where you at? Come on. Sucker can grab it. 
+**Daniel Knight - 10xUnicorn** *[01:47:10]*: You're. You're doing this to yourself with the way. Dragging and hiding. I'm going to teach you a command that might change your life. It's called Alt, Tab. Hit alt and Tab. Yeah, that'll flip between screens. 
+**James** *[01:47:32]*: Gotcha. 
+**Daniel Knight - 10xUnicorn** *[01:47:34]*: Just a little. Yeah, so that way you don't have to keep, you know, moving them around. Okay, so paste. So you're gonna do cd. And then, so just hit enter. Anytime you guys type something and, you know, you mess it up in the terminal, you can just hit enter and it just won't work for the most part. So then do a space and the Quotation marks and then paste and then quotation again. And let's hope we're in Job tracker. All right, we're in. Let's go. Okay, so now go back to Claude. And then see the last little section. Copy from NPM to the end of the second line says Vercel. 
+**James** *[01:48:31]*: Wait, npm. Where? 
+**Daniel Knight - 10xUnicorn** *[01:48:32]*: The very last little grayed out box in your cloud. 
+**James** *[01:48:43]*: Why am I not think seeing when I'm. 
+**Daniel Knight - 10xUnicorn** *[01:48:45]*: The last sentence. 
+**James** *[01:48:47]*: Oh, here. Okay. Yeah, yeah. Okay. 
+**Daniel Knight - 10xUnicorn** *[01:48:49]*: Yeah, copy that. Yep, perfect. And then go to your terminal. And then hit paste and then hit Enter. Okay, so just copy the error messages that the terminal is giving you. Yep, that'll be good. 
+**James** *[01:49:38]*: Come on. How come I did a copy? 
+**Daniel Knight - 10xUnicorn** *[01:49:44]*: You're gonna have to use Control C for the terminal. The right click doesn't work in here for some reason. And then paste that in your Claude to tell it what's going. 
+**Mark Savant** *[01:50:02]*: On. 
+**Daniel Knight - 10xUnicorn** *[01:50:07]*: Yeah, It's probably just a access. Are we in the actual terminal? I should have checked because I noticed your thing says powershell. I don't know what that is. It should be fine based on what it's saying. So just copy the prompts or the commands that it's giving you. Now this one? No, no, the one. 
+**Mark Savant** *[01:50:41]*: Yeah. 
+**James** *[01:50:42]*: This one here. 
+**Daniel Knight - 10xUnicorn** *[01:50:43]*: Yeah, the first one. Yeah. You want to go in order. Make sure as it gives these instructions to follow them in those steps. 
+**James** *[01:50:54]*: Okay. Go back to here. 
+**Daniel Knight - 10xUnicorn** *[01:50:57]*: Yeah,. 
+**James** *[01:50:59]*: Right here. 
+**Daniel Knight - 10xUnicorn** *[01:51:00]*: Yep. And delete. I don't know what happened, but it put it all the way at the front. 
+**James** *[01:51:13]*: Oh, my. Not hitting delete. 
+**Daniel Knight - 10xUnicorn** *[01:51:16]*: Yeah, just hit the delete button. 
+**James** *[01:51:19]*: I am. 
+**Daniel Knight - 10xUnicorn** *[01:51:20]*: Okay, then just hit Enter. Okay, now paste. 
+**James** *[01:51:30]*: There we go. 
+**Daniel Knight - 10xUnicorn** *[01:51:31]*: Yeah. And then enter. Will you go to your search to open an application? Let's make sure you can keep this open. But I want to see if there's a different terminal other than powershell. Should be fine based on what Claude is saying, but. And that's what you searched, right? Was just terminal. 
+**James** *[01:52:14]*: Yeah, just. This is what it is. The last one I did. Terminal. 
+**Daniel Knight - 10xUnicorn** *[01:52:17]*: Okay, we'll just stick with it. I mean, it says. So just copy those error messages again. Just give them back to Claude. 
+**James** *[01:52:37]*: Alt c. Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:52:39]*: Control c. Or control c. Yeah. Yep. That's what a lot of this is. Just giving Claude the error messages and letting it tell us how to solve it. 
+**Tucker Bascom** *[01:53:01]*: So, quick note on the error I was running into, if you log out and log back into the cloud desktop app, it. It took care of it for me, so. 
+**Daniel Knight - 10xUnicorn** *[01:53:10]*: Okay, cool. Yeah. So then James, just basically go through and follow these instructions. So looks like, you got to go to the actual site. So click on that node js.org and then. That's a terrible button. It says Get Node. JS says it. There's this big green button. It's, like, barely even green. 
+**Mark Savant** *[01:53:44]*: Yeah, I had to. I had to do this also in order to get to where I'm at. 
+**Daniel Knight - 10xUnicorn** *[01:53:49]*: Yeah. So, James, click on Get Node js. Yeah. And then Windows installer. I think I had to do this too. 
+**Mark Savant** *[01:54:05]*: The other option, it gave me a potential workaround of, like, getting connected to GitHub, but I just went with this route that was. This was the side quest that I went on. 
+**Daniel Knight - 10xUnicorn** *[01:54:22]*: Gotcha. Yeah. GitHub. I don't know. I've. I've found GitHub just kind of. It adds a layer of failure. Like, for some reason, I've noticed when I am using GitHub to push my packages, I end up, like. It just ends up taking a lot longer to push each one. It just fails more often than not. 
+**James** *[01:54:55]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:54:55]*: So I try to just stick with Vercel. How's everybody else doing while James is installing his node? 
+**Mark Savant** *[01:55:08]*: I think we may have liftoff over here. I'm testing it. 
+**Daniel Knight - 10xUnicorn** *[01:55:12]*: Nice. Julen, are you just watching? 
+**Jelene Wilkinson** *[01:55:17]*: Oh, I had kind of got a cart before the horse a little bit, and then I told it. Yeah, don't worry about. Don't do that thing. And I. I put in just a very basic. The scroll or the prompt that you had from yesterday and just, like, filled in the blank. So super basic. Not even what's in the app dashboard. And then I'm like, oh, I was supposed to use that, but I didn't. So then it built this whole thing, but I'm like, no, I didn't give it a lot of details, so I'm having to tell it. Sorry, I didn't give you these important details. Let me give you these corrections. So, yeah, I'm kind of in. Off in my own space. I'm on the. I'm. I'm. I'm sort of on the ship, but I'm not, like, anywhere near everybody else. 
+**Daniel Knight - 10xUnicorn** *[01:56:09]*: All right. Yeah, well, we can. We can keep working through some of that. Yeah. And that's just. It goes to show kind of why I put that dashboard together. Right. Because it kind of supports what I was saying yesterday. Okay. So, James, you should be able to move on to step two. Just copy that first terminal prompt. 
+**James** *[01:56:36]*: This one? 
+**Daniel Knight - 10xUnicorn** *[01:56:37]*: Nope, the first one. 
+**James** *[01:56:42]*: Oh, yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[01:56:45]*: And there. There is a button that you can hit to copy it to your clipboard, and you're going to put it in the terminal, not in Claude. Okay. Yeah. 
+**James** *[01:57:03]*: Oh, I wanted to end up there. 
+**Daniel Knight - 10xUnicorn** *[01:57:05]*: I don't know. Try it out. Just hit Enter. Try again, Will you? Let's close this. This window. I'm not loving it. There's something about it. And then go back and let's open a new terminal. You might need to do like a new window or something. Yeah,. 
+**James** *[01:57:43]*: Paste again. 
+**Daniel Knight - 10xUnicorn** *[01:57:44]*: Yeah, we might need to get into the directory, but maybe not. Just try it. Did you type that slash just now? No. No. All right, good. It's working. So it's just installing the npm, which is, I think, what Vercel needs in order for the packages to get pushed through the terminal to Vercell. Okay, then go to the next command. Yep, that one. And paste. And hit enter. Okay. It looks like yours doesn't require the quotation mark, so that's nice. And then go to the next one. 
+**James** *[01:59:05]*: What was that? 
+**Daniel Knight - 10xUnicorn** *[01:59:06]*: He clicked on the file. Hit. Okay. Yeah, it's because you're clicking in that blank space, which is actually opening the file. 
+**James** *[01:59:18]*: Oh,. 
+**Daniel Knight - 10xUnicorn** *[01:59:20]*: Yeah. So then scroll down, you'll copy that next one. Let's make sure there isn't anything below it. Okay, cool. So, yeah, then just copy that. Then paste in the terminal. Enter. Might be a window in Chrome. 
+**James** *[01:59:49]*: Yeah, that's this. 
+**Daniel Knight - 10xUnicorn** *[01:59:52]*: Yeah, just hit Allow. Then you can close that window. All right, Then go back into your terminal. Make sure you click at the end of this. Yeah. So click inside of it, make sure we're in it. And then type the letter Y. 
+**James** *[02:00:21]*: So see where it's. It's click. It's highlighting here by local. I don't know why it's. 
+**Daniel Knight - 10xUnicorn** *[02:00:26]*: Yeah, go to the end of that and just double click after the N. All right. Then just. Yeah, type Y. Hopefully it puts it in the right spot. 
+**James** *[02:00:38]*: Doesn't matter if it's lowercase. It's fine. 
+**Daniel Knight - 10xUnicorn** *[02:00:41]*: Yeah, it's fine. 
+**James** *[02:00:42]*: Just enter. 
+**Daniel Knight - 10xUnicorn** *[02:00:43]*: Yep. Then enter again. Yep. And then hit no or N for no. And then hit Enter. Then enter again. And then N. And N again. Okay, now it's building. And then this is, you know, this is pretty much the process. So, you know, as you guys keep building, basically Claude's gonna tell you, now do this. It's usually giving you the command to give to the terminal. So then you need to deploy it in the terminal. You just need to make sure you're in the right folder. Right. The right directory. So always look at your terminal, like prompt and make sure that it, the last word says the folder name that you're of the project you're working on. So you can see now it's all completed, James. And so it gives you the terminal option to give it another command. 
+**Daniel Knight - 10xUnicorn** *[02:02:17]*: And at the very end of it, you can see Job Tracker and the local agent mode sessions in your Claude projects. Right. So you know you're in the right folder for it, right? 
+**James** *[02:02:29]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:02:30]*: And so usually it'll give you the command. It looks like it's doing that for you to get into the folder. But just know if it's not working or, you know, if you're already in the folder, you don't need to type the folder command again. The change directory command. 
+**James** *[02:02:48]*: Yeah, gotcha. 
+**Daniel Knight - 10xUnicorn** *[02:02:50]*: So you should be live. If you go to Vercel, you should be able to see the project now deployed. Yeah. So click on Job Tracker. That's just going to open your actual site. So, yeah, so this is. You can access this from anywhere. And so anything, any adjustments that need to be made, you can make those using Plod and then push it to go live. And then you'll have it all stored right here. Now, I would say, is to play with it, you know, click the new job, click the ad expense, click on the workers and, you know, see where it breaks. And then keep a note of all of the updates that you want Claude to make and then make those changes in batches. And so I think we're all kind of at that stage. 
+**Daniel Knight - 10xUnicorn** *[02:03:52]*: As far as, you know, the app is now connected to a database, it's now connected to a hosting site, so you can access it from anywhere. Now it should be pretty much functional to the point where you can add details and actually use it. So, yeah, so I'd start playing with some test data and, you know,. 
+**James** *[02:04:16]*: So I was able to. I was just checking it. So basically I just went onto my phone and typed in that URL. Right? 
+**Daniel Knight - 10xUnicorn** *[02:04:24]*: Yeah. 
+**James** *[02:04:24]*: And it popped up. Right. So, so now is there some type of thing I can make it. So you have. I mean, is anybody anywhere can go into this? 
+**Daniel Knight - 10xUnicorn** *[02:04:36]*: Yes. 
+**James** *[02:04:37]*: Okay, how do I lock that down. 
+**Daniel Knight - 10xUnicorn** *[02:04:41]*: For you? This is. This is where, you know, planning ahead of time is really important. Right. So if you're the only one that's going to be accessing this, what I would probably do if I were you, where you're not going to have other, like, people logging into it and editing things and you're just going to be the only one accessing this is. I would just create like an access code, basically say, you know, I don't want it. So anybody can log into this, you know, make it so that I have to enter an access code in order to access this dashboard and do anything with it. And then you can either give it the access code or it'll give you one. 
+**Daniel Knight - 10xUnicorn** *[02:05:24]*: I'd probably just give it to it and then it'll make it so that you have to type that in order to get in without creating like the whole user database and admin portal and all that, which does have some complexities to get it done. Right. So kind of up to you. Do you intend on having other people log into this and access it or do you feel like just having it blocked with a password will be sufficient for now? 
+**James** *[02:05:51]*: Well, I mean, in usage, right. I mean, obviously I would like to be able to log into it, you know, for all access. Right. But if I'm going to have like an employee add their information, they don't see, they don't need to know all my whole accounting of my company. You know what I mean? Like, you know, I'm saying as far as job costs and stuff, right. You don't want them seeing that. Right. So the employee would have a different level, I would think, you know. 
+**Daniel Knight - 10xUnicorn** *[02:06:22]*: Yeah, yeah. And I think just to keep it simple for you just need them to have the ability to submit their expenses and their hours, right? 
+**James** *[02:06:34]*: Correct. 
+**Daniel Knight - 10xUnicorn** *[02:06:36]*: So I would just, I wouldn't even create the whole user, like, database and all that because what you really need is just a way for people to input and send you their information. And so I would create that. I would create a form that asks people to input, you know, their name, maybe employee ID or, you know, email or something so it can match it with them and then, you know, how many hours they worked for that day and then log all of your expenses. Those are probably two separate forms. So there's one for logging expenses and one for logging hours. Right. Anytime you have an expense, you go here, you click log expense. You're going to fill out the name, the amount, the date, the store, and a description. Right. And then they hit submit. That'll automatically go to your dashboard. 
+**Daniel Knight - 10xUnicorn** *[02:07:29]*: Same thing with the workers. They're going to log, you know, their name, their employee number, you know, the hours they worked and a description. If you know, whatever it is, what time they started, what time they stopped, if you want to do it that way. But then they submit and it all just comes to your dashboard where you can log in. But you don't. I don't think you need to go as far as building out the whole user database and creating like logins and passwords and all that. It's. It's quite a complex thing to do, all that. And I think you just need a way for people to submit their entries. Right? 
+**James** *[02:08:03]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:08:05]*: So. 
+**James** *[02:08:08]*: So this would be my. This is the one I'd want to create a login password for. For myself. Right? 
+**Daniel Knight - 10xUnicorn** *[02:08:17]*: Yeah. 
+**Mark Savant** *[02:08:19]*: So you could have, like, the same initial dashboard where you enter in, like, with that form entry. And then at the top. Right. You could have a admin login button. Right. That's what you're thinking. Or you have. So anybody could input a job or a material or a receipt, but. But only the admin can review all the documents. 
+**Daniel Knight - 10xUnicorn** *[02:08:45]*: Yeah, so. 
+**Mark Savant** *[02:08:48]*: So what you would do is you'd go into Claude and say, hey, these are some changes I want to make to the app. Push it to the local file and then run that. That prompt to push that to Vercel. 
+**Daniel Knight - 10xUnicorn** *[02:09:03]*: Yeah. And you don't have to say all of that. It'll just kind of. It'll update the local file automatically and then give you the prompt to push it to Vercel. And so what I would say, let's find your Google Doc. Let me get. I'm going to get you this. So, James, here, I'm going to show you. Going to get premium. Will you drop the URL to your app in the chat? 
+**James** *[02:09:34]*: The one I. I just registered, you mean? 
+**Daniel Knight - 10xUnicorn** *[02:09:36]*: Yes. Yep. 
+**James** *[02:09:37]*: All right, hold on. 
+**Daniel Knight - 10xUnicorn** *[02:09:40]*: Just kind of show you guys, you know, how I would do this. 
+**James** *[02:09:49]*: So where's Vercel? Where is it at? 
+**Daniel Knight - 10xUnicorn** *[02:09:54]*: Tucker, were you able to log? Very close. 
+**Tucker Bascom** *[02:10:01]*: I've been troubleshooting with Claude. Had to change some configurations and Supabase and stuff. I'm not logged in yet, but I'm getting closer. 
+**Daniel Knight - 10xUnicorn** *[02:10:12]*: Okay. 
+**James** *[02:10:12]*: Okay. So where am I dropping this? In the. In the actual. Here am I using in here? 
+**Daniel Knight - 10xUnicorn** *[02:10:18]*: In the Zoom Chat? 
+**James** *[02:10:20]*: On the Zoom Chat. Where are we? Where's that at? Hold on. 
+**Daniel Knight - 10xUnicorn** *[02:10:27]*: I'm gonna stop your screen share. Yeah, sometimes I know it can be hidden. 
+**James** *[02:10:36]*: Okay, come on, chat. Right. Okay, so here we go. 
+**Daniel Knight - 10xUnicorn** *[02:10:46]*: Okay, so I need the Vercel domain. When you're looking at the web page, I need the URL that is in the dome, is in the address bar. 
+**James** *[02:11:00]*: Okay, Come on. Where you at? Cloud Job tracker. Okay, where is Vercel? Did I not have that open? Look, I did,. 
+**Daniel Knight - 10xUnicorn** *[02:11:18]*: Yeah, just go to the application that you built. Oh, that's open on your browser. I just need that URL. 
+**James** *[02:11:28]*: Gotcha. This one. Okay. You want this one? 
+**Daniel Knight - 10xUnicorn** *[02:11:36]*: I don't know. 
+**James** *[02:11:38]*: Okay. All right, gotcha. 
+**Mark Savant** *[02:11:41]*: Page. 
+**Daniel Knight - 10xUnicorn** *[02:11:47]*: Yeah, that one. Okay, so let's show you guys. This is kind of my process for when I'm doing updates. I'll split these. So for you, James, I'd probably just stick with your Google Doc for now. And so can you guys see both my screenshots? Yeah. So basically what I would do is just add to the top of this Google Doc my three spaces, my three or four dashes, and then I just basically tell it the updates that I want. So I'm going to be speaking this prompt using Whisper Flow and basically just talk through all of the changes that I want to make and then it's going to populate over here. But I'm speaking it. So yeah, we need to create a way to gate access so only I can log into this. 
+**Daniel Knight - 10xUnicorn** *[02:12:45]*: So I want you to create an access code prompt or a pop up that shows a request for an access code and don't let anybody see the rest of the dashboard or any of the numbers or anything unless they enter this access code. Only I can change the access code. Or you, if I prompt you or I can, I should have an option to hit settings and change the access code from the dashboard. Additionally, I need two forms and a landing page for my workers to submit their expense details and job details of how much time they worked. So the expense details should have the option to include the job that they're working on, the vendor. That the expense was from, the date of the expense and the description of the expense. This is for adding an expense. 
+**Daniel Knight - 10xUnicorn** *[02:14:00]*: So just like we have the form on the main dashboard, I need a page that gives people two buttons to either add expense or add hours. And so they click on the one button for adding expenses and that'll push it to the dashboard when they submit the form. Or there should be an option to record time. And so they should click on that and it'll ask for the title of the job, the location, the date, the number of hours, and their name. And so each input needs to have a field for an employee ID or yeah, an employee id, a worker id, and make sure that gets pushed to the dashboard as well. That should be sufficient. So now I'm just going to look at it. This is why I love Whisper Flow, because I can correct myself. 
+**Daniel Knight - 10xUnicorn** *[02:15:14]*: And it's using AI to actually fix what I said. So I shouldn't really need to change anything. But you should probably decide if you want to call it employee ID or worker id, because I know a lot of your workers are not employees, they're contractors, right? 
+**James** *[02:15:35]*: Yeah, yeah. Contractors are basically that. That would be separate. They would be just billing, invoicing. 
+**Daniel Knight - 10xUnicorn** *[02:15:44]*: So my question is what unique identifier do you have that will help the system determine who an individual is? 
+**James** *[02:15:55]*: Yeah, employee. I would say employee. 
+**Daniel Knight - 10xUnicorn** *[02:15:58]*: Okay. So we'll just call them all employee IDs, and you'll give that to anybody submitting their information. So that'll be required. That way they know. That way the system knows who it actually was. And we'll want their name to write with it. Yeah, just double verify. And does all of that sound accurate? Like, is there additional information that might be needed? 
+**James** *[02:16:31]*: No, I mean, I don't want to over pack it, you know? 
+**Daniel Knight - 10xUnicorn** *[02:16:35]*: Yeah, 100%. Okay. 
+**James** *[02:16:47]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[02:16:49]*: Add expense for. We'll do log hours, title of the job, location, date, number of hours, and their name. Yeah. So then, So I would go to your Google Doc if you want to share your screen again. Now I'll stop sharing mine, then you should be able to. 
+**James** *[02:17:13]*: Google Doc. Where is my Google Docs? 
+**Daniel Knight - 10xUnicorn** *[02:17:17]*: I can, I can give you the link to it. 
+**James** *[02:17:19]*: Yeah, let me. 
+**Daniel Knight - 10xUnicorn** *[02:17:25]*: And also, I also need the ability to edit, change, or delete the workers from the dashboard. Currently, I can only view them and I need to make sure each worker also has an employee ID field so I can match them with their submissions. And this is literally my process. I just, I look at the app, I see what it needs, I give it the updates, and then we push all of those through once we. So that. 
+**James** *[02:18:06]*: That took care of the employee forms. What about the master that we're looking. The master one. 
+**Daniel Knight - 10xUnicorn** *[02:18:14]*: What do you mean? 
+**James** *[02:18:16]*: The one that I have access to. Was that in there? Did we talk to that part of that prompt? In other words, the. 
+**Daniel Knight - 10xUnicorn** *[02:18:30]*: Yeah, do you want to clarify? 
+**James** *[02:18:33]*: So the. It was saying that they have to log in or, you know, first they got to have some type of password to get into it. Right. 
+**Daniel Knight - 10xUnicorn** *[02:18:43]*: So they won't need. Let's make sure that's clear. They won't need an access code. Hold on. Okay. They won't need an access code to submit their expenses or log their hours. So the page that we create to add expenses or log hours should be open where an access code is not required. The access code is just to view the dashboard with all of the financial information and to manage everything. 
+**James** *[02:19:18]*: Okay. Okay. 
+**Daniel Knight - 10xUnicorn** *[02:19:19]*: I just added that to the end of your prompt before having the ability to edit things. 
+**James** *[02:19:27]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[02:19:28]*: So if you go to the Google Doc that we created yesterday, which I'll put that in the chat for your convenience, then you can copy the prompt that I just put in there for you. 
+**James** *[02:19:39]*: So that just the one before the. Hey, we are building that one. Right? 
+**Daniel Knight - 10xUnicorn** *[02:19:43]*: All of this. Yeah, yeah, that's why I use those squiggly lines to tell me where, you know. Yeah, I left off. 
+**James** *[02:19:51]*: So copy and then go over to my. 
+**Daniel Knight - 10xUnicorn** *[02:19:55]*: Yeah, yeah, go over your Claude and then you just paste that. 
+**James** *[02:20:01]*: Okay. So the only thing that I would somewhat be concerned with is just some joker going and putting a bunch of expenses and hours on somebody else. Right. Because they don't have to log in anything. 
+**Daniel Knight - 10xUnicorn** *[02:20:29]*: Yeah. So that's a valid concern. If you wanted to create access codes for everybody, you could do that. That way is still a lot easier than. Well, and this is where having the. 
+**James** *[02:20:44]*: Employee, I could keep it super simple. Like if these are current employees, I could just have a universal code for them. You know, I wouldn't have to have individual ones. Right. You know, and then something I guess I could change later if somebody, you know what I mean, I can update the codes or something or, you know, it could go either way. It just, I just don't want it like open to anybody, you know? You know what I'm saying? 
+**Daniel Knight - 10xUnicorn** *[02:21:08]*: I think you make their employee ID kind of that gatekeeper. If they don't provide the correct employee id, then that's probably a good sign that it's not the right person. But. Yeah, you'll definitely want to gatekeep that however you feel is most important for you. I'm feeling like it's probably a good time for a quick break. I don't know how you guys are doing, but I'm feeling antsy myself and finding myself snacking on a protein bar and I'm like, if I'm this way, you guys are probably there as well. So what do you say we do just a quick 12 minute break and we'll come back at 11:30. 
+**James** *[02:22:04]*: Okay, sounds good. 
+**Mark Savant** *[02:22:06]*: What's the. Before we break, what's the action plan when we get back? What are you. 
+**Daniel Knight - 10xUnicorn** *[02:22:11]*: Action plan is just going through our apps and making sure that we feel good about being able to use them and either like share it with somebody to try it out and, you know, break it with us as well as just kind of just reiterating. We can, you know, we can go to the point of like, you know, pushing it out there and all that, but I think at this point it's just kind of working through bugs and getting some of the features we want dialed in. Dialed in so that we feel. 
+**Mark Savant** *[02:22:43]*: I Think. I think for me at least I'd want to have some sort of email integration set into it. But. 
+**Daniel Knight - 10xUnicorn** *[02:22:50]*: Yeah. 
+**James** *[02:22:51]*: Cool. 
+**Mark Savant** *[02:22:51]*: We can talk about when we get back. Just kind of. 
+**Daniel Knight - 10xUnicorn** *[02:22:52]*: Yeah. 
+**James** *[02:22:53]*: Yeah, okay. 
+**Daniel Knight - 10xUnicorn** *[02:22:54]*: Yeah, we can do the email integration for that. All right, cool. Hey. 
+**James** *[02:24:02]*: Okay. Yeah, that sounds good. I. Sorry, I was in a. I'm in a mainland seminar. We just took a break, but. Okay, well, that's good. You probably saw that yesterday. He was gonna. Yeah, they told me to get ready to get delivered, but I gotta. Yeah, but I gotta figure out because the weight, that's the things about £6,000. So. Yeah, yeah, so I gotta figure all that. But I'd like to cut before and bust up the floor first because we're gonna cut. I'm gonna have to reroute that water line and you know, cut out that sewer line and all that stuff. 
+**Mark Savant** *[02:26:10]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[02:33:44]*: All right, you guys there. 
+**Mark Savant** *[02:34:26]*: Daniel. 
+**Daniel Knight - 10xUnicorn** *[02:34:27]*: Hey. Hey. All right, so question for you. 
+**Mark Savant** *[02:34:31]*: Yep. 
+**Daniel Knight - 10xUnicorn** *[02:34:31]*: You want like a multi step lead nurture sequence that get people to do what after they submit the. 
+**Mark Savant** *[02:34:42]*: Yeah, so I'm kind of working on that. So like there's a lot going on here, but you know, I'd like to. 
+**James** *[02:34:49]*: Get this. 
+**Mark Savant** *[02:34:51]*: Paid AI community going, right. Like probably within the next couple weeks. I just feel like I'm meeting so many people that need something like that and need something like this. And in any event, that's. That's probably where the nurture would go. Like, hey, if you like this, you want to take it to the next level, try our community here. You know, it's probably 39amonth, but you get a 14 day free trial. Of course, members of workshop get free access. And so anyway, that's kind of the plan. So I'm actually in the background have Claude and it seemed to be timing out, kind of like building out the entire strategy. It's already built me out of business plan, but I want to build it, develop that a little bit more. 
+**Daniel Knight - 10xUnicorn** *[02:35:32]*: But for the community. 
+**Mark Savant** *[02:35:34]*: Yeah, I think community makes the most sense. You know, we start at, you know, get your readiness score. You move into free trial of a community, you move into workshops, you move into other services that we offer. 
+**Daniel Knight - 10xUnicorn** *[02:35:50]*: Okay, sweet. Yeah. So what I would say is pretty much finish this prompt, but for anybody who is doing an email campaign or wants to have emails as part of their system, you can ask Claude to write the emails in HTML format, which brands it and makes it look really nice and professional. You don't have to, you know, there are Pros and cons to doing it that way. Pros, it looks more professional and like you're a serious business. Cons, it looks like you're more professional and like you're a serious business. And some people just ignore that and they just want to see a simple text inline email. Right. Some people like to see the branded emails and they actually you know like reading through them. 
+**Daniel Knight - 10xUnicorn** *[02:36:42]*: So I, I prefer, I really like what Claude's been putting out on the HTML emails that it's been given out. So something like what I just put in the chat as a prompt to build out an email campaign. You know, create a multi step, I would tell it how many steps lead nurture sequence for people who submit their form, their assessment, whatever, send them their results, give them value based on what they submitted and then drip on them strategically to get them to take action. I want them to be you know, well designed in HTML format that followed my brand style that we created and then use and then you'd give them the call to action to get them to take action. 
+**Daniel Knight - 10xUnicorn** *[02:37:26]*: The last part of that was use neuro linguistic programming to get people into a buying state and get them to take action. On my call to action we are going to use resend to send out these emails and I already signed up for an account. So let's go ahead and get this full campaign built out and set up so that when somebody submits the form they automatically get added to the lead nurture sequence. I'll give you the whole rest of that just simple prompt. 
+**Mark Savant** *[02:38:10]*: Yeah, well and because that's the other thing that I was kind of talking about previously is you know I've got beehive, I have go high level. These are the main ways that I'm sending out emails right now. But I, I, I don't know that I want to stay there. Like some of what my friends are doing is like crazy with email. They're like oh I'm sending out a hundred thousand emails and it cost me 50 bucks. I'm like okay, let's talk about that. 
+**Daniel Knight - 10xUnicorn** *[02:38:35]*: Let's, let's talk about that. 
+**Mark Savant** *[02:38:37]*: Let's talk about that. 
+**Daniel Knight - 10xUnicorn** *[02:38:40]*: Yeah, resend gives you pretty incredible limits like that. So yeah, all right, cool. So Mark, I would do that and then just start working through the resend prompts. It's going to have you hit thing because you are using a domain that you already use. Right. Do you already email with that domain and all that? 
+**Mark Savant** *[02:39:09]*: I, I short answer yes. 
+**Daniel Knight - 10xUnicorn** *[02:39:12]*: Yeah, yes. 
+**Mark Savant** *[02:39:13]*: But you know that's all. It's hosted, but I mean that's, that goes through my website, markspot media.com it's a different hosting site and then I have the AI Update brand. So I've got to kind of sort out the way that works. AI Update is basically just a web page that's hosted through Beehive, but I'm probably just going to shut that down and shift it to something different. It's just too expensive. So kind of my thought is, is. Is really just maybe completely rework what I'm doing here and just merge Mark Svant Media into AI Update or have them both be hosted on the same WordPress site in a way because I'm just what I was originally doing podcast production and stuff. I'm just not doing that anymore. 
+**James** *[02:40:07]*: And. 
+**Mark Savant** *[02:40:07]*: I have no desire to do that. It's for a multitude of reasons and the domain authority is really high. So I don't just want to ditch Mark's font media, but maybe combining it so that there's a they're hosted on the same WordPress site might make sense. 
+**Daniel Knight - 10xUnicorn** *[02:40:22]*: Yeah. Okay, so what I would say, because Resends or Claude is going to ask you know, where you want to send the emails from, right? I would just use Resends domain to start, get it set up with that and then when you move the email sending over and when you do all of that with your website, I would then point the MX to resend because that, because it is required. And so if you want to send from Resend from a domain in Resend, then that's pretty much where your emails live. And so having, you know, and I'm. I think you can have the best of both worlds, but it just gets messy anytime you have MX records and you're trying to send emails from multiple spots. 
+**Mark Savant** *[02:41:13]*: Yeah, I don't think I'm at a stage now where I want to send them from an existing domain because to your point, with the DMARC and the MX and all of that, I don't want to blow it up, but I would like to have something that's functional. I can start testing and then iterate on. 
+**Daniel Knight - 10xUnicorn** *[02:41:31]*: Resend will give you like a Resend branded email domain that it can send all the emails from. So I would just use that and it should kind of take you through that as you go along. 
+**Mark Savant** *[02:41:43]*: Okay, yeah, I'm running the prompt now. It's a little slow right now, but okay. 
+**Daniel Knight - 10xUnicorn** *[02:41:47]*: Yeah, we got all these power users pushing Claude. 
+**James** *[02:41:52]*: Let's go. 
+**Daniel Knight - 10xUnicorn** *[02:41:54]*: All right, and then James, I want to send you off with this. Did you send that prompt earlier to your Claude? 
+**James** *[02:42:02]*: I did. 
+**Daniel Knight - 10xUnicorn** *[02:42:04]*: Okay. 
+**James** *[02:42:04]*: Trying to figure it out here, but went. So let me see. Let's see here. 
+**Daniel Knight - 10xUnicorn** *[02:42:14]*: So I was thinking about, you know, what you shared with me, and I think it would make sense to just have the whole thing gate kept with the employee IDs. Let's see here. Do you already have employee ID numbers? 
+**James** *[02:42:33]*: No, just their names is all I go. I don't. I mean, I can assign that if I need to. 
+**Daniel Knight - 10xUnicorn** *[02:42:38]*: So what I would do, Let's see, go back to your Google Doc and I added another prompt in there for you that I think will solve what you're looking for. And I think you just block the whole thing with the employee ID number and then you just tell people, don't share that number. You know, that's basically your password, which is, you know, very common thing. But yeah, I added that whole extra prompt just right there. That should set it up so that this way it's required to enter the employee ID to even submit anything, and then I'll even match it up in the back end. So. All right, we'll let yours run. Tucker, I feel like we got. We got some work to do. How we. How are we doing? You are muted. You're on mute. Tucker, Help. 
+**Tucker Bascom** *[02:43:52]*: We were awesome. Like three minutes ago. My. My dashboard loaded and it looked freaking great, but now it's giving me a perpetually loading state. Let me share my screen here. 
+**Daniel Knight - 10xUnicorn** *[02:44:06]*: Okay, Let's see. 
+**Tucker Bascom** *[02:44:22]*: I'll just show you the whole login flow. This is the URL, right? 
+**Daniel Knight - 10xUnicorn** *[02:44:36]*: That's more than it. 
+**Tucker Bascom** *[02:44:43]*: No, that's not the right one. 
+**Daniel Knight - 10xUnicorn** *[02:44:45]*: It's not close that tab. No. What did I go to click on deployments? That would work, but. Yeah, then click on the. And then it's that top domain. Yeah, that one. Yes. There we go. 
+**Tucker Bascom** *[02:45:10]*: I think I was on an older version. 
+**Daniel Knight - 10xUnicorn** *[02:45:12]*: Yeah. 
+**Tucker Bascom** *[02:45:12]*: This is what the dashboard looks like and it frickin looks awesome. 
+**Daniel Knight - 10xUnicorn** *[02:45:17]*: Okay. 
+**Tucker Bascom** *[02:45:20]*: It has all of the 23 items that are part of every legally compliant FDD. The FDD wizard is what I'm gonna have to just go through item by item to make sure it has everything that, you know, I want to be in it. But first pass is. It's pretty freaking spot on, man. I'm not gonna have to do as much troubleshooting on this portion of it as I thought I was going to. 
+**Daniel Knight - 10xUnicorn** *[02:45:47]*: Yeah. So the. The troubleshooting will probably come with the output, right? Yes. What it actually produces for them. And so you'll probably want to create in your settings. So some reference templates that it can create the final output based on and then just kind of reference those templates to kind of pre fill all the details are there. Is it a different FDD by state? 
+**Tucker Bascom** *[02:46:22]*: Yes, there's some subtle nuance by state. And. But there's also subtle nuance by business type as well. 
+**Daniel Knight - 10xUnicorn** *[02:46:29]*: Okay. Yeah. 
+**Tucker Bascom** *[02:46:30]*: My, my first MVP will probably just limit it to restaurants and then I'll slowly branch out depending on business type. 
+**Daniel Knight - 10xUnicorn** *[02:46:39]*: Cool. I like that. Sweet. 
+**Tucker Bascom** *[02:46:44]*: Yeah, it looks really good. This certainly exceeded my expectations. 
+**Daniel Knight - 10xUnicorn** *[02:46:50]*: Pretty good. 
+**Tucker Bascom** *[02:46:50]*: But I think I'm just going to go through like item by item. 
+**Daniel Knight - 10xUnicorn** *[02:46:53]*: And. 
+**Tucker Bascom** *[02:46:56]*: So when I go to the FDD preview, it looks like it kind of has like a sample business here. 
+**Daniel Knight - 10xUnicorn** *[02:47:02]*: Yeah. 
+**Tucker Bascom** *[02:47:02]*: And I click on Download PDF and then it gives me this PDF download feature would be implemented here with a PDF generation library. So I think it needs some more information before it actually produces a full blown fdd. 
+**Daniel Knight - 10xUnicorn** *[02:47:16]*: It needs a place to store it. So right now what it's saying is we would do this for you, but we don't have like there's no library. So I would just copy that message and say, hey, I'm trying to create this FDD PDF and getting this message and you know, I would say create the library. Yeah. Cool. Yeah. Because it looks like it's pretty close to being able to do it. 
+**Tucker Bascom** *[02:47:59]*: Yeah, it really is. It's funny how it took like five deployments to like actually log in. I was growing skeptical. I'm just like, what am I going to find when I finally get in here? But like it did more work on the back end than like the login flow, which is so funny to me. 
+**Daniel Knight - 10xUnicorn** *[02:48:24]*: Yeah, yeah, it's. It can be. Like I said, you know, it's like you just got to keep pushing through it. But like once you get through it does become much more seamless. Once you kind of get through getting it deployed in that first time, it's a lot better. Don't get me wrong though, you can ask for one update, like what you're doing now and spend an hour trying to get it to redeploy again. 
+**Tucker Bascom** *[02:48:52]*: Dude, my old workflow was literally like chat GPT, copy paste terminal output, copy paste terminal command. Like the, like cloud cowork just frickin doing it for you is already gonna cut my development time like in half. Like such a game changer. I feel like an idiot for not going to cloud cowork so much sooner. 
+**Daniel Knight - 10xUnicorn** *[02:49:16]*: It's nuts. Well, and then. And that one little skill of just, hey, run the terminal for me. Like you. You probably won't notice how much time that saves you, but I was just like. I noticed that it kept launching the terminal for me, and then it was like, here, use this command. Run this command. I'm like, why am I doing this? Can't you just do it for me? It's like, yeah, I can do that. I'm like, okay, here's the deal. Do it for me every time now. So we made the skill. So. Yeah. 
+**Tucker Bascom** *[02:49:49]*: What skill is that? Is that on your. 
+**Daniel Knight - 10xUnicorn** *[02:49:55]*: Cheat sheet? 
+**Tucker Bascom** *[02:49:56]*: Like, run the terminal for you? 
+**Daniel Knight - 10xUnicorn** *[02:49:58]*: Yeah, it's the number skill. Number one. I thought you installed it. 
+**Tucker Bascom** *[02:50:05]*: Oh, Vercel Deploy. 
+**Daniel Knight - 10xUnicorn** *[02:50:07]*: Yeah. 
+**Tucker Bascom** *[02:50:08]*: Oh, yeah, I did install that. 
+**Daniel Knight - 10xUnicorn** *[02:50:09]*: Okay, gotcha. Yeah, I thought you had. 
+**Tucker Bascom** *[02:50:17]*: Yeah, so that's the one that updates, like all the files and stuff on your behalf. 
+**Daniel Knight - 10xUnicorn** *[02:50:24]*: Yeah. Because otherwise. So it'll give you the commands to run and deploy yourself, or you can just ask it to do it for you. So I just ask it. 
+**Tucker Bascom** *[02:50:36]*: I see. 
+**Daniel Knight - 10xUnicorn** *[02:50:37]*: Okay. Yeah. So until you install that skill, it'll give you the commands and then you run it yourself. But now that it's installed, it'll just deploy the terminal and run the commands for you. Yes. Which isn't a big deal, but it's really nice to spend 30 minutes prompting and then you give it the prompt and you go and you make lunch and you're able to refresh it because it just deployed it all for you versus coming back and seeing that you have to deploy it and then there's an error. What's nice is that it will also check the deployment status, and if there's an error, you then it'll work through the error and keep redeploying until it solves the problem. It's really nice. So, yeah, game changer. 
+**Mark Savant** *[02:51:25]*: Can we. Can we look at Supabase for a moment? Because at this point, you know, we all have the ability to input information into our app. 
+**Daniel Knight - 10xUnicorn** *[02:51:34]*: Right. 
+**Mark Savant** *[02:51:35]*: But I'm trying to figure out, well, what do we do with that data once it's in there? Like in my case, I want. Want to send an email out to that email, but, you know, James may want to say, hey, let me pull the database for all the transactions that happen on this date, or, you know, and so on and so forth. 
+**James** *[02:51:52]*: Yeah. 
+**Mark Savant** *[02:51:54]*: So in any event, I'm. I'm in Supabase now, but I'm not exactly sure because I filled out my form a few times, but I'm not exactly sure where all that lives or how to integrate it. 
+**Daniel Knight - 10xUnicorn** *[02:52:05]*: Yeah. So I'm going to go with my, probably be the best example, my NightOps project. So all of the data will live under this table editor. You click on here and it shows all of the different tables that it has created for you. So you guys won't have as many as I have as on this one, but you might have like, maybe I should switch to something more. 
+**Mark Savant** *[02:52:32]*: Well, those are all for different projects too, right? Wouldn't it better to organize by. By project? 
+**Daniel Knight - 10xUnicorn** *[02:52:39]*: Well, this is one project, this Night Ops project. 
+**Mark Savant** *[02:52:43]*: How do you have so many tables for that one project? 
+**Daniel Knight - 10xUnicorn** *[02:52:46]*: So I have multiple dashboards connecting into this one system. 
+**Mark Savant** *[02:52:52]*: Gotcha. 
+**Daniel Knight - 10xUnicorn** *[02:52:53]*: But I also have a fully built out dashboard. Let me show you what this looks like because there are tons of tables in here. But it's because I have my dashboard. I have applications, leads, clients, projects, tasks, deals, invoices, the apps that I give people access to, events, resources, careers reviews, education, library and partners. All of those are tables inside of this one system. Right? Careers, clients, you know, commissions, deals. So there's a table for deal projects, deals that are assigned to contacts and activities. Right. So there's like, there's a lot to this one. Right. So like if I were to look for, you know, my clients, then I just know that those are under clients. Right. And I can see the tier, the profile id, if it's, you know, the status, all of the details of what I have in this dashboard. Right. 
+**Mark Savant** *[02:53:54]*: Yeah, it's like a full CRM that you've got in there. 
+**Daniel Knight - 10xUnicorn** *[02:53:58]*: It really is. And that's essentially what Supabase is used for, is for companies to have all of their data, their full database of all of their CRM records. 
+**Mark Savant** *[02:54:12]*: And I could use this assuming. So another way that I might go is instead of using Vercel for my hosting, I might just input these widgets and build out my WordPress site itself. I could still use Supabase as the database for my WordPress site as well, right? 
+**Daniel Knight - 10xUnicorn** *[02:54:33]*: Yeah, it's just a matter of connecting it all. And at the end of the day, your application is really just a few HTML files and some, you know, JSON files and things. But ultimately it's just Vercel is. Or the terminal is taking it and pushing it to Vercel, which is where it's being hosted. So if it's through WordPress, well, wherever you're hosting is, it just needs to be packaged up on the hosting platform correctly. And so the Connection with Vercel is nice because it's just built in here. It knows how to push it and what the commands are. But if you're pushing it to GoDaddy or something, I imagine it would give you the terminal prompts to push your package to be hosted through GoDaddy. It would just require a different process to get those settings from your hosting platform. Right? 
+**James** *[02:55:35]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:55:36]*: You just basically log into that hosting platform if it has that kind of a connection, which I think. You think you said GoDaddy. I'm sure it has that ability. 
+**Mark Savant** *[02:55:48]*: Yeah. Well, what I mean, what I had done previously was I just went. I just. I had it create that form or that. That lead magnet said, hey, can you add this to my WordPress site? It's like, sure thing, boss. Popped open WordPress, put in all the code, and then I could go in and I could fill it out. I hadn't figured out how to go from that to delivery, but I didn't even need to log into my hosting platform. It just built it out on. On the WordPress. And maybe that's just the front end, not the back end of it, but yeah,. 
+**Daniel Knight - 10xUnicorn** *[02:56:21]*: Yeah. And I think that's what it is. It basically just built your HTML file right on WordPress. That's what it is. It's the same thing as how Go High Level does it. So you can copy your HTML code, paste it into your code editor in Go High Level, but because it's hosted elsewhere, it's just running the HTML code to present it on the web. In any hosting platform, all hosting platforms are doing is reading HTML code and turning it into what you actually see. 
+**James** *[02:56:57]*: Yeah,. 
+**Daniel Knight - 10xUnicorn** *[02:57:00]*: That's not all they're doing, but yeah, no, I understand. Does that help on the Supabase side? And I don't know, is there anything else you want to see in here? So you. 
+**Mark Savant** *[02:57:13]*: No, I think, I mean, that's the key thing. What I'm trying to do here is say, how do I take those inputs from people in my app and see those inputs which I can see on Supabase? I see them right now. And then how do I get them sent out to those people via resend? So I'm. 
+**Daniel Knight - 10xUnicorn** *[02:57:33]*: Yeah, so that's. That's a whole. That's a whole next step. Did you. Did you already tell Claude that you want to get this set up through resend? 
+**Mark Savant** *[02:57:45]*: Yeah, it's working now. 
+**Daniel Knight - 10xUnicorn** *[02:57:47]*: Yeah. Okay, cool. Yeah, it'll just walk you through those steps, probably. Is it writing out those emails? 
+**Mark Savant** *[02:57:54]*: It did that. It did that and I said, okay. All this looks good, which it'll need some more cleanup. I said, oh, let's get all this connected with a resend and the Supabase database. 
+**Daniel Knight - 10xUnicorn** *[02:58:06]*: Yeah. So I will just show you while we're in Supabase, there are a couple things that might come up as you guys are working on stuff. Most commonly is the system will ask for your Supabase secret key as well as the Anon key. Those you can find under Project Settings. And then you'll see under Data API these numbers live under. Let's see. Oh, I'm sorry. Okay, sorry. It's under authentication. It's settings on Vercel. So authentication under Sign in and Providers. You'll see these third party auth and the Supabase auth. And then also. Are we. Oh, it's these API keys. I'm sorry, it. I was in the right spot. So your Anon and Service role key, you'll go to Project Settings and then API keys. I went to Data API. The API keys, you'll see the legacy Anon and Service role API keys. 
+**Daniel Knight - 10xUnicorn** *[02:59:34]*: You'll most likely be asked for this. Claude can just go and find them for you. But it doesn't always do it. So just know that this is where it might be if you need to access it again and just ask Claude. You know, if you guys are ever having a hard time finding things, sometimes I love it because it assumes I know how to just navigate and find where I'm going. But sometimes it's like, yeah, just go to your API keys and get your legacy. 

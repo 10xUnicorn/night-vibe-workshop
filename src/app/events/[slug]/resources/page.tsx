@@ -458,7 +458,7 @@ export default function ResourcesPage() {
   const params = useParams()
   const slug = params?.slug as string
   const [event, setEvent] = useState<EventData | null>(null)
-  const [activeSection, setActiveSection] = useState<'day1' | 'day2' | 'tools' | 'skills' | 'postEvent'>('day1')
+  const [activeSection, setActiveSection] = useState<'day1' | 'day2' | 'tools' | 'skills' | 'guides' | 'postEvent'>('day1')
 
   useEffect(() => {
     if (!slug) return
@@ -470,6 +470,7 @@ export default function ResourcesPage() {
   const sections: { id: typeof activeSection; label: string; emoji: string }[] = [
     { id: 'day1', label: 'Day 1 Prompts', emoji: '⚡' },
     { id: 'day2', label: 'Day 2 Prompts', emoji: '🚀' },
+    { id: 'guides', label: 'Guides & Downloads', emoji: '📚' },
     { id: 'tools', label: 'Tools & Links', emoji: '🛠️' },
     { id: 'skills', label: 'Claude Skills', emoji: '🧠' },
     { id: 'postEvent', label: 'Post-Event', emoji: '🌟' },
@@ -620,6 +621,57 @@ Still building. More coming Day 2. 👀
                 </a>
               </div>
             </div>
+
+            {/* Day 1 Video Recording */}
+            <div style={{ marginTop: 32 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>🎥 Day 1 Recording</h3>
+              <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 14 }}>
+                <iframe
+                  src="https://www.youtube.com/embed/Gd0Q12W495A"
+                  style={{ width: '100%', height: 450, border: 'none', display: 'block' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  title="Day 1 Workshop Recording"
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <a
+                  href="https://youtu.be/Gd0Q12W495A"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-block',
+                    padding: '10px 22px',
+                    background: 'rgba(108,58,237,0.15)',
+                    border: '1px solid rgba(108,58,237,0.4)',
+                    color: '#a78bfa',
+                    textDecoration: 'none',
+                    borderRadius: 10,
+                    fontWeight: 600,
+                    fontSize: 14,
+                  }}
+                >
+                  Watch on YouTube →
+                </a>
+                <a
+                  href="/workshop-day1-transcript.txt"
+                  download
+                  style={{
+                    display: 'inline-block',
+                    padding: '10px 22px',
+                    background: 'rgba(45,212,191,0.1)',
+                    border: '1px solid rgba(45,212,191,0.3)',
+                    color: '#2DD4BF',
+                    textDecoration: 'none',
+                    borderRadius: 10,
+                    fontWeight: 600,
+                    fontSize: 14,
+                  }}
+                >
+                  ⬇ Download Day 1 Transcript
+                </a>
+              </div>
+            </div>
           </div>
         )}
 
@@ -680,6 +732,239 @@ If you want to build your own app — the next workshop is coming. 🔥
                 </a>
               </div>
             </div>
+
+            {/* Day 2 Video Recording */}
+            <div style={{ marginTop: 32 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>🎥 Day 2 Recording</h3>
+              <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 14 }}>
+                <iframe
+                  src="https://www.youtube.com/embed/yY8_x8UCFbE"
+                  style={{ width: '100%', height: 450, border: 'none', display: 'block' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  title="Day 2 Workshop Recording"
+                />
+              </div>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <a
+                  href="https://youtu.be/yY8_x8UCFbE"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-block',
+                    padding: '10px 22px',
+                    background: 'rgba(108,58,237,0.15)',
+                    border: '1px solid rgba(108,58,237,0.4)',
+                    color: '#a78bfa',
+                    textDecoration: 'none',
+                    borderRadius: 10,
+                    fontWeight: 600,
+                    fontSize: 14,
+                  }}
+                >
+                  Watch on YouTube →
+                </a>
+                <a
+                  href="/workshop-day2-transcript.txt"
+                  download
+                  style={{
+                    display: 'inline-block',
+                    padding: '10px 22px',
+                    background: 'rgba(45,212,191,0.1)',
+                    border: '1px solid rgba(45,212,191,0.3)',
+                    color: '#2DD4BF',
+                    textDecoration: 'none',
+                    borderRadius: 10,
+                    fontWeight: 600,
+                    fontSize: 14,
+                  }}
+                >
+                  ⬇ Download Day 2 Transcript
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── GUIDES & DOWNLOADS ── */}
+        {activeSection === 'guides' && (
+          <div>
+            <div style={{ marginBottom: 28 }}>
+              <h2 style={{ fontSize: 24, fontWeight: 800, margin: '0 0 8px', color: '#f0f0f5' }}>📚 Guides & Downloads</h2>
+              <p style={{ margin: 0, fontSize: 15, color: '#9ca3af', lineHeight: 1.6 }}>
+                Everything from the workshop — recordings, transcripts, and step-by-step guides extracted from both days.
+              </p>
+            </div>
+
+            {/* Video Recordings */}
+            <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>🎥 Workshop Recordings</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 16, marginBottom: 32 }}>
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
+                <iframe
+                  src="https://www.youtube.com/embed/Gd0Q12W495A"
+                  style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  title="Day 1 Recording"
+                />
+                <div style={{ padding: '14px 16px' }}>
+                  <p style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>Day 1 — Setup, Build & Connect</p>
+                  <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>April 7, 2026 · ~241 minutes</p>
+                </div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
+                <iframe
+                  src="https://www.youtube.com/embed/yY8_x8UCFbE"
+                  style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  title="Day 2 Recording"
+                />
+                <div style={{ padding: '14px 16px' }}>
+                  <p style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>Day 2 — Deploy, Polish & Launch</p>
+                  <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>April 8, 2026 · ~243 minutes</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Transcripts */}
+            <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>📝 Full Transcripts</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 32 }}>
+              <a
+                href="/workshop-day1-transcript.txt"
+                download
+                style={{
+                  display: 'block',
+                  padding: '20px',
+                  background: 'rgba(108,58,237,0.08)',
+                  border: '1px solid rgba(108,58,237,0.25)',
+                  borderRadius: 14,
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'border-color 0.2s',
+                }}
+              >
+                <p style={{ margin: '0 0 6px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>⬇ Day 1 Transcript</p>
+                <p style={{ margin: 0, fontSize: 13, color: '#9ca3af' }}>Full workshop transcription — April 7, 2026</p>
+              </a>
+              <a
+                href="/workshop-day2-transcript.txt"
+                download
+                style={{
+                  display: 'block',
+                  padding: '20px',
+                  background: 'rgba(45,212,191,0.06)',
+                  border: '1px solid rgba(45,212,191,0.2)',
+                  borderRadius: 14,
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  transition: 'border-color 0.2s',
+                }}
+              >
+                <p style={{ margin: '0 0 6px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>⬇ Day 2 Transcript</p>
+                <p style={{ margin: 0, fontSize: 13, color: '#9ca3af' }}>Full workshop transcription — April 8, 2026</p>
+              </a>
+            </div>
+
+            {/* Resource Guides */}
+            <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>📖 Step-by-Step Guides</h3>
+            <p style={{ margin: '0 0 16px', fontSize: 14, color: '#9ca3af', lineHeight: 1.6 }}>
+              Extracted from both workshop days — actionable instructions, commands, and troubleshooting tips.
+            </p>
+            <div style={{ display: 'grid', gap: 14, marginBottom: 32 }}>
+              {[
+                {
+                  title: 'Complete Setup & Build Guide',
+                  description: 'Step-by-step from zero to deployed app — account creation, Claude Cowork setup, AppDash workflow, Supabase connection, Vercel deployment, and domain setup.',
+                  file: '/workshop-setup-guide.txt',
+                  color: '#6C3AED',
+                  icon: '🏗️',
+                },
+                {
+                  title: 'Troubleshooting & Common Fixes',
+                  description: 'Every error and fix from the workshop — token limits, wrong folder deployment, npm build errors, login 404s, database issues, and more.',
+                  file: '/workshop-troubleshooting-guide.txt',
+                  color: '#EF4444',
+                  icon: '🔧',
+                },
+                {
+                  title: 'Claude Skills Installation Guide',
+                  description: 'How to install and configure all 5 recommended skills — Safety Guard, Session Tracker, Vercel Deploy, Project Selector, and Prompt Optimizer.',
+                  file: '/workshop-skills-guide.txt',
+                  color: '#2DD4BF',
+                  icon: '🧠',
+                },
+                {
+                  title: 'Go-to-Market & Launch Guide',
+                  description: 'Take your app from built to live — logo generation, social assets, launch posts, email setup, pitch decks, pricing, and community sharing.',
+                  file: '/workshop-launch-guide.txt',
+                  color: '#F5C542',
+                  icon: '🚀',
+                },
+              ].map(guide => (
+                <a
+                  key={guide.file}
+                  href={guide.file}
+                  download
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 16,
+                    padding: '20px',
+                    background: `${guide.color}0d`,
+                    border: `1px solid ${guide.color}33`,
+                    borderRadius: 14,
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    transition: 'border-color 0.2s',
+                  }}
+                >
+                  <div style={{
+                    width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+                    background: `${guide.color}22`,
+                    border: `1px solid ${guide.color}44`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 22,
+                  }}>
+                    {guide.icon}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>{guide.title}</p>
+                    <p style={{ margin: 0, fontSize: 13, color: '#9ca3af', lineHeight: 1.5 }}>{guide.description}</p>
+                    <p style={{ margin: '8px 0 0', fontSize: 12, color: guide.color, fontWeight: 600 }}>⬇ Download Guide (.txt)</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+
+            {/* Workshop Slides */}
+            <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>📊 Workshop Slides</h3>
+            <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 14 }}>
+              <iframe
+                src="https://gamma.app/embed/smkbzpysmaskumb"
+                style={{ width: '100%', maxWidth: '100%', height: 450, border: 'none', display: 'block' }}
+                allow="fullscreen"
+                title="Build & Launch Your App LIVE"
+              />
+            </div>
+            <a
+              href="https://assets.api.gamma.app/export/pdf/smkbzpysmaskumb/e8e5d5a070a825b20580e8fb2c86c019/Build-and-Launch-Your-App-LIVE.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-block',
+                padding: '10px 22px',
+                background: 'rgba(108,58,237,0.15)',
+                border: '1px solid rgba(108,58,237,0.4)',
+                color: '#a78bfa',
+                textDecoration: 'none',
+                borderRadius: 10,
+                fontWeight: 600,
+                fontSize: 14,
+              }}
+            >
+              ⬇ Download Slides (PDF)
+            </a>
           </div>
         )}
 
@@ -894,6 +1179,74 @@ If you want to build your own app — the next workshop is coming. 🔥
                   <span style={{ fontSize: 14, color: '#6C3AED', fontWeight: 600, whiteSpace: 'nowrap' }}>{item.cta}</span>
                 </a>
               ))}
+            </div>
+
+            {/* Workshop Recordings */}
+            <div style={{ marginBottom: 32 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>🎥 Workshop Recordings</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: 16 }}>
+                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/Gd0Q12W495A"
+                    style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    title="Day 1 Recording"
+                  />
+                  <div style={{ padding: '14px 16px' }}>
+                    <p style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>Day 1 — Setup, Build & Connect</p>
+                    <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>April 7, 2026 · ~241 minutes</p>
+                  </div>
+                </div>
+                <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden' }}>
+                  <iframe
+                    src="https://www.youtube.com/embed/yY8_x8UCFbE"
+                    style={{ width: '100%', height: 220, border: 'none', display: 'block' }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    title="Day 2 Recording"
+                  />
+                  <div style={{ padding: '14px 16px' }}>
+                    <p style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 700, color: '#f0f0f5' }}>Day 2 — Deploy, Polish & Launch</p>
+                    <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>April 8, 2026 · ~243 minutes</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Transcripts & Guides Downloads */}
+            <div style={{ marginBottom: 32 }}>
+              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#f0f0f5' }}>📥 Downloads</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+                {[
+                  { label: 'Day 1 Transcript', file: '/workshop-day1-transcript.txt', color: '#6C3AED' },
+                  { label: 'Day 2 Transcript', file: '/workshop-day2-transcript.txt', color: '#2DD4BF' },
+                  { label: 'Setup & Build Guide', file: '/workshop-setup-guide.txt', color: '#a78bfa' },
+                  { label: 'Troubleshooting Guide', file: '/workshop-troubleshooting-guide.txt', color: '#EF4444' },
+                  { label: 'Skills Install Guide', file: '/workshop-skills-guide.txt', color: '#2DD4BF' },
+                  { label: 'Launch & Go-to-Market Guide', file: '/workshop-launch-guide.txt', color: '#F5C542' },
+                ].map(dl => (
+                  <a
+                    key={dl.file}
+                    href={dl.file}
+                    download
+                    style={{
+                      display: 'block',
+                      padding: '16px',
+                      background: `${dl.color}0d`,
+                      border: `1px solid ${dl.color}33`,
+                      borderRadius: 12,
+                      textDecoration: 'none',
+                      color: '#f0f0f5',
+                      fontSize: 14,
+                      fontWeight: 600,
+                      transition: 'border-color 0.2s',
+                    }}
+                  >
+                    ⬇ {dl.label}
+                  </a>
+                ))}
+              </div>
             </div>
 
             {/* Slides */}

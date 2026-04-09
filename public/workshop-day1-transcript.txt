@@ -1,0 +1,1332 @@
+Night Vibe Workshop — Day 1 Full Transcript
+Build & Launch Your App LIVE 2-Day Workshop
+April 7, 2026
+
+Recording: https://youtu.be/Gd0Q12W495A
+Duration: ~241 minutes
+
+═══════════════════════════════════════════════════
+
+# Build & Launch Your App LIVE 2-Day Workshop
+
+**Meeting Date:** 7th Apr, 2026 - 9:00 AM
+
+---
+
+**Mark Savant** *[00:00]*: Extra usage. 
+**Daniel Knight - 10xUnicorn** *[00:04]*: Yeah, yeah, it's pretty great. I always tell people like, you know,. 
+**Daniel Knight - 10xUnicorn** *[00:10]*: They're like, well, I don't need that much. Like I don't need the 5x or I don't need the 20x or whatever. I'm like, you might not need it. Right. And you're like, you're accomplishing a lot with what you have. Right. But like imagine what would it be like if you we're producing 20 times the amount of output as you currently are, you know? 
+**Mark Savant** *[00:29]*: Yeah. I feel like yoke right now kind of my goal is I want my cloud working as much as possible. You know, it's probably gonna be a problem. Have you, have you jumped into cloud dispatch yet? 
+**Daniel Knight - 10xUnicorn** *[00:45]*: A little bit. 
+**Daniel Knight - 10xUnicorn** *[00:46]*: A little bit. I haven't jumped into it too far. How come? 
+**Mark Savant** *[00:50]*: Well, because I feel like it's gonna be a problem once I really get involved with Claude dispatch. I'm just gonna have like every time I pop open my phone it's gonna be like, go, go. Just have it working all the time. It's just gonna be dinging me every 30 minutes, you know. 
+**Daniel Knight - 10xUnicorn** *[01:07]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:07]*: My issue with cloud dispatch is that it doesn't like open your chat, like it doesn't save your conversation so you can't continue on. You know, it's just kind of like the one off things. 
+**Mark Savant** *[01:20]*: Yeah. But nevertheless like getting it to integrate. Like just this morning, you know, I create, you know, I'm creating a business plan in this mastermind group and I just created it, just started doing stuff that I didn't expect it to, like making sliders and just integrating with different parts of my work. There was a point where it said, hey, I, you know, I said, how am I going to send this out to people? Can you add it to, you know, can I add it to WordPress? And it's like, yeah, do this, this and this. I'm like, can you just do it for me? And it's like, sure. Boom. Just went to town, adding it onto my WordPress site. So it's crazy. It's unbelievable. 
+**Daniel Knight - 10xUnicorn** *[01:58]*: Nice. 
+**Daniel Knight - 10xUnicorn** *[01:59]*: Awesome, awesome. Well, welcome everybody. 
+**Daniel Knight - 10xUnicorn** *[02:03]*: We're just kind of getting situated here as we get started. If you guys want to put in the chat where you are tuning in from, always good to know where you guys are at. So we'll get started here in just a minute. I see, Reboo, if you wouldn't mind letting us know your name and who invited you and. 
+**Daniel Knight - 10xUnicorn** *[02:27]*: Yeah, that'd be great. 
+**James - reboo** *[02:29]*: My name is James. 
+**Daniel Knight - 10xUnicorn** *[02:35]*: Are you on two devices, James? 
+**Daniel Knight - 10xUnicorn** *[02:38]*: Well, yeah. 
+**James** *[02:44]*: Okay. 
+**James - reboo** *[02:45]*: Yeah, I tried to sign in from. Is that better now? 
+**Daniel Knight - 10xUnicorn** *[02:47]*: Yes. Okay. 
+**James - reboo** *[02:48]*: Yeah, I was actually waiting on the, the link and I guess I must have an older version of the app or something. It just never connected. So I went to the browser app. 
+**Daniel Knight - 10xUnicorn** *[02:58]*: Oh, okay. 
+**James - reboo** *[03:00]*: Okay. So let's see. Maximize this one again. Okay. Yeah. So I'm James. I'm actually from Haiku, Hawaii and. 
+**Mark Savant** *[03:11]*: Was. 
+**James - reboo** *[03:11]*: Just following Mark's channel. That's how I ended up here. 
+**James** *[03:15]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[03:16]*: Well, well, I would love for everybody to kind of share what you're looking to get out of the event and the workshop and then also what you're looking to build. You know, we've got a pretty thorough couple of days ahead of us and it'll be very hands on, you know, going to be a pretty tight, intimate group. So we're going to really be able to troubleshoot and work through some things and really make some things happen. So I'm really excited for this. So thank you guys for being here for anybody. James, this first time we're meeting. So my name is Daniel Knight and I'm going to be pretty much hosting for the most part. 
+**Daniel Knight - 10xUnicorn** *[03:55]*: Mark and I will be, are putting this on together and we basically put our heads together and realize that there's definitely an opportunity to kind of showcase what cloud is capable of and really walk people through taking an idea and turning it into a fully functional app. So that's what we're going to do here today. So really excited about this. Very much meant to be, hands on and there might be some people that pop in throughout, but our goal is really to get you guys to a point of completion at least to where you feel like you have something functional that you can share, that you can use, that you can implement in your business or if it's, you know, something you want to create kind of as its own product, that works too. 
+**Daniel Knight - 10xUnicorn** *[04:42]*: So. 
+**Daniel Knight - 10xUnicorn** *[04:43]*: So yeah, so thank you guys for being here. So I was talking with Tucker last night. I have a little bit of an idea of the direction that you're going. Mark was kind of sharing. So who would like to start? Maybe give us just kind of a brief intro what you're looking to get out of this and what you are planning on building over these next few days. Any volunteers? 
+**Tucker Bascom** *[05:07]*: Chime in so my name is Tucker. It's good to meet you guys. Like I was telling Daniel, I'm in the restaurant space and I feel like as a whole the restaurant industry has not dabbled into AI nearly as Much as it should be. So I've been playing around with ChatGPT, just downloaded Cloud last night and I've been playing around with it already see some differences. I'm excited to get more familiar with Claude, but I think in terms of what I would like to build over the next few days, would love to go the franchising AI help route. There's a lot of independent restaurant owners that have one restaurant and their dream is to franchise it, but they don't even know where to start. 
+**Tucker Bascom** *[05:54]*: And I think there's a huge whole bunch of pieces of the franchise process that AI would be a really good for. So I think I'm going to start going down that route just for these two days and I have no doubt what I learn will translate into other projects that I would like to take on. So that's kind of what I'm feeling. 
+**Daniel Knight - 10xUnicorn** *[06:13]*: Awesome. Yeah, I'm excited about that. All right, cool. 
+**Daniel Knight - 10xUnicorn** *[06:17]*: Thank you, Tucker. 
+**Daniel Knight - 10xUnicorn** *[06:18]*: Appreciate it. 
+**Daniel Knight - 10xUnicorn** *[06:20]*: James, you want to share next? 
+**James - reboo** *[06:23]*: Yeah, so I'm just really just here to kind of dip my toes, if you will, in the vastness of this new AI. So I'm a business owner, I own a contracting company. I've been doing construction my whole life kind of thing. And my weak point has always been the paperwork, you know what I mean? So whatever I can do to kind of help that along, something I can't do, it's just, you know, not my favorite thing to do. So I have my methods, you know, it's very manual, it's, you know, kind of standardized. I'm not one to use software because, you know, my, as far as my company needs. I'm not a large company though. I've been there in my life, you know, just kind of toned everything down, keep everything manageable and keep the cortisone levels lower, if you will. 
+**James - reboo** *[07:21]*: And so, you know, I kind of keep it, you know, I find that the larger softwares and all those type of things, they just become too big, too bulky. I don't need 90% of what they're using on them. I just need to kind of keep it tight for what I need it for. So I'm hoping that this kind of works. I do have a little bit of code experience. One of my main, I'm a general contractor, general engineering contractor and electrical contractor. But I primarily came from an electrical contracting background. So I do have certain control type programming, you know, in our industry like we call PLC and different type of things like that. So more not so much on the clerical side, more on the industrial side of things. So. 
+**James** *[08:10]*: Like that. So. 
+**James - reboo** *[08:11]*: So I'm hoping to kind of pick up a little bit this new things. You know, I think it's new for everybody. 
+**James** *[08:17]*: Really? 
+**Daniel Knight - 10xUnicorn** *[08:19]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[08:20]*: So, James, what industry are you in? 
+**James - reboo** *[08:23]*: Construction? Well, yeah, so construction and maintenance. So. So we do electrical and construction, both civil and a building and then. 
+**James** *[08:35]*: And of course, electrical. 
+**Daniel Knight - 10xUnicorn** *[08:37]*: Okay, cool. 
+**Daniel Knight - 10xUnicorn** *[08:38]*: And so you mentioned paperwork as far as, like, kind of what you're looking to build here. And there are some things that we will go through to really get clear. 
+**Daniel Knight - 10xUnicorn** *[08:49]*: On that and the problems that whatever. 
+**Daniel Knight - 10xUnicorn** *[08:51]*: You're building is going to solve. Do you have some sort of idea of what you kind of. 
+**James - reboo** *[08:56]*: I kind of do. You know, obviously, you know, just vaguely, you know, if it's contract work, it's pretty easy for us to track, you know, because it's a contract. We could just do both bill percentages and things like that. But we do a lot of time and material type of work that I'd like to keep more updated because when it comes down to that, I have to go back, get in every hours, get all the materials that were pulled in from different areas and kind of compile that so I can, you know, if I can automate that'd be great because I, I spent a lot of time sitting down sometimes and going, trying to pull that together, you know, and if you know anything about field people, they're not the greatest at getting you all the receipts and everything. You know what I mean? 
+**James - reboo** *[09:39]*: So, you know, so tracking that down is sometimes fun too. 
+**Daniel Knight - 10xUnicorn** *[09:45]*: All right, cool. 
+**Daniel Knight - 10xUnicorn** *[09:46]*: Sounds good. 
+**Daniel Knight - 10xUnicorn** *[09:47]*: Yeah, it sounds like we'll put. 
+**Daniel Knight - 10xUnicorn** *[09:49]*: Together something really useful for you. 
+**Daniel Knight - 10xUnicorn** *[09:53]*: Yeah. 
+**Mark Savant** *[09:53]*: One of the things that Daniel and I were talking about is that if you have any spreadsheets. Spreadsheets are perfect for transforming into these. I, I, I. This word delight kind of comes to my mind. I was just playing with Claude clo work this morning, put together, putting together a business proposal for a mastermind group. And some of the stuff that Claude put together automatically was just visually very delighting. Nobody's doing stuff like this. And I, I think there's a, there's, at least for me, there's a real opportunity to, you know, not just grow my knowledge, because what Dan has showed me he's built is big. But like you, James, I feel like I'm spending so much money on software right now. And what I see, what Dan has been putting together for clients, what I, and I'm talking to my other colleagues. 
+**Mark Savant** *[10:43]*: I had talking to a colleague the other day. He's like, oh, I'm saving over a thousand dollars on software just by creating these small widgets that are embedded in my WordPress site. And I said, I want that. And yeah, I'm paying hundreds and hundreds of dollars for email, for CRM for all this. And I'm like, I don't, I would love to just replace that on my WordPress, on my WordPress site. And it seems like now's a good time because tokens are relatively cheap right now and six months from now when everybody knows what's happened, we're going to get less of that. Aha. That. 
+**Mark Savant** *[11:20]*: Wow, that's possible, you know, so I, you know, at least, Dan, I'd like to walk out of here with some working software, A, but B, I want to have that entire framework, that entire checklist together that you've been building out so that I can replicate, replicate and then quickly train Claude or maybe what's. Maybe OpenAI creates the next big framework. Cool. I've got the entire checklist of how to execute on this. I can upload that and then quickly move on to the next big software. 
+**James - reboo** *[11:52]*: So. 
+**Daniel Knight - 10xUnicorn** *[11:54]*: Yeah, that's. 
+**Tucker Bascom** *[11:57]*: Awesome. 
+**Daniel Knight - 10xUnicorn** *[11:59]*: Yeah, yeah. Cool. 
+**Daniel Knight - 10xUnicorn** *[12:00]*: Thank you Mark. And Mark, why don't you share a little bit about what you're planning on. 
+**Daniel Knight - 10xUnicorn** *[12:05]*: Building over these couple of days? 
+**Mark Savant** *[12:08]*: Yeah, well, so I have multiple projects right now. You know, I do. I'm, you know, I'm the marketing director part time for an Amazon SaaS company. I'm managing about a fifteen to twenty thousand dollar monthly marketing budget. And I'm saying like, well, how do I provide more value? How do I create new interactive tools for potential customers? How do I just really like bring what we're doing on a marketing level to, well, to the next level and then B, you know, the YouTube channel. James, I'm just, I'm glad to see you here from the YouTube. The YouTube channel has been taking off and this is kind of like the first real paid offer that I've offered to the YouTube channel. And you know, we can kind of talk about that at a later time. 
+**Mark Savant** *[12:56]*: I don't want to monopolize, but I'm trying to find, you know, it's not enough just to highlight the problems and the challenges that AI is bringing, but we have to offer solutions. So I'm working on what are the right solutions for people like James and other members of the YouTube audience. So, you know, I. I think walking away from here, I'd like to have a really great framework on the marketing side of how to create interesting interactive lead magnet experiences both for the. The. The. The SaaS company that I do marketing work for and for the. The AI update platform that I. 
+**Daniel Knight - 10xUnicorn** *[13:32]*: Sweet. 
+**Daniel Knight - 10xUnicorn** *[13:33]*: All right, awesome. 
+**Daniel Knight - 10xUnicorn** *[13:34]*: Cool. 
+**Mark Savant** *[13:34]*: And by the way, I think the biggest. I did some work with replit in the past, but the biggest problem I had was with database management. The database was always getting screwed up. And so when you kind of talked about some of the integrations you're using with databases, when you talk about some of the integrations you're doing with email, that's a real unlock that I need. That's kind of like a missing piece of the puzzle. 
+**Daniel Knight - 10xUnicorn** *[13:58]*: Okay, got it. Cool. 
+**Daniel Knight - 10xUnicorn** *[14:00]*: Yeah, that was like. There were a couple kind of big AHAs as I've been building more and more with Claude, and definitely the email system that I found called resend, just kind of blows my mind. With the limits that it gives you and the capabilities and just how it. 
+**Daniel Knight - 10xUnicorn** *[14:20]*: Connects to your apps, it's really powerful. 
+**Daniel Knight - 10xUnicorn** *[14:23]*: So, yeah, we'll definitely touch on that. And those are some of the things, like, you know, as we get to some of these different points, that's kind of where we'll be able to, you know, speed things up versus trying to figure it out on your own, because, you know, definitely took a good deal of working through some things and making it happen, but, you know, now we've got it all connected and the apps that we're pushing out there are fully built out, and, yeah, it's awesome. 
+**Daniel Knight - 10xUnicorn** *[14:53]*: So, yeah, I'm excited about that. 
+**Daniel Knight - 10xUnicorn** *[14:55]*: That was. That's one of the. 
+**Daniel Knight - 10xUnicorn** *[14:57]*: I don't know. 
+**Daniel Knight - 10xUnicorn** *[14:57]*: There are a lot of different little things that kind of make this so incredible. 
+**Daniel Knight - 10xUnicorn** *[15:01]*: So. Yeah. Cool. All right. 
+**Daniel Knight - 10xUnicorn** *[15:05]*: Any other shares? Julene, what do you. What are we building over these couple of days? 
+**Jelene Wilkinson** *[15:12]*: I've had this idea to take a hobby of mine and try to monetize it as. I have. I think I have about 15. I gave one away. Yes, for Mother's. No, not Mother's Day. What was that? Easter. I gave one to my sister. But I have a whole bunch of orchids that I've just rescued. Like, when you see them in the grocery store or whatever, and they're, like, looking really sad, and they say they're, you know, $5 instead of 30 or whatever. And a lot of people are really intimidated by orcas just because they're different to care for. I learned to care for them. When I had a corner office working for CH and our plant guy was like, oh, you want me to water your orchid? My husband had given me one, and I was like, yeah. 
+**Jelene Wilkinson** *[15:56]*: And he taught me how to take care of it. It's so simple. So I. I thought, well, if I can just go to homes or offices and just. I only need to show up once a week, but if I could have an app where people could just schedule their service with me. So all I have to do is basically show up. I don't have to go out and do a whole lot of finding because I want to try to partner with people that do plant care, that don't do orchids. Anyway, it's just an idea. And I thought if I could have an app to. To manage the situation, that would make it a lot more fun. 
+**Daniel Knight - 10xUnicorn** *[16:33]*: Cool. Yeah, Yeah, I love it. 
+**Daniel Knight - 10xUnicorn** *[16:35]*: It's very specific and simple and, yeah, could definitely work. 
+**Daniel Knight - 10xUnicorn** *[16:40]*: So exciting. Awesome. 
+**Daniel Knight - 10xUnicorn** *[16:44]*: All right. And Jamie. I know I. So I asked Jamie to be here with us. She's going to help kind of monitor the chat and share different links and things as we're going through some of the training. But, Jamie, I don't know if you are planning on building anything or just kind of learning with us, but if you want to introduce yourself, share with us what you might be looking to get out of this, that would be awesome. 
+**Ms Jamie Johnson** *[17:09]*: Well, I am interested in all the stuff that you guys have all spoke about, especially, you know, with Mark, you know, instead of doing talking about the problems with AI, but getting a solution for it. Just, you know, building the whole set and seeing how it can be built and seeing what can be billed and how it can be used in any business, I think is a huge asset. So I'm just here to learn as much as possible and listen to everything. 
+**Daniel Knight - 10xUnicorn** *[17:49]*: Awesome. 
+**Daniel Knight - 10xUnicorn** *[17:50]*: Okay, good deal. Sweet. Well, thank you, guys. 
+**Daniel Knight - 10xUnicorn** *[17:54]*: Thank you, everybody, for sharing. I definitely just kind of wanted to start there so I can get a feel for kind of where everybody's at. So I'm going to share my screen for a little bit. Well, and I'll just real quick touch on this because. So coming into this, I was like, all right, shoot. What am I going to build? Because I'm like, all these. I have an idea and it's like, before I know it's in production and it's, you know, it's. It's being built. So I was like, well, what do I do? So I was just like, kind of doing a little demo run, and I was like, I'll create an app. 
+**Daniel Knight - 10xUnicorn** *[18:31]*: For musicians that are creating music with AI to store their, like, prompts, their styles for how they're creating their music so they can have a consistent, like, brand across all of their music. Just like, super simple. 
+**Daniel Knight - 10xUnicorn** *[18:47]*: But that's what I'm going to build. 
+**Daniel Knight - 10xUnicorn** *[18:49]*: Just a little app for musicians to keep track of their AI prompts. 
+**Daniel Knight - 10xUnicorn** *[18:55]*: Kind of, kind of interesting, but. But, yeah. 
+**Daniel Knight - 10xUnicorn** *[18:58]*: So anyway, so that's what I'm going to build. So I will also show you guys some of the other things that I've created to kind of get your gears spinning about ways you can build it. I, you know, other ideas around how you might structure it, other features and things like that. So. So, yeah, so let's get into it now. Share my screen real quick. Let me just. 
+**Daniel Knight - 10xUnicorn** *[19:25]*: Get to the right screen. Okay, cool. 
+**Daniel Knight - 10xUnicorn** *[19:38]*: So, welcome to our workshop. This is where we're going to take two days to build and launch your app, and we're going to do it live together. Like I said, my name is Daniel knight. I have done a lot of tech development work in my life. I've really been using technology since I was like, 8 years old when my dad made me the man of the house. I was fixing everything. Fixing and flipping computers out of my mom's basement at 12 years old. That was kind of my first business. And then started building out systems and integrations for financial advisors and CPAs about six or seven years ago and really just have a knack for it, Building dashboards that make insights really easy to read and connect and just everything. So we're going to have a lot of fun here. 
+**Daniel Knight - 10xUnicorn** *[20:28]*: And if you guys have questions, if you're getting stuck, like, my. My main encouragement to you is to just keep working through it and. And don't give up. Like, that's probably the hardest thing with tech, is that you can get so close. It's like you hear that story of, you know, the. The guy. The guy's digging for gold in colorado, and they get, like, just a few feet above the gold, and they don't ever actually end up striking it. But then somebody else comes in and they dig for two more inches, and bam, they strike gold. Tech is just the same, Especially as you're building things. You're going to be so close, and it's going to feel like you're so far away. You just got to, like, push through it. Like, that's really just what it takes. 
+**Daniel Knight - 10xUnicorn** *[21:12]*: And sometimes you might need to take a step back and all that. But just know that, you know, we're all here doing this Together. If you get stuck, feel free to let me know. We'll try to figure it out. And at the end of the day, you just got to keep pushing through it. I actually want to share. Want to start with this? 
+**Daniel Knight - 10xUnicorn** *[21:33]*: I want to share this meme that I saw yesterday. 
+**Daniel Knight - 10xUnicorn** *[21:38]*: It was too perfect because I was like, this was meant for this workshop. All right, hold on a second. 
+**Daniel Knight - 10xUnicorn** *[21:43]*: My computer is not working right, But. 
+**Daniel Knight - 10xUnicorn** *[21:45]*: I. I saw this, and I was like, oh, this is great. I gotta share this with everybody, because it really just resonates with what I'm saying. 
+**Daniel Knight - 10xUnicorn** *[21:53]*: I could pull it up. 
+**Mark Savant** *[21:56]*: Also, I just want to briefly add that I've been in, like, workshops before where there's, like, a hundred people in them, and it's, you know, there's, there's advantages that. There's pros to that, but you really don't feel like you have support. And, you know, my. My commitment over the next couple days and moving forward, frankly, if you're here, you've got me in your corner. Dan is one of the most gracious people I've ever worked with. So I know that we, you know, you've got. You've got support in your corner, so when you hit that inevitable wall, you've got backup. So that's. That's my commitment. 
+**Daniel Knight - 10xUnicorn** *[22:29]*: Yeah, 100%. Thanks, Mark. 
+**Daniel Knight - 10xUnicorn** *[22:32]*: And. And, yeah, and that's the thing. Like, fortunately, we also have AI in our back pocket, and all we really need to do for the most part, is keep. And this isn't totally true, but is to keep pushing it and just keep reiterating it and keep asking it to solve the problem. But here's the thing. As we're building, and this is where having access to me is going to be really helpful. There are certain points where sometimes you need to take a step back and think for it. Okay. Believe it or not, there are going to be instances where we actually have to do the thinking. And that can take reading through the file system to know that you're in the right folder. Sometimes AI doesn't realize that it's not in the right folder. 
+**Daniel Knight - 10xUnicorn** *[23:23]*: We need the capability to be able to see, hey, something's not working. Do I need to step in and solve this problem? This is. This is the. The meme for today. Those who want, try, fail, insist, improve, try again and find a way. So if you don't want it to work, then don't make it happen. But if you do want whatever it is you're building to work, just keep pushing through it. So I saw this yesterday, as I was like kind of prepping for today, and I was just like, oh, this is too good. Because, man, I can't tell you how many times I feel like I'm here and I keep trying and it's not working. And it, you'll start to get signs, you'll start to get signs that it's like, hey, we're close. 
+**Daniel Knight - 10xUnicorn** *[24:02]*: And so you tell it to go again and it still doesn't work. And then it's like, man, all right, this is it, this is the one. And you're going to ask it again. 
+**Daniel Knight - 10xUnicorn** *[24:09]*: And boom, it's going to work out. 
+**Daniel Knight - 10xUnicorn** *[24:11]*: And then you'll find 12 other things that are broken. 
+**Daniel Knight - 10xUnicorn** *[24:13]*: So. 
+**Daniel Knight - 10xUnicorn** *[24:14]*: So that's where we get to go back. So anyway, I just thought that was fun, just a fun little visual representation because we're going to go through this. So anyway, so welcome to the workshop, guys. Thank you for being here. Let's have a good time with this. You know, this is supposed to be super value driven and we're just going to pack it with everything that you need to have a fully built out app. So you're going to have your app totally ready to go. You should be able to log in, use it, add users to it if that's what you're building. If you want to collect payments, there is a way to do that. We're going touch on that as well, all the way to the point where you can share URL and have people start using it. 
+**Daniel Knight - 10xUnicorn** *[24:58]*: So that is the goal of this. And, you know, as long as you put in the work and you know, push through and, you know, follow instructions,. 
+**Daniel Knight - 10xUnicorn** *[25:08]*: We should be able to make that happen. 
+**Daniel Knight - 10xUnicorn** *[25:10]*: So that's our goal. I did just want to encourage that. Everybody is totally locked in for this. So, you know, make sure. I already did this. Close all of the unnecessary applications, tabs, windows. If you have any videos playing, anything open that is going to distract you or slow your computer down, it'll definitely help you to have all of that closed. Make sure you got your coffee and that you are ready to go if you are in. I know, James, it's a little on the earlier side for you, so thanks for being here. I got mine topped off, so I'm all good to go. And then do not disturb is also a good recommendation. So. Yeah, because it can be very frustrating when you're like deep in focus, trying to fix something and it's like ping, ping, or you're getting calls left and right. 
+**Daniel Knight - 10xUnicorn** *[26:04]*: So Definitely. Especially as you're kind of working through things I would recommend going on. 
+**Daniel Knight - 10xUnicorn** *[26:09]*: Do not disturb. 
+**Daniel Knight - 10xUnicorn** *[26:10]*: All right now, whatever you want to do for notes, I recommend two things. So one, I keep just a notepad open for any features and bugs that I'm going through as I'm working on apps. And then two, I use Whisper Flow, which is a really powerful way to dictate into your computer and essentially speak everything that you want it to do. So I'll be using that throughout the workshop. So there might be points where, you know, I'll start talking like I'm prompting. Julene's very familiar with that. 
+**Daniel Knight - 10xUnicorn** *[26:44]*: And. 
+**Daniel Knight - 10xUnicorn** *[26:45]*: And so just know I'm more than likely speaking a prompt into whatever field it is or, you know, a note. And so, yeah, so Whisper Flow is super useful for that. So just wanted to get everybody dialed in. 
+**Daniel Knight - 10xUnicorn** *[27:02]*: And then. 
+**Daniel Knight - 10xUnicorn** *[27:02]*: Yeah, so one last thing is you guys are going to want all of the tools. And I made this mark. There was just one last thing I had to create for this workshop before today started, which I'll share with you guys I'm pretty excited about, is this resources page for our workshop. You guys have a resources page that has literally everything that we're going to need from prompt templates to kick off some. Some of the builds that we're going to be doing to different tools. One of the things that I'm including is the App Dash Work Dashboard. This is basically a way to build out your app and have it done in a way that just streamlines everything. This is what that looks like. This is what that looks like. 
+**Daniel Knight - 10xUnicorn** *[28:01]*: I basically use this to keep track of all the apps that I'm working on. And what's cool about this is that you can go through here and basically fill out all of the details of the app that you're building. And this is going to be basically one of the first things that we do. The more detailed and thorough you are with what you're building, the better it's going to come out. And so I'm giving you guys access to this app dashboard so that you can kind of build out your prompt for your first app. And then that's going to give us this blueprint right here that we can copy and paste into Claude and really have it start building it out right in the first place. So everybody has that. 
+**Daniel Knight - 10xUnicorn** *[28:41]*: There's, you know, just a free trial with that account, but I'm going to actually give you access to it for 90 days. 
+**Daniel Knight - 10xUnicorn** *[28:47]*: And that's just this App Dash me. 
+**Daniel Knight - 10xUnicorn** *[28:50]*: So we'll get you Guys signed up in there in just a minute. Does everybody have Claude? 
+**Daniel Knight - 10xUnicorn** *[28:56]*: Everybody at least has cloud installed. Yeah. 
+**Daniel Knight - 10xUnicorn** *[29:00]*: Okay. I do recommend the desktop app. And so let's see here. So if you don't have that, I. 
+**Daniel Knight - 10xUnicorn** *[29:09]*: Would, I would definitely install that. Let me give you the link so that I had it in here. And just Claude, AI forward slash, download. 
+**Daniel Knight - 10xUnicorn** *[29:33]*: Anyone doesn't have it. 
+**Mark Savant** *[29:35]*: You know, what's absolutely crazy to me is how fast you're able to build this software in these dashboards. So, you know, if you think about, like a new customer, a new client, or a prospect being able to put something together like this in 10 minutes, they're going to be like, holy cow, you built this entire customized experience just for me. Nobody is doing this. 
+**Daniel Knight - 10xUnicorn** *[30:00]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[30:00]*: And, you know, that's one of the things, like, I've been. I've started giving people proposals that are websites. You know, I include a PDF download link, but they go to a website that's interactive and customized, customizable, where they can click and see, oh, if I go with this package, this is what. 
+**Daniel Knight - 10xUnicorn** *[30:21]*: It's going to look like. 
+**Daniel Knight - 10xUnicorn** *[30:22]*: If I go with this one, it's going to look like this, and I'll have way more. I go with this, it'll be, you know, fully built out, you know, mobile. 
+**Daniel Knight - 10xUnicorn** *[30:28]*: App and all that. 
+**Daniel Knight - 10xUnicorn** *[30:30]*: And people are really impressed by it. They're like, wow, this is so custom to me and it's impressive, you know, and so that's one of the things that Claude is really powerful with, is literally just building out whatever you need. Right? So this whole resources page, obviously, like, I had to have all of the details, I had the agenda ironed out, right. And so it gave us prompts that we can use to copy and, you know, paste into Claude. So I've really done a lot of the work for you guys just to kind of make things easy. And Claude has. Let me. I'll take that back. I've told Claude what to do. Claude has really done a lot of the work for you guys leading up to this workshop. 
+**Daniel Knight - 10xUnicorn** *[31:14]*: So anyway, so these are some of the tools that we're going to be using pretty much in this order. So I just wanted to make it quick and easy for you guys to access everything. There is this app questionnaire. I'm not actually going to have you fill it out, but if at any point you do, you can fill this out and that'll actually push the details of your app to the app dashboard that I just showed you. So kind of also just want to show you guys, like, this is something you can build, like something like this, just to kind of keep all of your tools and resources easily accessible if you're ever doing an event or a presentation or something. You know, it was pretty easy to put this together. 
+**Daniel Knight - 10xUnicorn** *[31:56]*: I think I gave it, you know, one prompt and maybe one revision, and the revision was just, you know, getting specific links corrected. Right. So, anyway, so the other thing I wanted to mention is these Claude skills. So these skills right here will streamline your workflow tremendously. Okay, so what you're going to want to do is actually install these, each of these, to really kind of get your Claude built in a way that it'll streamline your whole workflow. So this first one is probably one of the more important ones. This will basically create a skill so that anytime you're using Vercel is the. Is the place that'll host your application. There's just this little nuance that it's always going back to the wrong folder. And it's like the most frustrating thing in the world for one. 
+**Daniel Knight - 10xUnicorn** *[32:55]*: And then two, it tries to use what's called an MCP server to push the packages to Vercel, and it never works. It just never works. It always works when it controls your computer and runs the terminal for you. This skill will make it so that it always just uses the terminal and it doesn't get stuck trying to push it through mcp. Okay, some of these terms, maybe I should go through these closer to. 
+**Daniel Knight - 10xUnicorn** *[33:24]*: When you'll actually need them. 
+**Daniel Knight - 10xUnicorn** *[33:27]*: But yeah, some of these. Some of these things we'll talk about as we go through those different sections. Like, Vercel will be later today, the project selector, that'll probably be later, even later on after you're building out other apps. So these are just prompts that you. 
+**Daniel Knight - 10xUnicorn** *[33:43]*: Guys are going to want to install just to have. 
+**Daniel Knight - 10xUnicorn** *[33:46]*: By default, Claude can manage your files on your computer. And so if you intend on having it do any of that, it's good to ask it to not just hard delete, but actually move things to your recycling bin as well as be logical about what it's deleting. So, yeah, and then this one right here is probably one of the more important skills, which is basically just a way to make sure that Claude stays on track. This session tracker will basically make it so as you're building out an application, it will create a file that it stores and references so that it knows where it's at in the project and then what needs to be done next. 
+**Daniel Knight - 10xUnicorn** *[34:36]*: And then this One, this last skill is so that it makes sure it uses the best connectors for whatever prompt it is that it's using versus trying to do it all on its own. If there's a connector for it or a plugin, we want it to use that. So anyway, these are just some of the skills that you're going to want to install. I would say don't worry too much about 1 and 2 right now, but I would install this number five. So sorry, it's kind of backwards, but I would install that number five skill pretty much right away. So as we get into Claude, we'll have a section where we're going to kind of work through getting it all set up with the different connectors, the different skills and things like that. 
+**Daniel Knight - 10xUnicorn** *[35:23]*: So I just kind of want to give you guys an overview of this little resources page. 
+**Daniel Knight - 10xUnicorn** *[35:29]*: Okay? 
+**Daniel Knight - 10xUnicorn** *[35:30]*: And then the last part, this is just after the event, some extra things. 
+**Daniel Knight - 10xUnicorn** *[35:34]*: For you to do. 
+**Daniel Knight - 10xUnicorn** *[35:36]*: And then I've also got the slides the. 
+**Daniel Knight - 10xUnicorn** *[35:37]*: That we're going to be going through embedded here. 
+**Daniel Knight - 10xUnicorn** *[35:40]*: Just because it seemed like fun and. 
+**Daniel Knight - 10xUnicorn** *[35:42]*: I wanted you guys to have them. 
+**Daniel Knight - 10xUnicorn** *[35:43]*: In case you wanted them. So I also just want to show you some additional ways that you can do this. And basically all I did was I. 
+**Daniel Knight - 10xUnicorn** *[35:52]*: Took the embed code from Gamma and. 
+**Daniel Knight - 10xUnicorn** *[35:55]*: Gave it to Claude and said I wanted it embedded on the resources page. So anyway, it's kind of cool, right? So you guys can come back here and kind of look through and see a little bit more about what we've got coming up for the day. 
+**Daniel Knight - 10xUnicorn** *[36:07]*: Right? 
+**Daniel Knight - 10xUnicorn** *[36:08]*: So right now we're just kind of touching on Claude, right? Talking through kind of what it is, what we're using it for. You know how to have it set up. Because the way you set it up right off the bat is. Is really important. So you're going to want to make sure all of your skills and instructions. 
+**Daniel Knight - 10xUnicorn** *[36:26]*: And all that are dialed in. 
+**Daniel Knight - 10xUnicorn** *[36:28]*: So. So yeah, so let's get into it. Let me go to this next section and I'm going to not share from. 
+**Daniel Knight - 10xUnicorn** *[36:36]*: The resources page, but from the actual slides. So just one second. 
+**Daniel Knight - 10xUnicorn** *[36:42]*: Any questions as up to right now? 
+**James - reboo** *[36:46]*: Got a quick one. So I got on the Claude, I got the desktop and it says for cowork, because it looks like we're going to be using coworkers. It says you got to do a virtual machine platform. That's what it's telling me. Claude's Workplace requires virtual machine platform on Windows. Enable this feature, then restart. 
+**James** *[37:12]*: Okay, so I guess I gotta. 
+**James - reboo** *[37:15]*: I don't Know if it's gotta reboot the computer or whatever. 
+**James** *[37:17]*: It's just what it's telling me. 
+**Daniel Knight - 10xUnicorn** *[37:19]*: Yeah, it sounds like it. So I'm using a Mac. That'll be the only disconnect that we have. But yeah, I do know to. If you need to do a virtual machine, you probably got to restart it. Did you already install the virtual machine? 
+**James - reboo** *[37:33]*: I did not. 
+**Daniel Knight - 10xUnicorn** *[37:34]*: Okay. Yeah, I'm on Windows. 
+**Mark Savant** *[37:37]*: I never. I never had to do it. Wasn't complicated. I just downloaded it and restarted. 
+**James - reboo** *[37:43]*: Yeah, but you got to restart the computer, right? 
+**Mark Savant** *[37:46]*: Yeah, yeah. Okay. 
+**James - reboo** *[37:47]*: So I have to log out, log. 
+**James** *[37:48]*: Back in or whatever. 
+**Daniel Knight - 10xUnicorn** *[37:50]*: Okay, cool. Yeah, so I got to do an. 
+**Tucker Bascom** *[37:52]*: Update on mine as well to use Cowork. 
+**Daniel Knight - 10xUnicorn** *[37:56]*: Cool. All right, sounds good. 
+**Mark Savant** *[37:59]*: When you get to that point, we can do a quick 10 minute or 5 minute, 10 minute break for you guys to update. Does that sound good? 
+**Daniel Knight - 10xUnicorn** *[38:06]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[38:07]*: And we're pretty much there, so we'll. 
+**Daniel Knight - 10xUnicorn** *[38:10]*: Just touch on kind of where we're at right now. 
+**Daniel Knight - 10xUnicorn** *[38:14]*: So. So why do we want to use Claude Cowork? 
+**Daniel Knight - 10xUnicorn** *[38:17]*: Right. 
+**Daniel Knight - 10xUnicorn** *[38:18]*: So let's just touch on kind of, you know, what Claude is and some of the differences. I know pretty much everybody here is pretty well new to Claude. We won't spend too much time on this, but. But it is important. Okay. You can't move Claude Chat conversation to a Cowork conversation, and you can't move from cowork to code. 
+**Daniel Knight - 10xUnicorn** *[38:41]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[38:43]*: And so it's important that you start the conversation in the right spot. And so with everything we're doing here, always start with the end in mind. Okay. So always be thinking, okay, what is the end result that I'm trying to achieve with whatever I'm starting here? Same thing with the app, with any features, with whatever it is. So Cloud Chat is going to be good for you to kind of brainstorm and figure out like, the structure of what you want to build, maybe even build the prompt that is the ultimate prompt that you then start your Claude Cowork conversation with. For the most part. We're just going to use Claude Cowork today, and it's totally sufficient to do pretty much everything you need. 
+**Daniel Knight - 10xUnicorn** *[39:31]*: The difference between Claude Chat and Claude Cowork is that Claude Cowork will actually utilize your desktop and it can save files to your computer, it can pull from different skills and connectors and things. Cloud Chat can do it as well, but it doesn't think and plan in the way that Claude Cowork does. And so when you launch a project in Cowork, it'll Actually take a second, write out a full to do list of everything that you want it to do and everything it needs to do to accomplish what you want it to do and plan it out and then it'll save files to your computer to essentially build what you are working on. Claude Chat will create like an HTML file which is even like publishable. 
+**Daniel Knight - 10xUnicorn** *[40:21]*: So it's essentially a website, but that's essentially all it's going to do beyond saving the file in its local temporary file system. And some of these files that it creates aren't going to last as long for one as they do in Cloud Cowork. And you still need to save them somewhere, do something with them, which you need to do with Cloud Cowork as well. But the way that it's all connected just kind of streamlines the whole thing. So cloud chat is really kind of like your chat GPT have, you know, quick conversations, you know, brainstorm, create a, you know, figure out ideas, solve problems and plan. It's good to plan things with. For the most part, I just do it all in Cloud Cowork because I like the things that I'm planning to come through when I actually build it out. 
+**Daniel Knight - 10xUnicorn** *[41:15]*: So sometimes I use Cloud chat, especially if it's something that I know I'm going to be working that conversation on my phone. Because you can't access Cloud Cowork on your phone. You can dispatch to Cloud Cowork, which Mark and I were kind of talking about earlier, but it's just different. You still don't end up getting to access all of that. So. So, yeah, so that's kind of like the main difference. Cloud Cowork is going to be more so for when you're actually building and developing things and you want it to use your computer, you know, as you're working. 
+**Mark Savant** *[41:52]*: Yeah, Mark, I'll just add two things on Cowork. One of the things that Cowork is going to probably prompt you to do is to organize your files or to organize your emails, which sounds good at first, but what it can do is make it difficult for you to find files and emails that you're looking for. 
+**Daniel Knight - 10xUnicorn** *[42:11]*: Right. 
+**Mark Savant** *[42:11]*: So before you say go ahead and streamline and reorganize everything, just realize that where you had put stuff in the past, it's not going to be there anymore. So I personally have chosen not to do that. And I, I will just reiterate what Dan mentioned about co working controlling your desktop earlier today. I asked it to like write out HTML code for my WordPress site and it gave me all these instructions on how to implement. I said, can you just do it? And it just did it. It just opened up my WordPress and just created some really beautiful pages. So just wanted to add that real quick. 
+**Daniel Knight - 10xUnicorn** *[42:44]*: Yeah, yeah, awesome. 
+**Daniel Knight - 10xUnicorn** *[42:46]*: Which is also kind of why I created that safeguard prompt. If you're going to have it touch your computer organize things for you with your files. And honestly, I would just recommend. 
+**Daniel Knight - 10xUnicorn** *[43:00]*: That's kind of why I have it. 
+**Daniel Knight - 10xUnicorn** *[43:01]*: As number one, is because I would definitely just install it. So we'll go through some of those skills and make sure that you guys have those installed here in a second because that, that skill that will prevent files from getting deleted is super important just for reference. So I was not like Mark and didn't have the foresight to not let Claude into my file system and go town and organize my downloads. You know what's funny about your downloads is it's like, I don't even know. It's like having like a messy room, but you know where everything is. Right. That's what having like a download folder with just a thousand downloaded files feels like. Right? But then you clean up your room and it's like, it looks good, but you don't know where anything is anymore. So that's what I did to my downloads. 
+**Daniel Knight - 10xUnicorn** *[44:02]*: And, and I put everything organized by images, videos, business, you know, PDFs, which seems great, but it changed the download or the date, modified date, which was how I live off of my downloads to all the same exact time. So now there's no organization. Now it's just a sea of images and they were all touched last on the same exact day. Silly little thing, right? How do I fix that? I get over it. 
+**Daniel Knight - 10xUnicorn** *[44:32]*: It's. 
+**Daniel Knight - 10xUnicorn** *[44:32]*: It's done. What's done is done. You can't change the last modified date on a file. It is exactly that. 
+**Daniel Knight - 10xUnicorn** *[44:40]*: So. 
+**Mark Savant** *[44:40]*: Or you learn from someone that's done it so you don't make that mistake. 
+**Daniel Knight - 10xUnicorn** *[44:44]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[44:45]*: So you know, it's powerful also. And I'll give one last disclaimer. This, this might be more of like a doom and gloom type of thing, but, you know, be nice to your AI. You're giving it access to your computer, you're giving it access to pretty much everything. You don't want it to turn on you. So we don't know what's going on under the hood, so I would just encourage being nice to it. There's a point where I encourage, you know, vulgarity with chat. GPT will Actually get you places and I stand by that. But I also feel that vulgarity with Claude is something to not underestimate because who knows what could happen with it. So anyway, so yeah. So any questions on Claude Chat versus Claude cowork? Does that. Does that feel pretty clear? There's. 
+**Daniel Knight - 10xUnicorn** *[45:39]*: There's a lot more differences to the two, but those are kind of like the main. Like one and why to use one versus the other. 
+**Daniel Knight - 10xUnicorn** *[45:46]*: Any. 
+**Daniel Knight - 10xUnicorn** *[45:47]*: Any other questions on that or comments? It probably won't feel super clear, but just know if you're building stuff, I would live in cloud cowork if you're having quick conversations. 
+**Daniel Knight - 10xUnicorn** *[46:03]*: Cloud chat here there's the rule, right. 
+**Daniel Knight - 10xUnicorn** *[46:06]*: Cowork for building code for advanced development. If you're. And we're not really going to use code. Cloud code does have, it does have a good user interface. The main difference is Claude code will actually give you a million context window and so it really understands like a large string of code, but for the most part you're not going to need that. So anyway, I have found that the output from Claude coworker I actually like. 
+**Daniel Knight - 10xUnicorn** *[46:41]*: Better than from Claude code. I don't know, there's something about it. 
+**Daniel Knight - 10xUnicorn** *[46:46]*: So not like super different. The main thing with Claude code is that you are able to use. It uses more of like a terminal command to develop and things like that. But. But yeah, for the most part, Claude cowork is going to be pretty much. 
+**Daniel Knight - 10xUnicorn** *[47:03]*: What we need, what we're going to be using. 
+**Tucker Bascom** *[47:04]*: So. 
+**Daniel Knight - 10xUnicorn** *[47:05]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[47:06]*: Any questions? I'll get on that. 
+**Mark Savant** *[47:08]*: It's built. 
+**James** *[47:10]*: Yep. 
+**Daniel Knight - 10xUnicorn** *[47:11]*: Cool. 
+**Daniel Knight - 10xUnicorn** *[47:12]*: So let's get our cloud set up because we want to be making the most out of this and yeah, and I want to make sure that we've got some of these different skills set up. So I think, you know, we're right around an hour into it, so I think if we want to take some time, make sure our Claude is all dialed in. Let's get our skills installed, get our file systems set up so that you know our machine is working in the right folders and working properly and that it can actually build what we're building. So I'm going to stop sharing my screen so you guys can share yours if you need and. 
+**Daniel Knight - 10xUnicorn** *[48:01]*: Let's get installing. So everyone should have the link to download Claude and install it. 
+**Daniel Knight - 10xUnicorn** *[48:12]*: Yeah. If you guys want to share. If you need troubleshooting. Julene, did you actually close your tabs? 
+**Daniel Knight - 10xUnicorn** *[48:21]*: No. 
+**Daniel Knight - 10xUnicorn** *[48:27]*: What happened? You were. 
+**Mark Savant** *[48:28]*: You want to. So now we want to open up Claude the Claude desktop app to start setting it up. Right. 
+**Daniel Knight - 10xUnicorn** *[48:35]*: Yeah. And maybe that should be. Let's go there. 
+**Mark Savant** *[48:41]*: So if James and Tucker need to reboot, is this a. Is this the right time for that? 
+**Daniel Knight - 10xUnicorn** *[48:47]*: Yeah, and I probably should have just talked briefly on Claude. 
+**Daniel Knight - 10xUnicorn** *[48:53]*: So this is what we. 
+**Daniel Knight - 10xUnicorn** *[48:55]*: Have for Claude Chat and then Claude cowork. 
+**Daniel Knight - 10xUnicorn** *[48:59]*: This will be where we're living for the most part. And then in the. Just when you very first go to create a new task, it's going to ask you which file system you want to work in. And so you're going to want to make sure that it is pulling from your Claude local project, which basically you choose. You click on choose a different folder and then I saved mine to my favorites over here on the right. But you'll see if you're on a Mac and I'm not exactly sure where it would be on your Windows computer, so maybe Mark, you can help with that. But it just goes under the library. This actual Claude folder isn't necessarily searchable, but. Or it doesn't actually show up under application support, so I had to make it visible. 
+**Mark Savant** *[49:54]*: But yeah, I can't see the pop up that you've got there. 
+**Daniel Knight - 10xUnicorn** *[49:57]*: Oh, reference. 
+**Mark Savant** *[49:58]*: But I'm just wondering, you know, if we're going to walk through getting Claude optimized so we can start building the app. Is this a good time for James and Tucker to download and reboot Julene as well? I don't know if Julene already has the app. 
+**Daniel Knight - 10xUnicorn** *[50:11]*: Yeah, I would say so. 
+**Daniel Knight - 10xUnicorn** *[50:13]*: I would say let's make sure we have everyone's got it installed and that you can log into it. 
+**James - reboo** *[50:20]*: Okay, I'm gonna do that. 
+**Daniel Knight - 10xUnicorn** *[50:21]*: Okay, cool. We'll be here and do that as well. 
+**James** *[50:27]*: Cool. 
+**Mark Savant** *[50:27]*: Maybe take ten minute break here. Eight minute break. Yeah, I get that done. 
+**Daniel Knight - 10xUnicorn** *[50:33]*: Yeah, let's go 10 and. 
+**Mark Savant** *[50:38]*: Top the hour. 
+**Daniel Knight - 10xUnicorn** *[50:39]*: Boom sounds. It. 
+**Mark Savant** *[52:28]*: Julene. 
+**Ms Jamie Johnson** *[52:30]*: Is it on just on the desktop like on on the website or is it a, a separate app on the computer? Do you know. 
+**Jelene Wilkinson** *[52:49]*: It's an app? What. What did you ask. Had you said an app or is. 
+**Ms Jamie Johnson** *[52:56]*: It on like on your website? Like website. 
+**Jelene Wilkinson** *[53:02]*: Oh, like on a browser? No, it's an actual app. You install, you. You download it and then that's what. That's where I'm getting the spinning wheel of death because I guess I have too many. So I'm going through and like closing tabs right now on the browser that I have. I mean I have like I had three open. I have two browsers open still. I'M always running too much stuff at once. So, yeah, I'm just getting the spinning wheel of death. Like, just trying to get it started. 
+**Ms Jamie Johnson** *[53:32]*: I can't find the app. 
+**Jelene Wilkinson** *[53:34]*: Oh, did you use the link that he put in the chat? 
+**Ms Jamie Johnson** *[53:37]*: Yeah,. 
+**Jelene Wilkinson** *[53:40]*: That's how I got it. And then you. That takes you to a website,. 
+**Daniel Knight - 10xUnicorn** *[53:47]*: And. 
+**Jelene Wilkinson** *[53:47]*: Then you download from there, and so then you have to go to the download file. 
+**James** *[54:08]*: There we go. 
+**Ms Jamie Johnson** *[54:13]*: Okay. Thank you,. 
+**Mark Savant** *[54:46]*: Julene. My. My grandfather was obsessed with orchids, by the way. You're. You're muted. I can't. I can't hear you. 
+**Jelene Wilkinson** *[54:58]*: I forgot I did that. My late husband really liked them. And the first two, I think that he got me just that the way our house was situated with where the light was and had in the kitch. Like, there was, like, one room in the house that was good for orchids, and that's not where I had them. So they just struggled and died. And he gave me one, and I was like, well, I'll just keep it at work, because I have this corner office with nothing but sunshine, and it was really happy there. But the. Yeah, the plant guy is like, would you like me to order this, too? And then he, like, taught me how to do it, and I was like, thank you. Like, it's so simple. Like, who knew? But she's knowing that it is simple, so. 
+**Mark Savant** *[55:41]*: Yeah, well, you know, he's just. They're very peculiar about the amount of light and the amount of water. And I remember just thinking it was so strange. He had this little, like, sprayer. You just go out and spray them, you know, every day. It's just. Yeah. Beautiful plant. Beautiful, beautiful plant. 
+**Jelene Wilkinson** *[55:55]*: Yeah. I'm like, I saw a lot to learn, but I don't know. 
+**Mark Savant** *[56:01]*: Yeah. Oh, that's nice. Nice hobby, Man. I'm fine. I just. I've been. I've been waiting for this. When Dan's. 
+**James - reboo** *[56:12]*: I. 
+**Mark Savant** *[56:12]*: When Dan was showing me what he's building, I'm like, dude, you need to teach me and people how to build this. And he's like, yeah, okay. I was like, really? He's like, yeah. I was like, all right, let's go. He's like, how about in two weeks? I'm like, okay, that's pretty quick. But. And then, like, a day later, he showed me this amazing website and dashboard and was all integrated, and I was like, this is crazy. 
+**Jelene Wilkinson** *[56:35]*: He builds so much so fast. It is like. Like the. I have the spinning wheel of death. That's like my. That's how I feel. I'm like, what? Like I, I'm trying to catch up. I'll never catch up, but. 
+**Mark Savant** *[56:51]*: Well, and there's this thing too where we just get so, at least for me, I get so caught up in the day to day stuff that I'm doing that I, it's hard for me to actually set aside to be like, okay, I'm actually going to lock in and learn this stuff. 
+**Jelene Wilkinson** *[57:03]*: Yeah. 
+**Mark Savant** *[57:04]*: And so I was, I'm just kind of excited to kind of set aside these few hours to like, to lock in. 
+**Tucker Bascom** *[57:10]*: You know,. 
+**Daniel Knight - 10xUnicorn** *[57:14]*: There was one point where I had three. 
+**Daniel Knight - 10xUnicorn** *[57:19]*: YouTube videos playing and. 
+**Daniel Knight - 10xUnicorn** *[57:21]*: I'm learning Claude on three different YouTube videos at once. That was wild. 
+**Daniel Knight - 10xUnicorn** *[57:27]*: It worked though. It was a little. I tried for, at first and it. 
+**Daniel Knight - 10xUnicorn** *[57:33]*: Was way too much. 
+**Daniel Knight - 10xUnicorn** *[57:34]*: I was like, I can't do this. 
+**Daniel Knight - 10xUnicorn** *[57:36]*: It was wild. 
+**Mark Savant** *[57:37]*: I feel like I need more screens now and I have actually have an old computer over here that I'm thinking about like just being my AI computer and just, you know, because I just feel this kind of pressure, like keep this software working all the time because the more it's working, the more it's building. And so I just think that like now is one of the, perhaps the best time in human history to be building because once the cat's out of the bag, once everyone kind of knows how to do this, we're going to lose our competitive advantage. So James, how are we doing? We get it. Do we get it? 
+**James - reboo** *[58:13]*: Yeah, I got it in the co. 
+**James** *[58:16]*: Work now, so we should be good. 
+**Mark Savant** *[58:21]*: Boom. I had an interesting thing happen today. I'm actually, I just posted it to YouTube where I was again putting Dave's business plan and I asked Claude, Cowork, you know, can you just do. It's like I already, I actually already shared this, but it just like did it all for me. And it's just remarkable what happens when you actually granted access to the software. Because I thought just going into Cowork before that, you know, you had to integrate all your different apps into it, but you don't. You just granted access to your website and it's like. And it just goes. And it's wild. It's so wild. 
+**Daniel Knight - 10xUnicorn** *[59:07]*: Yep. That's pretty awesome. 
+**Mark Savant** *[59:09]*: And I was thinking too like, you know, one of the best levers to like land a new client is showing them, hey, by paying for this service, this is how much you'll make on the back end or this is how much you'll save on the back end. And this idea of like Just having these like widgets that you could send to a client, like, hey, by the way, if we install this type of roof, you're going to save this much in annual maintenance or this how much you'll save on your homeowners insurance. And just having these widgets that they can kind of interact with shows. Oh well, actually the cost of the construction project makes up for itself after three years, for example. I just think there's a lot of cool things that are possible with that right now too. 
+**Mark Savant** *[59:53]*: Or you know, again, I do this Amazon SaaS software and so I've been thinking like, well, you know, for someone to start the software, it cost them, you know, $100 a month at our second tier. But by going to the $100, this is how much time you save and this is what the estimated additional sales you get from ranking for that keyword would be. There's, there's these different things we can do, I think, to get people locked in. So. 
+**Daniel Knight - 10xUnicorn** *[01:00:21]*: Yeah, I agree. 
+**Mark Savant** *[01:00:33]*: And I sent this dashboard, you know, this widget over to my business mastermind group that I'm in this morning and they're like, holy crap, how'd you do this? I'm like, oh, just Claude did it. And they're like, are you serious? I'm like, yeah, it took me 10 minutes. I was responding to emails while it worked over here on the side for me and they were just pretty flabbergasted. 
+**Daniel Knight - 10xUnicorn** *[01:00:55]*: Yeah, yeah, it's pretty great. It's pretty great. 
+**Mark Savant** *[01:01:07]*: Are there any more softwares that I need to, you know, I'm in this app. I know you said, Dan, that you want to go to this app, Dash Me app to get that free 90 day usage of your, of this software here. Is there an access code or how do we sign up for that so. 
+**James** *[01:01:24]*: We can keep building so you can. 
+**Daniel Knight - 10xUnicorn** *[01:01:26]*: Just do a trial. 
+**Daniel Knight - 10xUnicorn** *[01:01:29]*: But I want to give me just. 
+**Daniel Knight - 10xUnicorn** *[01:01:31]*: One second on that. 
+**Daniel Knight - 10xUnicorn** *[01:01:32]*: I'm trying to get this form to push through correctly because then that'll be the ideal way to do it. So, yeah, give me just a second and give Tucker a second to join in. Join back as well. 
+**Mark Savant** *[01:02:02]*: And of course all this is recorded. I have recording of everything. We're going to have all the standard operating procedures. Another thing that I've been seeing with training these AI models is giving them checklists of like, do this, this, this and this. You know, James, you probably have a bunch of standard operating procedures for team members or onboarding new team members and having these kind of checklists is I, from what I can tell, very powerful with Claude cowork. Because then it just knows to go down the list of actions. 
+**James** *[01:02:31]*: Yeah, yeah. 
+**James - reboo** *[01:02:35]*: So, yeah, it my. I think one of my. And I don't know, I'm just kind. 
+**James** *[01:02:41]*: Of absorbing all this stuff, but the. 
+**James - reboo** *[01:02:42]*: One thing I have is like, security. 
+**James** *[01:02:44]*: Concerns and stuff like that. 
+**James - reboo** *[01:02:45]*: Just kind of bringing everything in. You know what I mean? And I don't know if there's like certain practices, like you were saying, like this resend email and whatnot, if there's some type of filter, like, instead of just like here, just have access to all my Gmail, you know what I mean? Where it's like, okay, I want to kind of keep that over here and. 
+**James** *[01:03:05]*: Then keep this stuff over here. 
+**James - reboo** *[01:03:07]*: You know what I'm saying? If there's any type of, you know, practices that we should probably kind of consider. 
+**Daniel Knight - 10xUnicorn** *[01:03:17]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:03:19]*: And so you can. I mean, you definitely get to pick what you do and don't allow it to have access to. So, like, Resend for Emails is basically just a tool that will send the emails for you and so that you don't need to give it access to, like, your Gmail. Mine has access to my Gmail, but it really doesn't use it for much of anything. But you can have it go through, organize your email, summarize, you know, new emails, you know, that have come in throughout the day as well as, you know, overnight, things like that. But you don't need to give it. 
+**Daniel Knight - 10xUnicorn** *[01:03:58]*: Access to any of that. 
+**James - reboo** *[01:04:00]*: Yeah, that, or even like, just maybe, you know, I just, you know, have I thought about before in this whole thing and just, you know, time is. But it's just opening up a, like, separate Gmail account. So like, that one's kind of like the one you kind of do all. 
+**James** *[01:04:15]*: This operational stuff through. You know what I mean? Yeah, you kind of keep those separated. 
+**Daniel Knight - 10xUnicorn** *[01:04:21]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[01:04:22]*: And I know, you know, I know some people will definitely do that. I have not. 
+**Daniel Knight - 10xUnicorn** *[01:04:26]*: I am. 
+**Daniel Knight - 10xUnicorn** *[01:04:28]*: I'm definitely somebody who's pretty open about, like, giving tech access to my stuff. But. 
+**Daniel Knight - 10xUnicorn** *[01:04:38]*: But yeah, I mean, I. I do. 
+**Daniel Knight - 10xUnicorn** *[01:04:40]*: Know of people, you know, who will create, you know, different accounts and things. I don't think it's really necessary. It's more important just kind of to be mindful of what access you're giving it. Yeah. And where it's able to access different information. So like with Claude, Right, you give it access to your computer, but you only give it specific access to a specific folder that you Create that it creates right now as you're using, might ask you, and you might even ask it to access more than you've given it. And so it'll ask you for permission again. And then you can tell it like, yes, always, or just this one time. 
+**James** *[01:05:23]*: Yeah, yeah,. 
+**Mark Savant** *[01:05:26]*: Yeah. When it's, when it's opening up windows and logging into like my WordPress site, for example, every time it's going to say, hey, you know, can I get in? Can you authorize it? 
+**James** *[01:05:38]*: Right. 
+**Mark Savant** *[01:05:38]*: But that, but I think that is a valid, I think there is, there are valid concerns there, James. If you're letting Claude write a bunch of code for your website, for example, what's in there? And I honestly, I don't think it's been fully figured out. One of the things that I see a lot of very smart people doing smarter than me perhaps, is using different LLMs to check other LLMs work, which is a strategy. I know. You know, that's one of the things that Microsoft Copilot just rolled out is they're using multiple LLMs to double check work, which takes up more tokens and so on and so forth. But, you know, at least the guys that I work with that operate on an enterprise level, they. 
+**Mark Savant** *[01:06:22]*: Claude is the most trusted tool right now, you know, but we'll see how things, we'll see how things play out. This stuff is just moving so fast. 
+**James** *[01:06:31]*: Yeah. 
+**Mark Savant** *[01:06:32]*: You know, so fast. But the cool thing I think too is like Claude, Cowork is the king right now of agent, of mainstream enterprise agent models. But, but once it's built and it's on the site, it's good. It's already put the code on the site. So if Codex is the big thing in 60 days. Okay, cool. Well, then I could start building over there. And one of the things I'd like to walk away from this is having that kind of checklist of actions and having the standard operating procedures and having my ideal customer avatar and having all this data so that I can, if I do move over to Codex in 60 days, I can just take that, all those files, drop them into Codex and go, okay. I don't need to. 
+**Mark Savant** *[01:07:15]*: It's like, you know, training a new team member takes a lot of time. 
+**James** *[01:07:18]*: Yeah, yeah. 
+**Mark Savant** *[01:07:19]*: What if I could just drop all of that knowledge into that next team member and pick up and so all. 
+**James - reboo** *[01:07:26]*: Those files are in here, in co. 
+**James** *[01:07:29]*: In the Cowork files. 
+**Mark Savant** *[01:07:32]*: Right? We, exactly. We save them into like MD files. We save those into the skills and for me, I have Google, you know, Google cloud folders for myself and for different clients and customers that I can use. And also I was talking, I was. 
+**Daniel Knight - 10xUnicorn** *[01:07:49]*: Talking about, hello, everybody. 
+**Daniel Knight - 10xUnicorn** *[01:07:51]*: Big, big welcome to the call. 
+**Mark Savant** *[01:07:54]*: I was also talking with the. 
+**James** *[01:07:59]*: Welcome. 
+**Mark Savant** *[01:08:00]*: I was also speaking with the CTO and the leadership team of this SaaS company. We're about to hit 4 million ARR, which is pretty exciting point, but were talking about this. Everyone on the team is using AI. Everyone. But the, one of the problems, I mean, we've got probably 10 different people running different social media, email, SMS, all these different things. The problem though is that everyone is using different context to build their AI. So it, what, what's happened is it's created discrepancies in the messaging. So we've built, and we're going to continue to build this kind of like central LLM that says, hey, Jamie, you're coming in to manage our LinkedIn account. Make sure that you use all of these files to prompt your personal LLM. Right. We're okay with you using your chat GPT. 
+**Mark Savant** *[01:08:51]*: Just make sure you've contextualize it with all these documents. You know what I mean? 
+**James** *[01:08:54]*: Yeah, Standardize it. 
+**Mark Savant** *[01:08:56]*: Yeah, exactly. Make sure they're using like we use a lot of UTM tracking so we can track where leads are coming from and what each cohort is worth and what's the lifetime value of different platforms. Okay, cool. But if everybody is using different UTM tracking, it's it messes up. So by using these centralized files, it creates a cohesive again, marketing strategy as a whole. So. 
+**Daniel Knight - 10xUnicorn** *[01:09:31]*: Right. 
+**Daniel Knight - 10xUnicorn** *[01:09:32]*: So I messaged Tucker, see where he's. 
+**Daniel Knight - 10xUnicorn** *[01:09:36]*: At, this computer's giving him grief or something. 
+**Daniel Knight - 10xUnicorn** *[01:09:42]*: Make sure he's not on. 
+**Daniel Knight - 10xUnicorn** *[01:09:45]*: But how's everybody else doing? 
+**Daniel Knight - 10xUnicorn** *[01:09:46]*: I already have Claude installed, ready to rock and roll. 
+**James** *[01:09:51]*: Yep. 
+**Daniel Knight - 10xUnicorn** *[01:09:53]*: Yes. 
+**Jelene Wilkinson** *[01:09:54]*: No, I'm still closing tabs. 
+**Daniel Knight - 10xUnicorn** *[01:10:00]*: We'll be here all day waiting for you to close all of your tabs. I think you're the only person who. 
+**Daniel Knight - 10xUnicorn** *[01:10:06]*: Has more open tabs than I do at any given point. I've been trying to get better about. 
+**Mark Savant** *[01:10:13]*: Closing them while waiting for Tucker's. This is a good time to kind of at least kind of talk and start to streamline the app that we want to build because I know the first app that I built was too complex and it just, it got complex. So does it make sense to kind of talk about like, well, at the end of this session, what's the final product look like? What does success look like? 
+**Daniel Knight - 10xUnicorn** *[01:10:37]*: Yeah, you Know. 
+**Mark Savant** *[01:10:40]*: Yeah, I think for me it would be like a very streamlined, quick, like, dashboard to create lead magnets and deliver lead magnets and email sequences via lead magnet. That would be, I think, a win for me. So I can test many different things very quickly. So that's kind of what I want to build. Okay, James, have you thought about what you'd like to have at the end of this session in addition to the. The resource and training? Like, what would be a work, like a win for you on a working app? 
+**James - reboo** *[01:11:13]*: Well, you know, obviously just kind of. I think it's going to expand once you can pass this course, but I don't know how integrated it is. Say, say, like pulling in. For just pulling in data that I have to manually go do. Say, like they're doing purchases, say Lowe's, Home Depot, whatever, those obviously from that person or that company. It can be an automatic email receipt, you know, that goes to my email and maybe that can pull in. We don't necessarily use PoS, which I can incorporate PO, but we usually go off job names, you know, job names and stuff like that. So I don't know if it can parse that from there because it'll say on the receipt what it was and then maybe pull it into a spreadsheet. 
+**James** *[01:12:02]*: Or something like that with their. Just a dot. 
+**Daniel Knight - 10xUnicorn** *[01:12:09]*: James, why don't you walk us through. Because what you're building sounds easily the most complicated. Why don't you walk us through the current process? 
+**James** *[01:12:20]*: Okay, so current prices. 
+**Daniel Knight - 10xUnicorn** *[01:12:22]*: And if you can show us, like, if there's anything that you do on your computer that kind of supports that process, that would be great to see as well. 
+**James - reboo** *[01:12:30]*: Okay, so let me see. So basically, if I'm trying to build out a customer or try to just accumulate the information of, you know, what the job cost is. You know, I have time cards for my IN employees, which I, you know, I'm fine even with them texting me their hours and stuff like that. But I, you know, obviously to make this work, I can, you know, become more standardized. But I'll pull in their hours. I'll make a column for each employee because they have different wage rates, right. And that gives me a date of when they work there and the hours they work there. 
+**James** *[01:13:12]*: Right. 
+**James - reboo** *[01:13:12]*: And then as I'm going along the column, let's see, how do I share. 
+**James** *[01:13:15]*: Screen on this thing here should be. 
+**Daniel Knight - 10xUnicorn** *[01:13:18]*: A share button down at the bottom. 
+**Mark Savant** *[01:13:21]*: You know, one of the things that you could do, because all of that information probably goes into a spreadsheet. 
+**James - reboo** *[01:13:25]*: Yeah. And it's a pretty simple spreadsheet. Let me move. 
+**Mark Savant** *[01:13:29]*: Because you could easily make like an app where your team, when they log their hours, they just put it into a little. 
+**James** *[01:13:35]*: Correct. Yeah, yeah. So let's see here. Let's go into. To some type of spreadsheet or something. 
+**Daniel Knight - 10xUnicorn** *[01:13:49]*: See, and then the other thing, James, that I want you to think about. 
+**Daniel Knight - 10xUnicorn** *[01:13:54]*: Is, you know, specifically, like, where. Where are you and where's the team spending the most time that if you. 
+**Daniel Knight - 10xUnicorn** *[01:14:03]*: Were able to solve for that, like that single problem, that would transform things pretty well. 
+**Daniel Knight - 10xUnicorn** *[01:14:10]*: And then we can stack. You can stack other layers onto this. 
+**Daniel Knight - 10xUnicorn** *[01:14:14]*: And have kind of one dashboard. It sounds like kind of just a general business dashboard is kind of what. 
+**Daniel Knight - 10xUnicorn** *[01:14:21]*: What you're needing. 
+**James** *[01:14:23]*: Okay, so I pulled up a screen here. I don't know if you can see this screen. 
+**Daniel Knight - 10xUnicorn** *[01:14:28]*: Yep. 
+**James - reboo** *[01:14:29]*: Okay, so this is just a simple spreadsheet. This is a warehouse we're doing. So basically this is one of my workers here on column B. On column A is the dates that they're working. Right. And then. And then this is his hours for that day. This is his helper, me. I just got me on there. CED is like a electrical supply house. HD just stands for Home Depot and then Lowe's. 
+**Tucker Bascom** *[01:14:59]*: Right. 
+**James - reboo** *[01:14:59]*: So these are like a purchase, right? So that purchase on 18 was 6, 46, 29 on that date. Right. And then basically, as you come down, I just auto sum total hours, right. Then they got, say, a wage rate for that. 
+**James** *[01:15:15]*: Right. 
+**James - reboo** *[01:15:16]*: Comes up total labor and then comes over here. Then I got my total material cost on P markup that. 
+**James** *[01:15:26]*: Right. 
+**James - reboo** *[01:15:26]*: And then that gets extended out, you know, so great. This gives me basic labor material costs. 
+**Daniel Knight - 10xUnicorn** *[01:15:35]*: Okay. 
+**James - reboo** *[01:15:36]*: And so how I do this now is, you know, and these guys are, you know, depending upon the person who I got. You know, obviously some people like pulling teeth, getting receipts out of them. Half of them, they leave it on the dashboard, and by the time I get it's blank, which is. But. But I have it for the most part set up to where I'm getting an email receipt. And then. Or so I can either. If I don't get my statement, say, if they. Right. Because email receipt, then you got to go back and find every single email. It's easier on the statement. Or if I go to the website, obviously I didn't receive the payment, then I can go find out, scroll down each job. 
+**James** *[01:16:15]*: Right. 
+**James - reboo** *[01:16:16]*: So it is a manual task that I have to do if, you know, it is complicated. But I'm Just. It's just an idea. You said, come up with an idea. 
+**James** *[01:16:27]*: I'm like, okay, well, see if I. 
+**James - reboo** *[01:16:28]*: Can do something with that, you know, that's perfect. 
+**Daniel Knight - 10xUnicorn** *[01:16:31]*: Yeah, yeah. Okay. 
+**Daniel Knight - 10xUnicorn** *[01:16:35]*: No, this is great. And, you know, it's so funny because, you know, Mark mentioned spreadsheets, and that was kind of this realization I had, I don't know, like a week or so ago. I was like, man, it's spreadsheets. Like, we can take your. Your spreadsheet that is as organized as it can be and turn it into a fully functional system. 
+**Daniel Knight - 10xUnicorn** *[01:16:56]*: And. 
+**Daniel Knight - 10xUnicorn** *[01:16:57]*: Yeah, so this is perfect. What I'm kind of imagining is, I mean, it's essentially like you said, an expense and labor tracker. Right. And so do you want to have it where people are able to. They need to log in and track their hours and submit a receipt, or maybe that could even just be a simple intake form that at the end of every day that they work, they submit this. It tells you how many hours they. 
+**Daniel Knight - 10xUnicorn** *[01:17:29]*: Worked, any expenses that they have, and. 
+**Daniel Knight - 10xUnicorn** *[01:17:32]*: Then pushes all of that information to a table that you can, you know, filter it by date, by month, by year, and you can just kind of quickly see what your labor and expenses. 
+**Daniel Knight - 10xUnicorn** *[01:17:46]*: Were for each individual and just kind of one spot. 
+**Daniel Knight - 10xUnicorn** *[01:17:51]*: Is that kind of what your goal. 
+**Daniel Knight - 10xUnicorn** *[01:17:53]*: Would be with this? 
+**James - reboo** *[01:17:54]*: Yeah, simpler is always better on the. On their side. You know, because it. Construction is a very interesting business. You know, these guys, I have to chase them down for the time cards every. Every week. It's like, you guys want to get paid or what? 
+**James** *[01:18:13]*: You know what I mean? 
+**James - reboo** *[01:18:14]*: So getting him, you know, getting them to manually enter stuff is. There's. There's the Foremans and stuff that can do that. And. 
+**James** *[01:18:20]*: And then, of course, there's the. 
+**James - reboo** *[01:18:22]*: The people that. 
+**James** *[01:18:23]*: It's almost impossible. 
+**James - reboo** *[01:18:25]*: So I'm open to anything. You know, I. I'm curious to see how it can. It can. If it. If it can somehow parse by email. Right. That would be great. If not, you know, manually entering, you know, that's. That's an option. You know, I'm just here to kind of check it out, see how this thing works. 
+**James** *[01:18:47]*: I, you know, to see. 
+**Mark Savant** *[01:18:51]*: Are you able to integrate, like, a picture or like a camera into the app, too? 
+**James** *[01:18:54]*: Yeah. Oh, yeah. 
+**Mark Savant** *[01:18:56]*: So that. Because that would be neat if it's like. 
+**James - reboo** *[01:18:59]*: Because let me see if I can. 
+**James** *[01:19:04]*: See if I can do something like this. Let's go to email. Yes. See? 
+**Daniel Knight - 10xUnicorn** *[01:19:23]*: Funny, because, you know, when we think. 
+**Daniel Knight - 10xUnicorn** *[01:19:26]*: About, like, that idea of, you know,. 
+**Daniel Knight - 10xUnicorn** *[01:19:29]*: Can we integrate a Camera to take a picture. Our heads go, like, foggy. Right. It's like this idea. 
+**Daniel Knight - 10xUnicorn** *[01:19:35]*: It's like, you know, can we do that? 
+**Daniel Knight - 10xUnicorn** *[01:19:37]*: But it's like, totally. 
+**Daniel Knight - 10xUnicorn** *[01:19:39]*: You just ask Claude. 
+**Daniel Knight - 10xUnicorn** *[01:19:41]*: Right. And. And it'll build it for you. It's like, can we more. So how can we. And do it for us. 
+**Daniel Knight - 10xUnicorn** *[01:19:48]*: Right. 
+**Daniel Knight - 10xUnicorn** *[01:19:50]*: But yeah, we can. 
+**Daniel Knight - 10xUnicorn** *[01:19:53]*: We can set it up that way. 
+**Daniel Knight - 10xUnicorn** *[01:19:54]*: But I don't. I don't know that's really the pain point. And I. I hear what you're saying, James, is that people don't even want to fill out the information. They just want to, you know, send. 
+**Daniel Knight - 10xUnicorn** *[01:20:06]*: You what they did and that be the end of it. Right. 
+**James** *[01:20:10]*: Yeah. 
+**James - reboo** *[01:20:13]*: Obviously there's enforcement and stuff like that, but it's. 
+**James** *[01:20:16]*: It's sometimes depending upon who it is, it. It's like beating a dead horse sometimes. You know what I mean? 
+**Daniel Knight - 10xUnicorn** *[01:20:23]*: Yeah. 
+**James** *[01:20:23]*: But you would a typical. 
+**James - reboo** *[01:20:34]*: So let me see. 
+**James** *[01:20:36]*: How do I go back to Share screen here. Get that out of here. Close that. Okay, so let's see. Share. Okay. 
+**James - reboo** *[01:20:48]*: Oh, you're already. You're watching that screen already. So this one. 
+**James** *[01:20:51]*: Okay. 
+**James - reboo** *[01:20:52]*: So this is like, typical email, right? Where Home Depot sent me this receipt. It's got all information on it. I don't know if. If Claude can parse that information. 
+**Daniel Knight - 10xUnicorn** *[01:21:12]*: You're not sharing anymore. 
+**James - reboo** *[01:21:14]*: Oh, it's not sharing. Okay. 
+**James** *[01:21:16]*: Sorry, Sherry. 
+**Mark Savant** *[01:21:17]*: Okay. 
+**James** *[01:21:17]*: He's sorry. 
+**James - reboo** *[01:21:19]*: Okay, so here's like, automatic email. 
+**Daniel Knight - 10xUnicorn** *[01:21:22]*: Yeah. 
+**James - reboo** *[01:21:23]*: Anytime they go anywhere. And this is typical from a lot. 
+**James** *[01:21:25]*: Of our suppliers and whatnot. 
+**James - reboo** *[01:21:27]*: So it's got all. It's got all this information on here. Right. It also, at the bottom, it has this PDF receipt which has everything. And it also gives me, like, the job name. Right. So, anyway, I'm just throwing it out there. You know how. You know, this is typically how I. 
+**James** *[01:21:50]*: Get my email receipts. 
+**James - reboo** *[01:21:53]*: And then beyond that, it goes to, like, a statement. Right. And the statements, you know, are on a monthly basis. 
+**James** *[01:22:01]*: Yeah. Type of thing. 
+**Daniel Knight - 10xUnicorn** *[01:22:03]*: Yeah. 
+**James - reboo** *[01:22:03]*: So I'd like to be ahead of the statement, you know, because it's always better to do the billing sooner than later. But. But that's just kind of what I'm getting. 
+**James** *[01:22:16]*: Right. 
+**Daniel Knight - 10xUnicorn** *[01:22:17]*: Okay. 
+**James** *[01:22:17]*: So just to give you that information. 
+**Daniel Knight - 10xUnicorn** *[01:22:23]*: And so now I definitely see why. 
+**Daniel Knight - 10xUnicorn** *[01:22:25]*: You were asking about using a separate email account. Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:22:30]*: Because you ideally would have it where if an email from Home Depot comes. 
+**Daniel Knight - 10xUnicorn** *[01:22:37]*: In with a receipt, it can just. 
+**Daniel Knight - 10xUnicorn** *[01:22:41]*: Grab the receipt and grab all the. 
+**Daniel Knight - 10xUnicorn** *[01:22:43]*: Information, store it in your system, and. 
+**Daniel Knight - 10xUnicorn** *[01:22:47]*: Then maybe you pick whose expense it. 
+**Daniel Knight - 10xUnicorn** *[01:22:49]*: Was, because obviously you don't Know who? I mean, this doesn't tell you who it was, but you would more than likely. No. Right. Or you got the PO Job name still Wells. 
+**James** *[01:23:01]*: Yeah, exactly. 
+**Daniel Knight - 10xUnicorn** *[01:23:03]*: So tell me exactly what you would want the system to do with this. 
+**James - reboo** *[01:23:09]*: I mean, if it could populate a spreadsheet or you know, like a, like, you know, I mean something that. Where it's accumulating that information according to say the job name. Right? 
+**Daniel Knight - 10xUnicorn** *[01:23:22]*: Yeah,. 
+**James - reboo** *[01:23:25]*: It could populate. So it would just. It would need just basic information which would be the job name, date and. 
+**Daniel Knight - 10xUnicorn** *[01:23:33]*: Amount and where are you. 
+**Daniel Knight - 10xUnicorn** *[01:23:36]*: And you're currently storing that on that other spreadsheet or you're just doing the expense. 
+**James - reboo** *[01:23:41]*: So my on. And this is strictly when I do like time and material type of. 
+**James** *[01:23:47]*: Of, you know, type of work. 
+**James - reboo** *[01:23:49]*: If it's contract, it's different. But so yeah, so I would just basically, okay, here's a job, right. And then I would create a spreadsheet and then I would just start with putting dates when they're there when they were working. Right. So I would have just like I was showing the other one. And so that gives me my labor cost and then whatever material that was. 
+**James** *[01:24:12]*: Going into the job. 
+**Daniel Knight - 10xUnicorn** *[01:24:14]*: Got it. 
+**James** *[01:24:15]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:24:17]*: Okay. 
+**James - reboo** *[01:24:19]*: So like this Particular one is 186.22. 
+**James** *[01:24:22]*: Basically. 
+**Daniel Knight - 10xUnicorn** *[01:24:23]*: Okay. 
+**James** *[01:24:24]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[01:24:27]*: And so you're essentially you. 
+**Daniel Knight - 10xUnicorn** *[01:24:29]*: You want an all expense tracking system, right? That's that you can also keep track of the labor hours that people are putting into things. 
+**James** *[01:24:42]*: Yeah, yeah. 
+**James - reboo** *[01:24:45]*: Just to cut down time. Whatever it is. I'm sure I could start simple and build off of that. You know, if once I see something works here, I can say, oh, I can do that there, you know what I'm saying? 
+**James** *[01:24:56]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:24:58]*: And why do you feel that you need to build something yourself versus what. 
+**Daniel Knight - 10xUnicorn** *[01:25:03]*: Have you looked at that doesn't solve what you're looking to accomplish? 
+**Daniel Knight - 10xUnicorn** *[01:25:08]*: Like why is QuickBooks not the solution for you? 
+**James - reboo** *[01:25:14]*: I don't use QuickBooks. I use Xero. 
+**Daniel Knight - 10xUnicorn** *[01:25:16]*: Okay. 
+**James - reboo** *[01:25:17]*: This is my accounting software. It Nothing seems to work completely. You know what I mean? They're. It seems most of the software I get is kind of like gets me about 80% there, you know what I'm saying? And it's not so. Yeah. 
+**James** *[01:25:41]*: Not so customizable. 
+**James - reboo** *[01:25:43]*: You know, some. And a lot of the software I use is like I don't need half. 
+**James** *[01:25:47]*: Of the stuff they're giving me. 
+**James - reboo** *[01:25:48]*: You know what I mean? So it's. 
+**James** *[01:25:53]*: Yeah. 
+**James - reboo** *[01:25:54]*: Anyway. 
+**Daniel Knight - 10xUnicorn** *[01:25:55]*: Okay. Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:25:57]*: Which is, I mean really, I see business moving more and more in this. 
+**Daniel Knight - 10xUnicorn** *[01:26:00]*: Direction is you Know it, you have. 
+**Daniel Knight - 10xUnicorn** *[01:26:03]*: All these different systems that do most. 
+**Daniel Knight - 10xUnicorn** *[01:26:05]*: Of what you need, but none of them do everything. And so we'll, we are at the point and I think it'll get more. 
+**Daniel Knight - 10xUnicorn** *[01:26:12]*: And more where just build it yourself, build it custom so it does everything. 
+**Daniel Knight - 10xUnicorn** *[01:26:15]*: You want and then some, you know. 
+**James** *[01:26:17]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[01:26:18]*: Okay. So the, so as far as, you know, the problem that the Xero. 
+**Daniel Knight - 10xUnicorn** *[01:26:27]*: System does not solve for you, that. 
+**Daniel Knight - 10xUnicorn** *[01:26:30]*: You are solving for is just making it easier for you to track your expenses from your contractors, but making it. 
+**Daniel Knight - 10xUnicorn** *[01:26:42]*: As easy as possible for them to. 
+**Daniel Knight - 10xUnicorn** *[01:26:44]*: Get the information to you. 
+**James - reboo** *[01:26:46]*: Yeah, I mean traditional sense is really just to have an office person who. 
+**James** *[01:26:50]*: Does that, you know, data entry, you. 
+**James - reboo** *[01:26:52]*: Know what I mean? And which is fine. You know, I'm just trying to play. 
+**James** *[01:26:56]*: With what this stuff can do. 
+**Daniel Knight - 10xUnicorn** *[01:27:01]*: Okay, cool. 
+**Daniel Knight - 10xUnicorn** *[01:27:02]*: So, and so there might be a couple ways to approach as far as like the email automation side of things and just depending on how you want to approach it and you know, and how you want it built out long term will kind of determine how you build this because you know, you can have your Claude set up to automatically pull emails and things on a schedule. 
+**Daniel Knight - 10xUnicorn** *[01:27:28]*: You can do it once a day,. 
+**Daniel Knight - 10xUnicorn** *[01:27:29]*: Once an hour, once a minute, you know, but it does need to be open and running. And so the other approach might be to have like you were saying, like a dedicated email where people can send receipts to and then those get automatically uploaded to your system. And so with that though, you would then need to make sure like your Home Depot account sends the receipts there. 
+**Daniel Knight - 10xUnicorn** *[01:28:00]*: And whatever other accounts you have are sending those receipts to that dedicated email. 
+**Daniel Knight - 10xUnicorn** *[01:28:05]*: If you're not putting it in manually or if you're not having somebody else do it. But you know, if the receipts just. 
+**Daniel Knight - 10xUnicorn** *[01:28:12]*: Come into you automatically like this, then. 
+**Daniel Knight - 10xUnicorn** *[01:28:14]*: It seems like solving for that to where you can just have it pulled into your system makes a lot of sense. 
+**James - reboo** *[01:28:21]*: Yeah, because I can always set it up to where those particular emails that, because they come in that particular format. 
+**Tucker Bascom** *[01:28:28]*: Right. 
+**James - reboo** *[01:28:28]*: It'll just, it'll automatically go to a certain box. 
+**Daniel Knight - 10xUnicorn** *[01:28:32]*: Yeah, yeah, yeah. So then it's just a matter. 
+**Daniel Knight - 10xUnicorn** *[01:28:36]*: Of getting it from your email inbox to your cloud, your really your Supabase. 
+**Daniel Knight - 10xUnicorn** *[01:28:43]*: Database, which is where all of the files and everything live. 
+**James - reboo** *[01:28:48]*: Yeah, I'm not trying to ask for too much, I'm just throwing it out there. 
+**Daniel Knight - 10xUnicorn** *[01:28:52]*: No, and I'm just getting clear on the problem you're solving. So. So I can better, you know, guide and navigate also. 
+**Daniel Knight - 10xUnicorn** *[01:29:00]*: Yeah, so that Claude has all the information because I'm. 
+**James** *[01:29:03]*: And I'm fluid with it too. 
+**James - reboo** *[01:29:04]*: You know, I'm just trying to see how this stuff's all. You know what I mean? 
+**James** *[01:29:06]*: We're just run. See how it works. 
+**Daniel Knight - 10xUnicorn** *[01:29:08]*: Cool. 
+**James** *[01:29:09]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:29:10]*: All right. 
+**Daniel Knight - 10xUnicorn** *[01:29:12]*: Feels pretty clear to me. And I, you know, recorded most of. 
+**Daniel Knight - 10xUnicorn** *[01:29:18]*: That conversation, so we should be able to have Claude help us solve the problem too. 
+**James** *[01:29:24]*: I mean, it should be interesting, you. 
+**James - reboo** *[01:29:25]*: Know, see how it works, you know. 
+**Daniel Knight - 10xUnicorn** *[01:29:28]*: Yeah, yeah. 
+**Mark Savant** *[01:29:30]*: I will say that the cool thing about what Dan has done is he sent like the MVP dashboard, which was already good. And then every day he's like, oh, I added this, I added this. So to your point, you know, we create a nice, strong core with Vercel, with Supabase, and then we can just build. Build that core. 
+**James** *[01:29:50]*: Yeah. 
+**James - reboo** *[01:29:51]*: And see what works, what doesn't work,. 
+**James** *[01:29:52]*: You know, all that kind of stuff. 
+**Daniel Knight - 10xUnicorn** *[01:29:53]*: Yeah, yeah. Cool. All right. 
+**Daniel Knight - 10xUnicorn** *[01:29:59]*: Anything else that we should know? I feel like this is a pretty solid core outcome. If we can streamline your expense tracking. 
+**Daniel Knight - 10xUnicorn** *[01:30:08]*: And management and all that. I feel like that'll. 
+**Daniel Knight - 10xUnicorn** *[01:30:13]*: That'll be really. How much time are you spending in a week on this type of work,. 
+**James - reboo** *[01:30:21]*: Actually, depending upon. 
+**James** *[01:30:23]*: Gosh. 
+**James - reboo** *[01:30:24]*: Yeah, some hours. Hours, you know, because some I. I'm, you know, split between getting out, doing bids all. You know, how it is. You're doing all kinds of stuff. So by the time I settle down and look at it's, I find myself not going and getting these. These emails because they're independent. Right. Typically, I mean, they're there, but I'd have to go, you know, pull. It's easier for me to look at a statement. 
+**James** *[01:30:51]*: Right. 
+**James - reboo** *[01:30:52]*: So if it's. If it's been within a statement time, it's easy for me to scroll down out of that. But if the statement's not there yet, then I have to go into the website, log in and find what my current today. It's kind of like credit card statement, you know what I mean? Like, if it's not to the end of the statement, you got to see what your. Your, you know, what your costs are to that point. 
+**Daniel Knight - 10xUnicorn** *[01:31:16]*: Yeah. 
+**James - reboo** *[01:31:16]*: So, you know, it takes time because I have to log in all the. 
+**James** *[01:31:18]*: Different accounts and whatnot. 
+**James - reboo** *[01:31:20]*: You know what I mean? So, yeah, it takes some time. 
+**Daniel Knight - 10xUnicorn** *[01:31:23]*: Okay. 
+**James** *[01:31:24]*: Yeah,. 
+**Mark Savant** *[01:31:27]*: Let's build. We got Tucker. Do we get updated here? 
+**Daniel Knight - 10xUnicorn** *[01:31:34]*: Yeah. 
+**Tucker Bascom** *[01:31:35]*: So I went to go update my MacOSystem, and then I realized that I'm running macOS Tahoe, which is like two full versions after Mac OS Sonoma. So I don't know why it was making me update, but Claude still thinks that my version is outdated. So right now, I'm troubleshooting to install Homebrew is what it recommended. Install Homebrew, and then that should allow me to install Cowork. 
+**Daniel Knight - 10xUnicorn** *[01:32:04]*: Here. I can show you the error that. 
+**Tucker Bascom** *[01:32:06]*: It's giving me right now. Come on, Zoom. 
+**Daniel Knight - 10xUnicorn** *[01:32:20]*: How do I make this disappear? 
+**Tucker Bascom** *[01:32:24]*: Well, so where the Cowork toggles up there's a flashing blue symbol that says you need to update your macOS operating system. And I have the right operating system. So for some reason, it's thinking that I have an older version of macOS, which is not true. So I'm in the process of downloading Homebrew right now to see if that works. 
+**Daniel Knight - 10xUnicorn** *[01:32:48]*: Interesting. Yeah. 
+**Tucker Bascom** *[01:32:50]*: Can you see this? 
+**Daniel Knight - 10xUnicorn** *[01:32:51]*: Yeah. 
+**Tucker Bascom** *[01:32:52]*: MacOS update required. 
+**Daniel Knight - 10xUnicorn** *[01:32:53]*: Yeah, yeah. 
+**Tucker Bascom** *[01:32:56]*: So I'm installing Homebrew right now, see if that fixes it. 
+**Daniel Knight - 10xUnicorn** *[01:33:01]*: And you. And you said you. You're past Sonoma. Yeah, I've got. 
+**Tucker Bascom** *[01:33:17]*: Yeah, I'm running macOS Tahoe 26.4. Pretty sure that's the latest operating system. 
+**Daniel Knight - 10xUnicorn** *[01:33:23]*: Yeah. Okay,. 
+**Tucker Bascom** *[01:33:29]*: So I googled a troubleshooting guide. I'm using Claude to troubleshoot itself to install Homebrew. 
+**Daniel Knight - 10xUnicorn** *[01:33:38]*: Nice. That's funny. Use Claude to troubleshoot itself. 
+**Daniel Knight - 10xUnicorn** *[01:33:46]*: All right. 
+**Tucker Bascom** *[01:33:47]*: That's what they're for, right? 
+**Daniel Knight - 10xUnicorn** *[01:33:49]*: Yep. 
+**Tucker Bascom** *[01:33:50]*: And it looks like my Homebrew install. 
+**Daniel Knight - 10xUnicorn** *[01:33:53]*: Just finished, so running through these steps. Fingers crossed. 
+**Mark Savant** *[01:34:01]*: Lean. You have your cowork up and running, ready to go. All right,. 
+**Jelene Wilkinson** *[01:34:08]*: Cool. 
+**Daniel Knight - 10xUnicorn** *[01:34:14]*: All right, so while that's cooking. 
+**Daniel Knight - 10xUnicorn** *[01:34:24]*: Yay. Awesome. 
+**Daniel Knight - 10xUnicorn** *[01:34:27]*: Okay,. 
+**Daniel Knight - 10xUnicorn** *[01:34:31]*: So this should work out. 
+**Daniel Knight - 10xUnicorn** *[01:34:33]*: All right now. 
+**Daniel Knight - 10xUnicorn** *[01:34:35]*: So what I would say next is for everybody to. 
+**Daniel Knight - 10xUnicorn** *[01:34:39]*: Yes. 
+**Daniel Knight - 10xUnicorn** *[01:34:40]*: Let's start building out. 
+**Daniel Knight - 10xUnicorn** *[01:34:47]*: Sorry, we're skipping a step here. We're technically still on making sure our clot is ready to rock and roll,. 
+**Daniel Knight - 10xUnicorn** *[01:34:56]*: Because I know we're going to want. 
+**Daniel Knight - 10xUnicorn** *[01:34:57]*: To start using Claude as soon as. 
+**Daniel Knight - 10xUnicorn** *[01:34:59]*: We have our prompt. So we're going to. I know we want to jump in. 
+**Daniel Knight - 10xUnicorn** *[01:35:04]*: The building, but let's. Let's make sure we've got our clot all dialed in. 
+**Daniel Knight - 10xUnicorn** *[01:35:08]*: So as Tucker's getting that installed, what I would say next is go to the resource page with the Claude skills and let's install a couple of the ones that will create some safeguards. One, let's install number three, the safety guard. 
+**Daniel Knight - 10xUnicorn** *[01:35:29]*: I'll share my screen. 
+**Daniel Knight - 10xUnicorn** *[01:35:33]*: So number three is the safety guard. So this will make sure that Claude doesn't just start deleting things randomly. 
+**Daniel Knight - 10xUnicorn** *[01:35:41]*: And I think that's an important one to put in there. Okay. 
+**Daniel Knight - 10xUnicorn** *[01:35:46]*: So all you do is you just. 
+**Daniel Knight - 10xUnicorn** *[01:35:47]*: Copy the prompt, and then you go into Claude, do a new task, and then you're going to paste it in there, and then it'll go through and. 
+**Daniel Knight - 10xUnicorn** *[01:35:56]*: Create a skill. 
+**Daniel Knight - 10xUnicorn** *[01:35:59]*: Which kind of live under scheduled. And. 
+**Mark Savant** *[01:36:07]*: You're doing this in Cowork in the Cowork tab? 
+**Daniel Knight - 10xUnicorn** *[01:36:10]*: Yeah, sorry. It lives under customize. 
+**Mark Savant** *[01:36:16]*: Does this need to be in a specific project? 
+**Daniel Knight - 10xUnicorn** *[01:36:22]*: No. 
+**Daniel Knight - 10xUnicorn** *[01:36:23]*: So you can just basically do new. 
+**Daniel Knight - 10xUnicorn** *[01:36:25]*: Task, and it'll just create a prompt, a message, and then you just paste the skill prompt, and then it'll basically. 
+**Daniel Knight - 10xUnicorn** *[01:36:34]*: Write it out and then create it,. 
+**Daniel Knight - 10xUnicorn** *[01:36:37]*: And then they live under this customized tab under Skills. 
+**James** *[01:36:42]*: Okay, Skills. 
+**James - reboo** *[01:36:43]*: Was that. Where are we at it? 
+**James** *[01:36:46]*: A little bit lost on that one. 
+**James - reboo** *[01:36:48]*: Okay, Cloud Skills. 
+**James** *[01:36:49]*: Okay, Cloud Skills. So,. 
+**Daniel Knight - 10xUnicorn** *[01:36:53]*: Yes. 
+**Daniel Knight - 10xUnicorn** *[01:36:53]*: Yeah. So under the resources page, Cloud Skills,. 
+**James** *[01:36:57]*: We're going to number, cell, project selector, all that stuff. Right. So which one are we talking about? 
+**Daniel Knight - 10xUnicorn** *[01:37:03]*: Number three. 
+**James** *[01:37:04]*: Number three. Okay. 
+**James - reboo** *[01:37:05]*: Safety guard, copy, install prompt. 
+**James** *[01:37:08]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:37:08]*: Yep. 
+**James - reboo** *[01:37:09]*: So hit that and then go and. 
+**James** *[01:37:11]*: Paste it into. 
+**Daniel Knight - 10xUnicorn** *[01:37:14]*: Cowork. You can just do new task and then paste. You can keep it on Sonnet. 
+**James - reboo** *[01:37:21]*: Yeah. And it says. How can I help you? 
+**James** *[01:37:23]*: Just paste it there. 
+**Daniel Knight - 10xUnicorn** *[01:37:24]*: Yep. 
+**James** *[01:37:27]*: Okay. 
+**James - reboo** *[01:37:27]*: And then let's go. 
+**Daniel Knight - 10xUnicorn** *[01:37:29]*: Yep. 
+**James** *[01:37:30]*: Okay. All right. 
+**Daniel Knight - 10xUnicorn** *[01:37:33]*: And then it should start running. 
+**James - reboo** *[01:37:36]*: Yeah,. 
+**Mark Savant** *[01:37:39]*: It's asking me some questions. Said, should the skill apply to all file operations, including files Claude creates from scratch or only to files that already exist on your computer? And I'm guessing we wouldn't do it to ever for everything, right? 
+**Daniel Knight - 10xUnicorn** *[01:37:53]*: Yeah. 
+**James** *[01:37:55]*: Okay, so it's creative thinking. 
+**Daniel Knight - 10xUnicorn** *[01:37:59]*: Okay. Because that'll help prevent it from deleting its own files. 
+**Tucker Bascom** *[01:38:06]*: Daniel, I have a real restart here, so I'm going to restart this real quick and I'll be right back on. 
+**Daniel Knight - 10xUnicorn** *[01:38:12]*: In a few minutes. Sounds good. All right, good luck. 
+**James** *[01:38:21]*: Okay. 
+**Mark Savant** *[01:38:41]*: I notice, Dan, it looks like you're using Sonnet. Do you prefer Sonnet for this over Opus? 
+**Daniel Knight - 10xUnicorn** *[01:38:48]*: Yeah, so I pretty much. I use Opus anytime it's doing something, like, really complex. This is like a single, very direct request that it shouldn't need to think too hard to build out. 
+**Mark Savant** *[01:39:07]*: Yeah, I'm using Opus 4.6, so it's probably overthinking and burning more tokens. 
+**Daniel Knight - 10xUnicorn** *[01:39:13]*: It does, yeah. 
+**Mark Savant** *[01:39:15]*: If y' all are not clear on what I'm mentioning, if you look like right next to the, you know, right underneath the reply, there's a little tab where you can select which version you want to use. And Opus 4.6 is the most advanced Most token heavy, most expensive version, which I. I use for most tasks. 
+**Daniel Knight - 10xUnicorn** *[01:39:37]*: Yeah. Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:39:38]*: My general rule of thumb that I. That I apply for Opus versus Sonnet, it's kind of like the same thing that I think through for, you know, am I using chat Cowork is like,. 
+**Daniel Knight - 10xUnicorn** *[01:39:51]*: How complex is this ask that I'm giving it? 
+**Daniel Knight - 10xUnicorn** *[01:39:56]*: If it's like a single one off task and it's just coding, it doesn't have to solve any sort of problems. It's just kind of writing things out, then I'll use Sonnet. You know, it says Opus consumes usage. 
+**Daniel Knight - 10xUnicorn** *[01:40:12]*: Limits faster than other models. 
+**Daniel Knight - 10xUnicorn** *[01:40:14]*: I really hate that statement because it doesn't tell me anything. 
+**Daniel Knight - 10xUnicorn** *[01:40:20]*: Is it 2 times faster, 3 times. 
+**Daniel Knight - 10xUnicorn** *[01:40:22]*: Faster, 50 times faster? I've tried to, like, gauge it, but. 
+**Daniel Knight - 10xUnicorn** *[01:40:26]*: I. I don't know. 
+**Daniel Knight - 10xUnicorn** *[01:40:28]*: I do use Opus for the most part, but that's because I'm on the. 
+**Daniel Knight - 10xUnicorn** *[01:40:32]*: Super Max plan, you know, which gives. 
+**Daniel Knight - 10xUnicorn** *[01:40:35]*: Me 20 times the credits for you guys. For most everything I would say is use Sonnet, except for when we build the app, when we push the very first prompt to build your application, because that's going to have a lot of consolidated information, all the details of what you're building. We're going to ask it to plan it out and structure it. And so we want it to think as thoroughly as possible. We'll even pull in some other skills, which we should. 
+**Daniel Knight - 10xUnicorn** *[01:41:09]*: We should also add in. 
+**Daniel Knight - 10xUnicorn** *[01:41:11]*: So, yeah, so we can also create more than one skill at a time, depending on your machine. So I got to be careful because I can build like four apps and. 
+**Daniel Knight - 10xUnicorn** *[01:41:21]*: Two extensions at once, but I also. 
+**Daniel Knight - 10xUnicorn** *[01:41:24]*: Have, you know, 16 gigs of RAM. 
+**Daniel Knight - 10xUnicorn** *[01:41:26]*: In a MacBook Pro. So, you know, we shouldn't need to. 
+**Daniel Knight - 10xUnicorn** *[01:41:32]*: Push things too much. 
+**Daniel Knight - 10xUnicorn** *[01:41:33]*: But. 
+**Daniel Knight - 10xUnicorn** *[01:41:34]*: But all I'm saying is if, you know, we want to create another skill while this one's going, it takes surprisingly. 
+**Daniel Knight - 10xUnicorn** *[01:41:39]*: Long for this to build these out, but we can. So. So, yeah. 
+**Daniel Knight - 10xUnicorn** *[01:41:44]*: So I would say the other one I want to add is this session. 
+**Daniel Knight - 10xUnicorn** *[01:41:50]*: Tracker,. 
+**Daniel Knight - 10xUnicorn** *[01:41:52]*: Because this will make sure that before it compacts a session, it has a full file of all of the. 
+**Daniel Knight - 10xUnicorn** *[01:42:00]*: Information that it's already done and basically keeps everything on track so that you don't end up having to repeat yourself or ask it to develop something you. 
+**Daniel Knight - 10xUnicorn** *[01:42:13]*: Already asked it to develop. 
+**Daniel Knight - 10xUnicorn** *[01:42:15]*: Does that make sense? 
+**Daniel Knight - 10xUnicorn** *[01:42:18]*: Okay, so my skill is now done. Now it will basically just make sure that if I ask it to clean up a folder, it's going to ask me and make sure that I don't want to just delete things. It'll move it to the trash. It'll make a backup first before overriding certain files as well as delete a file, reorganize a project, or create new files. 
+**Daniel Knight - 10xUnicorn** *[01:42:46]*: For the most part it's not going to run into anything for that. 
+**Daniel Knight - 10xUnicorn** *[01:42:49]*: So that's pretty much it. And it should say it should just be complete. There might be a button you got to push to allow it to create the actual skill, but you should be able to see it once it is done. 
+**Daniel Knight - 10xUnicorn** *[01:43:05]*: Under customize under skills. 
+**Mark Savant** *[01:43:10]*: I'm getting something kind of wonky here real quick. It's giving me this. So I ran the prompt and it asked me a couple clarifying questions and when I. Your eval viewer is ready. It created this like evaluation viewer. I don't. I don't know why I what this is or why I need this. Is that because I'm doing open? Because it looks like this is something. It's. It once it wrote code so it looks like it wants me to like embed this somewhere. 
+**James - reboo** *[01:43:44]*: Yeah, I got the same thing. So it's a valid review. 
+**James** *[01:43:46]*: Same file ops. 
+**Daniel Knight - 10xUnicorn** *[01:43:51]*: Let's see. 
+**Mark Savant** *[01:44:07]*: We first, it's just. Let me. This might because I already have some. Some rules set up for my claude. View the evaluation results across all three test cases. In eight assertions the skill scored 8 of 8. With the skill, Claude presents three clear options. Overwrite with trash without it just overwrites with no backup. Acknowledges the data loss risk but does nothing about it. Take a look at the out. 
+**Daniel Knight - 10xUnicorn** *[01:44:47]*: This is interesting. 
+**Mark Savant** *[01:44:49]*: Take a look at the outputs tab to see the side by side transcripts in the benchmark tab for quantitative breakdown. 
+**Daniel Knight - 10xUnicorn** *[01:45:00]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:45:01]*: So click on the outputs. I think what it's saying is basically look at these to let me know. 
+**Daniel Knight - 10xUnicorn** *[01:45:09]*: If this is kind of what you want me to create. 
+**Mark Savant** *[01:45:15]*: Interesting, but I don't really see much. 
+**James** *[01:45:19]*: Prompt. 
+**Mark Savant** *[01:45:19]*: Rename my file budget. 
+**Daniel Knight - 10xUnicorn** *[01:45:25]*: Okay, this is really interesting. 
+**Mark Savant** *[01:45:31]*: Are you seeing something like this too, James? 
+**James - reboo** *[01:45:34]*: Yeah. I can't see your screen, but basically I'm on the outputs and then it. 
+**James** *[01:45:39]*: It's. 
+**James - reboo** *[01:45:41]*: If I'm scrolling down on the text,. 
+**James** *[01:45:43]*: It is basically. 
+**James - reboo** *[01:45:45]*: Where is that? So the files will be moved to trash so you can recover them if needed. 
+**James** *[01:45:52]*: And then before. 
+**James - reboo** *[01:45:55]*: Okay, so before I proceed, I want. 
+**James** *[01:45:57]*: To make sure this is what you want. 
+**James - reboo** *[01:45:58]*: I found three log files other than older than seven days. 
+**James** *[01:46:02]*: I'm about to delete the following files. 
+**James - reboo** *[01:46:05]*: And it's got test project logs 37 days old. 
+**Daniel Knight - 10xUnicorn** *[01:46:10]*: Yeah. 
+**James - reboo** *[01:46:11]*: Modified 2024. 
+**Daniel Knight - 10xUnicorn** *[01:46:13]*: So this is actually really cool. I haven't seen this before, but all that's doing is just asking you to review the skill. So it's saying, like, this is what it would look like with the skill installed, and the first output was basically. 
+**Daniel Knight - 10xUnicorn** *[01:46:29]*: What would happen if it wasn't. And so it's just kind of asking, like, is this actually what you mean? 
+**Daniel Knight - 10xUnicorn** *[01:46:34]*: And is this actually what you want? 
+**Daniel Knight - 10xUnicorn** *[01:46:36]*: This is how you want me to approach it? I would probably just approve it. 
+**Mark Savant** *[01:46:45]*: Yeah, I just asked it. Is this. Is this necessary to complete the skills? It's not really. The skill is straightforward enough that I'm confident it works. Well, let me skip the iteration loop and just package it for you. 
+**Daniel Knight - 10xUnicorn** *[01:46:55]*: Yeah, that's really interesting. 
+**James - reboo** *[01:46:57]*: Yeah, because I don't. Those are not my files. 
+**James** *[01:46:59]*: I don't see those files. 
+**Daniel Knight - 10xUnicorn** *[01:47:00]*: No, those are just. It's just an example. This is basically saying, like, here's, you know, if you asked me to do this, and these were the files, and. 
+**Daniel Knight - 10xUnicorn** *[01:47:08]*: This is what it would look like. So I'd probably just submit it and. 
+**Daniel Knight - 10xUnicorn** *[01:47:13]*: Say okay to it. 
+**James** *[01:47:15]*: Submit all reviews, basically. 
+**Daniel Knight - 10xUnicorn** *[01:47:17]*: Yeah. And then, Mark, there's a button up at the top, right. That you can hit Save skill, and then that'll add it to your skills. 
+**James** *[01:47:27]*: Save skill. 
+**James - reboo** *[01:47:28]*: Where's that one at? 
+**Daniel Knight - 10xUnicorn** *[01:47:29]*: Sorry, James, on yours, just hit Submit all reviews at the bottom. 
+**Daniel Knight - 10xUnicorn** *[01:47:35]*: And I think that should take you to the next step. 
+**James - reboo** *[01:47:39]*: Yeah, it says, submit all reviews and then review complete. 
+**James** *[01:47:42]*: Okay. And then next, I have a next button, I guess. 
+**Daniel Knight - 10xUnicorn** *[01:47:48]*: So on the reply in your prompt area, scroll down. Yeah, it's probably asking you to say. Yeah, just say it looks good just in the reply. 
+**James** *[01:48:09]*: Oh, in the reply. Okay, so just looks good. 
+**Daniel Knight - 10xUnicorn** *[01:48:11]*: Yeah. 
+**James** *[01:48:14]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[01:48:15]*: Yeah, so. And here's the thing to keep in mind. So if you scroll up a little bit, you're gonna see it was asking three questions that basically kind of say what I was saying. 
+**Daniel Knight - 10xUnicorn** *[01:48:26]*: So, James, scroll up a little bit. And these three questions. 
+**Daniel Knight - 10xUnicorn** *[01:48:33]*: Does the confirmation prompt in the with skill responses feel right? 
+**Daniel Knight - 10xUnicorn** *[01:48:36]*: Not too wordy, not too brief. 
+**Daniel Knight - 10xUnicorn** *[01:48:38]*: So it's basically just asking you, like,. 
+**Daniel Knight - 10xUnicorn** *[01:48:40]*: You know, hey, is this gonna satisfy what you're actually looking for? Actually, Because a lot of the times. 
+**Daniel Knight - 10xUnicorn** *[01:48:48]*: And it sounds like I need to create my skill. What's interesting, you were using Sonnet. 
+**Daniel Knight - 10xUnicorn** *[01:48:52]*: I was using Sonnet. I didn't get the brief, you know, overview, but you guys both did, so. 
+**Daniel Knight - 10xUnicorn** *[01:48:59]*: Anyway, so, yeah, so it's just. 
+**Daniel Knight - 10xUnicorn** *[01:49:02]*: It's interesting how that's different. Now you've got the save skill. 
+**Daniel Knight - 10xUnicorn** *[01:49:06]*: So, Tucker, we're just installing this safeguard skill to make sure we don't let. 
+**Daniel Knight - 10xUnicorn** *[01:49:12]*: Claude accidentally delete our entire existence on our computer. 
+**Daniel Knight - 10xUnicorn** *[01:49:19]*: So we're just on this. 
+**Daniel Knight - 10xUnicorn** *[01:49:22]*: Let's see right here. 
+**Daniel Knight - 10xUnicorn** *[01:49:23]*: Just kind of getting our Claude dialed in under the resources page on Claude Skills. We just installed this safety guard just. 
+**Daniel Knight - 10xUnicorn** *[01:49:33]*: By hitting copy and then pasting that in the skill cre or in the cloud cowork. 
+**Daniel Knight - 10xUnicorn** *[01:49:39]*: And then the next one, if you guys haven't started on this is the session tracker. This is a game changer. 
+**Daniel Knight - 10xUnicorn** *[01:49:45]*: So I would also install this 1 number 5. So 3 and 5 should be installed before we really start using Claude. 
+**Daniel Knight - 10xUnicorn** *[01:49:52]*: Tucker, did you get in? 
+**Tucker Bascom** *[01:49:55]*: I'm downloading the install file right now. It's 13 minutes away from me being able to actually restart my computer. So I'm hopping on while the install is happening. Can you drop that link in again so I can bookmark it? 
+**Daniel Knight - 10xUnicorn** *[01:50:14]*: Yeah. Yep. Perfect. 
+**Tucker Bascom** *[01:50:17]*: And you said it's skills number three and number five are the most important ones? 
+**Daniel Knight - 10xUnicorn** *[01:50:22]*: Yeah. 
+**Tucker Bascom** *[01:50:27]*: Awesome. 
+**Daniel Knight - 10xUnicorn** *[01:50:32]*: Yeah. 
+**James - reboo** *[01:50:38]*: So these prompts, you really. You just got these, you just thought them out yourself and just try to maximize the. The clarity of it. I'm just wondering how these problems came up, how you got these prompts. 
+**Daniel Knight - 10xUnicorn** *[01:50:50]*: Well, there's a good chance there was screaming just before the prompt was written. So these are designed to reduce screaming on your side some at some point late in the night. 
+**James - reboo** *[01:51:11]*: No, I. It's. It's just a very thorough prompt, you know, just. 
+**James** *[01:51:14]*: I'm just observing it, you know? 
+**Daniel Knight - 10xUnicorn** *[01:51:17]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:51:17]*: You know, that's. That's one thing that I. I don't think I've given myself enough credit for is my prompting skills. I'm very detailed and thorough. 
+**Daniel Knight - 10xUnicorn** *[01:51:28]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:51:30]*: And. Yeah, and so it's important. Like, and. And there's going to be times where like, maybe there's a new feature you want to add to whatever you're building or something's not working right. And you're like, just do this. But, you know, there's like a whole conversation of context behind what you want it to do that you are crossing your fingers that it can just assume. And if you actually take the time to really prompt it and be detailed and thoroughly to the point where it's like, I can't think of anything else that needs to know. And then you give it that, and then it uses this file, this, what we're doing right now, to then update your markdown file so that your ongoing session knows all of those details of. 
+**Daniel Knight - 10xUnicorn** *[01:52:17]*: What you're trying to create, it's going to. 
+**Daniel Knight - 10xUnicorn** *[01:52:18]*: Well, one, create what you actually asked for. Right. The more Detailed you are, the less likely you are to get random outputs because it's going to follow all of the details. And then this skill that we're installing right now will help make sure that as it skips things or prioritizes one thing versus another, and it pushes it off for later, and then it doesn't actually build it while it stores what. 
+**Daniel Knight - 10xUnicorn** *[01:52:45]*: You've been talking about in this markdown file. 
+**James - reboo** *[01:52:49]*: Yeah. Interesting. It's just. It's just a. It's just interesting. You know, it's like. It's like when you're actually writing a code, the more you go down the line, the more you got to think about, if I do this, it's going to affect line 30 over here, and it. And as you go, then it's going to affect 57, 30, 86. You know what I mean? You know what I mean? And so it's like. But it's. It's almost like coding, but telling it what to do. It's interesting how that, like, you're being very specific. That's how I'm understanding it. That's. 
+**James** *[01:53:27]*: Is that correct? 
+**Daniel Knight - 10xUnicorn** *[01:53:28]*: Mm. 
+**James** *[01:53:31]*: That. You didn't sound too sure about that. 
+**Daniel Knight - 10xUnicorn** *[01:53:33]*: I was. I was reading your. 
+**Daniel Knight - 10xUnicorn** *[01:53:36]*: The document I was giving you. 
+**Mark Savant** *[01:53:39]*: But yeah, I mean, that is a problem I've run into in the past, is it forgets what it's told you. It, like, it forgets what it's written in the past, and it kind of overrides things. And it was endlessly frustrating. But I didn't. I didn't have this session handoff skill built in. I was using replit at the time. 
+**James** *[01:53:57]*: Yeah. 
+**Mark Savant** *[01:53:59]*: You know, sometimes it's small things that make a big difference. 
+**James** *[01:54:03]*: Yeah. 
+**James - reboo** *[01:54:03]*: So if you. If you're starting to debug it, like, if you start to see something, then you got to just keep adding another prompt, like, hey, no, don't do this. 
+**James** *[01:54:10]*: Do this kind of thing, or if. 
+**James - reboo** *[01:54:13]*: This happens, that happens type of thing. 
+**James** *[01:54:15]*: That. That's kind of basically what. What's going on here. 
+**Daniel Knight - 10xUnicorn** *[01:54:20]*: Yeah. Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:54:21]*: And basically, you know, so Claude will, like, compact your conversation, which is great, so you don't have to go and start a new conversation. But what it does is it gets rid of the nitty gritty details and some of the nuances that you said to it that it built to solve for. But then as you start building other things, it. It can forget that was, like, a very specific thing that you wanted done and. And just kind of override it. But if it has this file, it'll know, like, hey, we built that like this was intentional. Let's not get rid of it. Let's make sure that whatever we build works with it, you know, and that's there. 
+**James** *[01:55:04]*: That's what the tracker is. That's what the tracker is doing, basically. 
+**Daniel Knight - 10xUnicorn** *[01:55:07]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:55:08]*: The session log, it's creating that. 
+**Daniel Knight - 10xUnicorn** *[01:55:11]*: This skill for. 
+**Mark Savant** *[01:55:14]*: Well. And it compresses that conversation to save tokens, right? 
+**Daniel Knight - 10xUnicorn** *[01:55:20]*: Well, I think it's more so. It's kind of like. 
+**Daniel Knight - 10xUnicorn** *[01:55:25]*: I don't know. 
+**Daniel Knight - 10xUnicorn** *[01:55:25]*: It's more so because otherwise it's looking through, like, a sea of information and it's still referencing your whole conversation with, like, every prompt. And so when it compacts it gets rid of, like, the ands and, you know, little details that it doesn't need. So, yeah, it would. It would essentially save you tokens because otherwise it'd be reading back through, you know, endless amounts of information. 
+**Daniel Knight - 10xUnicorn** *[01:55:54]*: To keep designing and keep building. 
+**Mark Savant** *[01:55:58]*: Have you. Dan, I'm curious, have you heard of this? 
+**James** *[01:56:00]*: This. 
+**Mark Savant** *[01:56:00]*: It's kind of like a newer concept. I was listening to a show the other day, you're talking about caveman talk, where you prompt your Claude to only talk like cavemen instead of giving you this roundabout. Like, because, you know, English language, we have a lot of words to say a small amount of things. Just like I'm doing right now. 
+**James - reboo** *[01:56:20]*: It's like pigeon. 
+**Mark Savant** *[01:56:22]*: Exactly. So it's like, claude, write code, not. So I spent this time to write up this code, and by. By speaking that way, you save token usage. I'm wondering if that might be a. 
+**James** *[01:56:32]*: New way of going back. 
+**Mark Savant** *[01:56:35]*: Like, Claude, make skill, Claude save time, that kind of thing. Right. 
+**Daniel Knight - 10xUnicorn** *[01:56:41]*: You're reminding me of the Office episode where Dwight only says what he thinks are keywords. 
+**Mark Savant** *[01:56:50]*: Right. But, you know, it might. It might end up making us all stupid. But, you know, but. But, you know, if it can save me 40% of my token usage, that becomes interesting. You know, I just wonder. At the end of the day, it's what the results look like. 
+**Tucker Bascom** *[01:57:09]*: So. 
+**Daniel Knight - 10xUnicorn** *[01:57:10]*: Only sounds stupid, not actual stupid there. 
+**Daniel Knight - 10xUnicorn** *[01:57:19]*: So interesting. I've never seen this review session. So this is an example of a skill you could create. Like, if you don't want Claude to ask you ever again, if. What if the skill that it's creating for you is what you actually want it to create, you can tell it, hey, when I ask you to create a skill, just create it. And that will do it. It'll never ask you for this eval. 
+**Daniel Knight - 10xUnicorn** *[01:57:44]*: Review again, which I think is a good thing. 
+**Mark Savant** *[01:57:52]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[01:57:53]*: Instead of doing the review, I think I I like the review. I think it's good. 
+**James - reboo** *[01:57:58]*: Yeah, it's definitely like. Like cross referencing it, you know? 
+**Daniel Knight - 10xUnicorn** *[01:58:02]*: Mm. 
+**James** *[01:58:04]*: Yeah,. 
+**James - reboo** *[01:58:06]*: Just a lot of reading. 
+**Daniel Knight - 10xUnicorn** *[01:58:09]*: Yeah. I. I say I like it, but then I also know I'd probably just hit submit without really looking at it too much. Yeah, not true. I. I feel like, you know, especially with something like this, it's good to have it done right, because then you don't have to do it again. 
+**Daniel Knight - 10xUnicorn** *[01:58:27]*: My only question is, did it combine this skill or is it building a. 
+**Daniel Knight - 10xUnicorn** *[01:58:32]*: New skill with your last one? 
+**James** *[01:58:36]*: How would you know that? 
+**Daniel Knight - 10xUnicorn** *[01:58:39]*: Once you approve, it'll either update the. 
+**Daniel Knight - 10xUnicorn** *[01:58:42]*: Skill or it'll have a create skill button submit then. Yeah, I think that submit button also doesn't actually do anything. 
+**James** *[01:58:54]*: Yeah, I know. 
+**James - reboo** *[01:58:54]*: Funny. 
+**James** *[01:58:56]*: Okay, let's go to the. 
+**James - reboo** *[01:58:58]*: Come on. 
+**James** *[01:58:58]*: Next. 
+**Daniel Knight - 10xUnicorn** *[01:59:04]*: So just in the reply. 
+**James** *[01:59:07]*: Looks good again. 
+**Daniel Knight - 10xUnicorn** *[01:59:09]*: Yeah. 
+**James** *[01:59:10]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[01:59:16]*: Yeah. Interesting. How's everybody else doing? 
+**Daniel Knight - 10xUnicorn** *[01:59:21]*: Tucker, are you in? 
+**Tucker Bascom** *[01:59:26]*: The Download file has 4 minutes left. I'm using Claude chat to kind of outline the project roadmap. I named the app. It's going to be called Franchise Whisperers. 
+**Daniel Knight - 10xUnicorn** *[01:59:39]*: AI. Nice. 
+**Daniel Knight - 10xUnicorn** *[01:59:42]*: Right on. 
+**Tucker Bascom** *[01:59:43]*: I really like the way Claude does its. Does its outlining. I'll kind of show you what it is looking like right now. 
+**James - reboo** *[01:59:54]*: Daniel, was that. See how the save scale you said? Where was it combined? You're looking for something for. 
+**James** *[01:59:59]*: It combines. 
+**Daniel Knight - 10xUnicorn** *[02:00:00]*: No, you're good. Just hit save skill. We don't. 
+**Daniel Knight - 10xUnicorn** *[02:00:05]*: It would have been fine if it. 
+**Daniel Knight - 10xUnicorn** *[02:00:06]*: Combined it, but I didn't want it to combine them, so. Yeah, looks like it did what it needed. Cool. All right. Can you see my screen, Daniel? Yeah. Yep. 
+**Daniel Knight - 10xUnicorn** *[02:00:41]*: So how did you start this conversation? 
+**Daniel Knight - 10xUnicorn** *[02:00:45]*: Will you kind of show me what you gave it? 
+**Tucker Bascom** *[02:00:50]*: Yeah, very basic prompt. Help me outline a project to build an app. 
+**Daniel Knight - 10xUnicorn** *[02:00:56]*: Okay, cool. 
+**Tucker Bascom** *[02:01:03]*: Here's like the top level workflow. User signs up. There's an intake questionnaire. I think I could like, honestly charge just for the creation of an fdd. Like, attorneys will charge freaking thousands of dollars. I feel like if I could give AI a template and they just go through a questionnaire, there will be a fat disclaimer. Have your attorney review this. 
+**James - reboo** *[02:01:34]*: Right. 
+**Tucker Bascom** *[02:01:34]*: But I don't know, I feel like that is a viable monetization strategy there. 
+**Daniel Knight - 10xUnicorn** *[02:01:44]*: Yeah. Okay, Good idea. Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:01:49]*: And, you know, it's good to have like an overall scope. 
+**Daniel Knight - 10xUnicorn** *[02:01:54]*: Like, you know, this is the full. 
+**Daniel Knight - 10xUnicorn** *[02:01:56]*: Fully built out app that we're trying to get to, but also having like, you know, what's. What's kind of a minimum. An mvp. Right. Minimum viable product that we can get it to over these next couple days. 
+**Daniel Knight - 10xUnicorn** *[02:02:10]*: So we can see if there's actually a product here. Right. If people would actually want to use. 
+**Daniel Knight - 10xUnicorn** *[02:02:15]*: It, it works, right? 
+**Daniel Knight - 10xUnicorn** *[02:02:17]*: And start having people get in there. 
+**Daniel Knight - 10xUnicorn** *[02:02:21]*: So sounds like that might be that. 
+**Daniel Knight - 10xUnicorn** *[02:02:23]*: Module to kind of be that minimum point and then you can build out additional things with that. 
+**Tucker Bascom** *[02:02:31]*: 100%. 
+**Daniel Knight - 10xUnicorn** *[02:02:32]*: Yeah. 
+**Tucker Bascom** *[02:02:32]*: Even if it just stopped after module two, I think that would be sufficiently and monetizable. And even the state registrations really is like, honestly, you could find a lot of that information just on the Internet. I think just providing information on the state registrations is probably a super easy kicker. So, like, everything through module three, I feel like, is definitely a good mvp. 
+**Daniel Knight - 10xUnicorn** *[02:02:55]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[02:02:56]*: And I mean, and even just like with what I did with the resources. Right here are links to all of. 
+**Daniel Knight - 10xUnicorn** *[02:03:01]*: The things that you need. Right? 
+**Tucker Bascom** *[02:03:03]*: That, yeah, because that those resources look super polished, super easy to look through. Yeah, totally agree. 
+**Daniel Knight - 10xUnicorn** *[02:03:13]*: Cool. Okay, so keep scrolling down. I want to see what else you got hooked up in there. So it's kind of giving you some. 
+**Daniel Knight - 10xUnicorn** *[02:03:27]*: Structure, some of the modules. 
+**Daniel Knight - 10xUnicorn** *[02:03:30]*: Okay, keep scrolling. 
+**Daniel Knight - 10xUnicorn** *[02:03:33]*: So. Yeah, what I would say is for this next part. So this is good. And if you want it to be structured in this way, then this will be helpful for when you actually launch the build. But what I'm going to suggest is everybody fill out the questionnaire now and so we can build it using the app Dashboard. And that'll kind of give all of the details and structure around everything you're building. Because here's the thing, we can build something that is super basic. And I want to make sure we get everybody to a point where you have something that's functional, but beyond that, something that you actually do something with and that it's built right. 
+**Daniel Knight - 10xUnicorn** *[02:04:25]*: You know, with the end in mind. 
+**Daniel Knight - 10xUnicorn** *[02:04:27]*: Because, you know, otherwise I don't want you guys walking away with a shiny toy that you talk about and show a couple people. But really something that can transform your. 
+**Daniel Knight - 10xUnicorn** *[02:04:38]*: Business and help you actually generate some. 
+**Daniel Knight - 10xUnicorn** *[02:04:41]*: Revenue or some save time, whatever it might be. So what I would say is I just put the questionnaire link in the. 
+**Daniel Knight - 10xUnicorn** *[02:04:53]*: Chat again and just take a second. 
+**Daniel Knight - 10xUnicorn** *[02:04:56]*: To go through and fill this out. 
+**Daniel Knight - 10xUnicorn** *[02:04:59]*: I'm going to kind of walk through a couple things. 
+**Daniel Knight - 10xUnicorn** *[02:05:02]*: So this is the questionnaire form. This is just, you know, going to kind of kick off your account with. 
+**Daniel Knight - 10xUnicorn** *[02:05:09]*: The App Dash system. 
+**Daniel Knight - 10xUnicorn** *[02:05:13]*: And so once you fill out this form, you'll see a button pop up. 
+**Daniel Knight - 10xUnicorn** *[02:05:16]*: I'll just do a quick example. You'll see A button pop up that. 
+**Daniel Knight - 10xUnicorn** *[02:05:21]*: Basically gives you access to the App Dash system. So when you hit submit, because I already had an account, it just directed me there. But it'll give you a code that. 
+**Daniel Knight - 10xUnicorn** *[02:05:36]*: You can use to log in, and. 
+**Daniel Knight - 10xUnicorn** *[02:05:37]*: Then you'll get in here, and you should see your app already populated with the details that you filled in. And so once that is done, then what we're going to do is go through and really define out the app that we're building. So what is the idea behind it? What kind of app is it? What is the vision? And all these different things that will kind of help us build it in a way that. That it's kind of structured well for the long term, because otherwise, here's what ends up happening, is if you're just going to build an app from the idea, you're going to end up adding features and things that create a very disconnected and broken app where your database isn't kind of built correctly and all sorts of things. 
+**Daniel Knight - 10xUnicorn** *[02:06:27]*: So this part is definitely to take some time, and I'm going to give everybody, you know, some dedicated time to really just focus on going through all of these steps. You can put as much detail as you want out of the interest of time. You know, try to keep it somewhat concise, but also, you know, make sure you really give it all of the. 
+**Daniel Knight - 10xUnicorn** *[02:06:52]*: Information that you want it to have. 
+**Daniel Knight - 10xUnicorn** *[02:06:53]*: I wouldn't worry too much about the business model side of things. You can, if you want to kind of get an idea of how you want to price it. If you do want to sell it, that is. 
+**Daniel Knight - 10xUnicorn** *[02:07:03]*: If not, that's fine, too, and just. 
+**Daniel Knight - 10xUnicorn** *[02:07:05]*: Basically go through all of these steps. So the first step is really just filling out the questionnaire, and that'll get. 
+**Daniel Knight - 10xUnicorn** *[02:07:13]*: You into the dashboard, and it should have all of the information that you submit stored. 
+**Daniel Knight - 10xUnicorn** *[02:07:18]*: Does that make sense? 
+**Daniel Knight - 10xUnicorn** *[02:07:19]*: Everybody clear on that? Okay,. 
+**Mark Savant** *[02:07:25]*: So this is a App dash questionnaire, right? 
+**Daniel Knight - 10xUnicorn** *[02:07:29]*: Yeah. 
+**Tucker Bascom** *[02:07:30]*: You're talking about this questionnaire right here, Daniel? 
+**Daniel Knight - 10xUnicorn** *[02:07:32]*: Yes. 
+**James** *[02:07:33]*: Perfect. 
+**Daniel Knight - 10xUnicorn** *[02:07:47]*: So why don't we. 
+**Mark Savant** *[02:07:55]*: So it brings me to a login signup or access code page. 
+**Daniel Knight - 10xUnicorn** *[02:07:59]*: After I submit to give you an access code, Maybe check your email. You should have a. An email to activate. 
+**Mark Savant** *[02:08:17]*: Okay. It. 
+**Tucker Bascom** *[02:09:09]*: Are you able to give me a access code, Daniel? 
+**Daniel Knight - 10xUnicorn** *[02:09:14]*: Yeah,. 
+**Mark Savant** *[02:09:18]*: Because I'm not seeing. I'm not seeing anything in my email inbox. 
+**Daniel Knight - 10xUnicorn** *[02:09:28]*: Hold on it. Yeah, sorry. The intake form and this app dashboard are actually two different systems, so it's a little finicky bit. Just one second. 
+**Daniel Knight - 10xUnicorn** *[02:10:47]*: It. 
+**Daniel Knight - 10xUnicorn** *[02:11:27]*: All right, Mark and Tucker, check the chat I sent You. The password that you should be able to use. Should be able to log in with the email you used in the password I just sent you. Those work for you guys, saying, I. 
+**Tucker Bascom** *[02:12:32]*: Have an account with this email already. 
+**Daniel Knight - 10xUnicorn** *[02:12:36]*: Are you doing login or sign up on that? 
+**Tucker Bascom** *[02:12:40]*: I was doing sign up. 
+**Daniel Knight - 10xUnicorn** *[02:12:42]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:12:42]*: So you should be able to log. 
+**Daniel Knight - 10xUnicorn** *[02:12:43]*: In now with the email and then that password I sent you. 
+**Tucker Bascom** *[02:12:47]*: Oh, I see. 
+**Daniel Knight - 10xUnicorn** *[02:12:48]*: Yeah. 
+**Tucker Bascom** *[02:12:50]*: Okay, I'm in. 
+**Daniel Knight - 10xUnicorn** *[02:12:52]*: Cool. 
+**Daniel Knight - 10xUnicorn** *[02:12:54]*: It works. Full disclaimer because it's a terrible example. 
+**Daniel Knight - 10xUnicorn** *[02:12:58]*: Of an app that I built, but. 
+**Daniel Knight - 10xUnicorn** *[02:13:00]*: This is not a typical access path. It works with just logging in normally through the main site, but because I wanted to make it where this. This form took in the info and. 
+**Daniel Knight - 10xUnicorn** *[02:13:13]*: Then also added it just. It's a little trickier. So. And I also started building that out. 
+**Daniel Knight - 10xUnicorn** *[02:13:20]*: Last night when I ran out of cloud tokens. 
+**Daniel Knight - 10xUnicorn** *[02:13:22]*: So what are you gonna do? 
+**Daniel Knight - 10xUnicorn** *[02:13:26]*: I heard actually that they're gearing up. 
+**Daniel Knight - 10xUnicorn** *[02:13:29]*: To, like, really start charging a lot of money for extra tokens and all that. Be interesting to see where things go. So I'm like, I need to build. 
+**Daniel Knight - 10xUnicorn** *[02:13:41]*: As much as I can right now. 
+**Daniel Knight - 10xUnicorn** *[02:13:42]*: While they're not ridiculous. 
+**Daniel Knight - 10xUnicorn** *[02:13:45]*: Oh, and James, I sent you the. 
+**Daniel Knight - 10xUnicorn** *[02:13:47]*: Password on your side too. 
+**James** *[02:13:49]*: Okay. 
+**James - reboo** *[02:13:50]*: Where's that at? Email. 
+**James** *[02:13:51]*: Where's that at? 
+**Daniel Knight - 10xUnicorn** *[02:13:51]*: In the Zoom chat. 
+**James** *[02:13:55]*: Is that the ship? 
+**James - reboo** *[02:13:57]*: That one? 
+**Daniel Knight - 10xUnicorn** *[02:13:58]*: Yeah. 
+**James** *[02:13:59]*: Okay. And this? 
+**James - reboo** *[02:14:05]*: My email and that password? 
+**James** *[02:14:06]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:14:07]*: Yeah. 
+**James** *[02:14:08]*: Okay. Logging. Okay. Should I save that password or what? 
+**Daniel Knight - 10xUnicorn** *[02:14:19]*: I'd save it for now. 
+**Daniel Knight - 10xUnicorn** *[02:14:20]*: You should be able to reset it, though. 
+**James** *[02:14:23]*: Cancel. Okay. Update. Okay, so I got some kind of. 
+**James - reboo** *[02:14:32]*: Window update gathering late. 
+**James** *[02:14:33]*: Okay. Monthly recurring revenue, active users. 
+**Daniel Knight - 10xUnicorn** *[02:14:38]*: Yeah, so you can skip that part. 
+**Daniel Knight - 10xUnicorn** *[02:14:40]*: For now and then you'll. 
+**Daniel Knight - 10xUnicorn** *[02:14:43]*: Do you want to share your screen again, James? Do you guys see the apps in there that you. 
+**Daniel Knight - 10xUnicorn** *[02:14:48]*: At least the starting details from what you put in? Mark and Tucker. So you're just going through filling out the rest then? 
+**Tucker Bascom** *[02:14:59]*: Yeah, it said I was 5% complete already, which I'm guessing is what the intake form fed into App Dash. So now I'm just going through the rest. 
+**Daniel Knight - 10xUnicorn** *[02:16:22]*: Okay. So, James. 
+**James** *[02:16:24]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:16:25]*: What I would say is. 
+**Daniel Knight - 10xUnicorn** *[02:16:28]*: Click. I have a description. Oh, actually, just hit cancel. Sorry. It's already in there. And so you should see that app just on the left gathering labor and materials. 
+**James** *[02:16:42]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:16:43]*: Click on the little lightning bolt that's purple. Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:16:48]*: Right there. 
+**Daniel Knight - 10xUnicorn** *[02:16:51]*: And then that should load it up into. Yeah, the left. There's a number one next to App Vision. And you'll click on that. This one over in the. On the left panel. It's kind of hard to see. Just wonder where'd you go? 
+**Daniel Knight - 10xUnicorn** *[02:17:17]*: Yeah, so up towards the top, just right below top action, there's a number. 
+**Daniel Knight - 10xUnicorn** *[02:17:21]*: One that says App Vision. Click on that and that'll be your. 
+**James - reboo** *[02:17:24]*: Oh, I see it's not real highlighted. Okay. 
+**Daniel Knight - 10xUnicorn** *[02:17:26]*: Yeah, yeah,. 
+**Daniel Knight - 10xUnicorn** *[02:17:29]*: Click it again. 
+**James** *[02:17:31]*: This one? 
+**Daniel Knight - 10xUnicorn** *[02:17:32]*: Yeah. Cool. Yeah. So then what you'll want to do. 
+**Daniel Knight - 10xUnicorn** *[02:17:37]*: Is just basically walk through and fill. 
+**Daniel Knight - 10xUnicorn** *[02:17:39]*: Out all of the sections. 
+**James - reboo** *[02:17:43]*: So I should bookmark this site too, right? 
+**Daniel Knight - 10xUnicorn** *[02:17:45]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[02:17:48]*: And this will be useful. The reason I created this is to. 
+**Daniel Knight - 10xUnicorn** *[02:17:51]*: Kind of manage all of the different. 
+**Daniel Knight - 10xUnicorn** *[02:17:53]*: Apps that I'm working on. 
+**Daniel Knight - 10xUnicorn** *[02:17:55]*: Yeah. So, yeah, so if you guys end up building out other apps, then you've got a spot to kind of keep track of everything and to build it out thoroughly. 
+**James - reboo** *[02:18:04]*: The 90 day trial things that we're on. 
+**James** *[02:18:07]*: Yeah, yeah. Okay. 
+**Jelene Wilkinson** *[02:18:11]*: We're supposed to put the. An access code in where it says access code or click on access code. 
+**Daniel Knight - 10xUnicorn** *[02:18:18]*: No, you should just login. Let me. Okay, let me get it for you. 
+**James** *[02:18:38]*: Let me see if I can just. 
+**Jelene Wilkinson** *[02:18:47]*: Login. Not sign up. Sorry. 
+**Daniel Knight - 10xUnicorn** *[02:18:50]*: Yeah, you already signed up. But I need to. I need to get your code. One second. 
+**James** *[02:19:11]*: It. 
+**Daniel Knight - 10xUnicorn** *[02:19:41]*: Section,. 
+**Mark Savant** *[02:20:12]*: Dan. Yeah, so when I look on the left side here, I'm filling this out and I see 10. 10 Sections on the left, right. App vision, outcome, et cetera. What we're doing here is we want to fill this out so that it'll give us like a master prompt with which to take over to Claude in order to give Claude the input. So it could start building out our. Our code base for the app. Is that right? 
+**Daniel Knight - 10xUnicorn** *[02:20:38]*: Yeah. 
+**James** *[02:20:40]*: So what it. 
+**James - reboo** *[02:20:41]*: So this is just like an idea generator. 
+**James** *[02:20:43]*: Is that what this thing is? Or prompt generator? 
+**Daniel Knight - 10xUnicorn** *[02:20:46]*: Yeah, the prompt generator. So you already have the idea, so now you're just really defining it out. 
+**Daniel Knight - 10xUnicorn** *[02:20:52]*: So that it's built correct. 
+**James** *[02:20:54]*: And then. 
+**James - reboo** *[02:20:55]*: Yeah, and then it gives you what. 
+**James** *[02:20:57]*: It thinks the best prompts would be for. Whatever. Is that kind of what I'm saying? 
+**Daniel Knight - 10xUnicorn** *[02:21:02]*: So it gives you a structured prompt to build out the app. Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:21:08]*: And so, yeah, so basically I'll just. I'll kind of show you. Oh, wrong screen. So basically you end up loading the app into this system and then you're. 
+**Daniel Knight - 10xUnicorn** *[02:21:45]*: Going to define out all of the details. 
+**Daniel Knight - 10xUnicorn** *[02:21:47]*: And let me just do this for an example. And you can pre fill some of it too. 
+**Daniel Knight - 10xUnicorn** *[02:21:53]*: So if you want to like, give it. If you want to pre fill some of the info with like some of these example types of apps, if you're. 
+**Daniel Knight - 10xUnicorn** *[02:22:01]*: Building something similar, you can do that. 
+**Daniel Knight - 10xUnicorn** *[02:22:04]*: But basically you go through, just spell out, you know, what is the app, what is the vision of it, you know, what are you looking for it to help accomplish? And just, you know, if you don't have answer for the question, that's okay too. The idea is that this will help really define what it is that you're building. Especially if you're looking to build something for, to sell, you're going to want. 
+**Daniel Knight - 10xUnicorn** *[02:22:29]*: To have all of this really kind of spelled out. 
+**Daniel Knight - 10xUnicorn** *[02:22:32]*: So this is, you know, this is a very detailed way of doing it and it's probably more than we need to do. So just kind of answer the things that you know and you know, that you feel like you want. 
+**Daniel Knight - 10xUnicorn** *[02:22:47]*: To have it create. 
+**Daniel Knight - 10xUnicorn** *[02:22:48]*: Because then what it'll do is it creates this prompt over here. And that's basically what this is for, is it's going to take all of. 
+**Daniel Knight - 10xUnicorn** *[02:22:57]*: The information that we provided it and. 
+**Daniel Knight - 10xUnicorn** *[02:23:00]*: Then create a prompt that we can. 
+**Daniel Knight - 10xUnicorn** *[02:23:02]*: Actually use to then build out the app. And so yeah, so then it. 
+**Daniel Knight - 10xUnicorn** *[02:23:07]*: But it's, you know, structured, so it handles all of the things that maybe you wouldn't have thought about to make. 
+**Daniel Knight - 10xUnicorn** *[02:23:15]*: Sure that it's built out correctly. Does that make sense? 
+**James** *[02:23:19]*: Yeah. Yeah. 
+**Tucker Bascom** *[02:23:21]*: Well, Daniel, my install file is ready for restart, so going to leave again. 
+**Daniel Knight - 10xUnicorn** *[02:23:29]*: And be right back. All right, we got this. 
+**Mark Savant** *[02:23:33]*: I'm just kind of going through quick for the next 10 minutes to fill out as much as I can and see where I'm at that point. 
+**Daniel Knight - 10xUnicorn** *[02:23:40]*: Yeah, it was kind of my. What I was thinking is we go for about 10 minutes, but I want to make sure we get through at least the key details. 
+**James** *[02:24:08]*: Excuse me for a second. 
+**Daniel Knight - 10xUnicorn** *[02:24:18]*: Angeline. What? I do. 
+**Jelene Wilkinson** *[02:24:24]*: What? 
+**Daniel Knight - 10xUnicorn** *[02:24:28]*: I'm so lost now. And chat paste. Okay, there's your password in the chat. 
+**Jelene Wilkinson** *[02:24:44]*: Thanks. 
+**Mark Savant** *[02:24:52]*: So I, I on this, on the builder, I click that button because it gives a bunch of examples of potential apps to build different types of apps. I pushed that button. It filled out a ton of information. And one of the parts, I don't know if you can see my screen here is these must have features, the mvp. This is pretty robust. I'm a little bit concerned that it's going to build something too big off the bat, you know what I'm saying? And maybe landing page builder, drag and drop form builder, embeddable widgets, pop ups, lead scoring engine, email sequence builder. And I guess I can just remove stuff from this Contact database and segmentation analytics, dashboard, CRM sync capabilities. All this stuff sounds great, but I'm Concerned that I'm going to get inundated with too complex of an idea. 
+**Mark Savant** *[02:25:45]*: Does that, does that make sense? 
+**Daniel Knight - 10xUnicorn** *[02:25:46]*: Yeah, yeah, for sure. And so what I would say is move anything that isn't. 
+**Daniel Knight - 10xUnicorn** *[02:25:54]*: Because, you know, this is on the preset, right. 
+**Daniel Knight - 10xUnicorn** *[02:25:56]*: So anything that you feel like isn't. 
+**Daniel Knight - 10xUnicorn** *[02:25:58]*: Actually required for you to have a. 
+**Daniel Knight - 10xUnicorn** *[02:26:00]*: Basic version, move it to the nice. 
+**Daniel Knight - 10xUnicorn** *[02:26:03]*: To have V2 plus or even just like add a line that says these. 
+**Daniel Knight - 10xUnicorn** *[02:26:11]*: Will be done in phase two, right? 
+**Mark Savant** *[02:26:15]*: Yeah. Okay. 
+**Daniel Knight - 10xUnicorn** *[02:26:17]*: And the other thing is, like, it'll also build a lot of this in phases, but by having it in there now, it'll know, like, planning ahead, that you know, the foundation is going to. 
+**Daniel Knight - 10xUnicorn** *[02:26:28]*: Have all these things. 
+**Daniel Knight - 10xUnicorn** *[02:26:30]*: And so if you're. So here's something to think about. Like, if you're going to sell it and you want to get to market as soon as possible, then you don't want to have things in there that don't work. If you're not going to sell it, but you do want those functions, then it's okay to have them in there. That and they're not functional, knowing that. 
+**Daniel Knight - 10xUnicorn** *[02:26:49]*: You're going to build them out later. 
+**Mark Savant** *[02:26:51]*: Yeah, well, at least for me, I'm not really looking to build something to sell right now. Kind of like, James, I'm trying to. I'm like, there's a couple specific problems, couple pain points, and I'd like to be able to build, you know, this solution so I can save myself time and money. You know what I mean? 
+**Daniel Knight - 10xUnicorn** *[02:27:11]*: Yeah. 
+**Mark Savant** *[02:27:14]*: You know, all this stuff sounds great, but, you know, some, you know, I've built, I've five coded some apps before, and I know if you try to go too big too fast, you end up getting inundated with too much. So I'm kind of like, you know, let me keep it small and tight. So at the end of the couple days, I have something like, okay, cool. This is cool. You know, this works. So anyway, I'm getting. Yeah, I'm kind of talking loud here. 
+**Daniel Knight - 10xUnicorn** *[02:27:39]*: I'm definitely with you. I would either remove or indicate which. 
+**Daniel Knight - 10xUnicorn** *[02:27:44]*: Ones are going to be part of the next phase. 
+**Daniel Knight - 10xUnicorn** *[02:27:57]*: And then, James, what I would say is you gave me a lot of. 
+**Daniel Knight - 10xUnicorn** *[02:28:01]*: Info in that conversation and I was,. 
+**Daniel Knight - 10xUnicorn** *[02:28:05]*: I was definitely recording it. 
+**Daniel Knight - 10xUnicorn** *[02:28:08]*: So let's see here. 
+**James** *[02:28:11]*: Yeah, I'm trying to figure out what I can kind of state on there,. 
+**Daniel Knight - 10xUnicorn** *[02:28:14]*: You know, and this is also just,. 
+**Daniel Knight - 10xUnicorn** *[02:28:17]*: Just a tool, right, for what you and Mark are doing. This might be less useful than just kind of Spelling it all out yourself. You're building an app that you want to commercialize, then this is going to be. 
+**Daniel Knight - 10xUnicorn** *[02:28:30]*: I would start here with anything and,. 
+**Daniel Knight - 10xUnicorn** *[02:28:33]*: You know, you can still add and, you know, adjust details in here, but this is. 
+**Daniel Knight - 10xUnicorn** *[02:28:38]*: It's essentially just a prompt generator. 
+**Daniel Knight - 10xUnicorn** *[02:28:40]*: Right. So whatever you put in here is. 
+**Daniel Knight - 10xUnicorn** *[02:28:42]*: Going to just come back out to help you build whatever you're building. 
+**Daniel Knight - 10xUnicorn** *[02:28:47]*: So if you get stuck, I would just skip over the question and. And, you know, keep moving through there. But then also for you, James, like. 
+**Daniel Knight - 10xUnicorn** *[02:28:57]*: I was saying, we got a pretty good amount of information that I think we could probably use this for the most part to kind of help build it out. 
+**James** *[02:29:08]*: Yeah. 
+**James - reboo** *[02:29:12]*: So. I guess I would just put something like receive, you know, like take receipts or email receipts and incorporate them into a spreadsheet, something like that. Trying to see how to. I mean, obviously how, you know, I mean, you could get really detailed on the thing, I'm sure, you know. 
+**Daniel Knight - 10xUnicorn** *[02:29:42]*: Yeah. So what I would say is, let me share this with you. I'm gonna send you this doc. 
+**James** *[02:29:57]*: Okay. 
+**Mark Savant** *[02:30:03]*: Yeah, I'm feeling, I'm to be. I'm just feeling a little bit overwhelmed trying to fill all this out, to be honest. 
+**James - reboo** *[02:30:09]*: Is it something you can keep editing and adding? 
+**James** *[02:30:12]*: Yeah, yeah. So, yeah. 
+**Daniel Knight - 10xUnicorn** *[02:30:14]*: And that's kind of the idea with. 
+**Daniel Knight - 10xUnicorn** *[02:30:15]*: This is you can save it and come back to it. 
+**James** *[02:30:18]*: Yeah. 
+**James - reboo** *[02:30:20]*: But as you take those and put them as prompts in the cloud, it. 
+**James** *[02:30:25]*: It just keeps adding to it, basically clarifying. You said you were sending me something. 
+**Daniel Knight - 10xUnicorn** *[02:30:45]*: Yeah, okay. Yeah, I just shared this Google Doc with you and then pasted it in the chat. 
+**Daniel Knight - 10xUnicorn** *[02:30:57]*: So here's what I would say is, you know, save your app so that. 
+**Daniel Knight - 10xUnicorn** *[02:31:01]*: It is stored in your dashboard and. 
+**Daniel Knight - 10xUnicorn** *[02:31:05]*: Then use this for notes and keeping track of some of the different keys. 
+**Daniel Knight - 10xUnicorn** *[02:31:10]*: That you're going to create. 
+**Daniel Knight - 10xUnicorn** *[02:31:13]*: We can also use it, you know, later on for graphics and other things, but I think just to keep things simple right now, you know, if it's helpful to fill it out. 
+**Daniel Knight - 10xUnicorn** *[02:31:26]*: Awesome. 
+**Daniel Knight - 10xUnicorn** *[02:31:27]*: The more detailed it is, you know, the. 
+**Daniel Knight - 10xUnicorn** *[02:31:33]*: The better it's going to be built long term. 
+**Daniel Knight - 10xUnicorn** *[02:31:36]*: But definitely, if you're not selling something. 
+**Daniel Knight - 10xUnicorn** *[02:31:39]*: And we want to get to a point where this is functional, don't let this. Don't let this. 
+**James** *[02:31:44]*: Yeah, yeah, that's fine. So, okay, here we go. 
+**James - reboo** *[02:31:50]*: So I got the Google Doc, but it's saying. 
+**James** *[02:31:55]*: Request. 
+**Daniel Knight - 10xUnicorn** *[02:31:57]*: Yeah, the wrong email. 
+**James** *[02:32:00]*: No, request sent your email. You'll get an email. Let me know. Okay, so should be. 
+**Daniel Knight - 10xUnicorn** *[02:32:07]*: Yeah, I got it. One second. 
+**James** *[02:32:09]*: Oh, here we Go. 
+**Daniel Knight - 10xUnicorn** *[02:32:13]*: Okay. You should have it now. 
+**James** *[02:32:19]*: Got it. Okay, so. 
+**James - reboo** *[02:32:24]*: Okay, so. Oh,. 
+**James** *[02:32:30]*: What is this you sent me here? Looks pretty long. 
+**James - reboo** *[02:32:34]*: Y. 
+**Daniel Knight - 10xUnicorn** *[02:32:37]*: This is our conversation with you kind. 
+**Daniel Knight - 10xUnicorn** *[02:32:40]*: Of defining out or. 
+**James - reboo** *[02:32:41]*: Oh, I see. Because you were on that automatic thing that's. 
+**James** *[02:32:44]*: That dictates. You dictate to. 
+**Daniel Knight - 10xUnicorn** *[02:32:46]*: Yeah. 
+**James** *[02:32:46]*: And that. 
+**James - reboo** *[02:32:47]*: And that generated this, right? 
+**Daniel Knight - 10xUnicorn** *[02:32:49]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:32:50]*: Because everything that you shared with me. 
+**Daniel Knight - 10xUnicorn** *[02:32:51]*: Earlier is exactly what Claude's going to need to know in order to help you build this. 
+**Daniel Knight - 10xUnicorn** *[02:32:58]*: So for you, what I would say is just grab all of this and then take it to Claude and. And basically ask it for. Ask it to help you identify, you. 
+**Daniel Knight - 10xUnicorn** *[02:33:14]*: Know,. 
+**Daniel Knight - 10xUnicorn** *[02:33:17]*: What you can build to solve. 
+**Daniel Knight - 10xUnicorn** *[02:33:19]*: Everything that you were talking about. 
+**James** *[02:33:21]*: Okay. 
+**James - reboo** *[02:33:22]*: So I am asking it. 
+**James** *[02:33:26]*: Okay, so. 
+**Daniel Knight - 10xUnicorn** *[02:33:27]*: All right. 
+**James** *[02:33:29]*: Sorry, this is. 
+**James - reboo** *[02:33:30]*: I've never used Claude before this. 
+**James** *[02:33:32]*: So. 
+**James - reboo** *[02:33:32]*: So if I take. I copy this, right? 
+**Daniel Knight - 10xUnicorn** *[02:33:35]*: Yeah. 
+**James - reboo** *[02:33:37]*: And then I'm going to be in co work, not chat, right? 
+**Daniel Knight - 10xUnicorn** *[02:33:39]*: Yeah, I would just do it in cowork. 
+**Daniel Knight - 10xUnicorn** *[02:33:42]*: Yeah. 
+**James** *[02:33:42]*: Okay. 
+**James - reboo** *[02:33:43]*: And then am I just putting this in my. 
+**Daniel Knight - 10xUnicorn** *[02:33:46]*: So you want to set the stage properly. So basically tell it what you're doing. So. And if you want to share that screen. 
+**Daniel Knight - 10xUnicorn** *[02:33:55]*: I'm just seeing the Google Doc currently. 
+**James** *[02:33:58]*: Okay. 
+**James - reboo** *[02:33:58]*: So I copied that. I'm going to take this screen, move. 
+**James** *[02:34:01]*: This over here so you can see what I'm doing here. 
+**Daniel Knight - 10xUnicorn** *[02:34:07]*: And I would do new task up. 
+**Daniel Knight - 10xUnicorn** *[02:34:09]*: At the top left. 
+**Daniel Knight - 10xUnicorn** *[02:34:14]*: And then I would say, you know, hey, we're going to build an application to help manage all of the expenses that I have in my business. 
+**Daniel Knight - 10xUnicorn** *[02:34:26]*: And I want you to review the. 
+**Daniel Knight - 10xUnicorn** *[02:34:29]*: Transcription below of us really working through all of the details of the application. 
+**Daniel Knight - 10xUnicorn** *[02:34:36]*: And what we're looking for it to. 
+**Daniel Knight - 10xUnicorn** *[02:34:38]*: Do and help me identify the best way to build this so that it can accomplish everything that I'm looking for. 
+**Daniel Knight - 10xUnicorn** *[02:34:49]*: And streamline my workflow in the most effective way possible. So. Okay, I know that was a mouthful. I got you. 
+**James** *[02:34:58]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[02:35:00]*: Okay. 
+**James** *[02:35:01]*: All right. 
+**Mark Savant** *[02:35:01]*: Sorry. 
+**James - reboo** *[02:35:02]*: I've been up since 2 in the morning. 
+**Daniel Knight - 10xUnicorn** *[02:35:04]*: You're good. 
+**Daniel Knight - 10xUnicorn** *[02:35:04]*: This is why I got fireflies. 
+**Daniel Knight - 10xUnicorn** *[02:35:06]*: And this is where I really hope it shows up for us correctly. 
+**James** *[02:35:11]*: Hopefully. 
+**Daniel Knight - 10xUnicorn** *[02:35:12]*: It says it's in here, isn't it? Only have 10 note takers and two fireflies here. We're in it. All right, cool. 
+**Daniel Knight - 10xUnicorn** *[02:35:24]*: And I'm gonna let me share this. 
+**Daniel Knight - 10xUnicorn** *[02:35:25]*: Link with you guys as well so you can. Access the transcription. 
+**Daniel Knight - 10xUnicorn** *[02:35:35]*: No. 
+**Daniel Knight - 10xUnicorn** *[02:35:37]*: Meeting summary. 
+**James** *[02:35:53]*: It. 
+**Daniel Knight - 10xUnicorn** *[02:36:30]*: I'm getting a refund on this thing. 
+**Mark Savant** *[02:36:34]*: What happened? 
+**Daniel Knight - 10xUnicorn** *[02:36:36]*: It hasn't been transcribing. 
+**Daniel Knight - 10xUnicorn** *[02:36:41]*: I've got two in here. How annoying. Sorry. Okay. So, James, I'm just going to put that back at the top of your Google Doc. Hey. 
+**Daniel Knight - 10xUnicorn** *[02:37:27]*: We are building an application to streamline. 
+**Daniel Knight - 10xUnicorn** *[02:37:30]*: My workflow and essentially create a system to manage and track and create a total of all of the expenses in my business from employees and contractors making. 
+**Daniel Knight - 10xUnicorn** *[02:37:47]*: Purchases, as well as their labor. 
+**Daniel Knight - 10xUnicorn** *[02:37:50]*: And I need you to review the transcription below about what we're building and help me identify how to build this in a way that streamlines my workflow and makes it so that all of the receipts that come into my email get added to the application so I can see a total of all the expenses all in one spot and create, reporting and export a spreadsheet with all of the data. 
+**James - reboo** *[02:38:28]*: Is that like a. 
+**James** *[02:38:29]*: You're just going to revise that one you sent me? 
+**Daniel Knight - 10xUnicorn** *[02:38:33]*: Yeah, yeah. 
+**Daniel Knight - 10xUnicorn** *[02:38:34]*: So I just updated now at the. 
+**Daniel Knight - 10xUnicorn** *[02:38:36]*: Top of your Google Doc has the prompt to really kind of give it everything. So I just copy that whole thing and paste it in there again. 
+**James** *[02:38:52]*: Okay, I'm just gonna go. 
+**Daniel Knight - 10xUnicorn** *[02:38:54]*: And then you know what else I would do is go grab that spreadsheet that you're using and download that and. 
+**Daniel Knight - 10xUnicorn** *[02:39:03]*: Let's give it to Claude as well for additional context. 
+**James** *[02:39:08]*: Okay. Let me make sure. I gotta. I'm gonna try to do like a. I'm gonna find a simpler one. So this. 
+**Daniel Knight - 10xUnicorn** *[02:39:17]*: Wait, I would actually. The more details, the better. 
+**Daniel Knight - 10xUnicorn** *[02:39:22]*: Yeah, as long as it's like, clean and organized correctly. 
+**James** *[02:39:25]*: Yeah, yeah. 
+**James - reboo** *[02:39:26]*: Some of mine are kind of shorthanded. 
+**James** *[02:39:27]*: I want to make sure I upload the right one. Is this the most current one you sent me. 
+**Daniel Knight - 10xUnicorn** *[02:39:35]*: That Google Doc? Yeah. 
+**James** *[02:39:37]*: Yeah, it is, right? 
+**Daniel Knight - 10xUnicorn** *[02:39:39]*: Yeah, it is. 
+**Daniel Knight - 10xUnicorn** *[02:39:39]*: Yeah. 
+**James** *[02:39:40]*: Okay. All right, let's just do that and then. Okay, copy. 
+**Daniel Knight - 10xUnicorn** *[02:39:47]*: Okay, then just make sure you give it the spreadsheet before you submit that prompt. 
+**James - reboo** *[02:39:54]*: So where. 
+**James** *[02:39:57]*: Where do I submit that spreadsheet? 
+**James - reboo** *[02:39:59]*: Where would I put that? 
+**James** *[02:40:00]*: Is that so. 
+**Daniel Knight - 10xUnicorn** *[02:40:02]*: Download it first because I think it's. 
+**Daniel Knight - 10xUnicorn** *[02:40:04]*: Just a Google sheet right now. Right. 
+**James - reboo** *[02:40:07]*: Oh, the one that you sent me. I have it on a copy. 
+**James** *[02:40:10]*: I just copied it. I was gonna paste it. 
+**Daniel Knight - 10xUnicorn** *[02:40:13]*: No, the one you were showing us earlier. 
+**James** *[02:40:15]*: Oh, okay. Yeah. 
+**James - reboo** *[02:40:16]*: So, yeah, so once I take. Take that. Right. Which is on my computer, where do. 
+**James** *[02:40:25]*: I upload it to? 
+**James - reboo** *[02:40:26]*: Cloak. 
+**Daniel Knight - 10xUnicorn** *[02:40:29]*: So you'll basically hit the plus sign. Yep, right there. 
+**James** *[02:40:35]*: Okay. And that's where we add it in there. 
+**Daniel Knight - 10xUnicorn** *[02:40:38]*: Yeah, got it. 
+**James - reboo** *[02:40:39]*: Okay, let me get. Let me make sure I get a couple. 
+**James** *[02:40:42]*: Let me get a good clean one then. 
+**Daniel Knight - 10xUnicorn** *[02:40:50]*: Yeah, and you'll want to make sure it has headers. Mark, how are you doing? 
+**Mark Savant** *[02:41:03]*: I'm good, I'm good. I'm over. I'm actually in Claude, just kind of having conversation with Claude about kind of like the app I want to build to try to get, try to help it give me a big prompt. Yeah. So just kind of like just having a conversation with it, say, hey, this is what I'm trying to build. This is where I'm stuck. I don't want, you know, just. And it's given me basically I'm getting close to the point where it gives me the, I guess the mega prompt. 
+**Daniel Knight - 10xUnicorn** *[02:41:34]*: Yeah. 
+**Mark Savant** *[02:41:35]*: Although, you know, I think the things I'm going to be missing is the context that you're putting behind the scenes on, on the app dash itself. I just, you know, again, just kind of like I just felt kind of a little bit overwhelmed trying to answer all the questions in the app dash. 
+**Daniel Knight - 10xUnicorn** *[02:41:54]*: Yeah. 
+**Mark Savant** *[02:41:56]*: So I'm, you know, that's coming up. 
+**Daniel Knight - 10xUnicorn** *[02:41:58]*: I get that it's definitely. 
+**Mark Savant** *[02:42:05]*: But yeah, I'm doing good. I think I'm close to the point where I'm going to have this like mega prompt that I can plug in and start integrating these different pieces together. 
+**James** *[02:42:15]*: Okay. 
+**Mark Savant** *[02:42:18]*: And I'm not sure exactly how to do the deliverability on the email. You know, do I need, does the app need to have API integration so I can integrate it with like Zapier or my existing email platform? Can I have this just send out the emails directly using like a mail gun or something? Yeah, so I'm trying to sort. I'm not exactly sure how that works. 
+**Daniel Knight - 10xUnicorn** *[02:42:44]*: Yeah, yeah, you'll essentially want to just depending on how you want to build it, but have the, you know, like a mailgun or a resend. 
+**Daniel Knight - 10xUnicorn** *[02:42:59]*: It'll pull from Vercel and Supabase to. 
+**Daniel Knight - 10xUnicorn** *[02:43:04]*: Kind of fire things off and like. 
+**Daniel Knight - 10xUnicorn** *[02:43:07]*: Indicate when and what to fire off. 
+**Daniel Knight - 10xUnicorn** *[02:43:09]*: And with what data. So yeah,. 
+**Mark Savant** *[02:43:16]*: Because I honestly like, I, I kind of want to, I feel like I want to get away from using. Like I said the other day I was sending out emails from high level and it's like, oh, here's ten dollars, here's ten dollar charge, here's another ten charge, here's a twenty charge. And all of a sudden I'm like, I'm getting charged so much money just to send out emails. It's like I'd like to just get out of that ecosystem, you know. 
+**Daniel Knight - 10xUnicorn** *[02:43:39]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:43:41]*: Tucker said install almost done. Yeah, I mean I would probably set it up using resend just. 
+**Daniel Knight - 10xUnicorn** *[02:43:54]*: Based on what you're building, which, you. 
+**Daniel Knight - 10xUnicorn** *[02:43:56]*: Know, does require setting up an account,. 
+**Daniel Knight - 10xUnicorn** *[02:43:58]*: But it's, you know, it's like so insane what it, what all it gives you and then it's just built all in the system. 
+**Mark Savant** *[02:44:07]*: Yeah. What about deliverability? Is the delivery like that's one of the big benefits of Beehive for example, is they give you better, higher deliverability. But Beehive just rakes you over the coals with all these upcharges like, oh, you've, you hit, you know, 5,000 subs, extra charge, 7,000. They just keep charging you more. And I'm just, I'm sick of that. I'm sick of being up charged all the time by these SaaS products. 
+**Daniel Knight - 10xUnicorn** *[02:44:40]*: Yeah, I mean,. 
+**Mark Savant** *[02:44:46]*: I don't know, I'm thinking this, you know, and you know, I was talking to my buddy the other day, he's like, oh yeah, I just use WordPress as my hosting site. And then I just keep building in, I just keep building on to that. Which is, which was interesting to me. So he's getting kind of outside of the ecosystem, you know, these traditional SaaS ecosystems where you charge for usage and seeds, et cetera. Although it could be that, you know,. 
+**Daniel Knight - 10xUnicorn** *[02:45:16]*: What were you saying? 
+**Mark Savant** *[02:45:17]*: No, yeah, I'm just kind of thinking, I'm just thinking out loud right now. Seeing out loud. 
+**Daniel Knight - 10xUnicorn** *[02:45:26]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:45:26]*: What I noticed from resend at least. 
+**Daniel Knight - 10xUnicorn** *[02:45:28]*: Is that seems like the deliverability is actually really good. And, and yeah, like I am going in the direction with my agency night ops, just building out my own custom system and it's been great. I'm really pleased with it. 
+**Mark Savant** *[02:45:50]*: That I think that's what that, I mean, I think at the end of the day that's what I want to do. I want to build up my own system. 
+**Daniel Knight - 10xUnicorn** *[02:45:55]*: Yeah. 
+**Mark Savant** *[02:45:56]*: You know, but my, I guess my only concern there is do we get to a point where it's more expensive or it's more of a pain to do that because of the charges for token usage. But I think at least my initial thought is, well, if we build it out before the token costs go up, then, you know, then that's better. 
+**Daniel Knight - 10xUnicorn** *[02:46:23]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:46:28]*: I mean with things like resend, it's not using tokens every time it sends the emails. 
+**James** *[02:46:35]*: Right. 
+**Daniel Knight - 10xUnicorn** *[02:46:36]*: They're already, you know, used tokens to. 
+**Daniel Knight - 10xUnicorn** *[02:46:39]*: Plan them and like create the system to schedule them. But now it, the system just handles it. Right. 
+**James** *[02:46:48]*: Right. 
+**Mark Savant** *[02:46:51]*: Well and then I guess the other piece to that is like if you're having problems with high level, for example, they have tech Support and you know, that sort of thing. If I'm just building out on my own. Well, I'm tech support now or you know what I mean? Or so these kind of things I'm kind of thinking through. Right. Cloudsecs or you know, again my thought is, well, maybe I just build out these small individual softwares that fill very specific problems and just integrate them into like the larger CRM, like high level, for example. So I'm just kind of thinking through the best way to set this up. 
+**Daniel Knight - 10xUnicorn** *[02:47:35]*: Yeah. 
+**Mark Savant** *[02:47:38]*: In any event, I have my first prompt, my. I guess my mega prompt here. 
+**Daniel Knight - 10xUnicorn** *[02:47:43]*: Yeah. 
+**James** *[02:47:44]*: If you want to see it. 
+**Daniel Knight - 10xUnicorn** *[02:47:46]*: Yeah, I want to definitely want to see it. We scroll just so I can kind of skim. 
+**Mark Savant** *[02:48:10]*: Probably need to update the tech stack here. 
+**Daniel Knight - 10xUnicorn** *[02:48:51]*: Anyway. 
+**Mark Savant** *[02:48:52]*: Interesting. Still kind of thinking through this thing, but. 
+**Daniel Knight - 10xUnicorn** *[02:48:59]*: Yeah. So kind of just depending on how complex you want to go with things, I'm going to show you guys. I'll do it for this one actually. 
+**Daniel Knight - 10xUnicorn** *[02:49:34]*: So what I had my. 
+**Daniel Knight - 10xUnicorn** *[02:49:35]*: What I do anytime I'm building out an app now is I'll have it create. This document that is like a full project Scope doc, which is, you know,. 
+**Daniel Knight - 10xUnicorn** *[02:49:55]*: It, it's a lot but like it covers everything. 
+**Daniel Knight - 10xUnicorn** *[02:49:59]*: And I basically then just use this as my guide to kind of walk through the whole thing. 
+**Daniel Knight - 10xUnicorn** *[02:50:06]*: And this is why, you know, I. 
+**Daniel Knight - 10xUnicorn** *[02:50:07]*: Do have all of those other fields to kind of help create the, you know, the scope doc in a very detailed way. 
+**Daniel Knight - 10xUnicorn** *[02:50:15]*: So this project created a 44. 
+**Daniel Knight - 10xUnicorn** *[02:50:20]*: Page scope document which has all of. 
+**Daniel Knight - 10xUnicorn** *[02:50:25]*: The different fields that it's planning ahead on where they're all going to be. 
+**Daniel Knight - 10xUnicorn** *[02:50:29]*: Connected, you know, like literally everything. 
+**Mark Savant** *[02:50:36]*: And this, the app dash is. Pushes this out. 
+**Daniel Knight - 10xUnicorn** *[02:50:41]*: It should. Yeah. The different phases, obviously, you know, it's talking nine weeks, whatever you know, of getting this built out. I'm already basically here. Nine weeks of development in less than a week. Crazy. But yeah. 
+**Daniel Knight - 10xUnicorn** *[02:51:03]*: So here's what I would say is just add one more layer to that prompt that you. 
+**Daniel Knight - 10xUnicorn** *[02:51:11]*: Or before you submit is. So let's see here. First go to plugins and then add. 
+**Daniel Knight - 10xUnicorn** *[02:51:21]*: A plugin and make sure you have. 
+**Daniel Knight - 10xUnicorn** *[02:51:24]*: The engineering plugin installed. 
+**Daniel Knight - 10xUnicorn** *[02:51:29]*: This will make it so you can design the system out in a way. 
+**Daniel Knight - 10xUnicorn** *[02:51:35]*: That's going to be really well structured. And that's kind of the key there. 
+**Daniel Knight - 10xUnicorn** *[02:51:41]*: You'll want to use that one before launching it. And then as you are, you know,. 
+**Daniel Knight - 10xUnicorn** *[02:51:46]*: Debugging things, there's this debug skill that is super useful and it'll go through. 
+**Daniel Knight - 10xUnicorn** *[02:51:52]*: And find the issues. So These are skills. 
+**Daniel Knight - 10xUnicorn** *[02:51:58]*: Under customize, you go to customize and then skills. Just where were. And then browse skills. I want to encourage you. Install the engineering skill. Cool. 
+**Mark Savant** *[02:52:20]*: Yeah, I got that. That's perfect. 
+**Daniel Knight - 10xUnicorn** *[02:52:22]*: Cool. 
+**Daniel Knight - 10xUnicorn** *[02:52:23]*: James, how are you doing over there? 
+**James - reboo** *[02:52:25]*: I'm just kind of making sure my spreadsheet's cleaner before I submit it. 
+**James** *[02:52:30]*: I'm just. 
+**Tucker Bascom** *[02:52:52]*: I'm setting up my cowork. 
+**Daniel Knight - 10xUnicorn** *[02:52:55]*: Yeah. 
+**Tucker Bascom** *[02:52:55]*: With the project selector and the safeguards and stuff. 
+**Daniel Knight - 10xUnicorn** *[02:53:01]*: All right. You're getting there. Yeah. 
+**Tucker Bascom** *[02:53:06]*: Laptop is all updated now. 
+**Daniel Knight - 10xUnicorn** *[02:53:12]*: Awesome. 
+**Tucker Bascom** *[02:53:15]*: Did you create App Dash me? 
+**Daniel Knight - 10xUnicorn** *[02:53:18]*: Yeah. 
+**Tucker Bascom** *[02:53:21]*: That's sick, man. 
+**Daniel Knight - 10xUnicorn** *[02:53:24]*: All of this, like, everything that we're. Aside from Zoom, which I've thought about, I'm like, could I create a better Zoom? 
+**Daniel Knight - 10xUnicorn** *[02:53:35]*: But, yeah, App Dash Me, the workshop registration page. I've built some pretty. Pretty badass things, actually. 
+**Daniel Knight - 10xUnicorn** *[02:53:47]*: And, yeah, the best ones are the ones that solve my own need. Right. 
+**Tucker Bascom** *[02:53:52]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:53:52]*: So App Dash, originally, I built it. 
+**Daniel Knight - 10xUnicorn** *[02:53:56]*: For the prompt generator because I'm like,. 
+**Daniel Knight - 10xUnicorn** *[02:54:01]*: Hey, I want people who are coming to the workshop to have something that they can fill out so that they know they've provided all the details for. 
+**Daniel Knight - 10xUnicorn** *[02:54:08]*: The app to generate, you know, the greatest possible output. 
+**Daniel Knight - 10xUnicorn** *[02:54:12]*: So it started with that. Then I started building all these different apps, and my head was spinning, and I was like, I need a spot where I can, like, keep track of all of my apps. It's this prompt generator. I'm like, that's where it needs to live. 
+**Daniel Knight - 10xUnicorn** *[02:54:27]*: So then I added that in. 
+**Daniel Knight - 10xUnicorn** *[02:54:29]*: And this is exactly why starting with the end in mind is so important, because I've spent so much time, like, revising and kind of reconstructing the layout of that dashboard, and it's still not right, because it wasn't from the very beginning, you know, because I just went. I just wanted to do this. And didn't realize that it had a. 
+**Daniel Knight - 10xUnicorn** *[02:54:51]*: Much bigger scope that I wanted it to. To accomplish. 
+**Tucker Bascom** *[02:54:57]*: How long did App Dash take, like, from idea to actual living, working app? 
+**Daniel Knight - 10xUnicorn** *[02:55:13]*: I don't know, Maybe, like, four hours before. 
+**Daniel Knight - 10xUnicorn** *[02:55:20]*: Maybe not even that long. 
+**Daniel Knight - 10xUnicorn** *[02:55:24]*: Wow. 
+**Daniel Knight - 10xUnicorn** *[02:55:25]*: Just a few hours. But that being said, it didn't have, like, a gated paywall, so you'll see, like, access code, which before, what my plan was to just give an access code where you couldn't, like, log in or anything. 
+**Daniel Knight - 10xUnicorn** *[02:55:41]*: You can just get into it with the access code. 
+**Daniel Knight - 10xUnicorn** *[02:55:45]*: But. But then I realized, well, I can. 
+**Daniel Knight - 10xUnicorn** *[02:55:47]*: Structure this in a way that I think people will actually pay for this thing. And so. So then I created, like, the users and user access and all that, which Took a lot more time. 
+**Tucker Bascom** *[02:55:59]*: Okay. 
+**Daniel Knight - 10xUnicorn** *[02:56:00]*: And then, like, you'll see if you try to create another app, it'll actually. 
+**Daniel Knight - 10xUnicorn** *[02:56:05]*: Ask you to upgrade your membership because it only lets you do so many on, you know, certain accounts. 
+**Tucker Bascom** *[02:56:12]*: Got it. 
+**Daniel Knight - 10xUnicorn** *[02:56:17]*: And how about that domain? 
+**Daniel Knight - 10xUnicorn** *[02:56:18]*: Is that not solid? 
+**Daniel Knight - 10xUnicorn** *[02:56:20]*: App Dash me. 
+**Tucker Bascom** *[02:56:22]*: That is super. Well, that's kind of why I was like, wait, did Daniel make this? Like that sounds like. I feel like I've heard of it before, but I know I haven't, but it's like, sounds familiar. 
+**Daniel Knight - 10xUnicorn** *[02:56:33]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:56:34]*: Well, and the other thing is, like, it actually feels very timely, like, this is something people are going to need because everyone's going to be out there building apps like crazy. So, yeah, the main thing is I wanted to be able to, like, store my keys in the app so that it's just all in one spot. I'm still using notes because I've had to revise a few things on this. 
+**Daniel Knight - 10xUnicorn** *[02:56:59]*: A few times, but I think it's solid. Now,. 
+**Daniel Knight - 10xUnicorn** *[02:57:07]*: This thing is a great example of over development because I made it where as you add more apps in there, it'll even create, like an app marketplace for you so you can put your links so people can go and. 
+**Daniel Knight - 10xUnicorn** *[02:57:19]*: Buy all of your different apps that you're working on. 
+**Daniel Knight - 10xUnicorn** *[02:57:22]*: It even has, like a landing page generator, which is just so unnecessary given what we're doing. 
+**Daniel Knight - 10xUnicorn** *[02:57:28]*: But it's there if, you know, you build out an app and you just want to direct people to buy it. So. Yeah, that's awesome. Very cool. Yeah, I'm a fan of that one. It's pretty sweet. And then, James, I'm going to have you do one more thing before you submit that prompt. 
+**Mark Savant** *[02:58:07]*: Okay. 
+**James** *[02:58:09]*: Here. 
+**Daniel Knight - 10xUnicorn** *[02:58:11]*: Mark, did you install the engineering skill? 
+**Mark Savant** *[02:58:14]*: Yeah, yeah. 
+**James** *[02:58:15]*: Oh,. 
+**Jelene Wilkinson** *[02:58:18]*: That's why I left. I had to. Well, not when I had a bio break a minute ago, but when I went to install it's like EMS restart. Like. Okay, gotcha. 
+**Daniel Knight - 10xUnicorn** *[02:58:31]*: So that came back into it. Nice. 
+**Daniel Knight - 10xUnicorn** *[02:58:34]*: So, James, I don't believe you installed the engineering skill. So I want you to do that real quick before launching this so that. 
+**Daniel Knight - 10xUnicorn** *[02:58:43]*: It builds it out in the most comprehensive way possible. 
+**James** *[02:58:48]*: This is in cloud. 
+**Daniel Knight - 10xUnicorn** *[02:58:50]*: Yeah. 
+**Daniel Knight - 10xUnicorn** *[02:58:50]*: So click on the little plus button down where you added the file. 
+**James** *[02:58:57]*: Okay. Yep, yep. 
+**Daniel Knight - 10xUnicorn** *[02:59:00]*: And then click on or hover over skills. 
+**Daniel Knight - 10xUnicorn** *[02:59:05]*: And then hit Add skill. And then type engineering or just eng should pop up. 
+**Jelene Wilkinson** *[02:59:18]*: I thought it was a plugin. I added a plugin. 
+**Daniel Knight - 10xUnicorn** *[02:59:21]*: Oh, sorry. 
+**Daniel Knight - 10xUnicorn** *[02:59:22]*: Yeah, yeah, you're right. 
+**Daniel Knight - 10xUnicorn** *[02:59:23]*: Click. Click on plugins. My bad. Okay, thanks, Jillian. Yeah, then you'll see engineering click on the that one, the plus sign and hit install. 
+**Mark Savant** *[02:59:42]*: Dan, I have another question. 
+**Daniel Knight - 10xUnicorn** *[02:59:44]*: Yeah. 
+**Mark Savant** *[02:59:46]*: Part of my vision for apps is to leverage AI to give users of the app custom response. Right? 
+**Daniel Knight - 10xUnicorn** *[02:59:58]*: So, for example, if someone's real quick, mark. 

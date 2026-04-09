@@ -1,0 +1,588 @@
+================================================================================
+         NIGHT VIBE WORKSHOP TROUBLESHOOTING GUIDE
+         Every Error & Fix from the Workshop
+         April 7-8, 2026
+         workshop.nightvibe.me
+================================================================================
+
+This guide contains solutions for every problem that came up during the
+workshop. Use it to quickly solve issues without wasting time.
+
+================================================================================
+SECTION 1: TOKEN LIMIT ISSUES
+================================================================================
+
+PROBLEM: "You've hit your token limit" Message
+---------
+When: You're mid-build and Claude stops responding
+Why: You've used all your daily tokens (like a data limit on a phone)
+
+Solutions:
+
+OPTION 1: Wait for Daily Reset
+- Token limit resets at 1pm Pacific Time daily
+- Stop working and come back tomorrow
+- Your work is saved - Claude will remember what you were doing
+
+OPTION 2: Upgrade to Claude Max
+- Costs $20/month
+- Gives you approximately 4 hours of usage per day instead of 3
+- Subscribe at claude.ai
+
+OPTION 3: Use Sonnet Instead of Opus
+- Sonnet uses fewer tokens (faster, lighter weight)
+- After your initial app build, use Sonnet for all changes
+- This stretches your daily tokens further
+- Click the model selector in Claude and choose "Claude Sonnet"
+
+OPTION 4: Batch Your Changes
+- Don't ask Claude for one change at a time
+- Collect 5-10 changes, then ask for them all at once
+- This uses fewer total tokens than 10 separate requests
+
+PREVENTION TIPS:
+- Track how many requests you've made
+- After 30-40 requests, you're probably close to the limit
+- Plan to do your main app build in one session, then iterate later
+- Save your prompts in a notepad so you can reuse them
+
+================================================================================
+SECTION 2: DEPLOYMENT & VERCEL ERRORS
+================================================================================
+
+PROBLEM: Wrong Folder Deployment (App Won't Update)
+---------
+When: You ask Claude to deploy but an old version shows up
+Why: Claude deployed the parent folder instead of your project folder
+     (or created nested folders by accident)
+
+Symptoms:
+- You made changes to the app but they don't appear
+- Claude mentions "creating a new folder" during build
+- Different app version is live than what you built
+
+Solutions:
+
+STEP 1: Check Your Folder Structure
+- In Claude Cowork, click "Choose Folder"
+- Look in your Documents or Downloads folder
+- Your app folder might be inside another app folder
+- Look for: AppName > AppName > actual files
+
+STEP 2: Deploy from the Correct Folder
+- If you see nested folders, the inner one is correct
+- Click that inner folder and select it
+- Now run the deploy command
+- This will push the right files
+
+STEP 3: Get the Correct Path
+- After selecting the right folder, Claude will show you the exact path
+- Copy exactly what Claude gives you for the terminal
+
+EXAMPLE:
+   cd "C:\Users\John\Documents\MyApp\MyApp"
+                                    (this is the correct nested folder)
+
+If you're unsure, ask Claude: "I think I have duplicate folders. Which
+folder should we deploy?"
+
+PROBLEM: "npm: command not found" Error
+---------
+When: You run a Vercel command and get this error
+Why: npm (Node Package Manager) isn't installed on your computer
+
+Solution:
+1. Follow the steps Claude gives you:
+   - Visit nodejs.org
+   - Click "Get Node.js"
+   - Download Windows installer (PC) or Mac installer
+   - Run the installer and follow the steps
+   - Restart your computer
+2. Once installed, try your Vercel command again
+
+This is a one-time setup - you only need to do it once per computer.
+
+PROBLEM: "cd: no such file or directory" Error
+---------
+When: You run the cd command and it says the folder doesn't exist
+Why: The folder path has spaces or special characters, or the path is wrong
+
+Solutions:
+
+SOLUTION 1: Use Quotation Marks (Usually Fixes It)
+- If your folder path has spaces, wrap it in quotes:
+   cd "C:\Users\John Doe\My Project"
+                    ^spaces^
+- Without quotes, the system thinks "My" and "Project" are separate things
+
+SOLUTION 2: Use Forward Slashes on Mac
+- Mac sometimes prefers forward slashes:
+   cd /Users/JohnDoe/MyApp
+- Windows usually prefers backslashes:
+   cd C:\Users\JohnDoe\MyApp
+
+SOLUTION 3: Copy the Exact Path from Claude
+- After you click "Choose Folder" in Claude
+- Claude shows you the exact correct path
+- Copy it character-for-character into the terminal
+- Use copy (Ctrl+C) and paste (Ctrl+Shift+V)
+
+SOLUTION 4: Find Your Project Folder Manually
+1. Open File Explorer (Windows) or Finder (Mac)
+2. Look in Documents, Downloads, or Desktop
+3. Find your project folder
+4. Right-click > Copy as Path (Windows) or Get Info (Mac)
+5. Paste into terminal
+
+PROBLEM: "npm run build" Error (During Deployment)
+---------
+When: Build command fails with cryptic error messages
+Why: Missing dependencies, configuration issues, or code errors
+
+Solutions:
+
+STEP 1: Check Vercel Dashboard for Details
+- Go to vercel.com > Deployments
+- Click on your failed deployment
+- Scroll down to see detailed error messages
+- Copy the error message
+
+STEP 2: Share Error with Claude
+- Ask Claude: "Here's the deployment error: [paste error]"
+- Claude will analyze it and fix the issue
+- Usually it's a missing import or configuration file
+
+STEP 3: Try Again
+- After Claude fixes it, run: npx vercel
+- Your app should deploy successfully
+
+If still stuck: Ask Claude to restart from scratch with better error handling.
+
+PROBLEM: Login Page Shows 404 Error After Deployment
+---------
+When: Your app deploys successfully but login page is broken
+Why: The app was deployed but authentication routes aren't configured yet
+
+Solutions:
+
+IMMEDIATE: This is Normal
+- This error is expected after initial deployment
+- The app structure exists but login route needs setup
+
+STEP 1: Tell Claude
+- Ask Claude: "The login page shows error 404. Create an admin account
+  so I can log in using my email."
+- Claude will create authentication setup
+
+STEP 2: Test Login
+- Try to log in with your email
+- If it works, you're good to go
+- If not, ask Claude: "Login still doesn't work. Debug this."
+
+PROBLEM: Domain Won't Connect to Vercel
+---------
+When: You added your domain but it doesn't work
+Why: DNS changes take time to propagate (24-48 hours)
+
+Solutions:
+
+IMMEDIATE WORKAROUND:
+- Use your Vercel URL instead: yourapp-abc123.vercel.app
+- This works immediately
+
+PERMANENT FIX (Wait):
+- You did everything right
+- DNS changes take 24-48 hours to propagate worldwide
+- Try again in 24 hours
+- Check status at: nslookup yourdomain.com
+
+If still not working after 48 hours:
+- Go back to Vercel > Settings > Domains
+- Check the DNS records are correct
+- Re-add the domain if needed
+- Ask Claude: "My domain still isn't connecting to Vercel. Help debug."
+
+================================================================================
+SECTION 3: CLAUDE CONNECTIVITY & SESSION ISSUES
+================================================================================
+
+PROBLEM: VPN Interfering with Claude Connectors
+---------
+When: Claude can't access certain tools or features
+Why: VPN is blocking connections to external services
+
+Solutions:
+
+OPTION 1: Disable VPN Temporarily
+- Turn off your VPN while building
+- Re-enable it when you're done for security
+- This is usually safe during local development
+
+OPTION 2: Whitelist Services
+- If you keep VPN on, contact your VPN provider
+- Ask them to whitelist Vercel and Supabase services
+- Then Claude can access them through the VPN
+
+OPTION 3: Use Different Network
+- Try building on a different WiFi network
+- Go to a coffee shop or use mobile hotspot
+- See if issue goes away
+
+PROBLEM: File Deletion Accidents
+---------
+When: Claude accidentally deleted files you needed
+Why: You allowed Claude to organize your file system
+
+Prevention (Install Safety Guard Skill):
+- See the Skills Guide for installation
+- Safety Guard prevents accidental deletions
+- This is the #1 skill to install first
+
+If Already Deleted:
+
+STEP 1: Undo Recent Changes
+- If just happened: go to File > Undo or Ctrl+Z
+- This sometimes restores files
+
+STEP 2: Check Recycle Bin/Trash
+- Look in your computer's recycle bin
+- Files might be recoverable there
+- Restore them to their original location
+
+STEP 3: Tell Claude to Rebuild
+- Ask Claude: "I accidentally deleted some project files. Here's what I
+  need rebuilt: [list the files]"
+- Claude can recreate them for you
+
+STEP 4: Install Safety Guard
+- Never allow this to happen again
+- Install Safety Guard skill immediately
+- It blocks dangerous file operations
+
+PROBLEM: Session Compaction Losing Context
+---------
+When: Claude forgets what you were building earlier in the session
+Why: Long conversations get condensed to save space (session compaction)
+
+Prevention (Install Session Tracker Skill):
+- See the Skills Guide for installation
+- Session Tracker preserves context across long conversations
+- Keeps Claude aware of everything you've built
+
+If Context Lost:
+
+STEP 1: Provide Context Again
+- Remind Claude: "I was building [app name]. Here are the details: [paste
+  previous app description]"
+- Claude will re-orient itself
+
+STEP 2: Use Project Summary File
+- Claude saves a file called "project_summary.md"
+- This file contains all your app's context
+- Ask Claude to reference it: "Review project_summary.md and remind me
+  what we've built"
+
+STEP 3: Start New Task with Context
+- Click "New Task"
+- Attach or reference your project summary file
+- Ask Claude to continue from where you left off
+
+PROBLEM: Claude Created Nested/Duplicate Folders
+---------
+When: Your project folder is inside another project folder (YourApp > YourApp)
+Why: Claude nested folders for some reason during building
+
+Why It's a Problem:
+- Deployment uses the wrong folder
+- Old version gets deployed instead of your changes
+
+Solutions:
+
+STEP 1: Identify the Issue
+- Open File Explorer / Finder
+- Navigate to your project
+- If you see YourApp > YourApp > files, that's the problem
+
+STEP 2: Deploy from Inner Folder
+- Click "Choose Folder" in Claude
+- Navigate into the inner folder
+- Click "Select Folder"
+- Claude will use the correct nested path
+
+STEP 3: Prevent This Going Forward
+- It's usually not a problem once you know it
+- Just always deploy from the deepest folder with your actual code
+
+PROBLEM: Slow Cowork Startup
+---------
+When: Cowork takes 30+ seconds to load
+Why: Your computer is busy with other apps
+
+Solutions:
+
+QUICK FIX:
+1. Close unnecessary browser tabs (each tab uses memory)
+2. Close other applications
+3. Try opening Cowork again
+4. If still slow, restart Claude app
+
+FULL FIX:
+1. Close all applications except Claude
+2. Restart your computer
+3. Open Claude and let it fully load
+4. Then open Cowork
+5. It should now load quickly
+
+Prevention:
+- Keep system memory free
+- Monitor what's running in background
+- Close apps you're not actively using
+
+================================================================================
+SECTION 4: WINDOWS-SPECIFIC ISSUES
+================================================================================
+
+PROBLEM: Windows Says Need Virtual Machine Platform
+---------
+When: Error mentions "VM platform" or "virtualization"
+Why: Windows needs this feature enabled for Claude Cowork to function
+
+Solutions:
+
+ONE-TIME SETUP:
+1. Open Settings on Windows
+2. Go to Apps > Optional Features
+3. Click "More Windows features"
+4. Check the box for "Virtual Machine Platform"
+5. Check the box for "Windows Subsystem for Linux (WSL)"
+6. Click OK
+7. Windows will ask to restart - restart your computer
+8. Once restarted, try Claude Cowork again
+
+If Computer Doesn't Support Virtualization:
+- Your computer's processor doesn't support VM features
+- This is rare but happens on older computers
+- You can still use Claude Chat (not Cowork)
+- You can build web apps this way too, just slower
+- Ask Claude about alternatives if Cowork won't work
+
+PROBLEM: PowerShell vs Command Prompt
+---------
+When: Terminal looks different than expected
+Why: Windows has multiple terminal types
+    PowerShell (newer, blue), Command Prompt (classic, black)
+
+This is Usually Fine:
+- Most commands work in both
+- You might see different command syntax
+- Ask Claude: "I'm using PowerShell. Give me the right command."
+- Claude will adjust
+
+If Commands Don't Work in PowerShell:
+1. Try opening regular Command Prompt instead
+2. Open Start > Type "cmd" > Press Enter
+3. Use the commands Claude provides
+4. They should work better
+
+PROBLEM: Git Push Failures from VM
+---------
+When: Claude tries to use Git and it fails
+Why: Git might not be installed or configured
+
+Solutions:
+
+OPTION 1: Use Vercel Instead of Git
+- Ask Claude: "Don't use GitHub to deploy. Use Vercel directly with 'npx
+  vercel' instead"
+- This is more reliable than Git for deployment
+
+OPTION 2: Install Git
+- If you need Git specifically:
+- Visit git-scm.com
+- Download Windows installer
+- Run installer and follow steps
+- Restart your computer
+- Try again
+
+OPTION 3: Skip Git
+- For app deployment, you don't actually need Git
+- Vercel works fine without it
+- Only use Git if specifically required
+
+================================================================================
+SECTION 5: DATABASE & SUPABASE ISSUES
+================================================================================
+
+PROBLEM: Database Mismatch (App Won't Save Data)
+---------
+When: Data isn't being saved, or old database is being used
+Why: App connected to wrong Supabase project
+
+Solutions:
+
+STEP 1: Check Which Database is Connected
+- Look at Vercel > Settings > Environment Variables
+- Find your Supabase URL
+- Copy it
+
+STEP 2: Check Which Database You Want to Use
+- Go to Supabase.com
+- Make sure you're in the right project
+- Verify the URL matches Vercel
+
+STEP 3: If Different
+- Get correct Supabase URL
+- Update Vercel environment variable
+- Re-deploy: npx vercel
+- Test again
+
+STEP 4: If Still Broken
+- Ask Claude: "The app is using the wrong Supabase database. Here's the
+  correct connection details: [paste URL and key]"
+- Claude will fix the connection
+
+PROBLEM: Can't Connect to Supabase
+---------
+When: Deployment fails saying "can't connect to database"
+Why: Connection details are wrong, or database is offline
+
+Solutions:
+
+STEP 1: Verify Supabase is Running
+- Log into Supabase.com
+- Click your project
+- If you see a green dot, it's running
+- If red/offline, wait a few minutes or restart
+
+STEP 2: Verify Connection Details
+- Go to Settings > Database
+- Copy the exact connection URL
+- Make sure there are no typos
+- Paste into Vercel environment variables
+
+STEP 3: Ask Claude to Debug
+- Ask Claude: "The Supabase connection is failing. Here's the database
+  URL: [paste]. Debug this."
+- Claude will test the connection and report issues
+
+PROBLEM: Database Schema Issues
+---------
+When: Tables are missing or have wrong columns
+Why: Database wasn't initialized, or the app expected different schema
+
+Solutions:
+
+OPTION 1: Rebuild Database Tables
+- Ask Claude: "Create the database tables this app needs. Here's what
+  tables are required: [describe app features]"
+- Claude will create proper tables
+
+OPTION 2: Use Supabase Migration
+- Go to Supabase > SQL Editor
+- Claude can provide SQL to create tables
+- Run it in Supabase
+
+OPTION 3: Clear and Restart
+- If database is corrupted:
+- Go to Supabase > Database > Backup
+- Export your data first
+- Click "Reset" to clear
+- Let Claude reinitialize it
+
+================================================================================
+SECTION 6: TOKEN MANAGEMENT STRATEGIES
+================================================================================
+
+SMART TOKEN USAGE:
+---------
+1. Do your initial app build (use Opus, spend tokens) - in one session
+2. Collect changes and test the app (use Sonnet, save tokens)
+3. Batch all changes together before asking Claude (use 1 request instead of 10)
+4. Use a notepad or voice notes for change ideas
+5. Once hitting daily limit, stop and come back tomorrow
+
+Token Cost Estimates:
+- Simple app: 1,000-2,000 tokens to build
+- Medium app: 2,000-5,000 tokens to build
+- Complex app: 5,000-10,000 tokens to build
+- Small change: 100-300 tokens
+- Medium change: 300-800 tokens
+
+With Max plan (~4 hours):
+- You can build 2-3 complete small apps per day
+- Or build 1 complex app and make several iterations
+- Or make 10-20 small changes throughout the day
+
+HOW TO STRETCH TOKENS FURTHER:
+---------
+1. Use Sonnet after the initial build
+2. Collect 5-10 changes before asking
+3. Write clear descriptions to avoid back-and-forth
+4. Re-use previous prompts instead of rewriting them
+5. Copy/paste existing code that works instead of rebuilding
+
+WHEN TO USE OPUS VS SONNET:
+---------
+Use Opus (more tokens, better thinking):
+- Building app from scratch with detailed spec
+- Complex system design decisions needed
+- Important features that must be done right first time
+
+Use Sonnet (fewer tokens, still very capable):
+- Making changes to existing app
+- Bug fixes
+- Iterating and improving
+- Testing variations
+
+================================================================================
+SECTION 7: WHEN TO ASK FOR HELP
+================================================================================
+
+CLAUDE CAN'T FIX:
+---------
+- Problems with your computer hardware
+- Internet connectivity issues
+- Supabase or Vercel being down (not your problem)
+- Your domain registrar settings (call their support)
+
+CLAUDE CAN USUALLY FIX:
+---------
+- Code errors
+- Deployment issues
+- Database connection problems
+- Missing features
+- Performance issues
+- File organization
+
+HOW TO ASK FOR HELP:
+---------
+1. Copy error message exactly
+2. Tell Claude what you were doing
+3. Ask specifically: "Debug this" or "How do I fix this?"
+4. Include any error messages or odd behavior
+5. Be specific: don't just say "it's broken"
+
+GOOD EXAMPLE:
+   "I'm trying to deploy to Vercel. The npm run build command failed with:
+   'Cannot find module react'. How do I fix this?"
+
+BAD EXAMPLE:
+   "It's not working"
+
+================================================================================
+QUICK REFERENCE: ERROR MESSAGES
+================================================================================
+
+IF YOU SEE THIS...              DO THIS...
+---------
+"Token limit reached"           Wait until 1pm PT tomorrow
+"404 Not Found"                 Ask Claude to create admin account
+"npm: command not found"        Install Node.js from nodejs.org
+"No such file or directory"     Use quotation marks around path names
+"Database connection failed"    Check Supabase URL in Vercel settings
+"npm run build failed"          Copy error > Ask Claude to debug
+"Virtual Machine Platform"      Enable VM Platform in Windows settings
+"VPN blocking"                  Turn off VPN or whitelist services
+"Files deleted"                 Check Recycle Bin, install Safety Guard
+
+================================================================================

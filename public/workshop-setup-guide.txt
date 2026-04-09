@@ -1,0 +1,518 @@
+================================================================================
+         NIGHT VIBE WORKSHOP SETUP GUIDE
+         Complete Setup & Build Guide
+         April 7-8, 2026
+         workshop.nightvibe.me
+================================================================================
+
+This guide provides step-by-step instructions for setting up your development
+environment and building your first AI app from zero to deployed live on the
+web. Follow this in order for best results.
+
+================================================================================
+SECTION 1: ACCOUNT CREATION & SETUP ORDER
+================================================================================
+
+Create accounts in this specific order to avoid conflicts and ensure proper
+connectivity between services.
+
+STEP 1: Claude Account (Starting Point)
+---------
+1. Go to claude.ai in your browser
+2. Create or log into your Claude account
+3. Upgrade to Claude Max plan ($20/month) for the tokens you'll need
+   - Standard free accounts won't have enough tokens for app building
+   - Max plan provides daily token allowance (~4 hour usage per day)
+4. Keep your Claude account active - you'll need it throughout the workshop
+
+STEP 2: Vercel Account (Your Hosting Provider)
+---------
+1. Go to vercel.com
+2. Sign up with your email or GitHub account
+3. Create a team/project workspace if prompted
+4. This is where your finished app will be deployed and live on the internet
+
+STEP 3: Supabase Account (Your Database)
+---------
+1. Go to supabase.com
+2. Sign up with your email or GitHub account
+3. Create a new project or organization
+4. Choose a region close to your location for best performance
+5. Supabase will automatically provide you with connection details
+6. Save your database URL and API keys somewhere safe (use AppDash.me)
+
+STEP 4: AppDash.me Account (Your App Management Dashboard)
+---------
+1. Go to AppDash.me (created specifically for this workshop)
+2. Create an account using the app questionnaire
+3. This dashboard will:
+   - Store all your app details in one place
+   - Generate a master prompt you'll copy to Claude
+   - Keep track of all your projects
+   - Store your API keys securely
+
+STEP 5: Resend Account (Your Email Service)
+---------
+1. Go to resend.com
+2. Sign up with your email
+3. Add your email address (for sending transactional emails from your app)
+4. Get your API key from the dashboard
+5. Save this in AppDash.me as well
+
+Optional but Useful: Gemini Account (Logo Generation)
+---------
+1. Go to gemini.google.com
+2. Sign in with your Google account
+3. You'll use this for generating logos and social media images
+
+================================================================================
+SECTION 2: CLAUDE COWORK SETUP
+================================================================================
+
+Claude Cowork is the environment where you'll build your app. It can access
+your computer's files and run terminal commands.
+
+WINDOWS USERS: Enable Virtual Machine Platform
+---------
+Before you can use Claude Cowork on Windows, you need to enable virtualization:
+
+1. Open Settings > Apps > Optional Features
+2. Click "More Windows features"
+3. Check the box for "Virtual Machine Platform"
+4. Check the box for "Windows Subsystem for Linux (WSL)"
+5. Click OK and restart your computer
+6. Once restarted, try opening Claude Cowork again
+
+If you get errors about virtualization, your computer may not support it.
+This is not an issue with Claude - it's a Windows setting.
+
+MAC USERS: No Special Setup
+---------
+Claude Cowork works on Mac without additional setup.
+If you see an error about needing to update macOS, try installing Homebrew:
+1. Open Terminal
+2. Visit brew.sh and copy the installation command
+3. Paste and run it
+4. Try opening Claude Cowork again
+
+LAUNCHING CLAUDE COWORK
+---------
+1. Open the Claude desktop app
+2. Click the Cowork icon (looks like a grid or workspace icon)
+3. It will take 10-30 seconds to launch - be patient
+4. Once loaded, you'll see a file browser on the left and a chat area on right
+5. Click "Choose Folder" to select where you want to save your app
+
+If Cowork takes a long time to load:
+- Close other applications and tabs to free up memory
+- Close and reopen the Claude app
+- Restart your computer if it continues to be slow
+
+IMPORTANT: File Organization Settings
+---------
+When Cowork prompts you to organize your files or emails, DO NOT allow it.
+This can cause problems with finding your files later. Instead:
+1. Decline when it offers to organize files
+2. Install the "Safety Guard" skill (see Skills Guide)
+3. This prevents Claude from accidentally deleting or moving your files
+
+================================================================================
+SECTION 3: APPDASH.ME WORKFLOW
+================================================================================
+
+AppDash.me is the blueprint for your entire app. The more detail you provide,
+the better your app will be built.
+
+COMPLETING THE APP QUESTIONNAIRE
+---------
+1. Go to AppDash.me
+2. Click "New App" or "Fill Out Questionnaire"
+3. Answer all questions about your app:
+
+   BASIC INFORMATION:
+   - App name (make it memorable and searchable)
+   - One-line description (what does it do in one sentence?)
+   - Target audience (who is using this?)
+   - Main problem it solves (be specific)
+
+   DETAILED DESCRIPTION:
+   - Detailed description (2-3 paragraphs)
+   - Key features and functionality
+   - Technology stack preferences (React, Vue, etc. - or let Claude decide)
+
+   MVP vs V2+:
+   - Minimum Viable Product (MVP) = core features for launch
+   - V2+ = nice-to-have features for future versions
+   - Move anything non-essential to V2+
+
+   BUSINESS MODEL (optional but helpful):
+   - Is this a paid or free app?
+   - How will you make money?
+   - Any pricing models to consider?
+
+4. Click "Generate Dashboard"
+5. The system will populate your app dashboard with all details
+
+REVIEWING YOUR APP DASHBOARD
+---------
+Once your dashboard is created, you'll see:
+- All your app details organized
+- A "Generate Prompt" button
+- Your app's features listed
+- Database schema recommendations
+
+GENERATING YOUR MASTER PROMPT
+---------
+1. Click "Generate Prompt" in AppDash.me
+2. This creates a comprehensive prompt with all your app details
+3. Copy the entire generated prompt (Ctrl+A, Ctrl+C)
+4. You'll paste this into Claude Cowork in the next section
+
+The master prompt is what Claude will use to build your entire app from
+scratch. The quality of this prompt directly affects the quality of your app.
+
+================================================================================
+SECTION 4: THE BUILD PROCESS - FROM PROMPT TO DEPLOYED APP
+================================================================================
+
+Now you're ready to build your app.
+
+STARTING YOUR BUILD CONVERSATION IN CLAUDE
+---------
+1. Open Claude Cowork
+2. Click "New Task" button at the bottom
+3. Make sure you're set to use Claude Opus (not Sonnet)
+   - Opus is more powerful for initial builds with detailed prompts
+   - You can switch to Sonnet for iterations later
+4. Click in the message area and paste your master prompt from AppDash.me
+5. Send the prompt
+
+WHAT CLAUDE WILL DO NEXT
+---------
+Claude will:
+1. Read your entire app specification
+2. Create a detailed plan (it will show you this)
+3. Set up a working folder on your computer
+4. Create all necessary files (HTML, CSS, JavaScript, etc.)
+5. Check compatibility with Vercel and Supabase
+6. Save everything to your working folder
+
+This takes 5-15 minutes depending on app complexity. Be patient.
+
+MANAGING YOUR TOKEN USAGE
+---------
+You likely have a daily token limit (free accounts: ~3 hours, Max plan: ~4 hours)
+
+Token limit strategies:
+- Use Sonnet (faster, fewer tokens) after the initial build
+- Batch your changes together instead of asking for small fixes one at a time
+- Save your messages in a notepad so you can re-use them
+- If you hit the token limit, wait until tomorrow (limit resets at 1pm PT)
+- If you reach the limit mid-build, save your work and continue tomorrow
+
+WHAT IS A "TOKEN"?
+---------
+A token is roughly 4 characters. When you ask Claude something:
+- Your message uses tokens
+- Claude's response uses tokens
+- Building an app typically uses 1,000-5,000 tokens
+
+The daily limit means you can have productive conversations, not unlimited usage.
+
+================================================================================
+SECTION 5: ITERATIVE DEVELOPMENT - MAKING CHANGES
+================================================================================
+
+You won't get your app perfect on the first try. Here's how to improve it.
+
+COLLECTING CHANGES BEFORE ASKING CLAUDE
+---------
+Instead of asking Claude for one small change at a time (which wastes tokens):
+
+1. Keep a notepad open while testing your app
+2. Write down every change you want to make
+3. Group related changes together
+4. Collect at least 3-5 changes before asking Claude
+
+EXAMPLE NOTEPAD:
+   - Button to calculate totals is missing
+   - Font size too small on mobile
+   - Email validation not working
+   - Add a "clear all" button
+   - Dark mode toggle would be nice
+
+USING VOICE TO COLLECT CHANGES (Recommended)
+---------
+1. Install Whisper Flow or similar dictation tool
+2. When you notice something wrong, just speak your note
+3. It transcribes to text automatically
+4. This is faster than typing
+5. Collect 10-15 change requests, then submit them all to Claude
+
+ASKING CLAUDE FOR CHANGES
+---------
+1. Open Cowork and start a new task (if you're in the same conversation,
+   you can just continue chatting)
+2. Copy-paste your list of changes
+3. Ask: "Here are the changes I'd like to make to the app. Please update
+   the files and re-save them to my working folder."
+4. Claude will make all changes at once
+5. Test the updated version
+
+WHAT IF SOMETHING BREAKS?
+---------
+- Don't panic - you can always ask Claude to fix it
+- Describe what happened when it broke
+- Copy any error messages and share them with Claude
+- Ask it to fix the issue
+- Claude will locate the problem and repair the code
+
+================================================================================
+SECTION 6: SUPABASE SETUP (Database Connection)
+================================================================================
+
+Supabase is your database - it stores all your app's data.
+
+FINDING YOUR CONNECTION DETAILS
+---------
+1. Log into Supabase.com
+2. Click on your project
+3. Go to Settings > Database
+4. Copy these details (save them in AppDash.me):
+   - Database URL (looks like postgresql://user:pass@host/database)
+   - Database API Key (a long string)
+   - Service Role Key (another long string)
+
+CONNECTING SUPABASE TO YOUR APP
+---------
+Claude's build will automatically set up Supabase connection IF you provided
+the details in your AppDash.me prompt.
+
+If you need to add it manually:
+1. Ask Claude: "Connect this app to Supabase. Here's my database URL and key."
+2. Paste your Supabase details
+3. Claude will create the necessary configuration files
+
+TESTING THE CONNECTION
+---------
+Once deployed (see next section), test that data is being saved:
+1. Use your app and input some data
+2. Go to Supabase.com
+3. Check the database tables
+4. You should see your data there
+5. If not, ask Claude: "The app data isn't saving to Supabase. Debug this."
+
+================================================================================
+SECTION 7: VERCEL DEPLOYMENT (Getting Your App Online)
+================================================================================
+
+Vercel hosts your app and makes it accessible to the world.
+
+VERCEL DEPLOY SKILL (Required!)
+---------
+Before deploying, install the Vercel Deploy skill:
+1. See the Skills Guide for full instructions
+2. This skill prevents common deployment errors
+3. It tells Claude to use terminal commands instead of MCP
+4. Without this skill, deployment often fails
+
+DEPLOYMENT STEP 1: Prepare Your Working Folder
+---------
+Claude will give you a terminal command that looks like:
+   cd "C:\Users\YourName\AppName"
+
+Or on Mac:
+   cd /Users/YourName/AppName
+
+Note: If your folder path has spaces, you MUST use quotation marks around it.
+The command might be:
+   cd "C:\Users\John Doe\My App"
+
+The quotation marks tell the terminal: "This is one folder path, even though
+it has spaces."
+
+IF YOU GET ERROR "No such file or directory":
+---------
+This means the path is wrong.
+
+Solution:
+1. Click "Choose Folder" in Claude
+2. Navigate to your working folder
+3. Click "Select Folder"
+4. Claude will provide the correct path
+5. Copy and paste the exact path it gives you
+
+DEPLOYMENT STEP 2: Run the Deploy Command
+---------
+1. Copy the terminal command Claude provides
+2. It will look like: npx vercel
+3. Paste it into the terminal (use Ctrl+Shift+V to paste)
+4. Press Enter
+5. Vercel will:
+   - Ask a few questions (usually you can just press Enter)
+   - Deploy your files
+   - Give you a URL (looks like yourapp-abc123.vercel.app)
+
+DEPLOYMENT STEP 3: Get Your Live URL
+---------
+1. Once deployment finishes, go to vercel.com
+2. Click "Deployments"
+3. Look for your app (should be at the top)
+4. Click on it
+5. Under "Domains" you'll see your live URL
+6. This URL is accessible from anywhere in the world
+
+TESTING YOUR LIVE APP
+---------
+1. Click your live URL from Vercel
+2. The app should load
+3. If you get a 404 error on login: this is normal
+4. Ask Claude: "The login page shows 404 error. Create an admin account."
+5. Claude will fix this and you'll be able to log in
+
+IF DEPLOYMENT FAILS
+---------
+Common errors:
+- npm not installed → Ask Claude to install Node.js first
+- Wrong folder → Use "Choose Folder" in Claude to set the right directory
+- Network error → Try again in a few minutes
+- Git issues → Ask Claude: "Deploy failed due to GitHub error. Use Vercel instead."
+
+================================================================================
+SECTION 8: CUSTOM DOMAIN SETUP (Optional - Purchased Domain)
+================================================================================
+
+If you own a domain (like YourApp.com), you can connect it to Vercel.
+
+STEP 1: Buy Your Domain
+---------
+If you don't have a domain yet:
+1. Go to namecheap.com, godaddy.com, or your preferred registrar
+2. Search for available domain names
+3. Buy your domain for 1-2 years
+4. Note your domain name (you'll need it next)
+
+STEP 2: Add Domain to Vercel
+---------
+1. Go to vercel.com > Your Project
+2. Click "Settings" > "Domains"
+3. Click "Add Domain"
+4. Enter your domain name (example: myapp.com)
+5. Vercel will give you DNS settings to add to your domain registrar
+
+STEP 3: Update DNS Records
+---------
+1. Log into your domain registrar (where you bought the domain)
+2. Find "DNS Settings" or "Nameservers"
+3. Add the DNS records Vercel provided
+4. This takes 24-48 hours to propagate
+5. Once complete, yourapp.com will point to your Vercel app
+
+================================================================================
+SECTION 9: ENVIRONMENT VARIABLES (API Keys & Secrets)
+================================================================================
+
+Your app needs secure access to Supabase, Resend, and other services.
+
+WHAT ARE ENVIRONMENT VARIABLES?
+---------
+They're secret configuration values your app needs but shouldn't be visible
+in your code. Examples:
+- Database URL and password
+- Resend API key
+- Other API keys and tokens
+
+WHERE TO STORE THEM
+---------
+1. Go to vercel.com > Your Project > Settings > Environment Variables
+2. Add each key as a separate entry:
+   - Name (exactly as it appears in your app code)
+   - Value (your actual API key or secret)
+3. Save each one
+4. Re-deploy your app for changes to take effect
+
+ASKING CLAUDE FOR HELP
+---------
+If your app needs environment variables:
+1. Ask Claude: "What environment variables does this app need?"
+2. Claude will list them
+3. Ask Claude: "Give me the exact names for the .env file"
+4. Add them to Vercel as shown above
+
+NEVER put secrets in your code. Always use environment variables.
+
+================================================================================
+SECTION 10: TROUBLESHOOTING COMMON SETUP ISSUES
+================================================================================
+
+PROBLEM: Claude Can't Find My Folder
+---------
+Solution:
+1. Click "Choose Folder" in Claude
+2. Navigate to the folder manually
+3. Click "Select Folder"
+4. Claude will use that location
+
+PROBLEM: Tokens Ran Out (I Hit Daily Limit)
+---------
+Solution:
+1. Wait until tomorrow (resets at 1pm PT)
+2. Or upgrade to Claude Max for higher limits
+3. Or batch your changes to use fewer tokens
+
+PROBLEM: App Won't Deploy to Vercel
+---------
+Solutions:
+1. Make sure Vercel Deploy skill is installed
+2. Use the correct folder path (with quotation marks if spaces exist)
+3. Make sure npm is installed (Claude will guide you)
+4. Check Vercel dashboard for error messages
+
+PROBLEM: Database Connection Issues
+---------
+Solution:
+1. Verify your Supabase connection details are correct
+2. Ask Claude: "Test the Supabase connection. Here are my credentials."
+3. Claude will debug and fix any issues
+
+PROBLEM: My Computer is Slow When Using Cowork
+---------
+Solution:
+1. Close other applications and browser tabs
+2. Close and reopen Claude
+3. Close other programs using memory
+4. Restart your computer if needed
+
+PROBLEM: Windows Says I Need VM Platform
+---------
+Solution:
+1. Go to Settings > Apps > Optional Features
+2. Click "More Windows features"
+3. Check "Virtual Machine Platform"
+4. Check "Windows Subsystem for Linux"
+5. Restart your computer
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+Once your app is set up and deployed:
+1. Read the "Troubleshooting Guide" (handling errors that come up)
+2. Read the "Skills Guide" (optimize your workflow)
+3. Read the "Launch Guide" (prepare to share your app with users)
+
+================================================================================
+QUICK REFERENCE: Command Checklist
+================================================================================
+
+These are the main commands you'll use in the terminal:
+
+Navigate to folder:
+   cd "your folder path"
+
+Start deployment:
+   npx vercel
+
+If you get lost, just copy the errors and ask Claude.
+
+================================================================================
