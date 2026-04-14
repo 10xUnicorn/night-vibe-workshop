@@ -316,7 +316,7 @@ const TOOLS = [
   { name: 'Gemini', url: 'https://gemini.google.com', description: 'Generate logos, graphics, and promo content', tag: 'Design AI' },
   { name: 'Gamma.app', url: 'https://gamma.app', description: 'Build pitch decks and one-pagers in minutes', tag: 'Pitch Deck' },
   { name: 'CopyLaunch.app', url: 'https://copylaunch.app', description: 'AI marketing campaigns and launch copy', tag: 'Marketing' },
-  { name: 'Wispr Flow', url: 'https://wisprflow.ai/', description: 'Dictate anything — AI turns your voice into polished text across any app', tag: 'Productivity' },
+  { name: 'Wispr Flow', url: 'https://ref.wisprflow.ai/dknight', description: 'Dictate anything — AI turns your voice into polished text across any app', tag: 'Productivity' },
 ]
 
 const POST_EVENT = [
